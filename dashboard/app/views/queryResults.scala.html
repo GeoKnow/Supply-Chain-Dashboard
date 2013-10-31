@@ -1,0 +1,17 @@
+@(resultXML: scala.xml.Node)
+
+<table>
+  <tr>
+    @for(variable <- resultXML \ "head" \ "variable") {
+      <th>@variable.attribute("name").get.text<th>
+    }
+  </tr>
+
+  @for(result <- resultXML \ "results" \ "result") {
+    <tr>
+      @for(binding <- result \ "binding" \ "_") {
+        <td>@binding.text<td>
+      }
+    </tr>
+  }
+</table>

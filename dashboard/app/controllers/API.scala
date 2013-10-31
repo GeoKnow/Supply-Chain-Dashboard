@@ -10,12 +10,20 @@ import play.api.Logger
  */
 object API extends Controller {
 
-  def sparql(query: String) = Action {
+  def sparql(query: String) = Action { implicit request =>
     Logger.info("Received query:\n" + query)
     val resultSet = Dataset.query(query)
     val resultXML = ResultSetFormatter.asXMLString(resultSet)
 
-    Ok(resultXML).as("application/sparql-results+xml")
+    render {
+      case Accepts.Html() => {
+        val xml = scala.xml.XML.loadString(resultXML)
+        Ok(views.html.queryResults(xml))
+      }
+      case _ => {
+        Ok(resultXML).as("application/sparql-results+xml")
+      }
+    }
   }
 
 }
