@@ -15,6 +15,7 @@ object Dataset {
   //Read data
   model.read(new FileInputStream(new File("data/ontology.ttl")), null, "Turtle")
   model.read(new FileInputStream(new File("data/avi_fbr.ttl")), null, "Turtle")
+  model.read(new FileInputStream(new File("data/coordinates.ttl")), null, "Turtle")
 
   /**
    * Executes a SPARQL select query.
