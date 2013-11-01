@@ -1,0 +1,32 @@
+@(delivery: models.Delivery)
+
+<table>
+  <tr>
+    <td><b>URI</b></td>
+    <td>@delivery.uri</td>
+  </tr>
+  <tr>
+    <td><b>Date</b></td>
+    <td>@delivery.date</td>
+  </tr>
+  <tr>
+    <td><b>Content</b></td>
+    <td>@delivery.content</td>
+  </tr>
+  <tr>
+    <td><b>Count</b></td>
+    <td>@delivery.count</td>
+  </tr>
+  <tr>
+    <td><b>Unloading Point</b></td>
+    <td>@delivery.unloadingPoint</td>
+  </tr>
+</table>
+
+Sender:
+
+@addressView(delivery.sender)
+
+Receiver:
+
+@addressView(delivery.receiver)

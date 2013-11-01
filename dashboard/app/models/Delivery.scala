@@ -1,3 +1,3 @@
 package models
 
-case class Delivery(name: String, sender: (Double, Double), receiver: (Double, Double))
+case class Delivery(uri: String, date: String, content: String, count: Int, unloadingPoint: String, sender: Address, receiver: Address)
