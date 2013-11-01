@@ -1,12 +1,13 @@
 @()
 
-@main("Supply Chain Dashboard") {
+@main("Supply Chain Dashboard") { } {
 
   <form action="/sparql">
     <textarea name="query" cols="50" rows="10">
-      select * {
-        ?s ?p ?o
-      } limit 10
+prefix ex: <http://geoknow.eu/wp5/ontology#>
+select * {
+  ?s ?p ?o
+} limit 10
     </textarea>
     <input type="submit" value="Submit">
   </form>
