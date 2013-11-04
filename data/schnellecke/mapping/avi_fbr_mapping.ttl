@@ -1,0 +1,128 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix ex: <http://geoknow.eu/wp5/ontology#> .
+
+<#MainMap>
+  rr:logicalTable [ rr:tableName "avi_fbr" ];
+  rr:subjectMap [
+    rr:template "http://geoknow.eu/wp5/message/{ID}";
+    rr:class ex:Message;
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:group;
+    rr:objectMap [ rr:column "GRUPPE" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:billNumber;
+    rr:objectMap [ rr:column "FRACHTBRIEF" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:state;
+    rr:objectMap [ rr:column "STATUS" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:messageType;
+    rr:objectMap [ rr:column "ERF_ART" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:date;
+    rr:objectMap [ rr:column "DATUM" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:sendDate;
+    rr:objectMap [ rr:column "VL_DATUM" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:receiveDate;
+    rr:objectMap [ rr:column "HL_DATUM" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:unloadingPoint;
+    rr:objectMap [ rr:column "ABL_STELLE" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:count;
+    rr:objectMap [ rr:column "ANZAHL1" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:count;
+    rr:objectMap [ rr:column "ANZAHL2" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:contentType;
+    rr:objectMap [ rr:column "INHALT" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:sender;
+    rr:objectMap [ 
+	  rr:parentTriplesMap <#SenderMap>;
+	];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:receiver;
+    rr:objectMap [ 
+	  rr:parentTriplesMap <#ReceiverMap>;
+	];
+  ].
+  
+<#SenderMap>
+  rr:logicalTable [ rr:tableName "avi_fbr" ];
+  rr:subjectMap [
+    rr:template "http://geoknow.eu/wp5/actor/{ABSENDER}";
+    rr:class ex:Actor;
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:name;
+    rr:objectMap [ rr:column "ABS_NAME" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:street;
+    rr:objectMap [ rr:column "ABS_STRASSE" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:country;
+    rr:objectMap [ rr:column "ABS_LAND" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:zipcode;
+    rr:objectMap [ rr:column "ABS_PLZ" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:city;
+    rr:objectMap [ rr:column "ABS_ORT" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:comment;
+    rr:objectMap [ rr:column "ABS_BEM" ];
+  ].
+  
+<#ReceiverMap>
+  rr:logicalTable [ rr:tableName "avi_fbr" ];
+  rr:subjectMap [
+    rr:template "http://geoknow.eu/wp5/actor/{EMPFAENGER}";
+    rr:class ex:Actor;
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:name;
+    rr:objectMap [ rr:column "EMPF_NAME" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:street;
+    rr:objectMap [ rr:column "EMPF_STRASSE" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:country;
+    rr:objectMap [ rr:column "EMPF_LAND" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:zipcode;
+    rr:objectMap [ rr:column "EMPF_PLZ" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:city;
+    rr:objectMap [ rr:column "EMPF_ORT" ];
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:comment;
+    rr:objectMap [ rr:column "EMPF_BEM" ];
+  ].
