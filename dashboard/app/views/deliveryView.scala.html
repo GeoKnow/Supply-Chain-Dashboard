@@ -1,5 +1,7 @@
 @(delivery: models.Delivery)
 
+<h2>Delivery</h2>
+
 <table>
   <tr>
     <td><b>URI</b></td>
@@ -23,10 +25,10 @@
   </tr>
 </table>
 
-Sender:
+<h2>Sender</h2>
 
 @addressView(delivery.sender)
 
-Receiver:
+<h2>Receiver</h2>
 
 @addressView(delivery.receiver)

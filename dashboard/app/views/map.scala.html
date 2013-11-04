@@ -1,4 +1,4 @@
-@(deliveries: Seq[Delivery])
+@(addresses: Seq[Address])
 
 @header = {
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -14,42 +14,62 @@
       var mapOptions = {
         center: new google.maps.LatLng(52.423, 10.787),
         zoom: 8,
-        mapTypeId: google.maps.MapTypeId.TERRAIN
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-      var arrowIcon = {
-        path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
-      };
-
       var infobox = new google.maps.InfoWindow();
 
-      // Draw deliveries
-      @for(delivery <- deliveries) {{
-        //Draw line
-        var line = new google.maps.Polyline({
-          path: [new google.maps.LatLng(@delivery.sender.latitude, @delivery.sender.longitude),
-                 new google.maps.LatLng(@delivery.receiver.latitude, @delivery.receiver.longitude)],
-          strokeColor: '#0000FF',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          icons: [{
-            icon: arrowIcon,
-            offset: '100%'
-          }],
-          map: map
-        });
+      //Draw addresses
+      @for(address <- addresses) {{
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(@address.latitude, @address.longitude),
+          map: map,
+          title: '@address.uri'
+        })
 
-        // Open infobox on click
-        google.maps.event.addListener(line, 'click', function(event) {
-          infobox.close();
-          infobox.setOptions({
-            position: event.latLng,
-            content: '@deliveryView(delivery)',
-          });
-          infobox.open(map);
-        });
+        google.maps.event.addListener(marker, 'click', function(event) {
+          $.get("/map/deliveries?sourceId=@address.id", function(data) {
+            if (typeof lines !== 'undefined') {
+              for (var i = 0; i < lines.length; i++) {
+                lines[i].setMap(null);
+              }
+              lines = [];
+            }
+            jQuery.globalEval(data);
+            for (var i = 0; i < lines.length; i++) {
+              lines[i].setMap(map);
+            }
+          })
+        })
       }}
+
+      @*// Draw deliveries*@
+      @*@for(delivery <- deliveries) {{*@
+        @*//Draw line*@
+        @*var line = new google.maps.Polyline({*@
+          @*path: [new google.maps.LatLng(@delivery.sender.latitude, @delivery.sender.longitude),*@
+                 @*new google.maps.LatLng(@delivery.receiver.latitude, @delivery.receiver.longitude)],*@
+          @*strokeColor: '#0000FF',*@
+          @*strokeOpacity: 0.8,*@
+          @*strokeWeight: 2,*@
+          @*icons: [{*@
+            @*icon: arrowIcon,*@
+            @*offset: '100%'*@
+          @*}],*@
+          @*map: map*@
+        @*});*@
+
+        @*// Open infobox on click*@
+        @*google.maps.event.addListener(line, 'click', function(event) {*@
+          @*infobox.close();*@
+          @*infobox.setOptions({*@
+            @*position: event.latLng,*@
+            @*content: "<a href='/delivery/@delivery.id'>@delivery.uri</a>",*@
+          @*});*@
+          @*infobox.open(map);*@
+        @*});*@
+      @*}}*@
     }
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>

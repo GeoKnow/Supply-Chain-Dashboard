@@ -2,9 +2,11 @@
 GET        /                    controllers.Application.index
 GET        /query               controllers.Application.query
 GET        /map                 controllers.Application.map
+GET        /delivery/:id        controllers.Application.delivery(id)
 
 # REST API
 GET        /sparql              controllers.API.sparql(query)
+GET        /map/deliveries      controllers.API.deliveries(sourceId: String)
 
-# Map static resources from the /public folder to the /assets URL path
+# Static resources
 GET        /assets/*file        controllers.Assets.at(path="/public", file)

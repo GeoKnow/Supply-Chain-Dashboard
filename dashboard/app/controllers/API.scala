@@ -26,4 +26,10 @@ object API extends Controller {
     }
   }
 
+  def deliveries(sourceId: String) = Action {
+    val deliveries = Dataset.deliveries.filter(d => d.sender.id == sourceId || d.receiver.id == sourceId)
+
+    Ok(views.html.showDeliveries(deliveries))
+  }
+
 }

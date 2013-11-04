@@ -1,0 +1,34 @@
+@(deliveries: Seq[Delivery])
+
+var arrowIcon = {
+  path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
+};
+
+var lines = [];
+
+@for(delivery <- deliveries) {{
+  //Draw line
+  var line = new google.maps.Polyline({
+    path: [new google.maps.LatLng(@delivery.sender.latitude, @delivery.sender.longitude),
+           new google.maps.LatLng(@delivery.receiver.latitude, @delivery.receiver.longitude)],
+    strokeColor: '#0000FF',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    icons: [{
+      icon: arrowIcon,
+      offset: '100%'
+    }],
+  });
+
+  // Open infobox on click
+  @*google.maps.event.addListener(line, 'click', function(event) {*@
+    @*infobox.close();*@
+    @*infobox.setOptions({*@
+      @*position: event.latLng,*@
+      @*content: "<a href='/delivery/@delivery.id'>@delivery.uri</a>",*@
+    @*});*@
+    @*infobox.open(map);*@
+  @*});*@
+
+  lines.push(line);
+}}

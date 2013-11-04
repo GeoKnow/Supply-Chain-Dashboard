@@ -16,9 +16,15 @@ object Application extends Controller {
   }
 
   def map = Action {
-    val deliveries = Dataset.queryDeliveries()
+    val addresses = Dataset.addresses
 
-    Ok(views.html.map(deliveries))
+    Ok(views.html.map(addresses))
+  }
+
+  def delivery(id: String) = Action {
+    val delivery = Dataset.retrieveDelivery(id)
+
+    Ok(views.html.deliveryView(delivery))
   }
 
 }

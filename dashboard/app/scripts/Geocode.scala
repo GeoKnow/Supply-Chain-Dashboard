@@ -18,6 +18,21 @@ object Geocode {
   // Output file. Will be written in Turtle format.
   val outputFile = "data/coordinates.ttl"
 
+  private val countryMap = Map(
+    "A" -> "Austria",
+		"B" -> "Belgium",
+		"CN" -> "China",
+    "D" -> "Germany",
+		"E" -> "Spain",
+		"H" -> "Hungaria",
+		"IN" -> "India",
+		"KOR" -> "Korea",
+		"NL" -> "Netherlands",
+		"PL" ->"Poland",
+		"SK" -> "Slovakia",
+		"SLO" -> "Slovenia"
+  )
+
   /**
    * Main method
    */
@@ -35,7 +50,6 @@ object Geocode {
       // Write coordinates
       writer.write(s"<${coordinates.uri}> geo:lat ${coordinates.lat} ; geo:lon ${coordinates.lon} .")
       writer.newLine()
-      println(s"Wrote coordinates for ${address.street} in ${address.city}")
       // Wait 500ms to avoid overloading the geocooding API
       Thread.sleep(500)
     }
@@ -53,11 +67,12 @@ object Geocode {
     val resultSet = Dataset.query(
       """
         PREFIX ex: <http://geoknow.eu/wp5/ontology#>
-        SELECT ?actor ?street ?postalcode ?city WHERE {
+        SELECT ?actor ?street ?postalcode ?city ?country WHERE {
           ?actor a ex:Actor .
           ?actor ex:street ?street .
           ?actor ex:zipcode ?postalcode .
           ?actor ex:city ?city .
+          ?actor ex:country ?country .
         }
       """).toSeq
     println(s"Found ${resultSet.size} addresses.")
@@ -68,7 +83,8 @@ object Geocode {
         uri = result.getResource("actor").getURI,
         street = result.getLiteral("street").getString,
         city = result.getLiteral("city").getString,
-        postalcode = result.getLiteral("postalcode").getString
+        postalcode = result.getLiteral("postalcode").getString,
+        country = countryMap(result.getLiteral("country").getString)
       )
     }
   }
@@ -78,24 +94,36 @@ object Geocode {
    */
   private def retrievesCoordinates(address: Address): Option[Coordinates] = {
     // Generate query URI
+    def enc(str: String) = URLEncoder.encode(str, "utf8")
+
     val url = s"http://nominatim.openstreetmap.org/search?format=xml" +
-              s"&street=${address.street}&city=${address.city}"
+              s"&street=${enc(address.street)}&city=${enc(address.city)}&country=${enc(address.country)}"
 
     // Retrieve XML result
     val xml = XML.load(new URL(url))
 
-    // Warn if no coordinates have been found
-    if((xml \ "place").isEmpty) {
-      println(s"No coordinates found for ${address.street} in ${address.city}")
-    }
+    // Extract result node from XML
+    (xml \ "place").toList match {
+      // At least one result found
+      case placeNode :: _ => {
+        // Extract coordinates from first result
+        val name = (placeNode \ "@display_name").text
+        val lat = (placeNode \ "@lat").text.toDouble
+        val lon = (placeNode \ "@lon").text.toDouble
 
-    // Extract coordinates from result
-    for(placeNode <- (xml \ "place").headOption) yield {
-      Coordinates(
-        uri = address.uri,
-        lat = (placeNode \ "@lat").text.toDouble,
-        lon = (placeNode \ "@lon").text.toDouble
-      )
+        println(s"Found address for ${address.uri} in ${address.street}, ${address.city}, ${address.country}:")
+        println(s"$name ($lat, $lon)")
+        println()
+
+        Some(Coordinates(address.uri, lat, lon))
+      }
+      // No result found, i.e., no coordinates have been found
+      case Nil => {
+        println(s"No coordinates found for ${address.street} in ${address.city}")
+        println()
+
+        None
+      }
     }
   }
 
@@ -107,7 +135,7 @@ object Geocode {
    * @param city The city
    * @param postalcode The postal code
    */
-  private case class Address(uri: String, street: String, city: String,  postalcode: String)
+  private case class Address(uri: String, street: String, city: String,  postalcode: String, country: String)
 
   /**
    * Geographical coordinates.
