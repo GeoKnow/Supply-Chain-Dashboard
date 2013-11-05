@@ -1,12 +1,14 @@
 # Pages
-GET        /                    controllers.Application.index
-GET        /query               controllers.Application.query
-GET        /map                 controllers.Application.map
-GET        /delivery/:id        controllers.Application.delivery(id)
+GET        /                      controllers.Application.index
+GET        /query                 controllers.Application.query
+GET        /map                   controllers.Application.map
+GET        /address/:id           controllers.Application.address(id)
+GET        /delivery/:id          controllers.Application.delivery(id)
 
 # REST API
-GET        /sparql              controllers.API.sparql(query)
-GET        /map/deliveries      controllers.API.deliveries(sourceId: String)
+GET        /sparql                controllers.API.sparql(query)
+GET        /map/addresses         controllers.API.addresses()
+GET        /map/deliveries        controllers.API.deliveries(addressId: String)
 
 # Static resources
-GET        /assets/*file        controllers.Assets.at(path="/public", file)
+GET        /assets/*file          controllers.Assets.at(path="/public", file)

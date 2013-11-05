@@ -4,7 +4,7 @@ var arrowIcon = {
   path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
 };
 
-var lines = [];
+var deliveryLines = [];
 
 @for(delivery <- deliveries) {{
   //Draw line
@@ -20,15 +20,7 @@ var lines = [];
     }],
   });
 
-  // Open infobox on click
-  @*google.maps.event.addListener(line, 'click', function(event) {*@
-    @*infobox.close();*@
-    @*infobox.setOptions({*@
-      @*position: event.latLng,*@
-      @*content: "<a href='/delivery/@delivery.id'>@delivery.uri</a>",*@
-    @*});*@
-    @*infobox.open(map);*@
-  @*});*@
+  google.maps.event.addListener(line, 'click', function(event) { selectDelivery(@delivery.id) })
 
-  lines.push(line);
+  deliveryLines.push(line);
 }}

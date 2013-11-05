@@ -16,14 +16,16 @@ object Application extends Controller {
   }
 
   def map = Action {
-    val addresses = Dataset.addresses
+    Ok(views.html.map())
+  }
 
-    Ok(views.html.map(addresses))
+  def address(id: String) = Action {
+    val address = Dataset.addresses.find(_.id == id).get
+    Ok(views.html.addressView(address))
   }
 
   def delivery(id: String) = Action {
-    val delivery = Dataset.retrieveDelivery(id)
-
+    val delivery = Dataset.deliveries.find(_.id == id).get
     Ok(views.html.deliveryView(delivery))
   }
 
