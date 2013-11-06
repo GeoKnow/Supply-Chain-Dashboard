@@ -1,0 +1,45 @@
+html {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  background-color: lightgray;
+}
+
+#content {
+  height: 99%;
+  background-color: lightgray;
+  margin: 0;
+}
+
+#filter-widget {
+  height: 99%;
+  width: 25%;
+  margin: 5px;
+  padding: 5px;
+  float: left;
+  background-color: white;
+  border: 1px solid #cccccc;
+}
+
+#map-widget {
+  height: 99%;
+  width: 45%;
+  margin: 5px;
+  float: left;
+  background-color: white;
+  border: 1px solid #cccccc;
+}
+
+#property-widget {
+  height: 99%;
+  width: 24%;
+  margin: 5px;
+  padding: 5px;
+  float: left;
+  background-color: white;
+  border: 1px solid #cccccc;
+}
