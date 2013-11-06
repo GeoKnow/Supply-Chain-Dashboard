@@ -10,5 +10,8 @@ GET        /sparql                controllers.API.sparql(query)
 GET        /map/addresses         controllers.API.addresses()
 GET        /map/deliveries        controllers.API.deliveries(addressId: String)
 
+POST       /dataset/schnellecke   controllers.API.loadSchnelleckeDataset()
+POST       /dataset/sourcemap/:id controllers.API.loadSourceMapDataset(id: Int)
+
 # Static resources
 GET        /assets/*file          controllers.Assets.at(path="/public", file)

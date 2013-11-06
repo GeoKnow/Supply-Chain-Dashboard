@@ -64,7 +64,7 @@ object Geocode {
    */
   private def retrieveAddresses(): Seq[Address] = {
     // Query dataset
-    val resultSet = Dataset.query(
+    val resultSet = Dataset().query(
       """
         PREFIX ex: <http://geoknow.eu/wp5/ontology#>
         SELECT ?actor ?street ?postalcode ?city ?country WHERE {

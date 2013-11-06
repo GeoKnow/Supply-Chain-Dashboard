@@ -9,7 +9,7 @@ function initialize() {
   }
   map = new google.maps.Map(document.getElementById("map-widget"), mapOptions)
 
-  //Draw addresses
+  // Draw addresses
   showAddresses()
 }
 
@@ -18,16 +18,16 @@ function showAddresses() {
     // Remove existing address markers
     if (typeof addressMarkers !== 'undefined') {
       for (var i = 0; i < addressMarkers.length; i++) {
-        addressMarkers[i].setMap(null);
+        addressMarkers[i].setMap(null)
       }
-      addressMarkers = [];
+      addressMarkers = []
     }
     // Load new address markers
-    jQuery.globalEval(data);
+    jQuery.globalEval(data)
     // Add all address markers to the map
     for (var i = 0; i < addressMarkers.length; i++) {
       //google.maps.event.addListener(addressMarkers[i], 'click', function(event) { showDeliveries(address.id) })
-      addressMarkers[i].setMap(map);
+      addressMarkers[i].setMap(map)
     }
   })
 }
@@ -39,13 +39,13 @@ function showDeliveries(addressId) {
       for (var i = 0; i < deliveryLines.length; i++) {
         deliveryLines[i].setMap(null);
       }
-      deliveryLines = [];
+      deliveryLines = []
     }
     // Load new delivery lines
-    jQuery.globalEval(data);
+    jQuery.globalEval(data)
     // Add all lines to the map
     for (var i = 0; i < deliveryLines.length; i++) {
-      deliveryLines[i].setMap(map);
+      deliveryLines[i].setMap(map)
     }
   })
 }

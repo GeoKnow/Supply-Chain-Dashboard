@@ -20,12 +20,12 @@ object Application extends Controller {
   }
 
   def address(id: String) = Action {
-    val address = Dataset.addresses.find(_.id == id).get
+    val address = Dataset().addresses.find(_.id == id).get
     Ok(views.html.addressView(address))
   }
 
   def delivery(id: String) = Action {
-    val delivery = Dataset.deliveries.find(_.id == id).get
+    val delivery = Dataset().deliveries.find(_.id == id).get
     Ok(views.html.deliveryView(delivery))
   }
 
