@@ -32,14 +32,14 @@ class SourceMapDataset(id: Int) extends Dataset {
     val addressMap = addresses.groupBy(_.id).mapValues(_.head)
 
     val deliveries =
-      for(hop <- (result \ "supplychain" \ "hops").as[JsArray].value) yield {
+      for((hop, index) <- (result \ "supplychain" \ "hops").as[JsArray].value.zipWithIndex) yield {
         val senderId = (hop \ "from_stop_id").as[JsNumber].value.toString
         val receiverId = (hop \ "to_stop_id").as[JsNumber].value.toString
 
         val sender = addressMap(senderId)
         val receiver = addressMap(receiverId)
 
-        Delivery("", "", "", 0, "", sender, receiver)
+        Delivery(index.toString, "", "", 0, "", sender, receiver)
       }
 
     (addresses, deliveries)

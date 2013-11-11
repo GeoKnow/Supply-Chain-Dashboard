@@ -1,18 +1,23 @@
-<div class="tabs">
-<ul>
-<li><a href="#schnellecke">Schnellecke</a></li>
-<li><a href="#sourcemap">SourceMap</a></li>
-</ul>
-<div id="schnellecke">
-  <button onclick="$.post('/dataset/schnellecke', function(data) { window.location.reload() })" >
-  Load Schnellecke Dataset
-  </button>
-</div>
-<div id="sourcemap">
-  <button onclick="$.post('/dataset/sourcemap/6100', function(data) { window.location.reload() })" >
-  Load SourceMap Dataset
-  </button>
-</div>
+<div class="accordion">
+  <h3>Schnellecke</h3>
+  <div>
+    <button onclick="$.post('/dataset/schnellecke', function(data) { window.location.reload() })" >
+      Load Dataset
+    </button>
+  </div>
+  <h3>SourceMap</h3>
+  <div>
+    <p>
+    <select id="sourcemaps" >
+      <option value="6100">Modern Automobile Supply Chain</option>
+      <option value="6709">Ford Motor Company</option>
+      <option value="21">Germany's Top Importers</option>
+    </select>
+    </p>
+    <button onclick="$.post('/dataset/sourcemap/' + $('#sourcemaps' ).val(), function(data) { window.location.reload() })" >
+      Load Dataset
+    </button>
+  </div>
 </div>
 
 

@@ -65,13 +65,13 @@ function showDeliveries(addressId) {
 function selectAddress(addressId) {
   showDeliveries(addressId)
   $.get("/address/" + addressId, function(data) {
-    $('#property-widget' ).html(data)
+    $('#property-content' ).html(data)
   })
 }
 
 function selectDelivery(deliveryId) {
   $.get("/delivery/" + deliveryId, function(data) {
-    $('#property-widget' ).html(data)
+    $('#property-content' ).html(data)
   })
 }
 
