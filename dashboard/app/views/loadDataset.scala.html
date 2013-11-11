@@ -1,0 +1,22 @@
+<div class="tabs">
+<ul>
+<li><a href="#schnellecke">Schnellecke</a></li>
+<li><a href="#sourcemap">SourceMap</a></li>
+</ul>
+<div id="schnellecke">
+  <button onclick="$.post('/dataset/schnellecke', function(data) { window.location.reload() })" >
+  Load Schnellecke Dataset
+  </button>
+</div>
+<div id="sourcemap">
+  <button onclick="$.post('/dataset/sourcemap/6100', function(data) { window.location.reload() })" >
+  Load SourceMap Dataset
+  </button>
+</div>
+</div>
+
+
+
+
+
+

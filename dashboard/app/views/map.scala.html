@@ -8,15 +8,12 @@
 }
 
 @content = {
-  <div id="content">
-    <div id="filter-widget">
-      <button onclick="$.post('/dataset/schnellecke', function(data) { window.location.reload() })" >
-      Load Schnellecke Dataset
-      </button>
-      <button onclick="$.post('/dataset/sourcemap/6100', function(data) { window.location.reload() })" >
-      Load SourceMap Dataset
-      </button>
-
+  <div id="filter-pane" class="widget">
+    <div class="widget-header">
+      Dataset
+    </div>
+    <div class="widget-content">
+    @loadDataset()
       @*<fieldset>*@
         @*<legend>Delivery Filter</legend>*@
         @*<p><label>Address: <input type="text" name="addressId"></label></p>*@
@@ -30,11 +27,23 @@
         @*</p>*@
       @*</fieldset>*@
     </div>
-    <div id="map-widget" >
-      Could not load map!
+  </div>
+  <div id="map-pane" class="widget">
+    <div class="widget-header">
+      Map
     </div>
-    <div id="property-widget">
-      Select address for details.
+    <div class="widget-content">
+      <div id="map-content">
+        Could not load map!
+      </div>
+    </div>
+  </div>
+  <div id="property-pane" class="widget">
+    <div class="widget-header">
+      Details
+    </div>
+    <div class="widget-content">
+      Click on element on map for details.
     </div>
   </div>
 }
