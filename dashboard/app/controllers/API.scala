@@ -31,8 +31,15 @@ object API extends Controller {
     Ok(views.html.addresses(addresses))
   }
 
-  def deliveries(addressId: String) = Action {
-    val deliveries = Dataset().deliveries.filter(d => d.sender.id == addressId || d.receiver.id == addressId)
+  def deliveries(addressId: Option[String]) = Action {
+    // Retrieve deliveries
+    val deliveries = addressId match {
+      // Address provided => Only return deliveries that depart or arrive at the specified address
+      case Some(id) => Dataset().deliveries.filter(d => d.sender.id == id || d.receiver.id == id)
+      // No address provided => Return all deliveries
+      case None => Dataset().deliveries
+    }
+
     Ok(views.html.deliveries(deliveries))
   }
 

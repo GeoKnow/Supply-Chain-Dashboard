@@ -13,15 +13,19 @@ function initialize() {
   showAddresses()
 }
 
+function hideAddresses() {
+  if (typeof addressMarkers !== 'undefined') {
+    for (var i = 0; i < addressMarkers.length; i++) {
+      addressMarkers[i].setMap(null)
+    }
+    addressMarkers = []
+  }
+}
+
 function showAddresses() {
   $.get("/map/addresses", function(data) {
     // Remove existing address markers
-    if (typeof addressMarkers !== 'undefined') {
-      for (var i = 0; i < addressMarkers.length; i++) {
-        addressMarkers[i].setMap(null)
-      }
-      addressMarkers = []
-    }
+    hideAddresses()
     // Load new address markers
     jQuery.globalEval(data)
     // Add all address markers to the map
@@ -32,15 +36,23 @@ function showAddresses() {
   })
 }
 
-function showDeliveries(addressId) {
-  $.get("/map/deliveries?addressId=" + addressId, function(data) {
-    // Remove existing delivery lines
-    if (typeof deliveryLines !== 'undefined') {
-      for (var i = 0; i < deliveryLines.length; i++) {
-        deliveryLines[i].setMap(null);
-      }
-      deliveryLines = []
+function hideDeliveries() {
+  if (typeof deliveryLines !== 'undefined') {
+    for (var i = 0; i < deliveryLines.length; i++) {
+      deliveryLines[i].setMap(null);
     }
+    deliveryLines = []
+  }
+}
+
+function showDeliveries(addressId) {
+  var uri = "/map/deliveries"
+  if(addressId)
+    uri += "?addressId=" + addressId
+
+  $.get(uri, function(data) {
+    // Remove existing delivery lines
+    hideDeliveries()
     // Load new delivery lines
     jQuery.globalEval(data)
     // Add all lines to the map

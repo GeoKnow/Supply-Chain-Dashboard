@@ -18,31 +18,35 @@ body {
 
 .widget {
   position: relative;
-  margin: 5px;
-  background-color: white;
-  border: 1px solid #90C1E6;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .widget-header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5px;
   height: 20px;
-  font-size: 15px;
-  font-weight:bold;
-  border-bottom: 0;
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
-  background: #90C1E6;
+  font-size: 15px;
+  font-weight:bold;
+  background-color: #90C1E6;
 }
 
 .widget-content {
   position: absolute;
   left: 0;
   right: 0;
-  top: 30px;
-  bottom: 0;
+  top: 35px;
+  bottom: 5px;
   padding: 10px;
+  background-color: white;
+  border: 1px solid #90C1E6;
 }
 
 .ui-widget{
-  font-size:12px;
+  font-size: 12px;
 }

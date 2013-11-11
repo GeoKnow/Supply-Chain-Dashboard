@@ -8,24 +8,44 @@
 }
 
 @content = {
-  <div id="filter-pane" class="widget">
-    <div class="widget-header">
-      Dataset
+  <div id="filter-pane">
+    <div class="widget" style="height: 34%">
+      <div class="widget-header">
+        Dataset
+      </div>
+      <div class="widget-content">
+        @loadDataset()
+      </div>
     </div>
-    <div class="widget-content">
-    @loadDataset()
-      @*<fieldset>*@
-        @*<legend>Delivery Filter</legend>*@
-        @*<p><label>Address: <input type="text" name="addressId"></label></p>*@
-        @*<p>*@
-          @*<label for="senderOrReceiver">Sender or Receiver:</label>*@
-          @*<select id="unittype" name="unittype">*@
-            @*<option value="1">Sender</option>*@
-            @*<option value="2">Receiver</option>*@
-            @*<option value="2">Sender and Receiver</option>*@
-          @*</select>*@
-        @*</p>*@
-      @*</fieldset>*@
+    <div class="widget" style="height: 33%">
+      <div class="widget-header">
+        Addresses
+      </div>
+      <div class="widget-content">
+        <button onclick="showAddresses()">Show all</button>
+        <button onclick="hideAddresses()">Hide all</button>
+      </div>
+    </div>
+    <div class="widget" style="height: 33%">
+      <div class="widget-header">
+        Deliveries
+      </div>
+      <div class="widget-content">
+        <button onclick="showDeliveries()">Show all</button>
+        <button onclick="hideDeliveries()">Hide all</button>
+          @*<fieldset>*@
+            @*<legend>Delivery Filter</legend>*@
+            @*<p><label>Address: <input type="text" name="addressId"></label></p>*@
+            @*<p>*@
+              @*<label for="senderOrReceiver">Sender or Receiver:</label>*@
+              @*<select id="unittype" name="unittype">*@
+                @*<option value="1">Sender</option>*@
+                @*<option value="2">Receiver</option>*@
+                @*<option value="2">Sender and Receiver</option>*@
+              @*</select>*@
+            @*</p>*@
+          @*</fieldset>*@
+      </div>
     </div>
   </div>
   <div id="map-pane" class="widget">

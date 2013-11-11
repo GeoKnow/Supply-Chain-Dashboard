@@ -6,7 +6,12 @@ var arrowIcon = {
 
 var deliveryLines = [];
 
-@for(delivery <- deliveries) {{
+@* Don't load more than 100 deliveries at once. *@
+@if(deliveries.size > 100) {
+  alert("Only the first 100 of the requested @deliveries.size deliveries are shown.");
+}
+
+@for(delivery <- deliveries.take(100)) {{
   //Draw line
   var line = new google.maps.Polyline({
     path: [new google.maps.LatLng(@delivery.sender.latitude, @delivery.sender.longitude),
