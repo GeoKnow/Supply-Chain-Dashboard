@@ -1,15 +1,45 @@
 @()
 
 @main("Supply Chain Dashboard") { } {
+  <div class="widget" style="height: 100%">
+    <div class="widget-header">
+      Query
+    </div>
+    <div class="widget-content">
+      <form action="/sparql">
+        <textarea name="query" cols="80" rows="30">
+PREFIX sc: <http://geoknow.eu/wp5/ontology#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 
-  <form action="/sparql">
-    <textarea name="query" cols="50" rows="10">
-prefix ex: <http://geoknow.eu/wp5/ontology#>
-select * {
-  ?s ?p ?o
-} limit 10
-    </textarea>
-    <input type="submit" value="Submit">
-  </form>
+SELECT * WHERE {
+  ?delivery a sc:Message .
+  ?delivery sc:contentType ?content .
+  ?delivery sc:count ?count .
+  ?delivery sc:date ?date .
+  ?delivery sc:unloadingPoint ?unloadingPoint .
 
+  ?delivery sc:sender ?sender .
+  ?sender sc:name ?sname .
+  ?sender sc:street ?sstreet .
+  ?sender sc:zipcode ?szipcode .
+  ?sender sc:city ?scity .
+  ?sender sc:country ?scountry .
+  ?sender geo:lat ?slat .
+  ?sender geo:lon ?slon .
+
+  ?delivery sc:receiver ?receiver .
+  ?receiver sc:name ?rname .
+  ?receiver sc:street ?rstreet .
+  ?receiver sc:zipcode ?rzipcode .
+  ?receiver sc:city ?rcity .
+  ?receiver sc:country ?rcountry .
+  ?receiver geo:lat ?rlat .
+  ?receiver geo:lon ?rlon .
+} LIMIT 20
+        </textarea>
+        <br/>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
 }
