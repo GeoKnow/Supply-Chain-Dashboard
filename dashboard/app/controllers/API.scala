@@ -31,13 +31,16 @@ object API extends Controller {
     Ok(views.html.addresses(addresses))
   }
 
-  def deliveries(addressId: Option[String]) = Action {
+  def deliveries(addressId: Option[String], contentType: Option[String]) = Action {
     // Retrieve deliveries
     val deliveries = addressId match {
       // Address provided => Only return deliveries that depart or arrive at the specified address
       case Some(id) => Dataset().deliveries.filter(d => d.sender.id == id || d.receiver.id == id)
-      // No address provided => Return all deliveries
-      case None => Dataset().deliveries
+      // No address provided => Check if contentType is provided
+      case None => contentType match {
+        case Some(content) => Dataset().deliveries.filter(_.content == content)
+        case None => Dataset().deliveries
+      }
     }
 
     Ok(views.html.deliveries(deliveries))

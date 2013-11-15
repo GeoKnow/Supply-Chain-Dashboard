@@ -8,7 +8,7 @@ GET        /delivery/:id          controllers.Application.delivery(id)
 # REST API
 GET        /sparql                controllers.API.sparql(query)
 GET        /map/addresses         controllers.API.addresses()
-GET        /map/deliveries        controllers.API.deliveries(addressId: Option[String])
+GET        /map/deliveries        controllers.API.deliveries(addressId: Option[String], contentType: Option[String])
 
 POST       /dataset/schnellecke   controllers.API.loadSchnelleckeDataset()
 POST       /dataset/sourcemap/:id controllers.API.loadSourceMapDataset(id: Int)

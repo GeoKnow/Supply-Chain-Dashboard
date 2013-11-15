@@ -45,10 +45,12 @@ function hideDeliveries() {
   }
 }
 
-function showDeliveries(addressId) {
+function showDeliveries(addressId, contentType) {
   var uri = "/map/deliveries"
   if(addressId)
     uri += "?addressId=" + addressId
+  if(contentType && contentType != "all")
+    uri += "?contentType=" + contentType
 
   $.get(uri, function(data) {
     // Remove existing delivery lines

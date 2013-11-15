@@ -33,18 +33,15 @@
       <div class="widget-content">
         <button onclick="showDeliveries()">Show all</button>
         <button onclick="hideDeliveries()">Hide all</button>
-          @*<fieldset>*@
-            @*<legend>Delivery Filter</legend>*@
-            @*<p><label>Address: <input type="text" name="addressId"></label></p>*@
-            @*<p>*@
-              @*<label for="senderOrReceiver">Sender or Receiver:</label>*@
-              @*<select id="unittype" name="unittype">*@
-                @*<option value="1">Sender</option>*@
-                @*<option value="2">Receiver</option>*@
-                @*<option value="2">Sender and Receiver</option>*@
-              @*</select>*@
-            @*</p>*@
-          @*</fieldset>*@
+        <p>
+          Content Types:
+          <select id="contentFilter" onchange="showDeliveries(null, $(this).val())">
+            <option value="all" selected="selected">all</option>
+            @for((content, count) <- Dataset().contentTypes.take(20)) {
+              <option value="@content">@content (@count)</option>
+            }
+          </select>
+        </p>
       </div>
     </div>
   </div>
