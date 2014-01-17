@@ -1,0 +1,470 @@
+;POS|Satzart|KM|LG|AN|V|B|Pruefung|Beschreibung
+
+4905 Lieferabruf
+[511]
+01|Satzart|M|3|N|1|3|fix(511)|Konstant "511" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 02 Kennzeichnung der Aktualität einer Satzart. Wird je Satzart lückenlosaufsteigend geführt und nach jeder vom VDA-AKVD "Vordruckwesen/Datenaustausch" beschlossenen Änderung einer Satzart jeweils um 1erhöht.
+03|Kunden-Nummer|M|9|A|6|14|db()|Ident-Nummer, die der Lieferant einem Kunden zuteilt. Alle Dateneiner Satzstruktur, die das Feld Kunden-Nr. enthält, unterliegen dem Datenschutz. Linksbündiger Eintrag.
+04|Lieferanten-Nummer|M|9|A|15|23|db()|Ident-Nummer, die der Kunde einem Lieferanten (Vertragsnehmer)zuordnet. Alle Daten einer Struktur,die das Feld Lieferanten-Nr.enthält, unterliegen dem Datenschutz. Linksbündiger Eintrag.
+05|Übertragungs-Nummer-Alt|M|5|N|24|28|db()|Beschreibung siehe Übertragungs- Nummer Neu. Bei der ersten Übertragung ist die Übertragungsnummer-Alt = 00000.Rechtsbündig mit führenden Nulleneintragen.
+06|Übertragungs-Nummer-Neu|M|5|N|29|33|db()|Der Datenersteller vergibt innerhalb einer Anwendung (z.B. Lieferabruf-DFÜ, Rechnungs-DFÜ usw.) für jeden DFÜ-Erstellungslauf eine Übertragungs-Nummer (NEU). Der Wert'00000' darf nicht verwendet werden.Datenersteller und Empfängerbewahren diese Nummer bis zur nächsten Übertragung derselben Anwendung auf. Da der Datenersteller jeweils zu der neuen Übertragungs-Nummer auch die des vorausgegangenenDFÜ-Erstellungslaufes innerhalbdieser Anwendung angibt, kann derEmpfänger die Vollständigkeit derDFÜ-Bestände je Anwendungkontrollieren. Daher ist keine lückenlose und aufsteigende Nummernfolge erforderlich.Rechtsbündig eintragen, mit führenden Nullen.Beispiele für Eintragungen in den beiden Übertragungs-Nummern:Vorgang Nummer Nummer'Alt' 'Neu'Start: 00000 00001Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30Beschreibung der SegmentePrinted by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 2Kennung Datenelement-Name St Forma Datenelement-Beschreibung oder 00000 00017Routine: 00019 00020oder 88051 88061Überlauf: 99999 00001oder 89361 00011
+07|Übertragungs-Datum|M|6|N|34|39|db()|Format: JJMMTT 
+08|Datum-Nullstellung-Eingangsfortschrittszahl|K|6|N|40|45|db()|Format: JJMMTT 
+09|Leer|M|83|A|46|128|fix()|Mit BLANKS gefüllt. 
+
+[512]
+01|Satzart|M|3|N|1|3|fix(512)|Konstant "512" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 01 Kennzeichnung der Aktualität einer Satzart. Wird je Satzart lückenlosaufsteigend geführt und nach jeder vom VDA-AKVD "Vordruckwesen/Datenaustausch" beschlossenen Änderung einer Satzart jeweils um 1erhöht.
+03|Werk-Kunde|M|3|A|6|8|db()|Werk des Kunden, an das geliefert werden soll. Verschlüsselte Form des Kunden, siehe Codeliste 01.Linksbündiger Eintrag.Maximal 3stelliger alphanumerischer Schlüssel muß mit dem Datenersteller abgestimmt werden.
+04|Lieferabruf-Nummer-neu|M|9|N|9|17|db()|Der Kunde vergibt für jeden Lauf zur Aufbereitung von Lieferabrufdaten eine Lieferabrufnummer. Kunde und Lieferant bewahren diese Nummer biszur nächsten Verarbeitung von Lieferabrufdaten auf. Da der Kunde jeweils zu der neuen Lieferabrufnummer auch die der vorausgegangenen Verarbeitung angibt, kann der Lieferant die Vollständigkeit der Lieferabrufdaten je Sachnummer kontrollieren.Linksbündiger Eintrag.
+05|Lieferabruf-Datum-neu|M|6|N|18|23|db()|In Verbindung mit Pos. 04.Format:JJMMTT 
+06|Lieferabruf-Nummer-alt|M|9|N|24|32|db()|Siehe Lieferabruf-Nummer neu,linksbündiger Eintrag. 
+07|Lieferabruf-Datum-alt|M|6|N|33|38|db()|In Verbindung mit Pos. 06. Format:JJMMTT
+08|Sach-Nummer-Kunde|M|22|A|39|60|db()|Identnummer, die der Kunde einem Artikel, einem Packmittel oder einersonstigen Leistung zuordnet.Linksbündiger Eintrag in Druckform.
+09|Sach-Nummer-Lieferant|K|22|A|61|82|db()|Identnummer, die der Lieferant einem Artikel, einem Packmittel oder einer sonstigen Leistung zuordnet.Linksbündiger Eintrag in Druckform.
+10|Abschluß-/Bestell-Nummer|K|12|A|83|94|db()|Identnummer, die der Kunde einer Bestellung bzw. einem Rahmenabschluß zuteilt. Linksbündiger Eintrag in Druckform. 
+11|Abladestelle|M|5|A|95|99|db()|Die Abladestelle bezeichnet die Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30 Beschreibung der Segmente Printed by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 4 Kennung Datenelement-Name St Forma Datenelement-Beschreibung Stelle im Werk-Kunde, an der die Ware abgeladen werden soll. Verschlüsselte Form des Kunden. Linksbündiger Eintrag. 
+12|Zeichen-des-Kunden|M|4|A|100|103|db()|Linksbündiger Eintrag. Nicht definierte Sektion 
+13|Mengeneinheit|M|2|A|104|105|key(mengeneinheit)|Verschlüsselte Form, siehe Codeliste 02. 
+14|Anlieferungs-Intervall|M|1|A|106|106|db()|Verschlüsselte Form, siehe Codeliste 03. 
+15|Fertigungsfreigabe|K|1|N|107|107|db()|Anzahl Monate einschließlich Stichtags-Monat 
+16|Materialfreigabe|K|1|N|108|108|db()|Anzahl Monate einschließlich Stichtags-Monat 
+17|Verwendungsschlüssel|M|1|A|109|109|key(vwend)|Verschlüsselte Form, siehe Codeliste 04. 
+18|Kontierungsschlüssel|K|7|A|110|116|db()|Auch Zusatzdaten des Kunden, aus Feld (15) des DIN-Vordrucks 4991-94. Linksbündiger Eintrag. 
+19|Lager|K|7|A|117|123|db()|Lagerort Kunde, ergänzend zur Abladestelle. Linksbündiger Eintrag. 
+20|Leer|M|5|A|124|128|fix()|Mit BLANKS gefüllt. Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30 Beschreibung der Segmente Printed by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 5 Strukturbeschreibung für Satzart 513 Version 01 Abgrenzungs- und Abrufdaten 1-mal pro Teilnummer und Werk Kennung Datenelement-Name St Forma Datenelement-Beschreibung  
+
+[513]
+01|Satzart|M|3|N|1|3|fix(513)|Konstant "513" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 01 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzart gesondert lückenlos aufsteigend geführt und nach jeder vom VDA-AKVD beschlossenen Änderung jeweils um 1 erhöht. Zulässig: 01-99. 
+03|Erfassungs-Datum-letzter-Eingang|M|6|N|6|11|db()|Der Kunde hat bis zu diesem Datum eingegangene Lieferungen verbucht und in seiner Disposition berücksichtigt. Format: JJMMTT  
+04|Lieferschein-Nummer-letzter-Eingang|M|8|N|12|19|db()|Lieferscheinnummer der letzten beim Kunden verbuchten Lieferung, rechtsbündiger Eintrag mit führenden Nullen. 
+05|Lieferschein-Datum-letzter-Eingang|M|6|N|20|25|db()|Versanddatum der letzten beim Kunden verbuchten Lieferung. Format: JJMMTT 
+06|Menge-letzter-Eingang|M|12|N|26|37|db()|Menge der letzten beim Kunden verbuchten Lieferung, rechtsbündiger Eintrag, mit führenden Nullen. 3 Dezimalstellen, ggf. gleitendes Minuszeichen.  
+07|Eingangs-Fortschrittszahl|M|10|N|38|47|db()|Fortschrittszahl, die alle vom Kunden positiv bzw. negativ verbuchten Lieferungen ab einem bestimmten Zeitpunkt (z.B. ab 1.1. des Jahres) bis zum Stichtag der aktuellen Lieferabrufberechnung beinhaltet. Mit führenden Nullen, keine Dezimalstellen, ggf.gleitendes Minuszeichen.
+08|Abrufdatum-1|M|6|N|48|53|db()|Abruftermine können als Tages-/ Wochen- bzw. Monatstermine angegeben werden. Dieses Feld enthält verschiedene zusätzliche Darstellungsformen.Erklärungen siehe Codeliste 05.
+09|Abrufmenge-1|M|9|N|54|62|db()|Enthält die Abruf-Menge 1. Alle Abruf-Mengen rechtsbündiger Eintrag mit führenden Nullen. Keine Dezimalstelle.
+10|Abrufdatum-2|K|6|N|63|68|db()|siehe Abrufdatum 1 
+11|Abrufmenge-2|K|9|N|69|77|db()|siehe Abrufmenge 1 Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30 Beschreibung der Segmente Printed by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 6 Kennung Datenelement-Name St Forma Datenelement-Beschreibung  
+12|Abrufdatum-3|K|6|N|78|83|db()|siehe Abrufdatum 1 
+13|Abrufmenge-3|K|9|N|84|92|db()|siehe Abrufmenge 1 
+14|Abrufdatum-4|K|6|N|93|98|db()|siehe Abrufdatum 1 
+15|Abrufmenge-4|K|9|N|99|107|db()|siehe Abrufmenge 1 
+16|Abrufdatum-5|K|6|N|108|113|db()|siehe Abrufdatum 1 
+17|Abrufmenge-5|K|9|N|114|122|db()|siehe Abrufmenge 1 
+18|Leer|M|6|A|123|128|fix()|Mit BLANKS gefüllt. Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30 Beschreibung der Segmente Printed by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 7 Strukturbeschreibung für Satzart 514 Version 01 Weitere Abrufdaten x-mal pro Teilnummer und Werk Kennung Datenelement-Name St Forma Datenelement-Beschreibung 
+
+[514]
+01|Satzart|M|3|N|1|3|fix(514)|Konstant "514" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 01 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzart gesondert lückenlos aufsteigend geführt und nach jeder vom VDA-AKVD beschlossenen Änderung jeweils um 1 erhöht. Zulässig: 01-99. 
+03|Abrufdatum-6|M|6|N|6|11|db()|siehe Abrufdatum 1, SA 513 
+04|Abrufmenge-6|M|9|N|12|20|db()|siehe Abrufmenge 1, SA 513 
+05|Abrufdatum-7|K|6|N|21|26|db()|siehe Abrufdatum 1, SA 513 
+06|Abrufmenge-7|K|9|N|27|35|db()|siehe Abrufmenge 1, SA 513  
+07|Abrufdatum-8|K|6|N|36|41|db()|siehe Abrufdatum 1, SA 513 
+08|Abrufmenge-8|K|9|N|42|50|db()|siehe Abrufmenge 1, SA 513 
+09|Abrufdatum-9|K|6|N|51|56|db()|siehe Abrufdatum 1, SA 513 
+10|Abrufmenge-9|K|9|N|57|65|db()|siehe Abrufmenge 1, SA 513 
+11|Abrufdatum-10|K|6|N|66|71|db()|siehe Abrufdatum 1, SA 513 
+12|Abrufmenge-10|K|9|N|72|80|db()|siehe Abrufmenge 1, SA 513 
+13|Abrufdatum-11|K|6|N|81|86|db()|siehe Abrufdatum 1, SA 513 
+14|Abrufmenge-11|K|9|N|87|95|db()|siehe Abrufmenge 1, SA 513 
+15|Abrufdatum-12|K|6|N|96|101|db()|siehe Abrufdatum 1, SA 513 
+16|Abrufmenge-12|K|9|N|102|110|db()|siehe Abrufmenge 1, SA 513 
+17|Abrufdatum-13|K|6|N|111|116|db()|siehe Abrufdatum 1, SA 513 
+18|Abrufmenge-13|K|9|N|117|125|db()|siehe Abrufmenge 1, SA 513 
+19|Leer|M|3|A|126|128|fix()|Mit BLANKS gefüllt. Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30 Beschreibung der Segmente Printed by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 8 Strukturbeschreibung für Satzart 515 Version 02 Ford US Daten im Lieferabruf (nur für LABs aus USA, Kanada, Mexiko) 1-mal pro Teilnummer und Werk Kennung Datenelement-Name St Forma Datenelement-Beschreibung 
+
+[515]
+01|Satzart|M|3|N|1|3|fix(515)|Konstant "515" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 02 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzart gesondert lückenlos aufsteigend geführt und nach jeder vom VDA-AKVD beschlossenen Änderung jeweils um 1 erhöht. Zulässig: 01-99 
+03|Fertigungsfreigabe,Anfangs-Datum|M|6|N|6|11|db()|Format:JJMMTT 
+04|Fertigungsfreigabe,End-Datum|M|6|N|12|17|db()|Format: JJMMTT 
+05|Fertigungsfreigabe,Kum.-Bedarf|M|10|N|18|27|db()|Fortschrittszahl der Fertigungsfreigabe, die am Enddatum (Pos. 04) erreicht wird. 
+06|Materialfreigabe,Anfangs-Datum|M|6|N|28|33|db()|Format: JJMMTT 
+07|Materialfreigabe,End-Datum|M|6|N|34|39|db()|Format:JJMMTT 
+08|Materialfreigabe,Kum.-Bedarf|M|10|N|40|49|db()|Fortschrittszahl der Materialfreigabe, die am Enddatum (Pos. 07) erreicht wird. 
+09|FPSD-Sachnummer|K|22|A|50|71|db()|Sachnummer des amerikanischen Ersatzteilwesens, Linksbündig 
+10|Zwischenlieferant|K|9|A|72|80|db()|Bei Lieferungen an das amerikanische Ersatzteilwesen über einen Zwischenlieferanten, Linksbündig 
+11|Datum-Planungshorizont|M|6|N|81|86|db()|Enddatum des Planungshorizonts 
+12|Verbrauchsstelle|K|14|A|87|100|db()|Verbrauchsstelle 
+13|Zur-Nullstellung-erreichte-Fz|K|10|N|101|110|db()|Letzte beim "Datum zur Nullstellung" (Satzart 511) erreichte Eingangsfortschrittszahl. 
+14|Leer|M|42|A|111|152|fix()|Mit BLANKS gefüllt. 
+
+[517]
+01|Satzart|M|3|N|1|3|fix(517)|Konstant "517"  
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 01 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzart gesondert lückenlosaufsteigend geführt und nach jeder vom VDA- AKVD beschlossenen Änderung jeweils um 1 erhöht.Zulässig: 01-99.
+03|Sachnummer-Kunde-für-Packmittel|M|22|A|6|27|db()|Identnummer, die der Kunde einem Packmittel zuordnet, linksbündiger Eintrag mit führenden Nullen für Packmitteltyp.
+04|Sachnummer-Lieferant-für-Packmittel|K|22|A|28|49|db()|Identnummer, die der Lieferant einem Packmittel zuordnet, linksbündiger Eintrag mit führenden Nullen für Packmitteltyp.
+05|Fassungsvermögen|M|7|N|50|56|db()|Dem Packmittel für die Sachnummer zugeordnete, rechnerische Füllmenge,rechtsbündiger Eintrag mit führenden Nullen, keine Dezimalstelle.
+06|Leer|M|72|A|57|128|fix()|Mit BLANKS gefüllt. Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30Beschreibung der Segmente Printed by EDIFIX © GEFEG mbH Berlin Druck 2002-08-20 10Strukturbeschreibung für Satzart 518 Version 01Lieferabruftext x-mal pro Teilnummer und Werk Kennung Datenelement-Name St Forma Datenelement-Beschreibung
+
+[518]
+01|Satzart|M|3|N|1|3|fix(518)|Konstant "518" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 01 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzart gesondert lückenlosaufsteigend geführt und nach jeder vom VDA- AKVD beschlossenen Änderung jeweils um 1 erhöht.Zulässig: 01-99.
+03|Lieferabruf-Text-1|M|40|A|6|45|db()|Linksbündiger Eintrag 
+04|Lieferabruf-Text-2|K|40|A|46|85|db()|Linksbündiger Eintrag 
+05|Lieferabruf-Text-3|K|40|A|86|125|db()|Linksbündiger Eintrag  
+06|Leer|M|3|A|126|128|fix()|Mit BLANKS gefüllt. Empfehlung VDA 4905 Ausgabe 4 vom 1996-04-30Beschreibung der SegmentePrinted by EDIFIX © GEFEG mbH Berlin Druck 2003-10-24 11Strukturbeschreibung für Satzart 519 Version 03Nachsatz Lieferabrufdaten1x pro DFÜ Kennung Datenelement-Name St Format Datenelement-Beschreibung
+
+[519]
+01|Satzart|M|3|N|1|3|fix(519)|Konstant "519" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03, Änderung 19.6.1996 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzart gesondert lückenlos aufsteigendgeführt und nach jeder vom VDA- AKVD beschlossenen Änderung jeweils um 1erhöht.Zulässig: 01-99
+03|Zähler-Satzart-511|M|7|N|6|12|db()|Anzahl der übertragenen Sätze der Satzart 511. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+04|Zähler-Satzart-512|M|7|N|13|19|db()|Anzahl der übertragenen Sätze der Satzart 512. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+05|Zähler-Satzart-513|M|7|N|20|26|db()|Anzahl der übertragenen Sätze der Satzart 513. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+06|Zähler-Satzart-514|M|7|N|27|33|db()|Anzahl der übertragenen Sätze der Satzart 514. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+07|Zähler-Satzart-517|M|7|N|34|40|db()|Anzahl der übertragenen Sätze der Satzart 517. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+08|Zähler-Satzart-518|M|7|N|41|47|db()|Anzahl der übertragenen Sätze der Satzart 518. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+09|Zähler-Satzart-519|M|7|N|48|54|db()|Anzahl der übertragenen Sätze der Satzart 519. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+10|Zähler-Satzart-515|M|7|N|55|61|db()|Anzahl der übertragenen Sätze der# Satzart 515. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+11|Leer|M|7|A|62|68|fix()|Mit BLANKS gefüllt. 
+
+
+4913 Lieferschein
+[711]
+01|Satzart|M|3|N|1|3|fix(711)|Konstant "711", muß einmal je DFÜ-Laufvorhanden sein, sonst erfolgt keine Verarbeitung. 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03 Kennzeichnung der Aktualität einer Satzart. Wird je Satzart lückenlos aufsteigend geführt und nach jeder vom VDA-Arbeitskreis "Vordruckwesen/Datenaustausch" beschlossenen Änderung einer Satzart jeweils um 1 erhöht. 
+03|Daten-Empfänger-Nummer|M|9|A|6|14|db()|Identnummer, die der Daten-Sender mit dem Daten-Empfänger vereinbart. 
+04|Daten-Sender-Nummer|M|9|A|15|23|db()|Identnummer, die der Daten-Empfänger mit dem Daten-Sender vereinbart. 
+05|Übertragungs-Nummer-Alt|M|5|N|24|28|db()|Beschreibung siehe Übertragungs-Nummer-Neu. Bei der ersten Übertragung ist Übertragungs-Nummer-Alt = 00000. Rechtsbündiger Eintrag mit führenden Nullen.  
+06|Übertragungs-Nummer-Neu|M|5|N|29|33|db()|Der Datenersteller vergibt innerhalb einer Anwendung (z.B. Lieferabruf-DFÜ, Rechnungs-DFÜ usw.) für jeden DFÜ-Erstellungslauf eine Übertragungs- Nummer (neu). Der Wert "00000" darf nicht verwendet werden. Datenersteller und Empfänger bewahren diese Nummer bis zur nächsten Übertragung derselben Anwendung auf. Da der Datenersteller jeweils zu der neuen Übertragungs-Nummer auch die des vorausgegangenen DFÜ-Erstellungslaufes innerhalb dieser Anwendung angibt (als Nummer-Alt), kann der Empfänger die Vollständigkeit der DFÜ-Bestände je Anwendung kontrollieren. Daher ist keine lückenlos aufsteigende Nummernfolge erforderlich. Rechtsbündiger Eintrag mit führenden Nullen.  
+07|Übertragungs-datum|M|6|N|34|39|db()|Rechtsbündiger Eintrag mit führenden Nullen. Keine Dezimalstelle. Form: JJMMTT 
+08|Unter-Lieferanten-Nummer|K|9|A|40|48|db()|Identnummer, die der Kunde dem Unterlieferanten zuteilt. 
+09|Frachtführer-Nummer|K|9|A|49|57|db()|Speditionsdaten-Empfänger-Nummer der Nachricht VDA 4920. Wenn zutreffend,wird der Inhalt in der Regel gleich sein wie der Feldinhalt in der Satzart 712, Pos.13. 
+10|Lagerhalter-Schlüssel|K|1|A|58|58|db()|Verschlüsselte Form: Blank = DFÜ erstellt durch Lieferant 1 = DFÜ erstellt durch EDL S = DFÜ erstellt durch Spedition  
+11|Lieferungs-Kennung|K|1|A|59|59|db()|Verwendung ist bilateral zu vereinbaren. Verschlüsselte Form: Blank = Standard J = JIT-Lieferung E = Expreß-Lieferung  
+12|Leer|M|69|A|60|128|fix()|Mit BLANKS gefüllt.  
+
+[712]
+01|Satzart|M|3|N|1|3|fix(712)|Konstant "712" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03 
+03|Sendungs-Ladungs-Bezugs-Nummer|M|8|N|6|13|db()|Bezugs-Nummer, die der Versender der Sendung/Ladung zuteilt; rechtsbündiger Eintrag mit führenden Nullen. Wiederholung der Nummer ist innerhalb eines Jahres nicht erlaubt.Bei der Vergabe sind nachfolgend beschriebene Restriktionen zu beachten.Aufbau der Bezugs-Nummer bei Speditionsaufträgen pro Abladestelle: Werden bei einer Verladung mehrere Speditionsaufträge erstellt (jede Abladestelle bekommt einen getrennten Speditionsauftrag), ist der Aufbau wie folgt:Stellen 1 bis 6 muß auf allen Speditionsauf-trägen pro Verladung identisch sein. Stellen 7 bis 8 für die Zählnummer pro ausgestelltem Speditionsauftrag einer Verladung. Beispiel für 1 Verladung mit 3 Speditionsaufträgen: 1. Auftr. f. Abladestelle 361: SLB-NR 12345601 2. Auftrag 460: SLB-NR 12345602 3. Auftrag 910: SLB-NR 12345603 Eintrag der Nr. auf den Transport-Begleitpap.: ğ Speditionsauftr. VDA4922/DIN 5018 im Feld 8 ğ Standard-Bahnfrachtbrief im Feld 13A. 
+04|Werk-Lieferant|K|3|A|14|16|db()|Werk des Lieferanten, von dem geliefert wird. Verschlüsselte Form des Lieferanten. 
+05|Frachtführer|M|14|A|17|30|db()|Name und/oder Nummer des Beteiligten, der den Transport durchführt, ähnlich TDED 3126. 
+06|Frachtführer-Übergabedatum|M|6|N|31|36|db()|Datum der Übergabe der Sendung an den Frachtführer / Spediteur. Form: JJMMTT 
+07|Frachtführer-Übergabezeit|M|4|N|37|40|db()|Uhrzeit der Übergabe der Sendung an den Frachtführer / Spediteur. Form: HHMM  
+08|Sendungs-Gewicht-Brutto|M|7|N|41|47|db()|Warengewicht einschließlich Verpackung und/oder Ladehilfsmittel, aber ausschließlich der Behältnisse des Frachtführers (Angabe aus Frachtbrief), ähnlich TDED 6292; Mengeneinheit = kg, rechtsbündiger Eintrag mit führenden Nullen, keine Dezimalstelle. Der Feldinhalt muß mit dem angegebenen Gewicht aus dem Frachtbrief übereinstimmen. 
+09|Sendungs-Gewicht-Netto|K|7|N|48|54|db()|Warengewicht einschließlich Verpackung ohne Ladehilfsmittel und die Behältnisse des Frachtführers, ähnlich TDED 6110; Mengeneinheit = kg, rechtsbündiger Eintrag mit führenden Nullen, keine Dezimalstelle.  
+10|Frankatur-Schlüssel|K|2|N|55|56|db()|Gibt an, wer in welchem Umfang Frachtkosten zu tragen hat. Verschlüsselte Form, siehe Anlage 10, Pos. 01. 
+11|Spediteur-DFÜ-Schlüssel|K|1|A|57|57|db()|Verschlüsselte Form, 1 = Transport-DFÜ nach VDA 4920 an Spediteur erfolgt. In diesem Fall muß Frachtführer-Nummer (Satzart 711, Pos. 09) ausgefüllt sein. 
+12|Anzahl-Packstücke|K|4|N|58|61|db()|Summe aller in der Sendung enthaltenen Packstücke, die gehändelt werden. Beispiel: 1 Ladeeinheit = 1 Packstück Rechtsbündiger Eintrag mit führenden Nullen, keine Dezimalstelle. 
+13|Transport-Partner-Nummer|K|14|A|62|75|db()|Identnummer (max. 9 stellig) des beauftragten Spediteurs/privaten Paketdienstes, der vom Kunden vorgegeben wird. Wenn kein vom Kunden vorgeschriebener Transportunternehmer den Transport besorgt, wird hier der Name eingetragen. 
+14|Transportmittel-Schlüssel|M|2|N|76|77|key(transportmittelkey)|Verschlüsselte Form, siehe Anlage 10, Pos. 02 
+15|Transportmittel-Nummer|M|25|A|78|102|db()|Angabe der näheren Bezeichnung oder Nummer für das im voranstehenden Feld genannte Transportmittel bzw. Bordero-Nummer. Wird der Transportmittel-Schlüssel 01 KFZKENNZEICHEN verwendet, dann muß das polizeiliche Kennzeichen von der Zugmaschine und/oder Anhänger / Sattelauflieger oder die Wechselbrücken-Nummer angegeben werden. Mehrere Kennzeichen werden durch 1 Blank getrennt. Wird der T-Schlüssel 02 für die BORDERONUMMER verwendet, kann das KFZ-Kennzeichen im Feld 17 (Kennung in Feld 16 ist dann = 2) eingetragen werden. 
+16|Schlüssel-zu-Pos.-17|K|1|A|103|103|db()|Verschlüsselte Form: 1 = Im Feld 17 wird die Postleitzahl (der Straßenanschrift) des Versandwerkes zur Frachtenermittlung eingetragen. 2 = Im Feld 17 wird das amtl. Kennzeichen des Transport-Fahrzeugs (Zugmaschine) eingetragen. Der Eintrag ist nur zulässig, wenn im Feld 14 der Wert 02 (für BORDERO-Nummer) eingetragen ist. 
+17|Inhalt-gem.Schlüssel-in-Pos.16|K|8|A|104|111|db()|s. Beschreibung Feld 16.  
+18|Eintreffdatum-Soll|K|6|N|112|117|db()|Vom Kunden vorgegebenes Datum, an dem die Sendung bei ihm eintreffen soll. Form: JJMMTT 
+19|Eintreffzeit-Soll|K|4|N|118|121|db()|Vom Kunden vorgegebene Zeit, zu der die Sendung bei ihm eintreffen soll. Form: HHMM 
+20|Lademeter|K|3|N|122|124|db()|Angabe der belegten Meter der Ladefläche, 1 Dezimalstelle. 
+21|LKW-Art-Schlüssel|K|1|N|125|125|key(lkw-art-schlüssel)|Verschlüsselte Form, siehe Anlage 10, Pos. 10. 
+22|Leer|M|3|A|126|128|fix()|Mit BLANKS gefüllt. 
+
+[713]
+01|Satzart|M|3|N|1|3|fix(713)|Konstant "713" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03 
+03|Lieferschein-Nummer|M|8|N|6|13|key(vorgangsschlüssel)|Identnummer, die der Lieferant einem Lieferschein zuteilt, rechtsbündiger Eintrag mit führenden Nullen. Darf sich innerhalb eines Jahres nicht wiederholen. EDL-Anwendung:
+04|Versanddatum|M|6|N|14|19|db()|Form: JJMMTT EDL-Anwendung:Jeweils das Datum des betreffenden Vorgangs (Abgangs-, Eingangs- oder Bestandsdatum). 
+05|Abladestelle|M|5|A|20|24|db()|Bezeichnet die Stelle im Werk Kunde, an der die Ware abgeladen werden soll. Verschlüsselte Form des Kunden. 
+06|Versandart|M|2|N|25|26|key(Versandart)|Verschlüsselte Form, siehe Anlage 10, Pos. 03. 
+07|Zeichen-des-Kunden(LAB)|K|4|A|27|30|db()|Aus Lieferabruf. 
+08|Abschluß/Bestellnummer|K|12|A|31|42|db()|Ident Nummer, die der Kunde einem Rahmenabschluß bzw. einer Bestellung zuteilt. Mußfeld, wenn in Liefer-abruf bzw. Feinabruf übermittelt. 
+09|Vorgangs-Schlüssel|K|2|N|43|44|key(va)|Nur bei EDL-Anwendung Verschlüsselte Form, siehe Anlage 10, Pos. 09.  
+10|Leer-1|M|4|A|45|48|db()|Mit BLANKS gefüllt. 
+11|Werk-Kunde|M|3|A|49|51|db()|Werk des Kunden, an das geliefert werden soll. Verschlüsselte Form des Kunden. 
+12|Konsignation|K|8|N|52|59|db()|Referenz-Angabe der Konsignations-Lieferschein-Nummer des Kunden. Rechtsbündiger Eintrag mit führenden Nullen. 
+13|Waren-Empfänger-Nummer|K|9|A|60|68|db()|Ident-Nummer, die der Kunde einem Warenempfänger zuteilt, dessen Versandanschrift von der des Kunden abweicht.Bei EDL-Abwicklung: siehe Beschreibung unter 3.6 
+14|Leer-2|M|1|A|69|69|db()|Mit BLANK gefüllt. 5 Lagerort Kunde K 7 A 70-76 Kann vom Kunden individuell festgelegt werden; linksbündiger Eintrag. 
+15|Lagerort Kunde|K|7|A|70|76|db()|Kann nom Kunden individuell festgelegt werden; linksbündiger Eintrag. 
+16|Lieferanten-Nummer|M|9|A|77|85|db()|Nur bei EDL-Anwendung. Identnummer, die der Kunde einem Lieferanten zuordnet; linksbündiger Eintrag. 
+17|Verbrauchsstelle|K|14|A|86|99|db()|Bezeichnet die Stelle im Werk des Kunden, an der die Ware verbraucht wird; alphanumerisch ohne Zwischen-Blanks; linksbündiger Eintrag. 
+18|Abruf-Nr.|K|4|A|100|103|db()|Nummer des Abrufes bei Einzelbestellungen; linksbündiger Eintrag.  
+19|Zeichen-des-Kunden|K|6|A|104|109|db()|Angabe aus der Einzelbestellung. 
+20|Dokument-Nr.Kunde|K|14|A|110|123|db()|Dokument-Nummer, die vom Kunden für diese Lieferung vergeben wird. Korrespondiert mit der Lieferschein-Nummer des Lieferanten. 
+21|Leer-3|M|5|A|124|128|db()|Mit BLANKS gefüllt. 
+
+[714]
+01|Satzart|M|3|N|1|3|fix(714)|Konstant "714" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03 
+03|Sachnummer-Kunde|M|22|A|6|27|db()|Ident-Nummer, die der Kunde einem Artikel oder einer sonstigen Leistung zuteilt. 
+04|Sachnummer-Lieferant|M|22|A|28|49|db()|Ident-Nummer, die der Lieferant einem Artikel oder einer sonstigen Leistung zuteilt. 
+05|Ursprungsland|M|3|N|50|52|key(land)|Verschlüsselte Form, siehe Anlage 10, Pos. 04.  
+06|Liefermenge-1|M|13|N|53|65|db()|Liefermenge in der Mengeneinheit des Lieferabrufes, rechtsbündig mit führenden Nullen, 3 Dezimalstellen. 
+07|Mengeneinheit-1|M|2|A|66|67|key(mengeneinheit)|Verschlüsselte Form, siehe Anlage 10, Pos. 05. Linksbündiger Eintrag. 
+08|Liefermenge-2|K|13|N|68|80|db()|Liefermenge in der Mengeneinheit des Lieferanten, rechtsbündig mit führenden Nullen, 3 Dezimalstellen. 
+09|Mengeneinheit-2|K|2|A|81|82|key(mengeneinheit)|Verschlüsselte Form, siehe Anlage 10, Pos. 05. Linksbündiger Eintrag.  
+10|Umsatzsteuersatz|K|3|N|83|85|db()|Verwendung nach Vereinbarung bei Gutschriftsverfahren;rechtsbündiger Eintrag mit führenden Nullen;1 Dezimalstelle. 
+11|Leer-1|M|1|A|86|86|db()|Mit BLANK gefüllt. 
+12|Positions-NummerLieferschein|M|3|N|87|89|db()|Position eines Lieferscheines, rechtsbündiger Eintrag mit führenden Nullen; keine Dezimalstellen. Zulässiger Wertebereich 001-999. 
+13|Abruf-Schlüssel|K|1|A|90|90|db()|Verschlüsselte Form, siehe Anlage 10, Pos. 06. 
+14|Chargen-Nummer|K|15|A|91|105|db()|Ident-Nummer, die der Lieferant einer Charge zuteilt. 
+15|Verwendungs-Schlüssel|M|1|A|106|106|key(vwend)|Verschlüsselte Form, siehe Anlage 10, Pos. 07. 
+16|Gefährliche-Stoffe-Schlüssel|K|8|A|107|114|db()|Angabe aus der Verordnung über die Beförderung gefährlicher Stoffe (GGVS). Stelle 107-110 = Klasse Stelle 111-112 = Ziffer Stelle 113-114 = Buchstabe  
+17|Präferenz-Status|M|1|A|115|115|key(präferenz-status)|Verschlüsselte Form, siehe Anlage 10, Pos. 08. 
+18|Zollgut|M|1|A|116|116|db()|Verschlüsselte Form: Blank = kein Zollgut 1 = Zollgut 
+19|Leer-2|M|1|A|117|117|db()|Mit BLANK gefüllt. 
+20|Bestands-Status|M|1|A|118|118|db()|Nur bei EDL-Anwendung Vorgang 35. Verschlüsselte Form: Blank = frei, 1 = gesperrt, Übertragung je Status 
+21|Geänderte-Ausführung-Schlüssel|M|2|A|119|120|db()|Verschlüsselte Form: 1. Stelle BLANK = ohne Angaben G = Erste Regelanlieferung von geändertem Teil. Einmalige Übertragung. 2. Stelle BLANK = ohne Angaben T = Es muß in der Satzart 716, Pos.03, der Konstruktions-Änderungsstand übertragen werden. 
+22|Ursprung-Lieferschein-Nummer|K|8|A|121|128|db()|Nur bei EDL-Anwendung Vorgang 36. Bezugsangabe für Ursprung-Lieferschein-Nummer des Lieferanten. 
+
+[715]
+01|Satzart|M|3|N|1|3|fix(715)|Konstant "715" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03 
+03|Packmittel-Nummer-Kunde|M|22|A|6|27|key(Verpackungs-Codierung)|Ident-Nummer, die der Kunde einem Packmittel zuteilt. Bei Einwegverpackung bzw. Leihverpackung von Dritten kann zwischen den Partnern vereinbart werden: ğ Codierung: verschlüsselte Form, siehe Anlage 10, Pos.11 
+04|Packmittel-Nummer-Lieferant|M|22|A|28|49|db()|Ident-Nummer, die der Lieferant einem Packmittel zuteilt. 
+05|Anzahl-Packmittel|M|13|N|50|62|db()|Anzahl Packmittel je Typ. Rechtsbündiger Eintrag mit führenden Nullen, keine Dezimalstelle. 
+06|Positions-Nummer-Lieferschein|M|3|N|63|65|db()|Inhalt des Feldes soll die Positions-Nummer der Satzart 714 sein, auf die sich das Packmittel bezieht. Rechtsbündiger Eintrag mit führenden Nullen.Bezieht sich das Packmittel auf alle Positionen der vorgelagerten Lieferschein-Nummer (Satzart 713) sind drei Nullen einzutragen. 
+07|Füllmenge|K|13|N|66|78|db()|Tatsächliche Menge der Sachnummer in dem Packmittel; rechtsbündiger Eintrag mit führenden Nullen;3 Dezimalstellen. Mengenangabe in der Mengeneinheit gem. Satzart 714, Pos. 07. 
+08|Packstück-Nummer-von|K|9|A|79|87|db()|Nummer darf sich innerhalb eines Jahres nicht wiederholen; linksbündiger Eintrag. 
+09|Packstück-Nummer-bis|K|9|A|88|96|db()|Wie vorstehend.Wird dieses Element verwendet, muß die Nummernfolge zwischen PACKSTÜCKNR VON und PACKSTÜCK-NR BIS numerisch lückenlos aufsteigend sein. 
+10|Verpackungsabmessung|K|12|N|97|108|db()|Angabe in Millimeter Stelle 97 - 100 Länge 101 - 104 Breite 105 - 108 Höhe 
+11|Stapelfaktor|K|1|N|109|109|db()|Angabe der zulässigen Stapelfähigkeit der in der Verpackungsart bezeichneten Einheit. Verschlüsselte Form: 1 = einfach stapelbar 2 = zweifach stapelbar, usw. 
+12|Lagerabruf-Nummer|K|15|A|110|124|db()|Nur bei EDL-Anwendung:Nummer des Lagerabrufs beim EDL.Rückmeldung durch EDL an Kunden. 
+13|Label-Kennung|K|1|A|125|125|db()|Barcode-Kennung des Warenanhängers (VDA 4902) im Datenelement PACKSTÜCK-NUMMER. Gültiger Eintrag (s. auch VDA 4902-Beschreibung und VDA 4913-Beschreibung unter 2.2.4): G = Gemischtes Packstück (mit Unter-Packstücken und unterschiedlichen Sachnummern) M = Master-Label (mit Unter-Packstücken und gleichen Sachnummern) S = Single-Label (1 Packstück) 
+14|Verpackungs-Kennung|K|1|A|126|126|db()|Gültiger Eintrag: blank oder M = Mehrweg-Verpackung E = Einweg-Verpackung 
+15|Eigentums-Kennung|K|1|A|127|127|db()|Angabe nur bei Einsatz von Mehrweg-Verpackung. Gültiger Eintrag: blank = undefiniert K = Mehrwegverpackung Eigentum Kunde L = Mehrwegverpackung Eigentum Lieferant, rückgabepflichtig D = Mehrweg-Leihverpackung von Dritten, rückgabepflichtig 
+16|Leer|M|1|A|128|128|fix()|Mit BLANKS gefüllt. 
+
+[716]
+01|Satzart|M|3|N|1|3|fix(716)|Konstant "716" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 02 
+03|Text-1|M|40|A|6|45|db()|Textbereich, der für die Übermittlung von unformatierten Informationen verwendet werden kann. Ist in der Satzart 714, Pos. 21, ein T eingetragen, muß hier der KONSTRUKTIONS-ÄNDERUNGSSTAND eingetragen werden (linksbündig). 
+04|Text-2|K|40|A|46|85|db()|Textbereich, der für die Übermittlung von unformatierten Informationen verwendet werden kann.  
+05|Text-3|K|40|A|86|125|db()|Textbereich, der für die Übermittlung von unformatierten Informationen verwendet werden kann. 
+06|Leer|M|3|A|126|128|fix()|Mit BLANKS gefüllt. 
+
+[717]
+01|Satzart|M|3|N|1|3|fix(717)|Konstant "717" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 01 
+03|Einzel-Packstück-Nummer|M|15|A|6|20|db()| 
+04|Liefermenge-1|M|13|N|21|33|db()|Liefermenge in der Mengeneinheit des Lieferabrufs, bezogen auf die kleinste Einheit, rechtsbündiger Eintrag mit führenden Nullen, 3 Dezimalstellen. 
+05|Mengeneinheit-1|M|2|A|34|35|key(mengeneinheit)|Verschlüsselte Form, siehe Anlage 10, Pos. 05. Linksbündiger Eintrag. 
+06|Liefermenge-2|K|13|N|36|48|db()|Liefermenge in der Mengeneinheit des Lieferanten, bezogen auf die kleinste Einheit, rechtsbündiger Eintrag mit führenden Nullen, 3 Dezimalstellen. 
+07|Mengeneinheit-2|K|2|A|49|50|key(mengeneinheit)|Verschlüsselte Form, siehe Anlage 10, Pos. 05. Linksbündiger Eintrag. 
+08|Chargennummer|K|15|A|51|65|db()|Identnummer, die der Hersteller einer Charge zuteilt. 
+09|Leer|M|63|A|66|128|fix()|Mit BLANKS gefüllt. 
+
+[718]
+01|Satzart|M|3|N|1|3|fix(718)|Konstant "718" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 02 
+03|Lieferschein-Nummer|M|8|N|6|13|db()|Ident-Nummer, die der Lieferant einem Lieferschein zuteilt. Rechtsbündiger Eintrag mit führenden Nullen. 
+04|Produktions-Nummer-1|M|10|A|14|23|db()|Produktions-Nummer 1 Produkt-Nummern-Tabelle. Wenn diese Satzart verwendet wird, muß mindestens das erste Tabellenfeld ausgefüllt sein. Produktionsbezogene Ident-Nummer des Endproduktes beim Kunden, zu dem eine Kaufteile Einheit zugeliefert wird. Linksbündiger Eintrag. 
+05|Produktions-Nummer-2|K|10|A|24|33|db()|Produktions-Nummer 2 
+06|Produktions-Nummer-3|K|10|A|34|43|db()|Produktions-Nummer 3 
+07|Produktions-Nummer-4|K|10|A|44|53|db()|Produktions-Nummer 4 
+08|Produktions-Nummer-5|K|10|A|54|63|db()|Produktions-Nummer 5 
+09|Produktions-Nummer-6|K|10|A|64|73|db()|Produktions-Nummer 6 
+10|Produktion-Nummer-7|K|10|A|74|83|db()|Produktions-Nummer 7 
+11|Produktions-Nummer-8|K|10|A|84|93|db()|Produktions-Nummer 8 
+12|Produktion-Nummer-9|K|10|A|94|103|db()|Produktions-Nummer 9 
+13|Produktions-Nummer-10|K|10|A|104|113|db()|Produktions-Nummer 10 
+14|Produktions-Nummer-11|K|10|A|114|123|db()|Produktions-Nummer 11 
+15|Leer|M|5|A|124|128|fix()|Mit BLANKS gefüllt. 
+
+[719]
+01|Satzart|M|3|N|1|3|fix(719)|Konstant "719" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 02 
+03|Zähler-Satzart-711|M|7|N|6|12|db()|Anzahl übertragene Sätze der Satzart 711. Rechtsbündiger Eintrag mit führenden Nullen. 
+04|Zähler-Satzart-712|M|7|N|13|19|db()|Anzahl übertragene Sätze der Satzart 712. Rechtsbündiger Eintrag mit führenden Nullen. 
+05|Zähler-Satzart-713|M|7|N|20|26|db()|Anzahl übertragene Sätze der Satzart 713. Rechtsbündiger Eintrag mit führenden Nullen. 
+06|Zähler-Satzart-714|M|7|N|27|33|db()|Anzahl übertragene Sätze der Satzart 714. Rechtsbündiger Eintrag mit führenden Nullen. 
+07|Zähler-Satzart-715|M|7|N|34|40|db()|Anzahl übertragene Sätze der Satzart 715. Rechtsbündiger Eintrag mit führenden Nullen. 
+08|Zähler-Satzart-716|M|7|N|41|47|db()|Anzahl übertragene Sätze der Satzart 716. Rechtsbündiger Eintrag mit führenden Nullen. 
+09|Zähler-Satzart-718|M|7|N|48|54|db()|Anzahl übertragene Sätze der Satzart 718. Rechtsbündiger Eintrag mit führenden Nullen. 
+10|Zähler-Satzart-719|M|7|N|55|61|db()|Anzahl übertragene Sätze der Satzart 719. Rechtsbündiger Eintrag mit führenden Nullen. 
+11|Zähler-Satzart-717|M|7|N|62|68|db()|Anzahl übertragene Sätze der Satzart 717. Rechtsbündiger Eintrag mit führenden Nullen. 
+12|Leer|M|60|A|69|128|fix()|Mit BLANKS gefüllt.
+
+
+4906 Rechnungen
+[811]
+01|Satzart|M|3|N|1|3|fix(811)|Konstant 811. muß einmal je DFÜ-Lauf "Rechnungsdaten" vorhanden sein.
+02|Versions-|M|2|N|4|5|fix(2)|Kennzeichnung der Aktualität einer Satzart. Wird je Nummer Satzart lückenlos aufsteigend geführt und nach jeder vom VDA/AK "Vordruckwesen/Datenaustausch" beschlossenen Änderung einer Satzart jeweils um 1 erhöht. Zulässig 01-99
+03|Kunden-Nummer|M|9|A|6|14|db()|Ident-Nummer, die der Lieferant einem Besteller zuteilt. Alle Daten einer Satzstruktur, die das Feld Lieferanten-Nummer enthält unterliegen dem Datenschutz. Linksbündig eintragen.
+04|Lieferanten-Nummer|M|9|A|15|23|db()|Ident-Nummer, die der Kunde einem Lieferanten (Vertragsnehmer) zuordnet. Alle Daten einer Satzstruktur, die das Feld Lieferanten-Nummer enthalt, unterliegen dem Datenschutz. Linksbündig eintragen.
+05|Übertrag.-Nummer alt|M|5|N|24|28|db()|Erklärungen s. Übertragungsnummer neu.
+06|Übertrag.-Nummer neu|M|5|N|29|33|db()|Der Datenersteller vergibt innerhalb einer Anwendung (z. B. Rechnung s- DFÜ) für jeden DFÜ-Erstellungslauf eine Übertragung* -Nummer (Neu). Der Wert "00000" darf im Feld "Neu" nicht verwendet werden. Datenersteller und Empfänger bewahren diese Nummer bis zur nächsten Übertragung derselben Anwendung auf. Da der Datenersteller jeweils zu der neuen Ubertragungs-Nummer auch die des vorausgegangenen DFÜ-Erstellungslaufes innerhalb dieser Anwendung angibt (als Nummer "ALT"), kann der Empfänger die Vollständigkeit der DFÜ-Bestände je Anwendung gezielt kontrollieren. Daher ist keine lückenlos aufsteigende Nummernfolge erforderlich. Rechtsbündiger Eintrag mit füllenden Nullen. Beispiele für Eintragungen in den Feldern Übertragungs-Nr. "ALT" und Neu.
+07|Übertrag.-Datum|K|6|N|34|39|datum()|In Form: JJMMTT
+08|USt-Identifikations-Nummer-Empfänger|K|20|A|40|59|db()|Ident-Nummer der nationalen Steuerbehörde für den. Muß-Feld bei Warenlieferungen innerhalb der Europäischen Gemeinschaft. Linksbündig eintragen. Empfänger (USt-IdNr.)
+09|USt-Identifikations-Nr-Versender|K|20|A|60|79|db()|Ident-Nummer der nationalen Steuerbehörde für den. Muß-Feld bei Warenlieferungen innerhalb der Europäischen Gemeinschaft. Linksbündig eintragen. (USt-IdNr. )
+10|Leer|M|49|A|80|128|fix()|Reservestellen mit BLANKS gefüllt.
+
+[812]
+01|Satzart|M|3|N|1|3|fix(812)|Konstant 812
+02|Versions-Nummer|M|2|N|4|5|fix(2)|Kennzeichnung der Aktualität dieser Satzart
+03|Rechnungs-Nummer|M|8|A|6|13|db()|Ident-Nummer, die der Lieferant einer von ihm erstellten Handelsrechnung zuteilt. Rechtsbündig eintragen.
+04|Rechnungs-Datum|M|6|N|14|19|datum()|In Form: JJMMTT
+05|Umsatzsteuerbetrag|M|13|N|20|32|db()|32.100 aller Positionen (Satzart 814) derselben Rechnung. eintragen.
+06|Rechnung-|M|13|N|33|45|db()|Summe der Gesamtpreise aller Rechnungs-Positionen, Endwert 11,2 der Versand- und Verpackungskosten sowie der dazugehörenden Umsatzsteuer; 2 Dezimalstellen rechtsbündig mit führenden Nullen eintragen.
+07|Währungs-|M|3|N|46|48|key(währung2)|Verschlüsselte Form s. ISO-Norm 4217-1978; einheit siehe Anlage Schlüsselverzeichnis
+08|Referenz-|K|10|A|49|58|db()|Normal: Konstant Blanks; Ausnahme: Definitionen Nummer müssen die DFÜ-Teiln. festlegen: linksbündig eintragen.
+09|Umsatzsteuersatz|M|3|N|59|61|db()|Der Umsatzsteuersatz muß für alle Positionen Steuersatz 2,1 derselben Rechnung gleich sein; 1 Dezimalstelle, rechtsb. eintragen mit führenden Nullen.
+10|Werk-Kunde|K|3|A|62|64|db()|Werk des Kunden, an das geliefert werden soll. Kunde muß Werk-Nummern-Schlüssel zur Verfügung stellen bzw. aus Lieferabruf-DFÜ etc. zuordnen.
+11|Entgelt|M|13|N|65|77|db()|Summe der Gesamtpreise aller Rechnungs-Positionen sowie der Versand- und Verpackungskosten ohne
+12|Leer|M|51|A|78|128|fix()|Reservestellen, mit Blanks gefüllt.
+
+[813] 
+01|Satzart|M|3|N|1|3|fix(813)|Konstant "813"
+02|Versions-Nummer|M|2|N|4|5|fix(2)|Kennzeichnung der Aktualität dieser Satzart.s. auch Satzart 811.
+03|Liefersch.-Nummer|M|8|A|6|13|db()|Ident-Nummer, die der Lieferant einen Lieferschein zuteilt. Rechtsbündig eintragen.
+04|Versand-Datum|M|6|N|14|19|datum()|In Form: JJMMTT Datum
+05|Abladestelle|M|5|A|20|24|db()|Bezeichnet die Stelle im Werk Kunde, an die abgeladen wurde.
+06|Versandart|K|2|N|25|26|key(Versandart)|Schlüssel 2steilig numerisch, Aufbau siehe Schlüssel-Verzeichnis, Anlage 8, Pos. 02.
+07|Zeichen des|M|4|A|27|30|db()|Aus Lieferabruf bzw. Auftragskopfdaten zuge Bestellers ordnet.
+08|Abschluß-Bestell-Nummer|M|12|A|31|42|db()|Ident-Nummer, die der Besteller einer Bestellung bzw. einem Rahmenabschluß zuteilt.Linksbündig in Druckform eintragen.
+09|Versand-kosten|M|13|N|43|55|db()|Für die betreffende Lieferung. 2 Dezimal-stellen, mit führenden Nullen rechtsbündig eintragen.
+10|Verpackungs-kosten|M|13|N|56|68|db()|Für die betreffende Lieferung, 2 Dezimal-stellen mit führenden Nullen rechtsbündig eintragen.
+11|Leer|M|60|A|69|128|fix()|Reservestellen, mit Blanks gefüllt.
+
+[814]
+01|Satzart|M|3|N|1|3|fix(814)|Konstant "814"
+02|Versions-Nummer|M|2|N|4|5|fix(2)|Kennzeichnung der Aktualität dieser Satzart. s. auch Satzart 801/811.
+03|Sachnummer-Kunde|M|22|A|6|27|db()|Ident-Nummer, die der Kunde einem Artikel, einem Packmittel oder einer sonstigen Leistung zuteilt. Linksbündig in Druckform eintragen.
+04|Sachnummer-Lieferant|M|22|A|28|49|db()|Ident-Nummer, die der Lieferant einem Artikel, einem Lieferant Packmittel oder einer sonstigen Leistung zuteilt. Linksbündig in Druckform eintragen.
+05|Liefermenge|M|13|N|50|62|db()|3 Dezimalstellen beachten, rechtsbündig mit 10,3 führenden Nullen abstellen.
+06|Preiseinheit|M|2|N|63|64|key(preiseinheit)|Schlüssel, 2stellig. numerisch. Aufbau siehe Schlüssel-Verzeichnis (Anlage)
+07|Einzelpreis|M|13|N|65|77|db()| 11.2 stellen, rechtsbündig mit führenden Nullen eintragen.
+08|Gesamtpreis|M|13|N|78|90|db()|Produkt aus Liefermenge und Einzelpreis ohne 11,2 Umsatzsteuer, 2 Dezimalstellen rechtsbündig mit führenden Nullen eintragen.
+09|Leer|M|3|A|91|93|fix()|Reservefeld, mit Blanks formatieren.
+10|Ursprungsland|M|3|N|94|96|key(land2)|Schlüssel, 3etelligr numerisch
+11|Umsatzsteuer|M|1|A|97|97|db()|Aufbau siehe Schlüssel-Verzeichnis, Anlage 6. Blanks einsteuern Präferenz
+12|Prozentangabe|M|4|N|98|101|db()|Prozentsatz Vorleistung; Zwei Dezimalstellen Vorleistung 2,2 Angabe erfolgt nur, wenn Anteile unter 100 %. Normal » Nullen einsteuern, Eintrag mit Kunden abstimmen
+13|Handelspräferenz|M|1|A|102|102|key()|Handelspräferenz (siehe Schlüssel-Verzeichn. Anlage 8)
+14|Leer|M|26|A|103|128|fix()|Leer, mit BLANKS gefüllt
+
+[815]
+01|Satzart|M|3|N|1|3|fix(815)|Konstant "815", Zusatz VW
+02|Versions-Nummer|M|2|N|4|5|fix(2)|Kennzeichnung der Aktualität dieser Satzart.
+03|Schlüssel|M|2|N|6|7|db()|Schlüssel fr Art der Info
+04|Infotext gemäß Schlüssel|M|50|A|8|57|db()|Zusatzinfo
+15|Leer|M|71|A|58|128|fix()|Reservestellen
+
+[819]
+01|Satzart|M|3|N|1|3|fix(819)|Konstant "819", muß einmal je DFÜ-Lauf "Rechnungsdaten" vorhanden sein, sonst erfolgt keine Verarbeitung.
+02|Versions-Nummer|M|2|N|4|5|fix(2)|Kennzeichnung der Aktualität dieser Satzart.
+03|Zähler-SAA 811|M|7|N|6|12|db()|Anzahl übertragene Satzart 811, Rechtsbündig mit führenden Nullen eintragen.
+04|Zähler-SAA 812|M|7|N|13|19|db()|Anzahl übertragene Satzart 812. Rechtsbündig mit führenden Nullen abstellen.
+05|Zähler-SAA 813|M|7|N|20|26|db()|Anzahl übertragene Satzart 813. Rechtsbündig mit führenden Nullen eintragen.
+06|Zähler-SAA 814|M|7|N|27|33|db()|Anzahl übertragene Satzart 814. Rechtsbündig mit führenden Nullen abstellen.
+07|Zähler-SAA 819|M|7|N|34|40|db()|Anzahl übertragene Satzart 819. Rechtsbündig mit führenden Nullen eintragen.
+08|Summe-Rechgs-Endwerte|M|13|N|41|53|db()|Summe aller Rechnungs- Endwerte der M 11,2 übertragenen Satzart 812. Rechtsbündig mit führenden Nullen eintragen. 2 Dezimalstellen
+09|Summe-Entgelt-1|M|13|N|54|66|db()|Summe aller Rechnungs-Entgelte der übertragenen, 11,2 Satzart 812, Rechtsbündig mit führenden Nullen eintragen. 2 Dezimalstellen.
+10|Summe-UST-Betrag-1 |M|13|N|67|79|db()|Summe aller Umsatzsteuerbeträge der übertragenen 11.2, 812, die sich aus dem ersten Umsatzsteuersatz ergeben. Rechtsbündig mit führenden Nullen eintragen. 2 Dezimalstellen.
+11|Umsatzsteuer-Satz|M|3|N|80|82|db()|Erster Umsatz-Steuersatz, Rechtsbündig mit führenden2,1 Nullen eintragen, 1 Dezimalstelle.
+12|Summe-Entgelt-2|K|13|N|83|95|db()|Summe aller Entgelte der übertragenen Satzart 812 11,2 auf die der zweite Umsatzsteuersatz zutrifft: Rechtsbündig mit führenden Nullen eintragen.1 Dezimalstelle
+13|Summe-UST-Betrag|K|13|N|96|108|db()|SAA 812 die sich aus dem zweiten Umsatzsteuersatz ergeben. Rechtsbündig mit führenden Nullen eintragen.,11,2 Nullen eintragen. 2 Dezimalstellen.
+14|Umsatz-Steuer-Satz-2|K|3|N|109|111|db()|Zweiter Umsatzsteuersatz , Rechtsbündig mit führenden 2,1 Nullen eintragen, 1 Dezimalstelle.
+16|Zähler-SAA 815|K|7|N|112|118|db()|Anzahl übertragene Satzart 815. Rechtsbündig mit führenden Nullen abstellen.
+15|Leer|M|10|N|119|128|fix()|Reservestellen
+
+
+4915 Feinabruf
+[551]
+01|Satzart|M|3|N|1|3|fix(551)|Konstant "551"
+02|Versions-|M|2|N|4|5|db()|Kennzeichnung der Aktualität einer Satzart. Wird Nummer je Satzart lückenlos aufsteigend geführt und nach jeder vom VDA-AK "Vordruckwesen/Datenaustausch" beschlossenen Änderung einer Satzart jeweils um 1 erhöht.Zulässig: 01-99
+03|Kundennummer|M|9|A|6|14|db()|Ident-Nummer, die der Lieferant einem Kunden zuordnet. Alle Daten einer Satzstruktur, die das Feld Kunden-Nr. enthält, unterliegen dem Datenschutz. Linksbündig eintragen.
+04|LieferantenNummer|M|9|A|15|23|db()|Ident-Nummer, die der Kunde einem Lieferanten(Vertragsnehmer) zuordnet. Alle Daten einer Satzstruktur, die das Feld Lieferanten-Nr. enthält, unterliegen dem Datenschutz. Linksbündig eintragen.
+05|ÜbertragungsNummer alt|M|5|N|24|28|db()|Beschreibung siehe Übertragungsnummer Neu. Bei der ersten Übertragung ist ÜbertragungsNummer-Alt = 00000.Rechtsbündig mit fahrenden Nullen eintragen.
+06|ÜbertragungsNummer neu|M|5|N|29|33|db()|Der Datenersteller vergibt innerhalb einer Anwendung (z.B. Lieferabruf-DFÜ, Rechnungs-DFÜ usw.) für jeden DFÜ-Erstellungslauf eine Übertragungsnummer (neu). Der Wert "00000" darf nicht verwendet werden. Datenersteller und Empfänger bewahren diese Nummer bis zur nächsten Übertragung derselben Anwendung auf. Da der Datenersteller jeweils zu der neuen Übertragungsnummer auch die des vorausgegangenen DFÜ-Erstellungslaufs innerhalb dieser Anwendung angibt, kann der Empfänger die Vollständigkeit der DFÜ-Bestände je Anwendung kontrollieren. Daher ist keine lückenlose und aufsteigende Nummernfolge erforderlich. Rechtsbündig mit fahrenden Nullen eintragen.
+07|Übertragungsdatum|M|6|N|34|39|db()|In Form: JJMMTT
+08|Datum Eingangs FZ|M|6|N|40|45|db()|In Form: JJMMTT|Nullstellung der Eingangsfortschrittszahl
+09|Leer|M|83|A|46|128|fix()|Mit BLANKS gefüllt
+
+[552]
+01|Satzart|M|3|N|1|3|fix(552)|Konstant "552"|
+02|Versions-Nummer|M|2|N|4|5|db()|Kennzeichnung der Aktualität einer Satzart., siehe Satzart 551|
+03|Werk Kunde|M|3|A|6|8|db()|Werk des Kunden, an das geliefert werden soll. Verschlüsselte Form des Kunden. Linksbündig eintragen.|
+04|Feinabruf-Nummer neu|M|9|A|9|17|db()|Der Kunde vergibt für jeden Lauf zur Aufbereitung des täglichen Feinabrufes eine Feinabruf-Nummer, Kunde und Lieferant bewahren diese Nummer bis zur nächsten Verarbeitung auf. Linksbündig eintragen.|
+05|Feinabruf-Datum|M|6|N|18|23|db()|Erstellungsdatum in Form JJMMTT, in Verbindung mit Pos. 04.|
+06|Sachnummer Kunde|M|22|A|24|45|db()|Ident-Nummer, die der Kunde einem Artikel, einem Packmittel oder einer sonstigen Leistung zuordnet. Linksbündig in Druckform eintragen.|
+07|Sachnummer Lieferant|M|22|A|46|67|db()|Ident-Nummer, die der Lieferant einem Artikel, einem Packmittel oder einer sonstigen Leistung zuordnet. Linksbündig in Druckform eintragen.|
+08|Abladestelle|M|5|A|68|72|db()|Bezeichnet die Stelle im Werk Kunde, an der die Ware abgeladen werden soll. Verschlüsselte Form des Kunden. Linksbündig eintragen.|
+09|Lagerort Kunde|K|7|A|73|79|db()|Kann vom Kunden individuell festgelegt werden. Linksbündig eintragen.|
+10|Kritischer Bestand Schlüssel|K|1|A|80|80|db()|Deutet auf den Grad der Verfügbarkeit des Teiles beim Kunden hin. "K" - kritischer Bestand. Siehe Anlage 9. Pos. 01.|
+11|Verwendungs-schlüssel|M|1|A|81|81|key(vwend)|Verschlüsselte Form; kennzeichnet das Verwendungsgebiet. Siehe Anlage 9, Pos. 02.|
+12|FAB-Horizont|K|6|N|82|87|db()|Datum bis zu dem der FAß gültig ist, Form JJMMTT.
+13|Termin-Schlüssel|K|1|A|88|88|db()|Gilt für alle Abruftermine der Satzart 554. Siehe Anlage 9, Pos. 05.
+14|AbschlußBestellnummer|K|12|A|89|100|db()|Ident-Nummer, die der Kunde einem Rahmenabschluß bzw. einer Bestellung zuordnet. Linksbündig in Druckform eintragen.
+15|FortschrittszahlenDifferenz|K|10|N|101|110|db()|Differenz zwischen Eingangs- und Bedarfsfortschrittzahl.Rechtsbündiger Eintrag mit führenden Nullen. "-"an 1 . Datenelement-Stelle.
+16|Verbrauchsstelle|K|14|A|111|124|db()|Kann vom Kunden individuell festgelegt werden. Linksbündig eintragen.
+17|Leer|M|4|A|125|128|fix()|Mit BLANKS gefüllt
+
+[553]
+01|Satzart|M|3|N|1|3|fix(553)|Konstant '553'
+02|VersionsNummer|M|2|N|4|5|db()|Kennzeichnung der Aktualität einer Satzart. siehe Satzart 551|
+03|EingangsFortschrittszahl|M|10|N|6|15|db()|Fortschrittszahl, die alle vom Kunden positiv bzw. negativ verbuchten Lieferungen ab einem bestimmten Zeitpunkt (z.B. ab 1.1. des Jahres)|bis zum Stichtag der aktuellen Feinabruf-Rechnung beinhaltet. Rechtsbündiger Eintrag mit führenden Nullen, keine Dezimalstelle. Ggf. gleitendes Minuszeichen.|
+04|EintreffDatum 1|M|6|N|16|21|db()|In Form JJMMTT. An diesem Tag hat der Kunde die Lieferung als Wareneingang gebucht.
+05|LieferscheinNummer 1|M|8|N|22|29|db()|Ident-Nummer, die der Lieferant einem Lieferschein zuordnet. Rechtsbündig mit führenden Nullen eintragen.|
+06|LieferscheinDatum 1|M|6|N|30|35|db()|Versanddatum der beim Kunden verbuchten Lieferung in Form JJMMTT.|
+07|Liefermenge 1|M|12|N|36|47|db()|Menge, die der Lieferant im Lieferschein ausweist, rechtsbündig eintragen, mit führenden Nullen. Drei Dezimalstellen.|
+08|LieferstatusSchlüssel 1|M|1|A|48|48|db()|l = Dieser FAB-Vorgang ist vom Kunden als Wareneingang gebucht (=lst). P = Dieser FAB-Vorgang ist vom Kunden noch nicht vereinnahmt, also noch im Transit (der Eintrefftermin steht als "Soll" Eintrefftermin) (= Plan).|
+09|Eintreff-|K|6|N|49|54|db()|Siehe Eintreff-Datum 1.Datum 2||||||
+10|Lieferschein-|K|8|N|55|62|db()|Siehe Lieferschein-Nummer 1. Nummer 2||||||
+11|Lieferschein-Datum 2|K|6|N|63|68|db()|Siehe Lieferschein-Datum 1 .
+12|Liefermenge 2|K|12|N|69|80|db()|Siehe Liefermenge 1 .
+13|Lieferstatus-Schlüssel 2|K|1|A|81|81|db()|Siehe Lieferstatus Schlüssel 1 .
+14|Eintreff-Datum 3|K|6|N|82|87|db()|Siehe Eintreff-Datum 1 .
+15|LieferscheinNummer 3|K|8|N|88|95|db()|Siehe Lieferschein-Nummer 1.
+16|Lieferschein-Datum 3|K|6|N|96|101|db()|Siehe Lieferschein-Datum 1 .
+17|Liefermenge 3|K|12|N|102|113|db()|Siehe Liefermenge 1.
+18|Lieferstatus-Schlüssel 3|K|1|A|114|114|db()|Siehe Lieferstatus Schlüssel 1 .
+19|Leer|M|14|A|115|128|fix()|Mit BLANKS gefüllt
+
+[554]
+01|Satzart|M|3|N|1|3|fix(554)|Konstant "554"|
+02|VersionsNummer|M|2|N|4|5|db()|Kennzeichnung der Aktualität einer Satzart., siehe Satzart 551|
+03|Abrufdatum 1|M|6|N|6|11|db()|Datum des Feinabrufes Form JJMMTT. Beachte Punkt 4.2 der Verfahrensbeschreibung.|
+04|Abrufzeit 1|K|4|N|12|15|db()|Eintreffzeit in Form HHMM.|
+05|Abrufmenge 1|M|9|N|16|24|db()|Enthält die Bedarfsmenge 1 . Bei Satzart 554 alle Bedarfsmengen rechtsbündig mit führenden/Nullen eintragen, keine Dezimalstelle.|
+06|BedarfsstatusSchlüssel 1|K|1|A|25|25|db()|Schlüssel "B" zeigt an, daß der Lieferant die FAB-Daten bis zu diesem Datum von vorausgehenden Übertragungen unverändert übernehmen soll. Anlage 9, Pos. 04.|
+07|Abrufdatum 2|M|6|N|26|31|db()|Siehe Abrufdatum 1
+08|Abrufzeit 2|K|4|N|32|35|db()|Siehe Abrufzeit 1
+09|Abrufmenge 2|M|9|N|36|44|db()|Siehe Abrufmenge 1
+10|Schlüssel 2|K|1|A|45|45|db()|Siehe Schlüssel 1
+11|Abrufdatum 3|M|6|N|46|51|db()|Siehe Abrufdatum 1
+12|Abrufzeit 3|K|4|N|52|55|db()|Siehe Abrufzeit 1
+13|Abrufmenge 3|M|9|N|56|64|db()|Siehe Abrufmenge 1
+14|Schlüssel 3|K|1|A|65|65|db()|Siehe Schlüssel 1
+15|Abrufdatum 4|M|6|N|66|71|db()|Siehe Abrufdatum 1
+16|Abrufzeit 4|K|4|N|72|75|db()|Siehe Abrufzeit 1
+17|Abrufmenge 4|M|9|N|76|84|db()|Siehe Abrufmenge 1
+18|Schlüssel 4|K|1|A|85|85|Siehe Schlüssel 1
+19|Abrufdatum 5|M|6|N|86|91|Siehe Abrufdatum 1
+20|Abrufzeit 5|K|4|N|92|95|Siehe Abrufzeit 1
+21|Abrufmenge 5|M|9|N|96|104|Siehe Abrufmenge 1
+22|Schlüssel 5|K|1|A|105|105|Siehe Schlüssel 1
+23|Abrufdatum 6|M|6|N|106|111|Siehe Abrufdatum 1
+24|Abrufzeit 6|K|4|N|112|115|Siehe Abrufzeit 1
+25|Abrufmenge 6|M|9|N|116|124|Siehe Abrufmenge 1
+26|Schlüssel 6|K|1|A|125|125|Siehe Schlüssel 1
+27|Leer|M|3|A|126|128|fix()|Mit BLANKS gefüllt.
+
+[555]
+01|Satzart|M|3|N|1|3|fix(555)|Konstant "555"
+02|Versions-Nummer|M|2|N|4|5|db()|Kennzeichnung der Aktualität einer Satzart., siehe Satzart 551
+03|Zwischenlieferant|K|9|A|6|14|db()|Ident-Nummer, die der Kunde einem Zwischenlieferanten zuordnet, linksbündig eintragen.
+04|Ergänzende Sachnummer|K|22|A|15|36|db()|Ergänzende Sachnummer, linksbündig eintragen.
+05|Zur Nullstellung erreichte Fortschrittszahl|K|10|N|37|46|db()|Letzte beim Datum zur Nullstellung (SA 551) erreichte Eingangsfortschrittszahl.
+06|Leer|M|82|A|47|128|fix()|Mit BLANKS gefüllt.
+
+[556]
+01|Satzart|M|3|N|1|3|fix(556)|Konstant "556"
+02|VersionsNummer|M|2|N|4|5|db()|Kennzeichnung der Aktualität einer Satzart., siehe Satzart 551
+03|Sachnummer-Kunde|M|22|A|6|27|db()|Ident-Nummer, die der Kunde einem Artikel,Packmittel oder einer sonstigen Leistung zuordnet, linksbündig im Druckform eintragen.Für Packmitteltyp.
+04|Sachnummer-Lieferant|M|22|A|28|49|db()|Ident-Nummer, die der Lieferant einem Artikel, Packmittel oder einer sonstigen Leistung zuordnet, Linksbündig im Druckform eintragen.
+05|Füllmenge Soll|M|7|N|50|56|db()|Dem Packmittel für die Sachnummer zugeordnete, rechnerische Füllmenge, rechtsbündig eintragen mit führenden Nullen, keine Dezimalstelle
+06|Leer|M|72|A|57|128|fix()|Mit BLANKS gefüllt.
+
+[559]
+01|Satzart|M|3|N|1|3|fix(559)|Konstant "559" 
+02|Versions-Nummer|M|2|N|4|5|db()|Eintrag = 03, Änderung 19.6.1996 Kennzeichnung der Aktualität einer Satzart. Wird vom VDA-AKVD je Satzartgesondert lückenlos aufsteigendgeführt und nach jeder vom VDA- AKVD beschlossenen Änderung jeweils um 1erhöht.Zulässig: 01-99
+03|Zähler-Satzart-551|M|7|N|6|12|db()|Anzahl der übertragenen Sätze der Satzart 551. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+04|Zähler-Satzart-552|M|7|N|13|19|db()|Anzahl der übertragenen Sätze der Satzart 552. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+05|Zähler-Satzart-553|M|7|N|20|26|db()|Anzahl der übertragenen Sätze der Satzart 553. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+06|Zähler-Satzart-554|M|7|N|27|33|db()|Anzahl der übertragenen Sätze der Satzart 554. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+07|Zähler-Satzart-555|M|7|N|34|40|db()|Anzahl der übertragenen Sätze der Satzart 555. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+08|Zähler-Satzart-556|M|7|N|41|47|db()|Anzahl der übertragenen Sätze der Satzart 556. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+09|Zähler-Satzart-557|M|7|N|48|54|db()|Anzahl der übertragenen Sätze der Satzart 557. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+10|Zähler-Satzart-559|M|7|N|55|61|db()|Anzahl der übertragenen Sätze der Satzart 559. Rechtsbündig eintragen mit führenden Nullen. Keine Dezimalstelle. 
+11|Leer|M|7|A|62|68|fix()|Mit BLANKS gefüllt. 
+
