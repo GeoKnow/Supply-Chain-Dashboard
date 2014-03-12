@@ -1,14 +1,5 @@
 @(addresses: Seq[Address])
 
-var addressMarkers = [];
-
-@for(address <- addresses) {{
-  var marker = new google.maps.Marker({
-    position: new google.maps.LatLng(@address.latitude, @address.longitude),
-    title: '@address.uri'
-  })
-
-  google.maps.event.addListener(marker, 'click', function(event) { selectAddress(@address.id) })
-
-  addressMarkers.push(marker)
-}}
+@for(address <- addresses) {
+  addAddress('@address.id', '@address.uri', @address.latitude, @address.longitude);
+}

@@ -1,31 +1,11 @@
 @(deliveries: Seq[Delivery])
 
-var arrowIcon = {
-  path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
-};
-
-var deliveryLines = [];
-
 @* Don't load more than 300 deliveries at once. *@
 @if(deliveries.size > 300) {
   alert("Only the first 300 of the requested @deliveries.size deliveries are shown.");
 }
 
-@for(delivery <- deliveries.take(300)) {{
-  //Draw line
-  var line = new google.maps.Polyline({
-    path: [new google.maps.LatLng(@delivery.sender.latitude, @delivery.sender.longitude),
-           new google.maps.LatLng(@delivery.receiver.latitude, @delivery.receiver.longitude)],
-    strokeColor: '#0000FF',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    icons: [{
-      icon: arrowIcon,
-      offset: '100%'
-    }],
-  });
-
-  google.maps.event.addListener(line, 'click', function(event) { selectDelivery(@delivery.id) })
-
-  deliveryLines.push(line);
-}}
+@for(delivery <- deliveries.take(300)) {
+  addDelivery('@delivery.id', @delivery.sender.latitude, @delivery.sender.longitude,
+              @delivery.receiver.latitude, @delivery.receiver.longitude);
+}

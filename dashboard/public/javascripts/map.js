@@ -1,4 +1,6 @@
-var map = null // Set during initialization
+var map = null; // Set during initialization
+var addressMarkers = [];
+var deliveryLines = [];
 
 function initialize() {
   // Initialize map
@@ -6,11 +8,43 @@ function initialize() {
     center: new google.maps.LatLng(52.423, 10.787), // Wolfsburg
     zoom: 8,
     mapTypeId: google.maps.MapTypeId.ROADMAP
-  }
+  };
   map = new google.maps.Map(document.getElementById("map-content"), mapOptions)
 
   // Draw addresses
   showAddresses()
+}
+
+function addAddress(id, title, latitude, longitude) {
+  var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(latitude, longitude),
+    title: title
+  });
+
+  google.maps.event.addListener(marker, 'click', function(event) { selectAddress(id) });
+  addressMarkers.push(marker);
+}
+
+function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
+  var arrowIcon = {
+    path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
+  };
+
+  //Draw line
+  var line = new google.maps.Polyline({
+    path: [new google.maps.LatLng(senderLat, senderLon),
+           new google.maps.LatLng(receiverLat, receiverLon)],
+    strokeColor: '#0000FF',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    icons: [{
+      icon: arrowIcon,
+      offset: '100%'
+    }]
+  });
+
+  google.maps.event.addListener(line, 'click', function(event) { selectDelivery(id) });
+  deliveryLines.push(line);
 }
 
 function hideAddresses() {
@@ -25,15 +59,15 @@ function hideAddresses() {
 function showAddresses() {
   $.get("/map/addresses", function(data) {
     // Remove existing address markers
-    hideAddresses()
+    hideAddresses();
     // Load new address markers
-    jQuery.globalEval(data)
+    jQuery.globalEval(data);
     // Add all address markers to the map
     for (var i = 0; i < addressMarkers.length; i++) {
       //google.maps.event.addListener(addressMarkers[i], 'click', function(event) { showDeliveries(address.id) })
-      addressMarkers[i].setMap(map)
+      addressMarkers[i].setMap(map);
     }
-  })
+  });
 }
 
 function hideDeliveries() {
@@ -41,27 +75,27 @@ function hideDeliveries() {
     for (var i = 0; i < deliveryLines.length; i++) {
       deliveryLines[i].setMap(null);
     }
-    deliveryLines = []
+    deliveryLines = [];
   }
 }
 
 function showDeliveries(addressId, contentType) {
-  var uri = "/map/deliveries"
+  var uri = "/map/deliveries";
   if(addressId)
-    uri += "?addressId=" + addressId
+    uri += "?addressId=" + addressId;
   if(contentType && contentType != "all")
-    uri += "?contentType=" + contentType
+    uri += "?contentType=" + contentType;
 
   $.get(uri, function(data) {
     // Remove existing delivery lines
-    hideDeliveries()
+    hideDeliveries();
     // Load new delivery lines
-    jQuery.globalEval(data)
+    jQuery.globalEval(data);
     // Add all lines to the map
     for (var i = 0; i < deliveryLines.length; i++) {
-      deliveryLines[i].setMap(map)
+      deliveryLines[i].setMap(map);
     }
-  })
+  });
 }
 
 function selectAddress(addressId) {
