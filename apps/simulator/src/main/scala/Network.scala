@@ -1,7 +1,8 @@
-import _root_.Supplier.{OrderMsg, ShippingMsg}
+import Supplier.{OrderMsg, ShippingMsg}
 import akka.actor.{Actor, ActorSystem, Props, ActorRef}
 import akka.event.Logging
 import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Network {
 

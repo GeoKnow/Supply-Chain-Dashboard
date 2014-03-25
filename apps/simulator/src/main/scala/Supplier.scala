@@ -3,7 +3,8 @@ import akka.event.Logging
 import scala.collection.mutable
 import scala.util.Random
 import scala.concurrent.duration._
-import _root_.Supplier._
+import scala.concurrent.ExecutionContext.Implicits.global
+import Supplier._
 
 /**
  * A supplier that builds products from parts that it receives from other suppliers.

@@ -36,7 +36,7 @@ class Storage(products: List[Product]) {
    *
    * @param parts The parts to remove from the storage
    * @return True, if all parts have been available and have been taken.
-   *         False, if at least one part was missing and not parts have been taken.
+   *         False, if at least one part was missing and no parts have been taken.
    */
   def take(parts: List[Product]): Boolean = {
     if(storage.values.forall(_ > 0)) {
