@@ -3,6 +3,10 @@ package controllers
 import play.api._
 import play.api.mvc._
 import models.Dataset
+import play.api.libs.iteratee.{Concurrent, Enumerator}
+import simulation.{Shipping, Simulation}
+import play.api.libs.Comet
+import play.api.libs.Comet.CometMessage
 
 object Application extends Controller {
 
@@ -30,6 +34,18 @@ object Application extends Controller {
   def delivery(id: String) = Action {
     val delivery = Dataset().deliveries.find(_.id == id).get
     Ok(views.html.deliveryView(delivery))
+  }
+
+  def deliveryStream = Action {
+    val (enumerator, channel) = Concurrent.broadcast[Shipping]
+
+    val listener = (shipping: Shipping) => channel.push(shipping)
+
+    Simulation.addListener(listener)
+
+    implicit val shippingMessage = CometMessage[Shipping](s => s"${s.sender.lat},${s.sender.lon},${s.receiver.lat},${s.receiver.lon}")
+
+    Ok.chunked(enumerator &> Comet(callback = "addDelivery"))
   }
 
 }

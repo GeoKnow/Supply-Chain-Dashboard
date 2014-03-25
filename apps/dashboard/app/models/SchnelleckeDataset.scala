@@ -12,9 +12,10 @@ class SchnelleckeDataset extends Dataset {
   private val model = ModelFactory.createDefaultModel()
 
   // Read data
-  model.read(new FileInputStream(new File("data/ontology.ttl")), null, "Turtle")
-  model.read(new FileInputStream(new File("data/avi_fbr.ttl")), null, "Turtle")
-  model.read(new FileInputStream(new File("data/coordinates.ttl")), null, "Turtle")
+  val dataDir = "dashboard/data/"
+  model.read(new FileInputStream(new File(dataDir + "ontology.ttl")), null, "Turtle")
+  model.read(new FileInputStream(new File(dataDir + "avi_fbr.ttl")), null, "Turtle")
+  model.read(new FileInputStream(new File(dataDir + "coordinates.ttl")), null, "Turtle")
   //TODO model should be closed
 
   // All known addresses

@@ -4,6 +4,7 @@ GET        /query                 controllers.Application.query
 GET        /map                   controllers.Application.map
 GET        /address/:id           controllers.Application.address(id)
 GET        /delivery/:id          controllers.Application.delivery(id)
+GET        /deliveryStream        controllers.Application.deliveryStream
 
 # REST API
 GET        /sparql                controllers.API.sparql(query)

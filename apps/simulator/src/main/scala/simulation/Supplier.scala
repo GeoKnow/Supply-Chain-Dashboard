@@ -1,3 +1,5 @@
+package simulation
+
 import akka.actor.{Actor, ActorRef}
 import akka.event.Logging
 import scala.collection.mutable
@@ -9,26 +11,29 @@ import Supplier._
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class Supplier(suppliers: Map[Product, ActorRef]) extends Actor {
-
-  val log = Logging(context.system, this)
+class Supplier(suppliers: Map[Product, ActorRef], coordinates: Coordinates) extends Actor {
 
   val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
 
-  val storage = new Storage(suppliers.keys.toList)
+  val delayProbability = Random.nextDouble() * 0.7
 
-  var orders = mutable.Queue[Order]()
+  private val storage = new Storage(suppliers.keys.toList)
+
+  private val orders = mutable.Queue[Order]()
+
+  private val log = Logging(context.system, this)
 
   def receive = {
     case OrderMsg(product, count: Int) =>
       log.info("Received order for " + product.name)
       orderParts(product, count)
-      orders.enqueue(Order(sender(), product, count))
+      orders.enqueue(Order(sender, product, count))
       tryProduce()
 
-    case ShippingMsg(product, count: Int) =>
+    case ShippingMsg(coords, product, count: Int) =>
       log.info("Received shipping of " + product.name)
       storage.put(product, count)
+      Simulation.addShipping(Shipping(coords, coordinates))
       tryProduce()
   }
 
@@ -41,7 +46,16 @@ class Supplier(suppliers: Map[Product, ActorRef]) extends Actor {
     for(order <- orders.headOption) {
       if(storage.take(order.product.parts)) {
         orders.dequeue()
-        context.system.scheduler.scheduleOnce(productionTime, order.sender, ShippingMsg(order.product, order.count))
+        // Determine production time
+        val time =
+          if(Random.nextBoolean())
+            productionTime
+          else {
+            log.info(s"Shipping of ${order.product.name} will be delayed.")
+            productionTime * 2
+          }
+        // Schedule shipping message
+        context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(coordinates, order.product, order.count))
       }
     }
   }
@@ -53,5 +67,5 @@ object Supplier {
 
   case class OrderMsg(product: Product, count: Int)
 
-  case class ShippingMsg(product: Product, count: Int)
+  case class ShippingMsg(sender: Coordinates, product: Product, count: Int)
 }

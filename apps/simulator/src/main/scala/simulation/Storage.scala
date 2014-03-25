@@ -1,3 +1,5 @@
+package simulation
+
 import scala.collection.mutable
 
 /**
