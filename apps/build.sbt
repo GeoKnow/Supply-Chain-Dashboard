@@ -4,10 +4,12 @@ version := "2.6.0-SNAPSHOT"
 
 play.Project.playScalaSettings
 
-lazy val simulator = project
+lazy val core = project
 
-lazy val dashboard = project dependsOn simulator
+lazy val simulator = project dependsOn core
 
-//lazy val root = project.in(file("."))
-//                       .aggregate(dashboard)
-//                       .dependsOn(dashboard)
+lazy val dashboard = project dependsOn core dependsOn simulator
+
+lazy val root = project.in(file("."))
+                .aggregate(dashboard)
+                .dependsOn(dashboard)

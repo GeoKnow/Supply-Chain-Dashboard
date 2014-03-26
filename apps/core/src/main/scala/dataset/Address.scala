@@ -1,4 +1,4 @@
-package models
+package dataset
 
 case class Address(uri: String, name: String, street: String, zipcode: String, city: String, country: String, latitude: Double, longitude: Double) {
 

@@ -9,10 +9,13 @@ function initialize() {
     zoom: 8,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
-  map = new google.maps.Map(document.getElementById("map-content"), mapOptions)
+  map = new google.maps.Map(document.getElementById("map-content"), mapOptions);
 
   // Draw addresses
-  showAddresses()
+  showAddresses();
+
+  // Stream deliveries
+  $('#deliveryStream').html('<iframe src="/deliveryStream"></iframe>');
 }
 
 function addAddress(id, title, latitude, longitude) {
@@ -26,6 +29,8 @@ function addAddress(id, title, latitude, longitude) {
 }
 
 function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
+  console.log("Adding delivery" + senderLat);
+
   var arrowIcon = {
     path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
   };
@@ -44,6 +49,7 @@ function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
   });
 
   google.maps.event.addListener(line, 'click', function(event) { selectDelivery(id) });
+  line.setMap(map);
   deliveryLines.push(line);
 }
 

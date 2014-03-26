@@ -37,7 +37,7 @@
           Content Types:
           <select id="contentFilter" onchange="showDeliveries(null, $(this).val())">
             <option value="all" selected="selected">all</option>
-            @for((content, count) <- Dataset().contentTypes.take(20)) {
+            @for((content, count) <- CurrentDataset().contentTypes.take(20)) {
               <option value="@content">@content (@count)</option>
             }
           </select>
@@ -63,7 +63,7 @@
       Click on element on map for details.
     </div>
   </div>
-  <iframe src="deliveryStream"></iframe>
+  <div id="deliveryStream"></div>
 }
 
 @main("Supply Chain Dashboard")(header)(content)

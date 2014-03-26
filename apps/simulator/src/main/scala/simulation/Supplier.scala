@@ -7,11 +7,14 @@ import scala.util.Random
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import Supplier._
+import dataset.{Delivery, Address}
+import java.util.{GregorianCalendar, Calendar, UUID}
+import javax.xml.datatype.DatatypeFactory
 
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class Supplier(suppliers: Map[Product, ActorRef], coordinates: Coordinates) extends Actor {
+class Supplier(suppliers: Map[Product, ActorRef], address: Address, simulation: Simulation) extends Actor {
 
   val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
 
@@ -30,10 +33,20 @@ class Supplier(suppliers: Map[Product, ActorRef], coordinates: Coordinates) exte
       orders.enqueue(Order(sender, product, count))
       tryProduce()
 
-    case ShippingMsg(coords, product, count: Int) =>
+    case ShippingMsg(sender, product, count: Int) =>
       log.info("Received shipping of " + product.name)
       storage.put(product, count)
-      Simulation.addShipping(Shipping(coords, coordinates))
+      simulation.addDelivery(
+        Delivery(
+          uri = UUID.randomUUID.toString,
+          date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
+          content = product.name,
+          count = count,
+          unloadingPoint = "",
+          sender = sender,
+          receiver = address
+        )
+      )
       tryProduce()
   }
 
@@ -55,7 +68,7 @@ class Supplier(suppliers: Map[Product, ActorRef], coordinates: Coordinates) exte
             productionTime * 2
           }
         // Schedule shipping message
-        context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(coordinates, order.product, order.count))
+        context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(address, order.product, order.count))
       }
     }
   }
@@ -67,5 +80,5 @@ object Supplier {
 
   case class OrderMsg(product: Product, count: Int)
 
-  case class ShippingMsg(sender: Coordinates, product: Product, count: Int)
+  case class ShippingMsg(sender: Address, product: Product, count: Int)
 }

@@ -1,6 +1,8 @@
 package simulation
 
-object Simulation extends App {
+import dataset.{Delivery, Address}
+
+class Simulation {
 
   val product =
     Product(
@@ -16,21 +18,18 @@ object Simulation extends App {
           ) :: Nil
     )
 
-  private var shippings = Seq[Shipping]()
+  private lazy val network = Network.build(product, this)
 
-  private var listeners = Seq[Shipping => Unit]()
+  @volatile
+  private var listeners = Seq[Delivery => Unit]()
 
-  start()
+  def suppliers: Seq[Address] = network.suppliers
 
-  def start() {
-    Network.build(product)
-  }
-
-  def addListener(listener: Shipping => Unit) {
+  def addListener(listener: Delivery => Unit) {
     listeners = listeners :+ listener
   }
 
-  def addShipping(shipping: Shipping) = {
+  def addDelivery(shipping: Delivery) = {
     for(listener <- listeners)
       listener(shipping)
   }

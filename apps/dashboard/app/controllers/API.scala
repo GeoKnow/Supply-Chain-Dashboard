@@ -2,8 +2,9 @@ package controllers
 
 import play.api.mvc.{Action, Controller}
 import com.hp.hpl.jena.query.ResultSetFormatter
-import models.{SourceMapDataset, SchnelleckeDataset, Dataset}
+import models._
 import play.api.Logger
+import scala.Some
 
 /**
  * The REST API.
@@ -12,7 +13,7 @@ object API extends Controller {
 
   def sparql(query: String) = Action { implicit request =>
     Logger.info("Received query:\n" + query)
-    val resultSet = Dataset().query(query)
+    val resultSet = CurrentDataset().query(query)
     val resultXML = ResultSetFormatter.asXMLString(resultSet)
 
     render {
@@ -27,7 +28,7 @@ object API extends Controller {
   }
 
   def addresses() = Action {
-    val addresses = Dataset().addresses
+    val addresses = CurrentDataset().addresses
     Ok(views.html.addresses(addresses))
   }
 
@@ -35,11 +36,11 @@ object API extends Controller {
     // Retrieve deliveries
     val deliveries = addressId match {
       // Address provided => Only return deliveries that depart or arrive at the specified address
-      case Some(id) => Dataset().deliveries.filter(d => d.sender.id == id || d.receiver.id == id)
+      case Some(id) => CurrentDataset().deliveries.filter(d => d.sender.id == id || d.receiver.id == id)
       // No address provided => Check if contentType is provided
       case None => contentType match {
-        case Some(content) => Dataset().deliveries.filter(_.content == content)
-        case None => Dataset().deliveries
+        case Some(content) => CurrentDataset().deliveries.filter(_.content == content)
+        case None => CurrentDataset().deliveries
       }
     }
 
@@ -47,12 +48,12 @@ object API extends Controller {
   }
 
   def loadSchnelleckeDataset() = Action {
-    Dataset() = new SchnelleckeDataset()
+    CurrentDataset() = new SchnelleckeDataset()
     Ok
   }
 
   def loadSourceMapDataset(id: Int) = Action {
-    Dataset() = new SourceMapDataset(id)
+    CurrentDataset() = new SourceMapDataset(id)
     Ok
   }
 

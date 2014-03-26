@@ -3,6 +3,7 @@ package models
 import play.api.libs.json.{Json, JsString, JsNumber, JsArray}
 import scala.io.Source
 import com.hp.hpl.jena.query.ResultSet
+import dataset.{Delivery, Address, Dataset}
 
 class SourceMapDataset(id: Int) extends Dataset {
 

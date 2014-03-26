@@ -1,4 +1,4 @@
-@(addresses: Seq[Address])
+@(addresses: Seq[dataset.Address])
 
 @for(address <- addresses) {
   addAddress('@address.id', '@address.uri', @address.latitude, @address.longitude);

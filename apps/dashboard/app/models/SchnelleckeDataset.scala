@@ -3,8 +3,9 @@ package models
 import com.hp.hpl.jena.rdf.model.ModelFactory
 import java.io.{File, FileInputStream}
 import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
-import play.api.Logger
 import scala.collection.JavaConversions._
+import java.util.logging.Logger
+import dataset.{Address, Delivery, Dataset}
 
 class SchnelleckeDataset extends Dataset {
 
@@ -23,6 +24,8 @@ class SchnelleckeDataset extends Dataset {
 
   // All deliveries
   val deliveries = retrieveDeliveries()
+
+  private val log = Logger.getLogger(getClass.getName)
 
   /**
    * Executes a SPARQL select query.
@@ -128,7 +131,7 @@ class SchnelleckeDataset extends Dataset {
       case Some(identifier) => query(queryStr.replaceAll("\\?delivery", s"<http://geoknow.eu/wp5/message/$identifier>")).toSeq
       case None => query(queryStr).toSeq
     }
-    Logger.info(s"Retrieved ${resultSet.size} deliveries.")
+    log.info(s"Retrieved ${resultSet.size} deliveries.")
 
     // Extract result
     for(result <- resultSet) yield {

@@ -1,13 +1,11 @@
 package scripts
 
-import models.Dataset
-import com.hp.hpl.jena.query.ResultSetFormatter
-import java.io.{BufferedWriter, Writer, FileWriter, FileOutputStream}
-import com.hp.hpl.jena.rdf.model.{Statement, ModelFactory}
+import java.io.{BufferedWriter, FileWriter}
+import com.hp.hpl.jena.rdf.model.Statement
 import java.net.{URL, URLEncoder}
-import scala.io.Source
 import scala.collection.JavaConversions._
 import scala.xml.XML
+import models.CurrentDataset
 
 /**
  * A script that reads all addresses from the data set and
@@ -64,7 +62,7 @@ object Geocode {
    */
   private def retrieveAddresses(): Seq[Address] = {
     // Query dataset
-    val resultSet = Dataset().query(
+    val resultSet = CurrentDataset().query(
       """
         PREFIX ex: <http://geoknow.eu/wp5/ontology#>
         SELECT ?actor ?street ?postalcode ?city ?country WHERE {

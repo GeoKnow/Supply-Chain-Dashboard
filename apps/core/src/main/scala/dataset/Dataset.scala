@@ -1,4 +1,4 @@
-package models
+package dataset
 
 import com.hp.hpl.jena.query.ResultSet
 
@@ -13,26 +13,10 @@ trait Dataset {
 
   def query(queryStr: String): ResultSet
 
+  def addListener(listener: Delivery => Unit): Unit = {}
+
   def contentTypes = {
     deliveries.groupBy(_.content).mapValues(_.size).filter(_._1 != "").toList.sortBy(-_._2)
   }
 
-}
-
-object Dataset {
-
-  @volatile
-  private var current: Dataset = new SchnelleckeDataset()
-
-  /**
-   * Gets the current dataset.
-   */
-  def apply(): Dataset = current
-
-  /**
-   * Updates the current dateset.
-   */
-  def update(dataset: Dataset) {
-    current = dataset
-  }
 }
