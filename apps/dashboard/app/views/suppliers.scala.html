@@ -1,0 +1,5 @@
+@(suppliers: Seq[dataset.Supplier])
+
+@for(supplier <- suppliers) {
+  addSupplier('@supplier.id', '@supplier.uri', @supplier.coords.lat, @supplier.coords.lon);
+}

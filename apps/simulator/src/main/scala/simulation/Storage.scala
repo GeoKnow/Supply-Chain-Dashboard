@@ -7,9 +7,9 @@ import scala.collection.mutable
  *
  * @param products The type of products that are stored.
  */
-class Storage(products: List[Product]) {
+class Storage(products: List[dataset.Product]) {
 
-  private val storage = mutable.Map[Product, Int]()
+  private val storage = mutable.Map[dataset.Product, Int]()
   for(product <- products)
     storage(product) = 0
 
@@ -19,7 +19,7 @@ class Storage(products: List[Product]) {
    * @param product The product.
    * @param count The number of products to add to the storage.
    */
-  def put(product: Product, count: Int): Unit = {
+  def put(product: dataset.Product, count: Int): Unit = {
     storage(product) += count
   }
 
@@ -29,7 +29,7 @@ class Storage(products: List[Product]) {
    * @param product The Product.
    * @return The number of available units.
    */
-  def ask(product: Product): Int = {
+  def ask(product: dataset.Product): Int = {
     storage(product)
   }
 
@@ -40,7 +40,7 @@ class Storage(products: List[Product]) {
    * @return True, if all parts have been available and have been taken.
    *         False, if at least one part was missing and no parts have been taken.
    */
-  def take(parts: List[Product]): Boolean = {
+  def take(parts: List[dataset.Product]): Boolean = {
     if(storage.values.forall(_ > 0)) {
       for(part <- parts)
         storage(part) -= part.count

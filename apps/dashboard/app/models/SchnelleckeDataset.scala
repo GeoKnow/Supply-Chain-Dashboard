@@ -5,7 +5,11 @@ import java.io.{File, FileInputStream}
 import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
 import scala.collection.JavaConversions._
 import java.util.logging.Logger
-import dataset.{Address, Delivery, Dataset}
+import dataset._
+import dataset.Supplier
+import scala.Some
+import dataset.Connection
+import dataset.Address
 
 class SchnelleckeDataset extends Dataset {
 
@@ -19,8 +23,8 @@ class SchnelleckeDataset extends Dataset {
   model.read(new FileInputStream(new File(dataDir + "coordinates.ttl")), null, "Turtle")
   //TODO model should be closed
 
-  // All known addresses
-  val addresses = retrieveAddresses()
+  // All known suppliers
+  val suppliers = retrieveSuppliers()
 
   // All deliveries
   val deliveries = retrieveDeliveries()
@@ -38,7 +42,7 @@ class SchnelleckeDataset extends Dataset {
   /**
    * Retrieves a delivery by id.
    */
-  private def retrieveDelivery(id: String): Delivery = queryDeliveries(Some(id)) match {
+  private def retrieveDelivery(id: String): Connection = queryDeliveries(Some(id)) match {
     case Seq(delivery) => delivery
     case _ => throw new Exception(s"Delivery with the ID $id not found.")
   }
@@ -46,12 +50,12 @@ class SchnelleckeDataset extends Dataset {
   /**
    * Retrieves all deliveries.
    */
-  private def retrieveDeliveries(): Seq[Delivery] = queryDeliveries(None)
+  private def retrieveDeliveries(): Seq[Connection] = queryDeliveries(None)
 
   /**
    * Retrieves all addresses.
    */
-  private def retrieveAddresses(): Seq[Address] = {
+  private def retrieveSuppliers(): Seq[Supplier] = {
     // Build query string
     val queryStr =
       """
@@ -74,15 +78,18 @@ class SchnelleckeDataset extends Dataset {
 
     // Extract result
     for(result <- resultSet) yield {
-      Address(
+      Supplier(
         uri = result.getResource("sender").getURI,
         name = result.getLiteral("name").getString,
-        street = result.getLiteral("street").getString,
-        zipcode = result.getLiteral("zipcode").getString,
-        city = result.getLiteral("city").getString,
-        country = result.getLiteral("country").getString,
-        latitude = result.getLiteral("lat").getDouble,
-        longitude = result.getLiteral("lon").getDouble
+        Address(
+          street = result.getLiteral("street").getString,
+          zipcode = result.getLiteral("zipcode").getString,
+          city = result.getLiteral("city").getString,
+          country = result.getLiteral("country").getString),
+        Coordinates(
+          lat = result.getLiteral("lat").getDouble,
+          lon = result.getLiteral("lon").getDouble),
+        Product("")
       )
     }
   }
@@ -93,7 +100,7 @@ class SchnelleckeDataset extends Dataset {
    *
    * @param id If provided, only queries for the delivery with the given id. Otherwise, all deliveries are returned.
    */
-  private def queryDeliveries(id: Option[String]): Seq[Delivery] = {
+  private def queryDeliveries(id: Option[String]): Seq[Connection] = {
     // Build query string
     val queryStr =
       """
@@ -135,36 +142,46 @@ class SchnelleckeDataset extends Dataset {
 
     // Extract result
     for(result <- resultSet) yield {
-      Delivery(
+      Connection(
         uri = id match {
           case Some(identifier) => s"http://geoknow.eu/wp5/message/$identifier"
           case None => result.getResource("delivery").getURI
         },
-        date = result.getLiteral("date").getString,
-        content = result.getLiteral("content").getString,
-        count = result.getLiteral("count").getInt,
-        unloadingPoint = result.getLiteral("unloadingPoint").getString,
+        //date = result.getLiteral("date").getString,
+        content = Product(result.getLiteral("content").getString),
+        //count = result.getLiteral("count").getInt,
+        //unloadingPoint = result.getLiteral("unloadingPoint").getString,
         sender =
-            Address(
+            Supplier(
               uri = result.getResource("sender").getURI,
               name = result.getLiteral("sname").getString,
-              street = result.getLiteral("sstreet").getString,
-              zipcode = result.getLiteral("szipcode").getString,
-              city = result.getLiteral("scity").getString,
-              country = result.getLiteral("scountry").getString,
-              latitude = result.getLiteral("slat").getDouble,
-              longitude = result.getLiteral("slon").getDouble
+              Address(
+                street = result.getLiteral("sstreet").getString,
+                zipcode = result.getLiteral("szipcode").getString,
+                city = result.getLiteral("scity").getString,
+                country = result.getLiteral("scountry").getString
+              ),
+              Coordinates(
+                lat = result.getLiteral("slat").getDouble,
+                lon = result.getLiteral("slon").getDouble
+              ),
+              Product("")
             ),
         receiver =
-            Address(
+            Supplier(
               uri = result.getResource("receiver").getURI,
               name = result.getLiteral("rname").getString,
-              street = result.getLiteral("rstreet").getString,
-              zipcode = result.getLiteral("rzipcode").getString,
-              city = result.getLiteral("rcity").getString,
-              country = result.getLiteral("rcountry").getString,
-              latitude = result.getLiteral("rlat").getDouble,
-              longitude = result.getLiteral("rlon").getDouble
+              Address(
+                street = result.getLiteral("rstreet").getString,
+                zipcode = result.getLiteral("rzipcode").getString,
+                city = result.getLiteral("rcity").getString,
+                country = result.getLiteral("rcountry").getString
+              ),
+              Coordinates(
+                lat = result.getLiteral("rlat").getDouble,
+                lon = result.getLiteral("rlon").getDouble
+              ),
+              Product("")
             )
       )
     }

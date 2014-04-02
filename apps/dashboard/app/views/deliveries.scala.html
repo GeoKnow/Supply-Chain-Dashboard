@@ -1,4 +1,4 @@
-@(deliveries: Seq[dataset.Delivery])
+@(deliveries: Seq[dataset.Connection])
 
 @* Don't load more than 300 deliveries at once. *@
 @if(deliveries.size > 300) {
@@ -6,6 +6,6 @@
 }
 
 @for(delivery <- deliveries.take(300)) {
-  addDelivery('@delivery.id', @delivery.sender.latitude, @delivery.sender.longitude,
-              @delivery.receiver.latitude, @delivery.receiver.longitude);
+  addDelivery('@delivery.id', @delivery.sender.coords.lat, @delivery.sender.coords.lon,
+              @delivery.receiver.coords.lat, @delivery.receiver.coords.lon);
 }

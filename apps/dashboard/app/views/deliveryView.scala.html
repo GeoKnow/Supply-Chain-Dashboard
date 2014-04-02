@@ -1,30 +1,26 @@
-@(delivery: dataset.Delivery)
+@(connection: dataset.Connection)
 
 <h2>Delivery</h2>
 
 <table>
   <tr>
     <td><b>Date</b></td>
-    <td>@delivery.date</td>
+    <td>connection.date</td>
   </tr>
   <tr>
     <td><b>Content</b></td>
-    <td>@delivery.content</td>
+    <td>@connection.content.name</td>
   </tr>
   <tr>
     <td><b>Count</b></td>
-    <td>@delivery.count</td>
-  </tr>
-  <tr>
-    <td><b>Unloading Point</b></td>
-    <td>@delivery.unloadingPoint</td>
+    <td>@connection.content.count</td>
   </tr>
 </table>
 
 <h2>Sender</h2>
 
-@addressView(delivery.sender)
+@supplierView(connection.sender)
 
 <h2>Receiver</h2>
 
-@addressView(delivery.receiver)
+@supplierView(connection.receiver)

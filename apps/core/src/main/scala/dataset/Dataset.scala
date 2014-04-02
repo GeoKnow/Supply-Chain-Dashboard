@@ -7,13 +7,13 @@ import com.hp.hpl.jena.query.ResultSet
  */
 trait Dataset {
 
-  def addresses: Seq[Address]
+  def suppliers: Seq[Supplier]
 
-  def deliveries: Seq[Delivery]
+  def deliveries: Seq[Connection]
 
   def query(queryStr: String): ResultSet
 
-  def addListener(listener: Delivery => Unit): Unit = {}
+  def addListener(listener: Shipping => Unit): Unit = {}
 
   def contentTypes = {
     deliveries.groupBy(_.content).mapValues(_.size).filter(_._1 != "").toList.sortBy(-_._2)

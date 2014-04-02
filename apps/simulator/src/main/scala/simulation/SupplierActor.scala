@@ -6,53 +6,51 @@ import scala.collection.mutable
 import scala.util.Random
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import Supplier._
-import dataset.{Delivery, Address}
-import java.util.{GregorianCalendar, Calendar, UUID}
+import SupplierActor._
+import dataset.{Shipping, Supplier, Connection}
+import java.util.{GregorianCalendar, UUID}
 import javax.xml.datatype.DatatypeFactory
 
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class Supplier(suppliers: Map[Product, ActorRef], address: Address, simulation: Simulation) extends Actor {
+class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
 
   val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
 
   val delayProbability = Random.nextDouble() * 0.7
 
-  private val storage = new Storage(suppliers.keys.toList)
+  private val storage = new Storage(supplier.product.parts)
 
   private val orders = mutable.Queue[Order]()
 
   private val log = Logging(context.system, this)
 
   def receive = {
-    case OrderMsg(product, count: Int) =>
-      log.info("Received order for " + product.name)
-      orderParts(product, count)
-      orders.enqueue(Order(sender, product, count))
+    case OrderMsg(count) =>
+      log.info("Received order for " + supplier.product.name)
+      orderParts(count)
+      orders.enqueue(Order(sender, supplier.product, count))
       tryProduce()
 
-    case ShippingMsg(sender, product, count: Int) =>
-      log.info("Received shipping of " + product.name)
-      storage.put(product, count)
-      simulation.addDelivery(
-        Delivery(
+    case ShippingMsg(connection, count) =>
+      log.info("Received shipping of " + connection.content.name)
+      storage.put(connection.content, count)
+      simulation.addShipping(
+        Shipping(
           uri = UUID.randomUUID.toString,
           date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
-          content = product.name,
           count = count,
-          unloadingPoint = "",
-          sender = sender,
-          receiver = address
+          connection = connection
         )
       )
       tryProduce()
   }
 
-  private def orderParts(product: Product, count: Int): Unit = {
-    for(part <- product.parts)
-      suppliers(part) ! OrderMsg(part, count * part.count)
+  private def orderParts(count: Int): Unit = {
+    val incomingConnections = simulation.connections.filter(_.receiver == supplier)
+    for(connection <- incomingConnections)
+      simulation.getActor(connection.sender) ! OrderMsg(connection.content.count * count)
   }
 
   private def tryProduce(): Unit = {
@@ -68,17 +66,18 @@ class Supplier(suppliers: Map[Product, ActorRef], address: Address, simulation: 
             productionTime * 2
           }
         // Schedule shipping message
-        context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(address, order.product, order.count))
+        val connection = simulation.connections.find(_.sender != supplier).get
+        context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(connection, order.count))
       }
     }
   }
 }
 
-object Supplier {
+object SupplierActor {
 
-  case class Order(sender: ActorRef, product: Product, count: Int)
+  case class Order(sender: ActorRef, product: dataset.Product, count: Int)
 
-  case class OrderMsg(product: Product, count: Int)
+  case class OrderMsg(count: Int)
 
-  case class ShippingMsg(sender: Address, product: Product, count: Int)
+  case class ShippingMsg(connection: Connection, count: Int)
 }

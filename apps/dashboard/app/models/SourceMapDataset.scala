@@ -3,11 +3,17 @@ package models
 import play.api.libs.json.{Json, JsString, JsNumber, JsArray}
 import scala.io.Source
 import com.hp.hpl.jena.query.ResultSet
-import dataset.{Delivery, Address, Dataset}
+import dataset._
+import play.api.libs.json.JsArray
+import dataset.Supplier
+import play.api.libs.json.JsString
+import dataset.Connection
+import play.api.libs.json.JsNumber
+import dataset.Address
 
 class SourceMapDataset(id: Int) extends Dataset {
 
-  lazy val (addresses, deliveries) = load()
+  lazy val (suppliers, deliveries) = load()
 
   def query(queryStr: String): ResultSet = throw new UnsupportedOperationException()
 
@@ -15,7 +21,7 @@ class SourceMapDataset(id: Int) extends Dataset {
     // Retrieve supply chain data
     val result = retrieveJson(s"http://free.sourcemap.com/services/supplychains/$id")
 
-    val addresses =
+    val suppliers =
       for(stop <- (result \ "supplychain" \ "stops").as[JsArray].value) yield {
         // Get properties
         val id = (stop \ "id").as[JsNumber].value.toString
@@ -26,24 +32,24 @@ class SourceMapDataset(id: Int) extends Dataset {
         val coordinates = coordinatesStr.stripPrefix("POINT(").stripSuffix(")").split(' ').map(_.toDouble)
         val (lat, lon) = meters2degrees(coordinates(0), coordinates(1))
 
-        // Return address
-        Address(id, name, "", "", "", "", lat, lon)
+        // Create Supplier
+        Supplier(id, name, Address("", "", "", ""), Coordinates(lat, lon), Product(""))
       }
 
-    val addressMap = addresses.groupBy(_.id).mapValues(_.head)
+    val supplierMap = suppliers.groupBy(_.id).mapValues(_.head)
 
     val deliveries =
       for((hop, index) <- (result \ "supplychain" \ "hops").as[JsArray].value.zipWithIndex) yield {
         val senderId = (hop \ "from_stop_id").as[JsNumber].value.toString
         val receiverId = (hop \ "to_stop_id").as[JsNumber].value.toString
 
-        val sender = addressMap(senderId)
-        val receiver = addressMap(receiverId)
+        val sender = supplierMap(senderId)
+        val receiver = supplierMap(receiverId)
 
-        Delivery(index.toString, "", "", 0, "", sender, receiver)
+        Connection(index.toString, Product(""), sender, receiver)
       }
 
-    (addresses, deliveries)
+    (suppliers, deliveries)
   }
 
   /**

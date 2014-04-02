@@ -2,14 +2,14 @@
 GET        /                      controllers.Application.index
 GET        /query                 controllers.Application.query
 GET        /map                   controllers.Application.map
-GET        /address/:id           controllers.Application.address(id)
+GET        /supplier/:id          controllers.Application.supplier(id)
 GET        /delivery/:id          controllers.Application.delivery(id)
 GET        /deliveryStream        controllers.Application.deliveryStream
 
 # REST API
 GET        /sparql                controllers.API.sparql(query)
-GET        /map/addresses         controllers.API.addresses()
-GET        /map/deliveries        controllers.API.deliveries(addressId: Option[String], contentType: Option[String])
+GET        /map/suppliers         controllers.API.suppliers()
+GET        /map/deliveries        controllers.API.deliveries(supplierId: Option[String], contentType: Option[String])
 
 POST       /dataset/schnellecke   controllers.API.loadSchnelleckeDataset()
 POST       /dataset/sourcemap/:id controllers.API.loadSourceMapDataset(id: Int)

@@ -1,6 +1,10 @@
 package simulation
 
-import dataset.{Delivery, Address}
+import dataset._
+import akka.actor.ActorSystem
+import scala.Product
+import dataset.Supplier
+import dataset.Shipping
 
 class Simulation {
 
@@ -18,19 +22,26 @@ class Simulation {
           ) :: Nil
     )
 
-  private lazy val network = Network.build(product, this)
+  private[simulation] val system = ActorSystem("system")
+
+  private val network = Network.build(product, this)
+  network.start(this)
 
   @volatile
-  private var listeners = Seq[Delivery => Unit]()
+  private var listeners = Seq[Shipping => Unit]()
 
-  def suppliers: Seq[Address] = network.suppliers
+  def suppliers: Seq[Supplier] = network.suppliers
 
-  def addListener(listener: Delivery => Unit) {
+  def connections: Seq[Connection] = network.connections
+
+  def addListener(listener: Shipping => Unit) {
     listeners = listeners :+ listener
   }
 
-  def addDelivery(shipping: Delivery) = {
+  def addShipping(shipping: Shipping) = {
     for(listener <- listeners)
       listener(shipping)
   }
+
+  def getActor(supplier: Supplier) = system.actorSelection(supplier.uri)
 }

@@ -1,32 +1,32 @@
-@(address: dataset.Address)
+@(supplier: dataset.Supplier)
 
 <table>
   <tr>
     <td><b>Name</b></td>
-    <td>@address.name</td>
+    <td>@supplier.name</td>
   </tr>
   <tr>
     <td><b>Street</b></td>
-    <td>@address.street</td>
+    <td>@supplier.address.street</td>
   </tr>
   <tr>
     <td><b>Zipcode</b></td>
-    <td>@address.zipcode</td>
+    <td>@supplier.address.zipcode</td>
   </tr>
   <tr>
     <td><b>City</b></td>
-    <td>@address.city</td>
+    <td>@supplier.address.city</td>
   </tr>
   <tr>
     <td><b>Country</b></td>
-    <td>@address.country</td>
+    <td>@supplier.address.country</td>
   </tr>
   <tr>
     <td><b>Latitude</b></td>
-    <td>@address.latitude</td>
+    <td>@supplier.coords.lat</td>
   </tr>
   <tr>
     <td><b>Longitude</b></td>
-    <td>@address.longitude</td>
+    <td>@supplier.coords.lon</td>
   </tr>
 </table>

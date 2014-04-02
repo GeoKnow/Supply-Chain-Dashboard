@@ -3,11 +3,10 @@ package controllers
 import play.api.mvc._
 import models.CurrentDataset
 import play.api.libs.iteratee.Concurrent
-import simulation.Shipping
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
 import scala.util.Random
-import dataset.Delivery
+import dataset.{Shipping, Connection}
 
 object Application extends Controller {
 
@@ -27,9 +26,9 @@ object Application extends Controller {
     Ok(views.html.map())
   }
 
-  def address(id: String) = Action {
-    val address = CurrentDataset().addresses.find(_.id == id).get
-    Ok(views.html.addressView(address))
+  def supplier(id: String) = Action {
+    val address = CurrentDataset().suppliers.find(_.id == id).get
+    Ok(views.html.supplierView(address))
   }
 
   def delivery(id: String) = Action {
@@ -38,15 +37,16 @@ object Application extends Controller {
   }
 
   def deliveryStream = Action {
-    val (enumerator, channel) = Concurrent.broadcast[Delivery]
+    val (enumerator, channel) = Concurrent.broadcast[Shipping]
 
-    val listener = (delivery: Delivery) => channel.push(delivery)
+    val listener = (delivery: Shipping) => channel.push(delivery)
 
     CurrentDataset().addListener(listener)
 
-    implicit val deliveryMessage = CometMessage[Delivery](d => s"'${d.id}', ${d.sender.latitude},${d.sender.longitude},${d.receiver.latitude},${d.receiver.longitude}")
+    //implicit val deliveryMessage = CometMessage[Shipping](d => s"'${d.id}', ${d.sender.coords.lat},${d.sender.coords.lon},${d.receiver.coords.lat},${d.receiver.coords.lon}")
 
-    Ok.chunked(enumerator &> Comet(callback = "parent.addDelivery"))
+    //Ok.chunked(enumerator &> Comet(callback = "parent.addShipping"))
+    Ok
   }
 
 }

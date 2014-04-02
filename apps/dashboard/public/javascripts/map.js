@@ -1,5 +1,5 @@
 var map = null; // Set during initialization
-var addressMarkers = [];
+var supplierMarkers = [];
 var deliveryLines = [];
 
 function initialize() {
@@ -12,20 +12,20 @@ function initialize() {
   map = new google.maps.Map(document.getElementById("map-content"), mapOptions);
 
   // Draw addresses
-  showAddresses();
+  showSuppliers();
 
   // Stream deliveries
   $('#deliveryStream').html('<iframe src="/deliveryStream"></iframe>');
 }
 
-function addAddress(id, title, latitude, longitude) {
+function addSupplier(id, title, latitude, longitude) {
   var marker = new google.maps.Marker({
     position: new google.maps.LatLng(latitude, longitude),
     title: title
   });
 
-  google.maps.event.addListener(marker, 'click', function(event) { selectAddress(id) });
-  addressMarkers.push(marker);
+  google.maps.event.addListener(marker, 'click', function(event) { selectSupplier(id) });
+  supplierMarkers.push(marker);
 }
 
 function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
@@ -53,25 +53,25 @@ function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
   deliveryLines.push(line);
 }
 
-function hideAddresses() {
-  if (typeof addressMarkers !== 'undefined') {
-    for (var i = 0; i < addressMarkers.length; i++) {
-      addressMarkers[i].setMap(null)
+function hideSuppliers() {
+  if (typeof supplierMarkers !== 'undefined') {
+    for (var i = 0; i < supplierMarkers.length; i++) {
+      supplierMarkers[i].setMap(null)
     }
-    addressMarkers = []
+    supplierMarkers = []
   }
 }
 
-function showAddresses() {
-  $.get("/map/addresses", function(data) {
+function showSuppliers() {
+  $.get("/map/suppliers", function(data) {
     // Remove existing address markers
-    hideAddresses();
+    hideSuppliers();
     // Load new address markers
     jQuery.globalEval(data);
     // Add all address markers to the map
-    for (var i = 0; i < addressMarkers.length; i++) {
+    for (var i = 0; i < supplierMarkers.length; i++) {
       //google.maps.event.addListener(addressMarkers[i], 'click', function(event) { showDeliveries(address.id) })
-      addressMarkers[i].setMap(map);
+      supplierMarkers[i].setMap(map);
     }
   });
 }
@@ -85,10 +85,10 @@ function hideDeliveries() {
   }
 }
 
-function showDeliveries(addressId, contentType) {
+function showDeliveries(supplierId, contentType) {
   var uri = "/map/deliveries";
-  if(addressId)
-    uri += "?addressId=" + addressId;
+  if(supplierId)
+    uri += "?supplierId=" + supplierId;
   if(contentType && contentType != "all")
     uri += "?contentType=" + contentType;
 
@@ -104,9 +104,9 @@ function showDeliveries(addressId, contentType) {
   });
 }
 
-function selectAddress(addressId) {
+function selectSupplier(addressId) {
   showDeliveries(addressId)
-  $.get("/address/" + addressId, function(data) {
+  $.get("/supplier/" + addressId, function(data) {
     $('#property-content' ).html(data)
   })
 }

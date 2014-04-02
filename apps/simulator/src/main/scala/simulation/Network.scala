@@ -2,53 +2,48 @@ package simulation
 
 
 import scala.util.Random
-import Supplier.{OrderMsg, ShippingMsg}
+import SupplierActor.{OrderMsg, ShippingMsg}
 import akka.actor.{Actor, ActorSystem, Props, ActorRef}
 import akka.event.Logging
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import dataset.Address
+import dataset._
 import java.util.UUID
+import simulation.SupplierActor.OrderMsg
+import dataset.Connection
+import dataset.Coordinates
+import dataset.Supplier
+import dataset.Address
 
-class Network(actor: ActorRef, val suppliers: Seq[Address]) {
+class Network(val actor: ActorRef, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
+  def start(simulation: Simulation) {
+    simulation.system.scheduler.schedule(1 seconds, 60 seconds, actor, OrderMsg(1))
+  }
 }
 
 object Network {
 
-  private val system = ActorSystem("system")
+  val random = new Random(0)
 
-  def build(product: Product, simulation: Simulation): Network = {
-    val (supplier, addresses) = buildNetwork(product, simulation)
-    val consumer = system.actorOf(Props(classOf[Consumer], product, supplier), "Consumer")
-    new Network(consumer, addresses)
+  def build(product: dataset.Product, simulation: Simulation): Network = {
+    val endProduct = Product("End Product", 1, product :: Nil)
+    val suppliers = for(part <- endProduct :: endProduct.partList) yield generateSupplier(part)
+    val connections = new SimpleNetworkBuilder(suppliers).apply(endProduct)
+    val actors = for(supplier <- suppliers) yield createActor(supplier, simulation)
+
+    new Network(actors.head, suppliers, connections)
   }
 
-  def buildNetwork(product: Product, simulation: Simulation): (ActorRef, Seq[Address]) = {
-    val suppliers = for(part <- product.parts) yield buildNetwork(part, simulation)
-    val supplierMap = (product.parts zip suppliers.map(_._1)).toMap
-    val coordinates = generateAddress(product)
-    val actor = system.actorOf(Props(classOf[Supplier], supplierMap, coordinates, simulation), product.name + "_Supplier")
-    (actor, suppliers.flatMap(_._2) :+ coordinates)
+  def createActor(supplier: Supplier, simulation: Simulation): ActorRef = {
+    simulation.system.actorOf(Props(classOf[SupplierActor], supplier, simulation), supplier.uri)
   }
 
-  def generateAddress(product: Product) = {
-    val lat = 47 + 7 * Random.nextDouble()
-    val lon = 6 + 9 * Random.nextDouble()
-    Address(UUID.randomUUID.toString, product.name + " Supplier", "", "", "", "", lat, lon)
-  }
-
-  private class Consumer(product: Product, supplier: ActorRef) extends Actor {
-
-    val log = Logging(context.system, this)
-
-    override def preStart() {
-      context.system.scheduler.schedule(1 seconds, 60 seconds, supplier, OrderMsg(product, 1))
-    }
-
-    def receive = {
-      case ShippingMsg(coords, shippedProduct, count) =>
-        log.info(s"Produced $count ${shippedProduct.name}(s)")
-    }
+  def generateSupplier(product: dataset.Product) = {
+    val lat = 47 + 7 * random.nextDouble()
+    val lon = 6 + 9 * random.nextDouble()
+    val coordinates = Coordinates(lat, lon)
+    val address = Address("", "", "", "")
+    Supplier(UUID.randomUUID.toString, product.name + " Supplier", address, coordinates, product)
   }
 }

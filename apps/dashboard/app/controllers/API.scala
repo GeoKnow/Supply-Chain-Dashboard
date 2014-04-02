@@ -27,9 +27,9 @@ object API extends Controller {
     }
   }
 
-  def addresses() = Action {
-    val addresses = CurrentDataset().addresses
-    Ok(views.html.addresses(addresses))
+  def suppliers() = Action {
+    val suppliers = CurrentDataset().suppliers
+    Ok(views.html.suppliers(suppliers))
   }
 
   def deliveries(addressId: Option[String], contentType: Option[String]) = Action {
