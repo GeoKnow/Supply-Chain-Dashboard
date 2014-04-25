@@ -43,5 +43,5 @@ class Simulation {
       listener(shipping)
   }
 
-  def getActor(supplier: Supplier) = system.actorSelection(supplier.uri)
+  def getActor(supplier: Supplier) = system.actorSelection("/user/" + supplier.uri)
 }

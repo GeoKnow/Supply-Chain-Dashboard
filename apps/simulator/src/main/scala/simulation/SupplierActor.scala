@@ -28,7 +28,6 @@ class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
 
   def receive = {
     case OrderMsg(count) =>
-      log.info("Received order for " + supplier.product.name)
       orderParts(count)
       orders.enqueue(Order(sender, supplier.product, count))
       tryProduce()
@@ -66,8 +65,8 @@ class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
             productionTime * 2
           }
         // Schedule shipping message
-        val connection = simulation.connections.find(_.sender != supplier).get
-        context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(connection, order.count))
+        for(connection <- simulation.connections.find(_.sender == supplier))
+          context.system.scheduler.scheduleOnce(time, order.sender, ShippingMsg(connection, order.count))
       }
     }
   }

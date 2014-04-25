@@ -1,6 +1,7 @@
 var map = null; // Set during initialization
 var supplierMarkers = [];
 var deliveryLines = [];
+var deliveryMap = [];
 
 function initialize() {
   // Initialize map
@@ -29,8 +30,6 @@ function addSupplier(id, title, latitude, longitude) {
 }
 
 function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
-  console.log("Adding delivery" + senderLat);
-
   var arrowIcon = {
     path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
   };
@@ -51,6 +50,17 @@ function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
   google.maps.event.addListener(line, 'click', function(event) { selectDelivery(id) });
   line.setMap(map);
   deliveryLines.push(line);
+  deliveryMap[id] = line;
+  console.log("Added connection: " + id);
+}
+
+function addOrder(connectionId) {
+
+}
+
+function addShipping(connectionId) {
+  console.log("Received shipping " + connectionId + " | " + deliveryMap[connectionId]);
+  deliveryMap[connectionId].setOptions(new google.maps.PolylineOptions({ strokeColor: '#FF0000' }));
 }
 
 function hideSuppliers() {

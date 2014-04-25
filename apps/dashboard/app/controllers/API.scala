@@ -5,6 +5,8 @@ import com.hp.hpl.jena.query.ResultSetFormatter
 import models._
 import play.api.Logger
 import scala.Some
+import dataset.Namespaces
+import java.io.StringWriter
 
 /**
  * The REST API.
@@ -23,6 +25,56 @@ object API extends Controller {
       }
       case _ => {
         Ok(resultXML).as("application/sparql-results+xml")
+      }
+    }
+  }
+
+  /**
+   *
+   * @param id
+   * @param format One of: "HTML", "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL"
+   * @return
+   */
+  def supplier(id: String, format: Option[String]) = Action { implicit request =>
+    val address = CurrentDataset().suppliers.find(_.id == id).get
+
+    render {
+      case _ if format.exists(_.toLowerCase == "html") => {
+        Ok(views.html.supplierView(address))
+      }
+      case Accepts.Html() if format.isEmpty => {
+        Ok(views.html.supplierView(address))
+      }
+      case _ => {
+        val model = CurrentDataset().describe(s"DESCRIBE <${Namespaces.supplier + id}>")
+        val writer = new StringWriter()
+        model.write(writer, format.getOrElse("TURTLE"))
+        Ok(writer.toString).as("text/turtle")
+      }
+    }
+  }
+
+  /**
+   *
+   * @param id
+   * @param format One of: "HTML", "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL"
+   * @return
+   */
+  def delivery(id: String, format: Option[String]) = Action { implicit request =>
+    val delivery = CurrentDataset().deliveries.find(_.id == id).get
+
+    render {
+      case _ if format.exists(_.toLowerCase == "html") => {
+        Ok(views.html.deliveryView(delivery))
+      }
+      case Accepts.Html() if format.isEmpty => {
+        Ok(views.html.deliveryView(delivery))
+      }
+      case _ => {
+        val model = CurrentDataset().describe(s"DESCRIBE <${Namespaces.delivery + id}>")
+        val writer = new StringWriter()
+        model.write(writer, format.getOrElse("TURTLE"))
+        Ok(writer.toString).as("text/turtle")
       }
     }
   }

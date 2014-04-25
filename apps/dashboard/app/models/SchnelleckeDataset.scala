@@ -13,6 +13,8 @@ import dataset.Address
 
 class SchnelleckeDataset extends Dataset {
 
+  private val log = Logger.getLogger(getClass.getName)
+
   // Create new model
   private val model = ModelFactory.createDefaultModel()
 
@@ -29,14 +31,17 @@ class SchnelleckeDataset extends Dataset {
   // All deliveries
   val deliveries = retrieveDeliveries()
 
-  private val log = Logger.getLogger(getClass.getName)
-
   /**
    * Executes a SPARQL select query.
    */
   def query(queryStr: String) = {
     val query = QueryFactory.create(queryStr)
     QueryExecutionFactory.create(query, model).execSelect()
+  }
+
+  override def describe(queryStr: String) = {
+    val query = QueryFactory.create(queryStr)
+    QueryExecutionFactory.create(query, model).execDescribe()
   }
 
   /**
@@ -135,7 +140,7 @@ class SchnelleckeDataset extends Dataset {
 
     // Either query for all deliveries or just for a specific one.
     val resultSet = id match {
-      case Some(identifier) => query(queryStr.replaceAll("\\?delivery", s"<http://geoknow.eu/wp5/message/$identifier>")).toSeq
+      case Some(identifier) => query(queryStr.replaceAll("\\?delivery", Namespaces.delivery + identifier)).toSeq
       case None => query(queryStr).toSeq
     }
     log.info(s"Retrieved ${resultSet.size} deliveries.")
@@ -144,7 +149,7 @@ class SchnelleckeDataset extends Dataset {
     for(result <- resultSet) yield {
       Connection(
         uri = id match {
-          case Some(identifier) => s"http://geoknow.eu/wp5/message/$identifier"
+          case Some(identifier) => Namespaces.delivery + identifier
           case None => result.getResource("delivery").getURI
         },
         //date = result.getLiteral("date").getString,

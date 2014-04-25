@@ -27,7 +27,7 @@ object Network {
   val random = new Random(0)
 
   def build(product: dataset.Product, simulation: Simulation): Network = {
-    val endProduct = Product("End Product", 1, product :: Nil)
+    val endProduct = Product("End_Product", 1, product :: Nil)
     val suppliers = for(part <- endProduct :: endProduct.partList) yield generateSupplier(part)
     val connections = new SimpleNetworkBuilder(suppliers).apply(endProduct)
     val actors = for(supplier <- suppliers) yield createActor(supplier, simulation)
@@ -44,6 +44,9 @@ object Network {
     val lon = 6 + 9 * random.nextDouble()
     val coordinates = Coordinates(lat, lon)
     val address = Address("", "", "", "")
-    Supplier(UUID.randomUUID.toString, product.name + " Supplier", address, coordinates, product)
+    Supplier(
+      product.name,
+      //UUID.randomUUID.toString,
+      product.name + " Supplier", address, coordinates, product)
   }
 }

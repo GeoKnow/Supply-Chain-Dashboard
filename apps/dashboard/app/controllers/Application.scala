@@ -26,16 +26,6 @@ object Application extends Controller {
     Ok(views.html.map())
   }
 
-  def supplier(id: String) = Action {
-    val address = CurrentDataset().suppliers.find(_.id == id).get
-    Ok(views.html.supplierView(address))
-  }
-
-  def delivery(id: String) = Action {
-    val delivery = CurrentDataset().deliveries.find(_.id == id).get
-    Ok(views.html.deliveryView(delivery))
-  }
-
   def deliveryStream = Action {
     val (enumerator, channel) = Concurrent.broadcast[Shipping]
 
@@ -43,10 +33,9 @@ object Application extends Controller {
 
     CurrentDataset().addListener(listener)
 
-    //implicit val deliveryMessage = CometMessage[Shipping](d => s"'${d.id}', ${d.sender.coords.lat},${d.sender.coords.lon},${d.receiver.coords.lat},${d.receiver.coords.lon}")
+    implicit val deliveryMessage = CometMessage[Shipping](d => s"'${d.connection.id}'")
 
-    //Ok.chunked(enumerator &> Comet(callback = "parent.addShipping"))
-    Ok
+    Ok.chunked(enumerator &> Comet(callback = "parent.addShipping"))
   }
 
 }
