@@ -1,4 +1,4 @@
-package dataset
+package supplychain.model
 
 case class Connection(uri: String, content: Product, sender: Supplier, receiver: Supplier) {
 

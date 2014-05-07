@@ -1,7 +1,8 @@
-package dataset
+package supplychain.dataset
 
 import com.hp.hpl.jena.query.ResultSet
 import com.hp.hpl.jena.rdf.model.Model
+import supplychain.model.{Message, Connection, Supplier}
 
 /**
  * Holds a supply chain dataset and allows to query it.
@@ -10,7 +11,9 @@ trait Dataset {
 
   def suppliers: Seq[Supplier]
 
-  def deliveries: Seq[Connection]
+  def connections: Seq[Connection]
+
+  def messages: Seq[Message]
 
   def query(queryStr: String): ResultSet
 
@@ -19,7 +22,7 @@ trait Dataset {
   def addListener(listener: Message => Unit): Unit = {}
 
   def contentTypes = {
-    deliveries.groupBy(_.content.name).mapValues(_.size).filter(_._1 != "").toList.sortBy(-_._2)
+    connections.groupBy(_.content.name).mapValues(_.size).filter(_._1 != "").toList.sortBy(-_._2)
   }
 
 }

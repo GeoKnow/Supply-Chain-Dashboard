@@ -5,8 +5,8 @@ import com.hp.hpl.jena.query.ResultSetFormatter
 import models._
 import play.api.Logger
 import scala.Some
-import dataset.Namespaces
 import java.io.StringWriter
+import supplychain.dataset.{SchnelleckeDataset, Namespaces}
 
 /**
  * The REST API.
@@ -61,7 +61,7 @@ object API extends Controller {
    * @return
    */
   def delivery(id: String, format: Option[String]) = Action { implicit request =>
-    val delivery = CurrentDataset().deliveries.find(_.id == id).get
+    val delivery = CurrentDataset().connections.find(_.id == id).get
 
     render {
       case _ if format.exists(_.toLowerCase == "html") => {
@@ -88,11 +88,11 @@ object API extends Controller {
     // Retrieve deliveries
     val deliveries = addressId match {
       // Address provided => Only return deliveries that depart or arrive at the specified address
-      case Some(id) => CurrentDataset().deliveries.filter(d => d.sender.id == id || d.receiver.id == id)
+      case Some(id) => CurrentDataset().connections.filter(d => d.sender.id == id || d.receiver.id == id)
       // No address provided => Check if contentType is provided
       case None => contentType match {
-        case Some(content) => CurrentDataset().deliveries.filter(_.content == content)
-        case None => CurrentDataset().deliveries
+        case Some(content) => CurrentDataset().connections.filter(_.content == content)
+        case None => CurrentDataset().connections
       }
     }
 

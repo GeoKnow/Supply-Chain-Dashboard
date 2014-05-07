@@ -1,4 +1,4 @@
-@(deliveries: Seq[dataset.Connection])
+@(deliveries: Seq[supplychain.model.Connection])
 
 @* Don't load more than 300 deliveries at once. *@
 @if(deliveries.size > 300) {

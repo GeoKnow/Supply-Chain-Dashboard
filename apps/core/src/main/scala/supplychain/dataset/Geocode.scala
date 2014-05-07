@@ -1,17 +1,17 @@
-package scripts
+package supplychain.dataset
 
 import java.io.{BufferedWriter, FileWriter}
-import com.hp.hpl.jena.rdf.model.Statement
 import java.net.{URL, URLEncoder}
 import scala.collection.JavaConversions._
 import scala.xml.XML
-import models.CurrentDataset
 
 /**
  * A script that reads all addresses from the data set and
  * writes the coordinates the correspond to each address to a separate file.
  */
 object Geocode {
+
+  val dataset = new SchnelleckeDataset()
 
   // Output file. Will be written in Turtle format.
   val outputFile = "data/coordinates.ttl"
@@ -62,7 +62,7 @@ object Geocode {
    */
   private def retrieveAddresses(): Seq[Address] = {
     // Query dataset
-    val resultSet = CurrentDataset().query(
+    val resultSet = dataset.query(
       """
         PREFIX ex: <http://geoknow.eu/wp5/ontology#>
         SELECT ?actor ?street ?postalcode ?city ?country WHERE {

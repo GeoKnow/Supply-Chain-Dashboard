@@ -1,15 +1,14 @@
-package simulation
+package supplychain.simulation
 
 import com.hp.hpl.jena.query.ResultSet
-import dataset._
-import dataset.Connection
-import dataset.Supplier
+import supplychain.dataset.Dataset
+import supplychain.model.{Connection, Supplier, Message}
 
-object SimulatorDataset extends Dataset {
+class SimulatorDataset() extends Dataset {
 
   private val simulation = new Simulation
 
-  private var messages = Seq[Message]()
+  var messages = Seq[Message]()
 
   simulation.addListener(msg => {
     messages = messages :+ msg
@@ -17,7 +16,7 @@ object SimulatorDataset extends Dataset {
 
   def suppliers: Seq[Supplier] = simulation.suppliers
 
-  def deliveries: Seq[Connection] = simulation.connections
+  def connections: Seq[Connection] = simulation.connections
 
   override def addListener(listener: Message => Unit) {
     simulation.addListener(listener)

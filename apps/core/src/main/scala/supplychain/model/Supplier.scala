@@ -1,4 +1,4 @@
-package dataset
+package supplychain.model
 
 case class Supplier(uri: String, name: String, address: Address, coords: Coordinates, product: Product) {
 

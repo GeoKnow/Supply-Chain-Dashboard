@@ -1,4 +1,4 @@
-package simulation
+package supplychain.simulation
 
 import akka.actor.{Actor, ActorRef}
 import akka.event.Logging
@@ -6,10 +6,10 @@ import scala.collection.mutable
 import scala.util.Random
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import SupplierActor._
-import dataset.{Order, Shipping, Supplier, Connection}
+import supplychain.model.{Order, Shipping, Supplier, Connection}
 import java.util.{GregorianCalendar, UUID}
 import javax.xml.datatype.DatatypeFactory
+import supplychain.model.Supplier
 
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
@@ -28,32 +28,24 @@ class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
   private val log = Logging(context.system, this)
 
   def receive = {
-    case OrderMsg(connection, count) =>
+    case order @ Order(date, connection, count) =>
       log.info("Received order of " + supplier.product.name)
       orderParts(count)
-      val order = Order(connection, count)
       orders.enqueue(order)
       simulation.addMessage(order)
       tryProduce()
 
-    case ShippingMsg(connection, count) =>
+    case shipping @ Shipping(uri, date, connection, count) =>
       log.info("Received shipping of " + connection.content.name)
       storage.put(connection.content, count)
-      simulation.addMessage(
-        Shipping(
-          uri = UUID.randomUUID.toString,
-          date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
-          connection = connection,
-          count = count
-        )
-      )
+      simulation.addMessage(shipping)
       tryProduce()
   }
 
   private def orderParts(count: Int): Unit = {
     val incomingConnections = simulation.connections.filter(_.receiver == supplier)
     for(connection <- incomingConnections)
-      simulation.getActor(connection.sender) ! OrderMsg(connection, connection.content.count * count)
+      simulation.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
   }
 
   private def tryProduce(): Unit = {
@@ -70,18 +62,20 @@ class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
           }
         // Schedule shipping message
         for(connection <- simulation.connections.find(_.sender == supplier)) {
+          val shipping =
+            Shipping(
+              uri = UUID.randomUUID.toString,
+              date = date(),
+              connection = connection,
+              count = order.count
+            )
           context.system.scheduler.scheduleOnce(time) {
-            simulation.getActor(order.connection.receiver) ! ShippingMsg(connection, order.count)
+            simulation.getActor(order.connection.receiver) ! shipping
           }
         }
       }
     }
   }
-}
 
-object SupplierActor {
-
-  case class OrderMsg(connection: Connection, count: Int)
-
-  case class ShippingMsg(connection: Connection, count: Int)
+  def date() = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat
 }

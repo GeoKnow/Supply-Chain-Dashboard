@@ -1,19 +1,28 @@
 package models
 
-import play.api.libs.json.{Json, JsString, JsNumber, JsArray}
 import scala.io.Source
 import com.hp.hpl.jena.query.ResultSet
-import dataset._
+import supplychain.dataset.Dataset
+import play.api.libs.json._
+import supplychain.model._
 import play.api.libs.json.JsArray
-import dataset.Supplier
 import play.api.libs.json.JsString
-import dataset.Connection
 import play.api.libs.json.JsNumber
-import dataset.Address
+import supplychain.model.Connection
+import supplychain.model.Coordinates
+import play.api.libs.json.JsArray
+import supplychain.model.Product
+import supplychain.model.Supplier
+import play.api.libs.json.JsString
+import play.api.libs.json.JsNumber
+import supplychain.model.Address
 
 class SourceMapDataset(id: Int) extends Dataset {
 
-  lazy val (suppliers, deliveries) = load()
+  lazy val (suppliers, connections) = load()
+
+  // SourceMap data sets only define the static structure of the supply chain
+  val messages = List[Message]()
 
   def query(queryStr: String): ResultSet = throw new UnsupportedOperationException()
 

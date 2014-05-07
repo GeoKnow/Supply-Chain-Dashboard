@@ -6,7 +6,7 @@ import play.api.libs.iteratee.Concurrent
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
 import scala.util.Random
-import dataset.{Order, Message, Shipping, Connection}
+import supplychain.model.{Order, Message, Shipping, Connection}
 
 object Application extends Controller {
 
@@ -24,6 +24,10 @@ object Application extends Controller {
 
   def map = Action {
     Ok(views.html.map())
+  }
+
+  def metrics = Action {
+    Ok(views.html.metrics())
   }
 
   def deliveryStream = Action {

@@ -1,15 +1,16 @@
-package simulation
+package supplychain.simulation
 
 import scala.collection.mutable
+import supplychain.model.Product
 
 /**
  * A storage of parts.
  *
  * @param products The type of products that are stored.
  */
-class Storage(products: List[dataset.Product]) {
+class Storage(products: List[Product]) {
 
-  private val storage = mutable.Map[dataset.Product, Int]()
+  private val storage = mutable.Map[Product, Int]()
   for(product <- products)
     storage(product) = 0
 
@@ -19,7 +20,7 @@ class Storage(products: List[dataset.Product]) {
    * @param product The product.
    * @param count The number of products to add to the storage.
    */
-  def put(product: dataset.Product, count: Int): Unit = {
+  def put(product: supplychain.model.Product, count: Int): Unit = {
     storage(product) += count
   }
 
@@ -29,7 +30,7 @@ class Storage(products: List[dataset.Product]) {
    * @param product The Product.
    * @return The number of available units.
    */
-  def ask(product: dataset.Product): Int = {
+  def ask(product: Product): Int = {
     storage(product)
   }
 
@@ -40,7 +41,7 @@ class Storage(products: List[dataset.Product]) {
    * @return True, if all parts have been available and have been taken.
    *         False, if at least one part was missing and no parts have been taken.
    */
-  def take(parts: List[dataset.Product]): Boolean = {
+  def take(parts: List[Product]): Boolean = {
     if(storage.values.forall(_ > 0)) {
       for(part <- parts)
         storage(part) -= part.count

@@ -1,16 +1,17 @@
-package models
+package supplychain.dataset
 
 import com.hp.hpl.jena.rdf.model.ModelFactory
 import java.io.{File, FileInputStream}
 import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
 import scala.collection.JavaConversions._
 import java.util.logging.Logger
-import dataset._
-import dataset.Supplier
-import scala.Some
-import dataset.Connection
-import dataset.Address
+import supplychain.model._
+import supplychain.model.Connection
+import supplychain.model.Coordinates
+import supplychain.model.Supplier
+import supplychain.model.Address
 
+//TODO should be moved into a separate private module
 class SchnelleckeDataset extends Dataset {
 
   private val log = Logger.getLogger(getClass.getName)
@@ -29,7 +30,9 @@ class SchnelleckeDataset extends Dataset {
   val suppliers = retrieveSuppliers()
 
   // All deliveries
-  val deliveries = retrieveDeliveries()
+  val connections = retrieveDeliveries()
+
+  val messages = List[Message]()
 
   /**
    * Executes a SPARQL select query.

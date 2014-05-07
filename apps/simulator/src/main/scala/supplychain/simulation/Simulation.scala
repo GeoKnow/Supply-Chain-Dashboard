@@ -1,10 +1,9 @@
-package simulation
+package supplychain.simulation
 
-import dataset._
 import akka.actor.ActorSystem
-import scala.Product
-import dataset.Supplier
-import dataset.Shipping
+import supplychain.model._
+import supplychain.model.Product
+import supplychain.model.Supplier
 
 class Simulation {
 

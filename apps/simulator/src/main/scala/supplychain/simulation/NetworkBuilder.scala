@@ -1,10 +1,10 @@
-package simulation
+package supplychain.simulation
 
-import dataset.{Connection, Supplier}
+import supplychain.model.{Connection, Supplier, Product}
 import java.util.UUID
 
 trait NetworkBuilder {
-  def apply(product: dataset.Product)
+  def apply(product: Product)
 }
 
 class SimpleNetworkBuilder(suppliers: Seq[Supplier]) {
@@ -15,7 +15,7 @@ class SimpleNetworkBuilder(suppliers: Seq[Supplier]) {
   /**
    * Generates all connections for producing a particular product.
    */
-  def apply(product: dataset.Product): List[Connection] = {
+  def apply(product: Product): List[Connection] = {
     val productSupplier = selectSupplier(product)
     product.parts.flatMap(generate(productSupplier, _))
   }
@@ -26,7 +26,7 @@ class SimpleNetworkBuilder(suppliers: Seq[Supplier]) {
    * @param part The part that is needed by the given supplier
    * @return A list of connections
    */
-  protected def generate(supplier: Supplier, part: dataset.Product): List[Connection] = {
+  protected def generate(supplier: Supplier, part: Product): List[Connection] = {
     val partSupplier = selectSupplier(part)
     val connection = Connection(UUID.randomUUID.toString, part, partSupplier, supplier)
     connection :: part.parts.flatMap(generate(partSupplier, _))
@@ -35,7 +35,7 @@ class SimpleNetworkBuilder(suppliers: Seq[Supplier]) {
   /**
    * Selects a supplier for a specific part.
    */
-  protected def selectSupplier(part: dataset.Product) = {
+  protected def selectSupplier(part: Product) = {
     // At the moment we just choose the first supplier
     supplierMap(part).head
   }
