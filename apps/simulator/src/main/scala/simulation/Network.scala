@@ -18,7 +18,7 @@ import dataset.Address
 class Network(val actor: ActorRef, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
   def start(simulation: Simulation) {
-    simulation.system.scheduler.schedule(1 seconds, 60 seconds, actor, OrderMsg(1))
+    simulation.system.scheduler.schedule(1 seconds, 30 seconds, actor, OrderMsg(simulation.connections.head, 1))
   }
 }
 

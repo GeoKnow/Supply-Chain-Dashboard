@@ -16,7 +16,7 @@ trait Dataset {
 
   def describe(queryStr: String): Model = ???
 
-  def addListener(listener: Shipping => Unit): Unit = {}
+  def addListener(listener: Message => Unit): Unit = {}
 
   def contentTypes = {
     deliveries.groupBy(_.content.name).mapValues(_.size).filter(_._1 != "").toList.sortBy(-_._2)

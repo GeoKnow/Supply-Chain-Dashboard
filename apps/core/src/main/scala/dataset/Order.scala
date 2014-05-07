@@ -1,5 +1,5 @@
 package dataset
 
-case class Order() {
+case class Order(connection: Connection, count: Int) extends Message {
 
 }

@@ -28,19 +28,19 @@ class Simulation {
   network.start(this)
 
   @volatile
-  private var listeners = Seq[Shipping => Unit]()
+  private var listeners = Seq[Message => Unit]()
 
   def suppliers: Seq[Supplier] = network.suppliers
 
   def connections: Seq[Connection] = network.connections
 
-  def addListener(listener: Shipping => Unit) {
+  def addListener(listener: Message => Unit) {
     listeners = listeners :+ listener
   }
 
-  def addShipping(shipping: Shipping) = {
+  def addMessage(msg: Message) = {
     for(listener <- listeners)
-      listener(shipping)
+      listener(msg)
   }
 
   def getActor(supplier: Supplier) = system.actorSelection("/user/" + supplier.uri)

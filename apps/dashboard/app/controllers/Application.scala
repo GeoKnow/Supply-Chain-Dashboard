@@ -6,7 +6,7 @@ import play.api.libs.iteratee.Concurrent
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
 import scala.util.Random
-import dataset.{Shipping, Connection}
+import dataset.{Order, Message, Shipping, Connection}
 
 object Application extends Controller {
 
@@ -27,15 +27,23 @@ object Application extends Controller {
   }
 
   def deliveryStream = Action {
-    val (enumerator, channel) = Concurrent.broadcast[Shipping]
+    val (orderEnumerator, orderChannel) = Concurrent.broadcast[Order]
+    val (shippingEnumerator, shippingChannel) = Concurrent.broadcast[Shipping]
 
-    val listener = (delivery: Shipping) => channel.push(delivery)
+    val listener = (msg: Message) => msg match {
+      case order: Order => orderChannel.push(order)
+      case shipping: Shipping => shippingChannel.push(shipping)
+    }
 
     CurrentDataset().addListener(listener)
 
-    implicit val deliveryMessage = CometMessage[Shipping](d => s"'${d.connection.id}'")
+    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.id}'")
+    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.id}'")
 
-    Ok.chunked(enumerator &> Comet(callback = "parent.addShipping"))
+    val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
+    val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")
+
+    Ok.chunked(orderEnumeratee interleave shippingEnumeratee)
   }
 
 }

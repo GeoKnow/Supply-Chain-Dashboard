@@ -9,17 +9,17 @@ object SimulatorDataset extends Dataset {
 
   private val simulation = new Simulation
 
-  private var shippingsSeq = Seq[Shipping]()
+  private var messages = Seq[Message]()
 
-  simulation.addListener(shipping => {
-    shippingsSeq = shippingsSeq :+ shipping
+  simulation.addListener(msg => {
+    messages = messages :+ msg
   })
 
   def suppliers: Seq[Supplier] = simulation.suppliers
 
   def deliveries: Seq[Connection] = simulation.connections
 
-  override def addListener(listener: Shipping => Unit) {
+  override def addListener(listener: Message => Unit) {
     simulation.addListener(listener)
   }
 

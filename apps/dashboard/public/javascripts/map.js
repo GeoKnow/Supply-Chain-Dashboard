@@ -14,6 +14,7 @@ function initialize() {
 
   // Draw addresses
   showSuppliers();
+  showDeliveries();
 
   // Stream deliveries
   $('#deliveryStream').html('<iframe src="/deliveryStream"></iframe>');
@@ -55,12 +56,13 @@ function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
 }
 
 function addOrder(connectionId) {
-
+  console.log("Received order " + connectionId + " | " + deliveryMap[connectionId]);
+  deliveryMap[connectionId].setOptions({ strokeColor: '#FF0000' });
 }
 
 function addShipping(connectionId) {
   console.log("Received shipping " + connectionId + " | " + deliveryMap[connectionId]);
-  deliveryMap[connectionId].setOptions(new google.maps.PolylineOptions({ strokeColor: '#FF0000' }));
+  deliveryMap[connectionId].setOptions({ strokeColor: '#00FF00' });
 }
 
 function hideSuppliers() {
