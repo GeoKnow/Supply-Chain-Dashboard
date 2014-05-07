@@ -11,8 +11,8 @@ Initial prototype of the supply chain dashboard, a web application that allows t
  
 ## Running
 
-- Navigate to the 'dashboard' folder
-- Execute 'play run'
+- Navigate to the 'apps' folder
+- Execute play "project dashboard" run
 - In your browser, navigate to 'http://localhost:9000'
 
 ## Packaging
