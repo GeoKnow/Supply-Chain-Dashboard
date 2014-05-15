@@ -1,15 +1,15 @@
 name := "GeoKnow Supply Chain Applications"
 
-version := "2.6.0-SNAPSHOT"
+version := "1.0-SNAPSHOT"
 
-play.Project.playScalaSettings
+scalaVersion := "2.11.0"
 
 lazy val core = project
 
 lazy val simulator = project dependsOn core
 
-lazy val dashboard = project dependsOn core dependsOn simulator
+lazy val dashboard = project dependsOn core dependsOn simulator enablePlugins PlayScala
 
 lazy val root = project.in(file("."))
-                .aggregate(dashboard)
-                .dependsOn(dashboard)
+
+
