@@ -13,6 +13,12 @@ import supplychain.dataset.{SchnelleckeDataset, Namespaces}
  */
 object API extends Controller {
 
+  /**
+   * Issues a SPARQL select query.
+   * @param query The query
+   * @return A html page, if the ACCEPT header includes html.
+   *         Otherwise, SPARQL results XML.
+   */
   def sparql(query: String) = Action { implicit request =>
     Logger.info("Received query:\n" + query)
     val resultSet = CurrentDataset().query(query)
@@ -30,20 +36,23 @@ object API extends Controller {
   }
 
   /**
+   * Retrieves a supplier.
    *
-   * @param id
+   * @param id The id of the supplier
    * @param format One of: "HTML", "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL"
    * @return
    */
   def supplier(id: String, format: Option[String]) = Action { implicit request =>
-    val address = CurrentDataset().suppliers.find(_.id == id).get
+    val supplier = CurrentDataset().suppliers.find(_.id == id).get
+    val incomingConnections = CurrentDataset().connections.filter(_.receiver.id == id)
+    val outgoingConnections = CurrentDataset().connections.filter(_.sender.id == id)
 
     render {
       case _ if format.exists(_.toLowerCase == "html") => {
-        Ok(views.html.supplierView(address))
+        Ok(views.html.supplierDetails(supplier, incomingConnections, outgoingConnections))
       }
       case Accepts.Html() if format.isEmpty => {
-        Ok(views.html.supplierView(address))
+        Ok(views.html.supplierDetails(supplier, incomingConnections, outgoingConnections))
       }
       case _ => {
         val model = CurrentDataset().describe(s"DESCRIBE <${Namespaces.supplier + id}>")
@@ -55,23 +64,24 @@ object API extends Controller {
   }
 
   /**
+   * Retrieves a connection.
    *
-   * @param id
+   * @param id The id of the connection
    * @param format One of: "HTML", "RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TTL"
    * @return
    */
-  def delivery(id: String, format: Option[String]) = Action { implicit request =>
-    val delivery = CurrentDataset().connections.find(_.id == id).get
+  def connection(id: String, format: Option[String]) = Action { implicit request =>
+    val connection = CurrentDataset().connections.find(_.id == id).get
 
     render {
       case _ if format.exists(_.toLowerCase == "html") => {
-        Ok(views.html.deliveryView(delivery))
+        Ok(views.html.connectionDetails(connection))
       }
       case Accepts.Html() if format.isEmpty => {
-        Ok(views.html.deliveryView(delivery))
+        Ok(views.html.connectionDetails(connection))
       }
       case _ => {
-        val model = CurrentDataset().describe(s"DESCRIBE <${Namespaces.delivery + id}>")
+        val model = CurrentDataset().describe(s"DESCRIBE <${Namespaces.connection + id}>")
         val writer = new StringWriter()
         model.write(writer, format.getOrElse("TURTLE"))
         Ok(writer.toString).as("text/turtle")
@@ -79,14 +89,14 @@ object API extends Controller {
     }
   }
 
-  def suppliers() = Action {
+  def loadSuppliers() = Action {
     val suppliers = CurrentDataset().suppliers
-    Ok(views.html.suppliers(suppliers))
+    Ok(views.html.loadSuppliers(suppliers))
   }
 
-  def deliveries(addressId: Option[String], contentType: Option[String]) = Action {
-    // Retrieve deliveries
-    val deliveries = addressId match {
+  def loadConnections(addressId: Option[String], contentType: Option[String]) = Action {
+    // Retrieve connections
+    val connections = addressId match {
       // Address provided => Only return deliveries that depart or arrive at the specified address
       case Some(id) => CurrentDataset().connections.filter(d => d.sender.id == id || d.receiver.id == id)
       // No address provided => Check if contentType is provided
@@ -96,7 +106,7 @@ object API extends Controller {
       }
     }
 
-    Ok(views.html.deliveries(deliveries))
+    Ok(views.html.loadConnections(connections))
   }
 
   def loadSchnelleckeDataset() = Action {

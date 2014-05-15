@@ -1,12 +1,6 @@
 @(connection: supplychain.model.Connection)
 
-<h2>Delivery</h2>
-
 <table>
-  <tr>
-    <td><b>Date</b></td>
-    <td>connection.date</td>
-  </tr>
   <tr>
     <td><b>Content</b></td>
     <td>@connection.content.name</td>
@@ -17,10 +11,10 @@
   </tr>
 </table>
 
-<h2>Sender</h2>
+<h3>Sender</h3>
 
-@supplierView(connection.sender)
+@supplierDetails(connection.sender, Nil, Nil)
 
-<h2>Receiver</h2>
+<h3>Receiver</h3>
 
-@supplierView(connection.receiver)
+@supplierDetails(connection.receiver, Nil, Nil)

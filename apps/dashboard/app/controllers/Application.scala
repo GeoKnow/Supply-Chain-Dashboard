@@ -34,15 +34,25 @@ object Application extends Controller {
     val (orderEnumerator, orderChannel) = Concurrent.broadcast[Order]
     val (shippingEnumerator, shippingChannel) = Concurrent.broadcast[Shipping]
 
+    // Listen for new orders and shippings
     val listener = (msg: Message) => msg match {
       case order: Order => orderChannel.push(order)
       case shipping: Shipping => shippingChannel.push(shipping)
     }
-
     CurrentDataset().addListener(listener)
 
-    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.id}'")
-    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.id}'")
+    /** Computes the number of due parts (i.e., parts that have been ordered but not delivered yet) */
+    def dueParts(connection: Connection) = {
+      var due = 0
+      for(msg <- CurrentDataset().messages.filter(_.connection.id == connection.id)) msg match {
+        case o: Order => due += o.count
+        case s: Shipping => due -= s.count
+      }
+      due
+    }
+
+    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.receiver.id}', '${d.connection.id}', ${dueParts(d.connection)}")
+    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.receiver.id}', '${d.connection.id}', ${dueParts(d.connection)}")
 
     val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
     val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")

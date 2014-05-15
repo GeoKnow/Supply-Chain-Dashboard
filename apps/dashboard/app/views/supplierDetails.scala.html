@@ -1,4 +1,6 @@
-@(supplier: supplychain.model.Supplier)
+@(supplier: supplychain.model.Supplier,
+  incomingConnections: Seq[supplychain.model.Connection],
+  outgoingConnections: Seq[supplychain.model.Connection])
 
 <table>
   <tr>
@@ -29,4 +31,16 @@
     <td><b>Longitude</b></td>
     <td>@supplier.coords.lon</td>
   </tr>
+@if(!incomingConnections.isEmpty) {
+  <tr>
+    <td><b>Incoming</b></td>
+    <td>@for(c <- incomingConnections) { @c.sender.name <br/> }</td>
+  </tr>
+}
+@if(!outgoingConnections.isEmpty) {
+  <tr>
+    <td><b>Outgoing</b></td>
+    <td>@for(c <- outgoingConnections) { @c.receiver.name <br/> }</td>
+  </tr>
+}
 </table>

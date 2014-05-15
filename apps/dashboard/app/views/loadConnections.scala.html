@@ -1,0 +1,12 @@
+@(connections: Seq[supplychain.model.Connection])
+
+@* Don't load more than 300 connections at once. *@
+@if(connections.size > 300) {
+  alert("Only the first 300 of the requested @connections.size connections are shown.");
+}
+
+@for(c <- connections.take(300)) {
+  addConnection('@c.id',
+                @c.sender.coords.lat, @c.sender.coords.lon,
+                @c.receiver.coords.lat, @c.receiver.coords.lon);
+}

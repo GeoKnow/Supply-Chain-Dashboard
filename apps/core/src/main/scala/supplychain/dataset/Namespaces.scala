@@ -6,6 +6,6 @@ object Namespaces {
 
   val supplier = "http://geoknow.eu/wp5/actor/"
 
-  val delivery = "http://geoknow.eu/wp5/message/"
+  val connection = "http://geoknow.eu/wp5/message/"
 
 }

@@ -9,10 +9,13 @@ import supplychain.model.{Message, Connection, Supplier}
  */
 trait Dataset {
 
+  /** The list of suppliers. */
   def suppliers: Seq[Supplier]
 
+  /** The connections between suppliers. */
   def connections: Seq[Connection]
 
+  /** Messages that have been exchanged between suppliers along a connection. */
   def messages: Seq[Message]
 
   def query(queryStr: String): ResultSet

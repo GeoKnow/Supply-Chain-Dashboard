@@ -143,7 +143,7 @@ class SchnelleckeDataset extends Dataset {
 
     // Either query for all deliveries or just for a specific one.
     val resultSet = id match {
-      case Some(identifier) => query(queryStr.replaceAll("\\?delivery", Namespaces.delivery + identifier)).toSeq
+      case Some(identifier) => query(queryStr.replaceAll("\\?delivery", Namespaces.connection + identifier)).toSeq
       case None => query(queryStr).toSeq
     }
     log.info(s"Retrieved ${resultSet.size} deliveries.")
@@ -152,7 +152,7 @@ class SchnelleckeDataset extends Dataset {
     for(result <- resultSet) yield {
       Connection(
         uri = id match {
-          case Some(identifier) => Namespaces.delivery + identifier
+          case Some(identifier) => Namespaces.connection + identifier
           case None => result.getResource("delivery").getURI
         },
         //date = result.getLiteral("date").getString,

@@ -8,9 +8,9 @@ GET         /deliveryStream               controllers.Application.deliveryStream
 # REST API
 GET         /sparql                       controllers.API.sparql(query)
 GET         /supplier/:id                 controllers.API.supplier(id, format: Option[String])
-GET         /delivery/:id                 controllers.API.delivery(id, format: Option[String])
-GET         /map/suppliers                controllers.API.suppliers()
-GET         /map/deliveries               controllers.API.deliveries(supplierId: Option[String], contentType: Option[String])
+GET         /delivery/:id                 controllers.API.connection(id, format: Option[String])
+GET         /map/loadSuppliers            controllers.API.loadSuppliers()
+GET         /map/loadConnections          controllers.API.loadConnections(supplierId: Option[String], contentType: Option[String])
 
 POST        /dataset/schnellecke          controllers.API.loadSchnelleckeDataset()
 POST        /dataset/sourcemap/:id        controllers.API.loadSourceMapDataset(id: Int)

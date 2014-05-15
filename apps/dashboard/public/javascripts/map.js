@@ -1,7 +1,6 @@
 var map = null; // Set during initialization
-var supplierMarkers = [];
-var deliveryLines = [];
-var deliveryMap = [];
+var suppliers = []; //Map from a supplier ID to a marker
+var connections = []; //Map from connection ID to a polyline
 
 function initialize() {
   // Initialize map
@@ -21,16 +20,18 @@ function initialize() {
 }
 
 function addSupplier(id, title, latitude, longitude) {
-  var marker = new google.maps.Marker({
+  var marker = new MarkerWithLabel({
     position: new google.maps.LatLng(latitude, longitude),
-    title: title
+    title: title,
+    labelContent: "0",
+    labelClass: "supplier_label"
   });
 
   google.maps.event.addListener(marker, 'click', function(event) { selectSupplier(id) });
-  supplierMarkers.push(marker);
+  suppliers[id] = marker;
 }
 
-function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
+function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
   var arrowIcon = {
     path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
   };
@@ -50,55 +51,60 @@ function addDelivery(id, senderLat, senderLon, receiverLat, receiverLon) {
 
   google.maps.event.addListener(line, 'click', function(event) { selectDelivery(id) });
   line.setMap(map);
-  deliveryLines.push(line);
-  deliveryMap[id] = line;
-  console.log("Added connection: " + id);
+  connections[id] = line;
 }
 
-function addOrder(connectionId) {
-  console.log("Received order " + connectionId + " | " + deliveryMap[connectionId]);
-  deliveryMap[connectionId].setOptions({ strokeColor: '#FF0000' });
+function addOrder(supplierId, connectionId, dueParts) {
+  console.log("Received order " + connectionId + ". Due parts: " + dueParts);
+  suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
+  connections[connectionId].setOptions({ strokeColor: '#FF0000' });
 }
 
-function addShipping(connectionId) {
-  console.log("Received shipping " + connectionId + " | " + deliveryMap[connectionId]);
-  deliveryMap[connectionId].setOptions({ strokeColor: '#00FF00' });
+function addShipping(supplierId, connectionId, dueParts) {
+  console.log("Received shipping " + connectionId + ". Due parts: " + dueParts);
+  suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
+  connections[connectionId].setOptions({ strokeColor: '#00FF00' });
 }
 
 function hideSuppliers() {
-  if (typeof supplierMarkers !== 'undefined') {
-    for (var i = 0; i < supplierMarkers.length; i++) {
-      supplierMarkers[i].setMap(null)
+  if (typeof suppliers !== 'undefined') {
+    for (var s in suppliers) {
+      if (suppliers.hasOwnProperty(s)) {
+        suppliers[s].setMap(null);
+      }
     }
-    supplierMarkers = []
+    suppliers = [];
   }
 }
 
 function showSuppliers() {
-  $.get("/map/suppliers", function(data) {
+  $.get("/map/loadSuppliers", function(data) {
     // Remove existing address markers
     hideSuppliers();
     // Load new address markers
     jQuery.globalEval(data);
     // Add all address markers to the map
-    for (var i = 0; i < supplierMarkers.length; i++) {
-      //google.maps.event.addListener(addressMarkers[i], 'click', function(event) { showDeliveries(address.id) })
-      supplierMarkers[i].setMap(map);
+    for (var s in suppliers) {
+      if (suppliers.hasOwnProperty(s)) {
+        suppliers[s].setMap(map);
+      }
     }
   });
 }
 
 function hideDeliveries() {
-  if (typeof deliveryLines !== 'undefined') {
-    for (var i = 0; i < deliveryLines.length; i++) {
-      deliveryLines[i].setMap(null);
+  if (typeof connections !== 'undefined') {
+    for (var c in connections) {
+      if (connections.hasOwnProperty(c)) {
+        connections[c].setMap(null);
+      }
     }
-    deliveryLines = [];
+    connections = [];
   }
 }
 
 function showDeliveries(supplierId, contentType) {
-  var uri = "/map/deliveries";
+  var uri = "/map/loadConnections";
   if(supplierId)
     uri += "?supplierId=" + supplierId;
   if(contentType && contentType != "all")
@@ -110,8 +116,10 @@ function showDeliveries(supplierId, contentType) {
     // Load new delivery lines
     jQuery.globalEval(data);
     // Add all lines to the map
-    for (var i = 0; i < deliveryLines.length; i++) {
-      deliveryLines[i].setMap(map);
+    for (var c in connections) {
+      if (connections.hasOwnProperty(c)) {
+        connections[c].setMap(map);
+      }
     }
   });
 }
