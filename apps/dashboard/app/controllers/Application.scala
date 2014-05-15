@@ -6,7 +6,10 @@ import play.api.libs.iteratee.Concurrent
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
 import scala.util.Random
-import supplychain.model.{Order, Message, Shipping, Connection}
+import supplychain.model._
+import supplychain.model.Shipping
+import supplychain.model.Order
+import javax.xml.bind.DatatypeConverter
 
 object Application extends Controller {
 
@@ -51,13 +54,20 @@ object Application extends Controller {
       due
     }
 
-    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.receiver.id}', '${d.connection.id}', ${dueParts(d.connection)}")
-    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.receiver.id}', '${d.connection.id}', ${dueParts(d.connection)}")
+    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${dueParts(d.connection)}")
+    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${dueParts(d.connection)}")
 
     val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
     val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")
 
     Ok.chunked(orderEnumeratee interleave shippingEnumeratee)
+  }
+
+  def messages(supplierId: String) = Action {
+    val downstreamMessages = CurrentDataset().messages.filter(_.connection.sender.id == supplierId)
+    val upstreamMessages = CurrentDataset().messages.filter(_.connection.receiver.id == supplierId)
+
+    Ok(views.html.messages(downstreamMessages, upstreamMessages, CurrentDataset().messages))
   }
 
 }

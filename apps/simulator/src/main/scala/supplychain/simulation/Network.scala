@@ -13,34 +13,34 @@ import supplychain.model.Supplier
 import supplychain.model.Address
 import supplychain.model.Product
 
-class Network(val actor: ActorRef, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
+class Network(val actor: ActorRef, val product: Product, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
-  def start(simulation: Simulation) {
+  def order() {
+    // Create a new order with a dummy connection
     val order =
       Order(
         date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
-        connection = simulation.connections.head,
+        connection = Connection("Initial", product, suppliers.head, Network.generateSupplier(Product("OEM"))),
         count = 1
       )
-    simulation.system.scheduler.schedule(1 seconds, 30 seconds, actor, order)
+    actor ! order
   }
 }
 
 object Network {
 
-  val random = new Random(0)
+  private val random = new Random(0)
 
-  def build(product: Product, simulation: Simulation): Network = {
-    val endProduct = Product("End_Product", 1, product :: Nil)
-    val suppliers = for(part <- endProduct :: endProduct.partList) yield generateSupplier(part)
-    val connections = new SimpleNetworkBuilder(suppliers).apply(endProduct)
-    val actors = for(supplier <- suppliers) yield createActor(supplier, simulation)
+  def build(product: Product): Network = {
+    val suppliers = for(part <- product :: product.partList) yield generateSupplier(part)
+    val connections = new SimpleNetworkBuilder(suppliers).apply(product)
+    val actors = for(supplier <- suppliers) yield createActor(supplier)
 
-    new Network(actors.head, suppliers, connections)
+    new Network(actors.head, product, suppliers, connections)
   }
 
-  def createActor(supplier: Supplier, simulation: Simulation): ActorRef = {
-    simulation.system.actorOf(Props(classOf[SupplierActor], supplier, simulation), supplier.uri)
+  def createActor(supplier: Supplier): ActorRef = {
+    Simulation.system.actorOf(Props(classOf[SupplierActor], supplier), supplier.uri)
   }
 
   def generateSupplier(product: Product) = {

@@ -15,7 +15,8 @@
         Dataset
       </div>
       <div class="widget-content">
-        @loadDataset()
+        <button onclick="$.post('/simulation/order')">Order</button>
+        @** loadDataset() *@
       </div>
     </div>
     <div class="widget" style="height: 33%">
@@ -30,15 +31,15 @@
     </div>
     <div class="widget" style="height: 33%">
       <div class="widget-header">
-        Deliveries
+        Connections
       </div>
       <div class="widget-content">
-        <button onclick="showDeliveries()">Show all</button>
-        <button onclick="hideDeliveries()">Hide all</button>
+        <button onclick="showConnections()">Show all</button>
+        <button onclick="hideConnections()">Hide all</button>
         <p><input type="text" /> <button>Search</button></p>
         <p>
           Content Types:
-          <select id="contentFilter" onchange="showDeliveries(null, $(this).val())">
+          <select id="contentFilter" onchange="showConnections(null, $(this).val())">
             <option value="all" selected="selected">all</option>
             @for((content, count) <- CurrentDataset().contentTypes.take(20)) {
               <option value="@content">@content (@count)</option>

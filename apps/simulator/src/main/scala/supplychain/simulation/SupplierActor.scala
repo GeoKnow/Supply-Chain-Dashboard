@@ -14,7 +14,7 @@ import supplychain.model.Supplier
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
+class SupplierActor(supplier: Supplier) extends Actor {
 
   //val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
   val productionTime: FiniteDuration = 1.seconds + Random.nextInt(2).seconds
@@ -30,22 +30,22 @@ class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
   def receive = {
     case order @ Order(date, connection, count) =>
       log.info("Received order of " + supplier.product.name)
-      orderParts(count)
+      Simulation.addMessage(order)
       orders.enqueue(order)
-      simulation.addMessage(order)
       tryProduce()
+      orderParts(count)
 
     case shipping @ Shipping(uri, date, connection, count) =>
       log.info("Received shipping of " + connection.content.name)
+      Simulation.addMessage(shipping)
       storage.put(connection.content, count)
-      simulation.addMessage(shipping)
       tryProduce()
   }
 
   private def orderParts(count: Int): Unit = {
-    val incomingConnections = simulation.connections.filter(_.receiver == supplier)
+    val incomingConnections = Simulation.connections.filter(_.receiver == supplier)
     for(connection <- incomingConnections)
-      simulation.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
+      Simulation.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
   }
 
   private def tryProduce(): Unit = {
@@ -61,17 +61,15 @@ class SupplierActor(supplier: Supplier, simulation: Simulation) extends Actor {
             productionTime * 2
           }
         // Schedule shipping message
-        for(connection <- simulation.connections.find(_.sender == supplier)) {
-          val shipping =
-            Shipping(
-              uri = UUID.randomUUID.toString,
-              date = date(),
-              connection = connection,
-              count = order.count
-            )
-          context.system.scheduler.scheduleOnce(time) {
-            simulation.getActor(order.connection.receiver) ! shipping
-          }
+        val shipping =
+          Shipping(
+            uri = UUID.randomUUID.toString,
+            date = date(),
+            connection = order.connection,
+            count = order.count
+          )
+        context.system.scheduler.scheduleOnce(time) {
+          Simulation.getActor(order.connection.receiver) ! shipping
         }
       }
     }

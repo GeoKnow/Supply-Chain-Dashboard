@@ -4,6 +4,7 @@ GET         /query                        controllers.Application.query
 GET         /map                          controllers.Application.map
 GET         /metrics                      controllers.Application.metrics
 GET         /deliveryStream               controllers.Application.deliveryStream
+GET         /messages                     controllers.Application.messages(supplierId)
 
 # REST API
 GET         /sparql                       controllers.API.sparql(query)
@@ -14,6 +15,8 @@ GET         /map/loadConnections          controllers.API.loadConnections(suppli
 
 POST        /dataset/schnellecke          controllers.API.loadSchnelleckeDataset()
 POST        /dataset/sourcemap/:id        controllers.API.loadSourceMapDataset(id: Int)
+
+POST        /simulation/order             controllers.API.order()
 
 # Static resources
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)

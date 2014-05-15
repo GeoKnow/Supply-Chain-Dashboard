@@ -1,11 +1,14 @@
 package supplychain.simulation
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorRef, ActorSystem}
 import supplychain.model._
 import supplychain.model.Product
 import supplychain.model.Supplier
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+import akka.util.Timeout
 
-class Simulation {
+object Simulation {
 
   val product =
     Product(
@@ -21,13 +24,18 @@ class Simulation {
           ) :: Nil
     )
 
+  //val product = Product("Product", parts = Product("Part") :: Nil)
+
   private[simulation] val system = ActorSystem("system")
 
-  private val network = Network.build(product, this)
-  network.start(this)
+  private val network = Network.build(product)
 
   @volatile
   private var listeners = Seq[Message => Unit]()
+
+  def order() = {
+    network.order()
+  }
 
   def suppliers: Seq[Supplier] = network.suppliers
 
@@ -37,10 +45,13 @@ class Simulation {
     listeners = listeners :+ listener
   }
 
-  def addMessage(msg: Message) = {
+  // TODO should be synchronized in listeners
+  def addMessage(msg: Message) = synchronized {
     for(listener <- listeners)
       listener(msg)
   }
 
-  def getActor(supplier: Supplier) = system.actorSelection("/user/" + supplier.uri)
+  def getActor(supplier: Supplier) = {
+    system.actorSelection("/user/" + supplier.uri)
+  }
 }

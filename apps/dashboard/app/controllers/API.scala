@@ -7,6 +7,7 @@ import play.api.Logger
 import scala.Some
 import java.io.StringWriter
 import supplychain.dataset.{SchnelleckeDataset, Namespaces}
+import supplychain.simulation.Simulation
 
 /**
  * The REST API.
@@ -119,4 +120,8 @@ object API extends Controller {
     Ok
   }
 
+  def order() = Action {
+    Simulation.order()
+    Ok
+  }
 }

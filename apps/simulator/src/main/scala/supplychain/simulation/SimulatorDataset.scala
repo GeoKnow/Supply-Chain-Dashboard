@@ -6,23 +6,19 @@ import supplychain.model.{Connection, Supplier, Message}
 
 class SimulatorDataset() extends Dataset {
 
-  private val simulation = new Simulation
-
   var messages = Seq[Message]()
 
-  simulation.addListener(msg => {
+  Simulation.addListener(msg => {
     messages = messages :+ msg
   })
 
-  def suppliers: Seq[Supplier] = simulation.suppliers
+  def suppliers: Seq[Supplier] = Simulation.suppliers
 
-  def connections: Seq[Connection] = simulation.connections
+  def connections: Seq[Connection] = Simulation.connections
 
   override def addListener(listener: Message => Unit) {
-    simulation.addListener(listener)
+    Simulation.addListener(listener)
   }
 
   def query(queryStr: String): ResultSet = throw new UnsupportedOperationException()
-
-
 }

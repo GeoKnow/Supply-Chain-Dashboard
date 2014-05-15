@@ -42,8 +42,8 @@ class Storage(products: List[Product]) {
    *         False, if at least one part was missing and no parts have been taken.
    */
   def take(parts: List[Product]): Boolean = {
-    if(storage.values.forall(_ > 0)) {
-      for(part <- parts)
+    if(parts.forall(p => storage(p) >= p.count )) {
+      for (part <- parts)
         storage(part) -= part.count
       true
     } else {
