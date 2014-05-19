@@ -15,12 +15,16 @@ import supplychain.model.Product
 
 class Network(val actor: ActorRef, val product: Product, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
+  // Create an OEM actor that is responsible for sending the initial orders for the product
+  private val oemSupplier = Network.generateSupplier(Product("OEM", parts = product :: Nil))
+  Network.createActor(oemSupplier)
+
   def order() {
     // Create a new order with a dummy connection
     val order =
       Order(
         date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
-        connection = Connection("Initial", product, suppliers.head, Network.generateSupplier(Product("OEM"))),
+        connection = Connection("Initial", product, suppliers.head, oemSupplier),
         count = 1
       )
     actor ! order
