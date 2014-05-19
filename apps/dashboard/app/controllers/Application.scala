@@ -10,6 +10,7 @@ import supplychain.model._
 import supplychain.model.Shipping
 import supplychain.model.Order
 import javax.xml.bind.DatatypeConverter
+import supplychain.dataset.DatasetStatistics
 
 object Application extends Controller {
 
@@ -44,18 +45,9 @@ object Application extends Controller {
     }
     CurrentDataset().addListener(listener)
 
-    /** Computes the number of due parts (i.e., parts that have been ordered but not delivered yet) */
-    def dueParts(connection: Connection) = {
-      var due = 0
-      for(msg <- CurrentDataset().messages.filter(_.connection.id == connection.id)) msg match {
-        case o: Order => due += o.count
-        case s: Shipping => due -= s.count
-      }
-      due
-    }
-
-    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${dueParts(d.connection)}")
-    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${dueParts(d.connection)}")
+    val stats = new DatasetStatistics(CurrentDataset())
+    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
+    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
 
     val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
     val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")

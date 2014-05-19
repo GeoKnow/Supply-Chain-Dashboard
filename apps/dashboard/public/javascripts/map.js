@@ -19,11 +19,11 @@ function initialize() {
   $('#deliveryStream').html('<iframe src="/deliveryStream"></iframe>');
 }
 
-function addSupplier(id, title, latitude, longitude) {
+function addSupplier(id, title, latitude, longitude, dueParts) {
   var marker = new MarkerWithLabel({
     position: new google.maps.LatLng(latitude, longitude),
     title: title,
-    labelContent: "0",
+    labelContent: "" + dueParts,
     labelClass: "supplier_label"
   });
 
@@ -42,7 +42,7 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
            new google.maps.LatLng(receiverLat, receiverLon)],
     strokeColor: '#0000FF',
     strokeOpacity: 0.8,
-    strokeWeight: 2,
+    strokeWeight: 1.5,
     icons: [{
       icon: arrowIcon,
       offset: '100%'
@@ -56,14 +56,25 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
 
 function addOrder(supplierId, connectionId, dueParts) {
   console.log("Received order " + connectionId + ". Due parts: " + dueParts);
+  // Update dueOrders for supplier
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
-  connections[connectionId].setOptions({ strokeColor: '#FF0000' });
+  // Flash connection line
+  connections[connectionId].setOptions({ strokeWeight: 2, strokeColor: '#FF0000' });
+  setTimeout(function() {
+    connections[connectionId].setOptions({  strokeWeight: 1.5, strokeColor: '#0000FF' });
+  }, 1000);
+
 }
 
 function addShipping(supplierId, connectionId, dueParts) {
   console.log("Received shipping " + connectionId + ". Due parts: " + dueParts);
+  // Update dueOrders for supplier
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
-  connections[connectionId].setOptions({ strokeColor: '#00FF00' });
+  // Flash connection line
+  connections[connectionId].setOptions({  strokeWeight: 2, strokeColor: '#00FF00' });
+  setTimeout(function() {
+    connections[connectionId].setOptions({  strokeWeight: 1.5, strokeColor: '#0000FF' });
+  }, 1000);
 }
 
 function hideSuppliers() {

@@ -6,7 +6,7 @@ import models._
 import play.api.Logger
 import scala.Some
 import java.io.StringWriter
-import supplychain.dataset.{SchnelleckeDataset, Namespaces}
+import supplychain.dataset.{DatasetStatistics, SchnelleckeDataset, Namespaces}
 import supplychain.simulation.Simulation
 
 /**
@@ -92,7 +92,10 @@ object API extends Controller {
 
   def loadSuppliers() = Action {
     val suppliers = CurrentDataset().suppliers
-    Ok(views.html.loadSuppliers(suppliers))
+    val stats = new DatasetStatistics(CurrentDataset())
+    val dueOrders = suppliers.map(stats.dueParts)
+
+    Ok(views.html.loadSuppliers(suppliers, dueOrders))
   }
 
   def loadConnections(addressId: Option[String], contentType: Option[String]) = Action {
