@@ -59,13 +59,15 @@
       </div>
     </div>
   </div>
-  <div id="property-pane" class="widget">
-    <div class="widget-header">
-      Details
-    </div>
-    <div id="property-content" class="widget-content">
-      Click on element on map for details.
-    </div>
+  <div id="property-pane">
+    @widget("Details", "50%") {
+      <div id="property-content">
+        Click on element on map for details.
+      </div>
+    }
+    @widget("Metrics", "50%") {
+      <div id="metrics-content"></div>
+    }
   </div>
   <div id="deliveryStream"></div>
 }

@@ -16,7 +16,7 @@ function initialize() {
   showConnections();
 
   // Stream deliveries
-  $('#deliveryStream').html('<iframe src="/deliveryStream"></iframe>');
+  $('#deliveryStream').html('<iframe src="/deliveryStream" frameborder="0"></iframe>');
 }
 
 function addSupplier(id, title, latitude, longitude, dueParts) {
@@ -145,6 +145,12 @@ function selectSupplier(addressId) {
 function selectDelivery(deliveryId) {
   $.get("/delivery/" + deliveryId, function(data) {
     $('#property-content' ).html(data)
+  })
+}
+
+function refreshMetrics() {
+  $.get("/metrics", function(data) {
+    $('#metrics-content' ).html(data)
   })
 }
 

@@ -45,8 +45,17 @@ body {
   padding: 10px;
   background-color: white;
   border: 1px solid #90C1E6;
+  overflow: auto;
 }
 
 .ui-widget{
   font-size: 12px;
+}
+
+.metric-dimension {
+  font-weight:bold;
+}
+
+.metric-value {
+
 }

@@ -3,25 +3,15 @@
 @import supplychain.metric.Metric
 @import supplychain.metric.Metrics
 
-@header = {
-
-}
-
-@content = {
-  @for(metric <- Metrics.all) {
-    @renderMetric(metric)
-  }
+@for(metric <- Metrics.all) {
+  @renderMetric(metric)
 }
 
 @renderMetric(metric: Metric) = {
-  <div class="widget" style="height: 100%">
-    <div class="widget-header">
-      @metric.dimension.capitalize
-    </div>
-    <div class="widget-content">
-      @metric(CurrentDataset().messages) @metric.unit
-    </div>
+  <div class="metric-dimension">
+    @metric.dimension.capitalize
+  </div>
+  <div class="metric-value">
+    @metric(CurrentDataset().messages) @metric.unit
   </div>
 }
-
-@main("Supply Chain Dashboard")(header)(content)

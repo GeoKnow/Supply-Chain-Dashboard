@@ -51,8 +51,9 @@ object Application extends Controller {
 
     val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
     val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")
+    val refreshMetrics = shippingEnumerator &> Comet(callback = "parent.refreshMetrics")
 
-    Ok.chunked(orderEnumeratee interleave shippingEnumeratee)
+    Ok.chunked(orderEnumeratee interleave shippingEnumeratee interleave refreshMetrics)
   }
 
   def messages(supplierId: String) = Action {
