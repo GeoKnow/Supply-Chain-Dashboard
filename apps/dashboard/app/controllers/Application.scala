@@ -60,7 +60,7 @@ object Application extends Controller {
     val downstreamMessages = CurrentDataset().messages.filter(_.connection.sender.id == supplierId)
     val upstreamMessages = CurrentDataset().messages.filter(_.connection.receiver.id == supplierId)
 
-    Ok(views.html.messages(downstreamMessages, upstreamMessages, CurrentDataset().messages))
+    Ok(views.html.messages(downstreamMessages, upstreamMessages))
   }
 
 }

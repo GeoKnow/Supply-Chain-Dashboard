@@ -1,4 +1,4 @@
-package supplychain.simulation
+package supplychain.simulator
 
 import scala.util.Random
 import akka.actor.{Props, ActorRef}
@@ -44,14 +44,14 @@ object Network {
   }
 
   def createActor(supplier: Supplier): ActorRef = {
-    Simulation.system.actorOf(Props(classOf[SupplierActor], supplier), supplier.uri)
+    Simulator.system.actorOf(Props(classOf[SupplierActor], supplier), supplier.uri)
   }
 
   def generateSupplier(product: Product) = {
     val lat = 47 + 7 * random.nextDouble()
     val lon = 6 + 9 * random.nextDouble()
     val coordinates = Coordinates(lat, lon)
-    val address = Address("", "", "", "")
+    val address = Address("Beispielstr. 1", "10123", "Musterstadt", "Deutschland")
     Supplier(
       product.name + "-" + UUID.randomUUID.toString,
       product.name + " Supplier", address, coordinates, product)

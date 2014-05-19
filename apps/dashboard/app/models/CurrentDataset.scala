@@ -1,7 +1,7 @@
 package models
 
 import supplychain.dataset.Dataset
-import supplychain.simulation.{Simulation, SimulatorDataset}
+import supplychain.simulator.{Simulation, Simulator}
 
 /**
  * Holds the current data set.
@@ -10,7 +10,7 @@ object CurrentDataset {
 
   // Reference to the current data set.
   @volatile
-  private var dataset: Dataset = new SimulatorDataset()
+  private var dataset: Dataset = Simulator
 
   /**
    * Gets the current data set.

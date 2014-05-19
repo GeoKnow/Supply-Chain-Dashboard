@@ -1,4 +1,4 @@
-package supplychain.simulation
+package supplychain.simulator
 
 import supplychain.model.{Connection, Supplier, Product}
 import java.util.UUID

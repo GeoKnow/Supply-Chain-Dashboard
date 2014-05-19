@@ -1,4 +1,4 @@
-package supplychain.simulation
+package supplychain.simulator
 
 import scala.collection.mutable
 import supplychain.model.Product

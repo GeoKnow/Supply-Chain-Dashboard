@@ -1,4 +1,4 @@
-package supplychain.simulation
+package supplychain.simulator
 
 import akka.actor.{Actor, ActorRef}
 import akka.event.Logging
@@ -16,8 +16,7 @@ import supplychain.model.Supplier
  */
 class SupplierActor(supplier: Supplier) extends Actor {
 
-  //val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
-  val productionTime: FiniteDuration = 1.seconds + Random.nextInt(2).seconds
+  val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
 
   val delayProbability = Random.nextDouble() * 0.5
 
@@ -30,22 +29,22 @@ class SupplierActor(supplier: Supplier) extends Actor {
   def receive = {
     case order @ Order(date, connection, count) =>
       log.info("Received order of " + supplier.product.name)
-      Simulation.addMessage(order)
+      Simulator.addMessage(order)
       orders.enqueue(order)
       tryProduce()
       orderParts(count)
 
     case shipping @ Shipping(uri, date, connection, count) =>
       log.info("Received shipping of " + connection.content.name)
-      Simulation.addMessage(shipping)
+      Simulator.addMessage(shipping)
       storage.put(connection.content, count)
       tryProduce()
   }
 
   private def orderParts(count: Int): Unit = {
-    val incomingConnections = Simulation.connections.filter(_.receiver == supplier)
+    val incomingConnections = Simulator.connections.filter(_.receiver == supplier)
     for(connection <- incomingConnections)
-      Simulation.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
+      Simulator.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
   }
 
   private def tryProduce(): Unit = {
@@ -69,7 +68,7 @@ class SupplierActor(supplier: Supplier) extends Actor {
             count = order.count
           )
         context.system.scheduler.scheduleOnce(time) {
-          Simulation.getActor(order.connection.receiver) ! shipping
+          Simulator.getActor(order.connection.receiver) ! shipping
         }
       }
     }

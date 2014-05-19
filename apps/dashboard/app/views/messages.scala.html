@@ -1,6 +1,5 @@
 @(downstreamMessages: Seq[supplychain.model.Message],
-  upstreamMessages: Seq[supplychain.model.Message],
-  allMessages: Seq[supplychain.model.Message])
+  upstreamMessages: Seq[supplychain.model.Message])
 
 @import supplychain.model.Order
 @import supplychain.model.Shipping
@@ -25,13 +24,4 @@
     case Shipping(uri, date, conn, count) => { Shipping of @count @conn.content.name (s) from @conn.sender.name }
   }
   <br/>
-}
-
-<h2>All</h2>
-
-@for(msg <- allMessages) {
-  @msg match {
-    case Order(date, conn, count) => { Order of @count @conn.content.name (s) from @conn.receiver.name to @conn.sender.name}
-    case Shipping(uri, date, conn, count) => { Shipping of @count @conn.content.name (s) from @conn.sender.name to @conn.receiver.name}
-  }
 }
