@@ -49,6 +49,14 @@ object Simulator extends Dataset {
     network.order()
   }
 
+  def run() = {
+    network.run()
+  }
+
+  def stop() = {
+    network.stop()
+  }
+
   def getActor(supplier: Supplier) = {
     system.actorSelection("/user/" + supplier.uri)
   }

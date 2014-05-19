@@ -1,7 +1,7 @@
 package supplychain.simulator
 
 import scala.util.Random
-import akka.actor.{Props, ActorRef}
+import akka.actor.{Cancellable, Props, ActorRef}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import supplychain.model._
@@ -19,16 +19,31 @@ class Network(val actor: ActorRef, val product: Product, val suppliers: Seq[Supp
   private val oemSupplier = Network.generateSupplier(Product("OEM", parts = product :: Nil))
   Network.createActor(oemSupplier)
 
+  private var scheduler: Option[Cancellable] = None
+
   def order() {
-    // Create a new order with a dummy connection
-    val order =
-      Order(
-        date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
-        connection = Connection("Initial", product, suppliers.head, oemSupplier),
-        count = 1
-      )
-    actor ! order
+    actor ! newOrder
   }
+
+  def run() {
+    if(!scheduler.isDefined)
+      scheduler = Option(Simulator.system.scheduler.schedule(1 seconds, 30 seconds, actor, newOrder))
+  }
+
+  def stop() {
+    scheduler.foreach(_.cancel())
+    scheduler = None
+  }
+
+  /**
+   * Creates a new order with a dummy connection
+   */
+  private def newOrder =
+    Order(
+      date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
+      connection = Connection("Initial", product, suppliers.head, oemSupplier),
+      count = 1
+    )
 }
 
 object Network {

@@ -1,0 +1,7 @@
+@()
+
+<button onclick="$.post('/simulation/order')">Order</button>
+
+<button id="simulation-run" onclick="$.post('/simulation/run', function() { $('#simulation-run').button('disable'); $('#simulation-stop').button('enable'); })">Auto Order</button>
+
+<button id="simulation-stop" onclick="$.post('/simulation/stop', function() { $('#simulation-run').button('enable'); $('#simulation-stop').button('disable'); })" disabled="disabled">Stop</button>

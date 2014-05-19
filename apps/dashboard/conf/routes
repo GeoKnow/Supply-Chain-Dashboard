@@ -17,6 +17,8 @@ POST        /dataset/schnellecke          controllers.API.loadSchnelleckeDataset
 POST        /dataset/sourcemap/:id        controllers.API.loadSourceMapDataset(id: Int)
 
 POST        /simulation/order             controllers.API.order()
+POST        /simulation/run               controllers.API.run()
+POST        /simulation/stop              controllers.API.stop()
 
 # Static resources
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)

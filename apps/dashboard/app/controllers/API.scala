@@ -127,4 +127,14 @@ object API extends Controller {
     Simulator.order()
     Ok
   }
+
+  def run() = Action {
+    Simulator.run()
+    Ok
+  }
+
+  def stop() = Action {
+    Simulator.stop()
+    Ok
+  }
 }
