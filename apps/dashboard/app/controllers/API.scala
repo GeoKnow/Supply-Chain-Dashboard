@@ -124,17 +124,17 @@ object API extends Controller {
   }
 
   def order() = Action {
-    Simulator.order()
+    CurrentDataset.simulator.order()
     Ok
   }
 
   def run() = Action {
-    Simulator.run()
+    CurrentDataset.simulator.run()
     Ok
   }
 
   def stop() = Action {
-    Simulator.stop()
+    CurrentDataset.simulator.stop()
     Ok
   }
 }

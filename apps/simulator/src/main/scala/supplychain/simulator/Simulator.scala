@@ -8,16 +8,13 @@ import akka.actor.ActorSystem
 /**
  * The supply chain simulator.
  */
-object Simulator extends Dataset {
+class Simulator(val actorSystem: ActorSystem) extends Dataset {
 
   // The simulation to run
   private val sim = CarSimulation
 
-  // The akka actor system
-  private[simulator] val system = ActorSystem("system")
-
   // The supply chain network
-  private val network = Network.build(sim.product)
+  private val network = Network.build(sim.product)(this)
 
   // Listeners for intercepted messages
   @volatile
@@ -58,6 +55,6 @@ object Simulator extends Dataset {
   }
 
   def getActor(supplier: Supplier) = {
-    system.actorSelection("/user/" + supplier.uri)
+    actorSystem.actorSelection("/user/" + supplier.uri)
   }
 }

@@ -14,7 +14,7 @@ import supplychain.model.Supplier
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class SupplierActor(supplier: Supplier) extends Actor {
+class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
 
   val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
 
@@ -29,22 +29,22 @@ class SupplierActor(supplier: Supplier) extends Actor {
   def receive = {
     case order @ Order(date, connection, count) =>
       log.info("Received order of " + supplier.product.name)
-      Simulator.addMessage(order)
+      simulator.addMessage(order)
       orders.enqueue(order)
       tryProduce()
       orderParts(count)
 
     case shipping @ Shipping(uri, date, connection, count) =>
       log.info("Received shipping of " + connection.content.name)
-      Simulator.addMessage(shipping)
+      simulator.addMessage(shipping)
       storage.put(connection.content, count)
       tryProduce()
   }
 
   private def orderParts(count: Int): Unit = {
-    val incomingConnections = Simulator.connections.filter(_.receiver == supplier)
+    val incomingConnections = simulator.connections.filter(_.receiver == supplier)
     for(connection <- incomingConnections)
-      Simulator.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
+      simulator.getActor(connection.sender) ! Order(date(), connection, connection.content.count * count)
   }
 
   private def tryProduce(): Unit = {
@@ -68,7 +68,7 @@ class SupplierActor(supplier: Supplier) extends Actor {
             count = order.count
           )
         context.system.scheduler.scheduleOnce(time) {
-          Simulator.getActor(order.connection.receiver) ! shipping
+          simulator.getActor(order.connection.receiver) ! shipping
         }
       }
     }

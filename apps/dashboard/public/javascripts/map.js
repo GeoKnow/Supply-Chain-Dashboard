@@ -16,7 +16,7 @@ function initialize() {
   showConnections();
 
   // Stream deliveries
-  $('#deliveryStream').html('<iframe src="/deliveryStream" frameborder="0"></iframe>');
+  $('#deliveryStream').html('<iframe src="deliveryStream" frameborder="0"></iframe>');
 }
 
 function addSupplier(id, title, latitude, longitude, dueParts) {
@@ -89,7 +89,7 @@ function hideSuppliers() {
 }
 
 function showSuppliers() {
-  $.get("/map/loadSuppliers", function(data) {
+  $.get("map/loadSuppliers", function(data) {
     // Remove existing address markers
     hideSuppliers();
     // Load new address markers
@@ -115,7 +115,7 @@ function hideConnections() {
 }
 
 function showConnections(supplierId, contentType) {
-  var uri = "/map/loadConnections";
+  var uri = "map/loadConnections";
   if(supplierId)
     uri += "?supplierId=" + supplierId;
   if(contentType && contentType != "all")
@@ -137,19 +137,19 @@ function showConnections(supplierId, contentType) {
 
 function selectSupplier(addressId) {
   showConnections(addressId);
-  $.get("/supplier/" + addressId, function(data) {
+  $.get("supplier/" + addressId, function(data) {
     $('#property-content' ).html(data)
   })
 }
 
 function selectDelivery(deliveryId) {
-  $.get("/delivery/" + deliveryId, function(data) {
+  $.get("delivery/" + deliveryId, function(data) {
     $('#property-content' ).html(data)
   })
 }
 
 function refreshMetrics() {
-  $.get("/metrics", function(data) {
+  $.get("metrics", function(data) {
     $('#metrics-content' ).html(data)
   })
 }
