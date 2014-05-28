@@ -16,6 +16,9 @@ class RdfDataset {
   // Create new model
   private val model = ModelFactory.createDefaultModel()
 
+  /**
+   * Adds a product to the RDF data set.
+   */
   def addProduct(product: Product) {
     val properties =
       s"""
@@ -36,6 +39,9 @@ class RdfDataset {
       addProduct(part)
   }
 
+  /**
+   * Adds a supplier to the RDF data set.
+   */
   def addSupplier(supplier: Supplier) {
      insert(s"""
      | <${supplier.uri}> a sc:Supplier ;
@@ -43,9 +49,15 @@ class RdfDataset {
      |                   sc:street "${supplier.address.street}" ;
      |                   sc:zipcode "${supplier.address.zipcode}" ;
      |                   sc:city "${supplier.address.city}" ;
+     |                   sc:product "${supplier.product.uri}" ;
+     |                   geo:lat "${supplier.coords.lat}" ;
+     |                   geo:lon "${supplier.coords.lon}" ;
      """)
   }
 
+  /**
+   * Adds a connection to the RDF data set.
+   */
   def addConnection(c: Connection) {
     insert(s"""
      | <${c.uri}> a sc:Connection ;
@@ -55,6 +67,9 @@ class RdfDataset {
      """)
   }
 
+  /**
+   * Adds a new message to the RDF data set.
+   */
   def addMessage(msg: Message) { msg match {
     case Order(uri, date, connection, count) =>
       insert(s"""
@@ -73,10 +88,14 @@ class RdfDataset {
         """)
   }}
 
+  /**
+   * Inserts a number of statements into the RDF data set.
+   */
   private def insert(statements: String) {
     val query =
       s"""
         | PREFIX sc: <${Namespaces.schema}>
+        | PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         | INSERT DATA {
         $statements
         | }
@@ -91,11 +110,17 @@ class RdfDataset {
     }
   }
 
+  /**
+   * Executes a SPARQL Select query on the data set.
+   */
   def query(queryStr: String) = {
     val query = QueryFactory.create(queryStr)
     QueryExecutionFactory.create(query, model).execSelect()
   }
 
+  /**
+   * Executes a SPARQL Describe query on the data set.
+   */
   def describe(queryStr: String) = {
     val query = QueryFactory.create(queryStr)
     QueryExecutionFactory.create(query, model).execDescribe()
