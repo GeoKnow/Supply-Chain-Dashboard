@@ -17,11 +17,6 @@ object Application extends Controller {
   def print() {
   }
 
-  def index = Action {
-    print()
-    Ok(views.html.index())
-  }
-
   def query = Action {
     Ok(views.html.query())
   }

@@ -1,9 +1,9 @@
 @()
 
-@main("Supply Chain Dashboard") { } {
-  @widget("Query", "float: left; width: 50%; height: 100%") {
+@main(title = "Supply Chain Dashboard", tab = "query") { } {
+  @widget("Query", "float: left; width: 600px; height: 80%") {
     <form action="sparql">
-      <textarea name="query" cols="80" rows="30">
+      <textarea name="query" cols="70" rows="25">
 PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
 PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
 
@@ -17,9 +17,10 @@ LIMIT 20
     </form>
   }
 
-  @widget("Examples", "float: left; width: 40%; height: 100%") {
+  @widget("Examples", "float: left; width: 250px; height: 80%") {
     @example("example_suppliers", "Suppliers by name")
     @example("example_shippings", "20 most recent shippings")
+    @example("example_count", "Count shippings")
   }
 }
 
@@ -59,4 +60,12 @@ SELECT ?date ?product ?count ?sender ?receiver WHERE {
 }
 ORDER BY DESC(?date)
 LIMIT 20
+</div>
+
+<div id="example_count" style="display: none;">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+
+SELECT (count(?s) as ?shippings) WHERE {
+  ?s a sc:Shipping .
+}
 </div>

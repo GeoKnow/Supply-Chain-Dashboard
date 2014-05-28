@@ -1,4 +1,4 @@
-@(title: String)(header: Html)(content: Html)
+@(title: String, tab: String = "")(header: Html)(content: Html)
 
 <!DOCTYPE html>
 
@@ -21,6 +21,16 @@
         @header
     </head>
     <body>
+      @* Tabbar *@
+      <div id="tabbar">
+        <div id="title">Supply Chain Dashboard</div>
+        <span>
+          <div class="tab @if(tab == "query") {selected}"><a href="query">Query</a></div>
+          <div class="tab @if(tab == "map") {selected}"><a href="map">Map</a></div>
+        </span>
+      </div>
+
+      @* Content *@
       <div id="content">
         @content
       </div>
