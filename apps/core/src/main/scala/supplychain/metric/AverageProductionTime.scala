@@ -26,7 +26,7 @@ class AverageProductionTime extends Metric {
 
        // Compute time difference
        val time = shippingDateParsed.getTimeInMillis - orderDateParsed.getTimeInMillis
-       times ::= time
+       times ::= time.abs
      }
 
      // Compute average

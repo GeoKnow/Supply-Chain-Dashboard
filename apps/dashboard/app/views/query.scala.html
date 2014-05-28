@@ -8,34 +8,24 @@
     <div class="widget-content">
       <form action="sparql">
         <textarea name="query" cols="80" rows="30">
-PREFIX sc: <http://geoknow.eu/wp5/ontology#>
+PREFIX sc: <@{supplychain.dataset.Namespaces.schema}>
 PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 
-SELECT * WHERE {
-  ?delivery a sc:Message .
-  ?delivery sc:contentType ?content .
+SELECT ?date ?product ?count ?sender ?receiver WHERE {
+  ?delivery a sc:Shipping .
   ?delivery sc:count ?count .
   ?delivery sc:date ?date .
-  ?delivery sc:unloadingPoint ?unloadingPoint .
+  ?delivery sc:connection ?c .
 
-  ?delivery sc:sender ?sender .
-  ?sender sc:name ?sname .
-  ?sender sc:street ?sstreet .
-  ?sender sc:zipcode ?szipcode .
-  ?sender sc:city ?scity .
-  ?sender sc:country ?scountry .
-  ?sender geo:lat ?slat .
-  ?sender geo:lon ?slon .
+  ?c sc:product ?p .
+  ?p sc:name ?product .
 
-  ?delivery sc:receiver ?receiver .
-  ?receiver sc:name ?rname .
-  ?receiver sc:street ?rstreet .
-  ?receiver sc:zipcode ?rzipcode .
-  ?receiver sc:city ?rcity .
-  ?receiver sc:country ?rcountry .
-  ?receiver geo:lat ?rlat .
-  ?receiver geo:lon ?rlon .
-} LIMIT 20
+  ?c sc:sender ?s .
+  ?s sc:name ?sender .
+
+  ?c sc:receiver ?r .
+  ?r sc:name ?receiver .
+  } LIMIT 20
         </textarea>
         <br/>
         <input type="submit" value="Submit">

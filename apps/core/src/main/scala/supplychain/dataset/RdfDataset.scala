@@ -49,7 +49,7 @@ class RdfDataset {
      |                   sc:street "${supplier.address.street}" ;
      |                   sc:zipcode "${supplier.address.zipcode}" ;
      |                   sc:city "${supplier.address.city}" ;
-     |                   sc:product "${supplier.product.uri}" ;
+     |                   sc:product <${supplier.product.uri}> ;
      |                   geo:lat "${supplier.coords.lat}" ;
      |                   geo:lon "${supplier.coords.lon}" ;
      """)
@@ -61,7 +61,7 @@ class RdfDataset {
   def addConnection(c: Connection) {
     insert(s"""
      | <${c.uri}> a sc:Connection ;
-     |            sc:product "${c.content.name}" ;
+     |            sc:product <${c.content.uri}> ;
      |            sc:sender <${c.sender.uri}> ;
      |            sc:receiver <${c.receiver.uri}> .
      """)
