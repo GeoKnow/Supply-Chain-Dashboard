@@ -12,6 +12,7 @@ import supplychain.model.Coordinates
 import supplychain.model.Supplier
 import supplychain.model.Address
 import supplychain.model.Product
+import supplychain.dataset.Namespaces
 
 class Network(simulator: Simulator, val actor: ActorRef, val product: Product, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
@@ -40,6 +41,7 @@ class Network(simulator: Simulator, val actor: ActorRef, val product: Product, v
    */
   private def newOrder =
     Order(
+      uri = Namespaces.message +  UUID.randomUUID.toString,
       date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
       connection = Connection("Initial", product, suppliers.head, oemSupplier),
       count = 1
@@ -59,7 +61,7 @@ object Network {
   }
 
   def createActor(supplier: Supplier)(implicit simulator: Simulator): ActorRef = {
-    simulator.actorSystem.actorOf(Props(classOf[SupplierActor], supplier, simulator), supplier.uri)
+    simulator.actorSystem.actorOf(Props(classOf[SupplierActor], supplier, simulator), supplier.id)
   }
 
   def generateSupplier(product: Product) = {
@@ -68,7 +70,7 @@ object Network {
     val coordinates = Coordinates(lat, lon)
     val address = Address("Beispielstr. 1", "10123", "Musterstadt", "Deutschland")
     Supplier(
-      product.name + "-" + UUID.randomUUID.toString,
+      Namespaces.supplier + product.name + "-" + UUID.randomUUID.toString,
       product.name + " Supplier", address, coordinates, product)
   }
 }

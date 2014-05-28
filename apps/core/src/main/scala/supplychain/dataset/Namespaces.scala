@@ -2,10 +2,16 @@ package supplychain.dataset
 
 object Namespaces {
 
-  val schema = "http://geoknow.eu/wp5/ontology"
+  val base = "http://www.xybermotive.com/"
 
-  val supplier = "http://geoknow.eu/wp5/actor/"
+  val schema = base + "ontology/"
 
-  val connection = "http://geoknow.eu/wp5/message/"
+  val product = base + "product/"
+
+  val supplier = base + "supplier/"
+
+  val connection = base + "connection/"
+
+  val message = base + "message/"
 
 }

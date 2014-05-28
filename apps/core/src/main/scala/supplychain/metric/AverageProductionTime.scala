@@ -17,7 +17,7 @@ class AverageProductionTime extends Metric {
      var times = List[Double]()
 
      // Find all pairs of orders and shippings
-     for(Order(orderDate, connection, count) +: tail <- messages.tails;
+     for(Order(uri, orderDate, connection, count) +: tail <- messages.tails;
          Shipping(uri, shippingDate, connection, count) <- tail.find(_.connection.id == connection.id)) {
 
        // Parse times

@@ -1,7 +1,7 @@
 package supplychain.simulator
 
 import com.hp.hpl.jena.query.ResultSet
-import supplychain.dataset.Dataset
+import supplychain.dataset.{RdfDataset, Dataset}
 import supplychain.model.{Product, Connection, Supplier, Message}
 import akka.actor.ActorSystem
 
@@ -23,6 +23,11 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   // List of past messages.
   var messages = Seq[Message]()
 
+  private val dataset = new RdfDataset()
+  dataset.addProduct(sim.product)
+  for(supplier <- suppliers) dataset.addSupplier(supplier)
+  for(connection <- connections) dataset.addConnection(connection)
+
   // List of suppliers.
   def suppliers: Seq[Supplier] = network.suppliers
 
@@ -33,11 +38,14 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
     listeners = listeners :+ listener
   }
 
-  def query(queryStr: String): ResultSet = throw new UnsupportedOperationException()
+  def query(queryStr: String) = dataset.query(queryStr)
+
+  def describe(queryStr: String) = dataset.describe(queryStr)
 
   // TODO should be synchronized in listeners
   private[simulator] def addMessage(msg: Message) = synchronized {
     messages = messages :+ msg
+    dataset.addMessage(msg)
     for(listener <- listeners)
       listener(msg)
   }
@@ -55,6 +63,6 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   }
 
   def getActor(supplier: Supplier) = {
-    actorSystem.actorSelection("/user/" + supplier.uri)
+    actorSystem.actorSelection("/user/" + supplier.id)
   }
 }

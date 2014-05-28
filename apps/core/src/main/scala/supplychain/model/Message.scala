@@ -5,6 +5,8 @@ package supplychain.model
  */
 trait Message {
 
+  def uri: String
+
   def date: String
 
   def connection: Connection
