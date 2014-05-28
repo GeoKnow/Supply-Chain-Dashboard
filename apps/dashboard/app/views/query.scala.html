@@ -1,15 +1,46 @@
 @()
 
 @main("Supply Chain Dashboard") { } {
-  <div class="widget" style="height: 100%">
-    <div class="widget-header">
-      Query
-    </div>
-    <div class="widget-content">
-      <form action="sparql">
-        <textarea name="query" cols="80" rows="30">
-PREFIX sc: <@{supplychain.dataset.Namespaces.schema}>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+  @widget("Query", "float: left; width: 50%; height: 100%") {
+    <form action="sparql">
+      <textarea name="query" cols="80" rows="30">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+
+SELECT * WHERE {
+  ?s ?p ?o
+}
+LIMIT 20
+      </textarea>
+      <br/>
+      <input type="submit" value="Submit">
+    </form>
+  }
+
+  @widget("Examples", "float: left; width: 40%; height: 100%") {
+    @example("example_suppliers", "Suppliers by name")
+    @example("example_shippings", "20 most recent shippings")
+  }
+}
+
+@example(id: String, text: String) = {
+  <a href="#" onclick="$('textarea').text($('#@id').text().trim())">@text</a><br/>
+}
+
+<div id="example_suppliers" style="display: none;">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+
+SELECT ?name ?product WHERE {
+  ?s a sc:Supplier .
+  ?s sc:name ?name .
+  ?s sc:product ?p .
+  ?p sc:name ?product
+}
+ORDER BY ?name
+</div>
+
+<div id="example_shippings" style="display: none;">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
 
 SELECT ?date ?product ?count ?sender ?receiver WHERE {
   ?delivery a sc:Shipping .
@@ -25,11 +56,7 @@ SELECT ?date ?product ?count ?sender ?receiver WHERE {
 
   ?c sc:receiver ?r .
   ?r sc:name ?receiver .
-  } LIMIT 20
-        </textarea>
-        <br/>
-        <input type="submit" value="Submit">
-      </form>
-    </div>
-  </div>
 }
+ORDER BY DESC(?date)
+LIMIT 20
+</div>
