@@ -10,6 +10,6 @@ lazy val simulator = project dependsOn core
 
 lazy val dashboard = project dependsOn core dependsOn simulator enablePlugins PlayScala
 
-lazy val root = project.in(file("."))
+lazy val root = project.in(file(".")) aggregate (core, simulator, dashboard)
 
 

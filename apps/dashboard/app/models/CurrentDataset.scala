@@ -2,15 +2,19 @@ package models
 
 import supplychain.dataset.Dataset
 import supplychain.simulator.{Simulation, Simulator}
+import play.api.libs.concurrent.Akka
+import play.api.Play.current
 
 /**
  * Holds the current data set.
  */
 object CurrentDataset {
 
+  val simulator = new Simulator(Akka.system)
+
   // Reference to the current data set.
   @volatile
-  private var dataset: Dataset = Simulator
+  private var dataset: Dataset = simulator
 
   /**
    * Gets the current data set.

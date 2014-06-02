@@ -1,45 +1,71 @@
 @()
 
-@main("Supply Chain Dashboard") { } {
-  <div class="widget" style="height: 100%">
-    <div class="widget-header">
-      Query
-    </div>
-    <div class="widget-content">
-      <form action="/sparql">
-        <textarea name="query" cols="80" rows="30">
-PREFIX sc: <http://geoknow.eu/wp5/ontology#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+@main(title = "Supply Chain Dashboard", tab = "query") { } {
+  @widget("Query", "float: left; width: 600px; height: 80%") {
+    <form action="sparql">
+      <textarea name="query" cols="70" rows="25">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
 
 SELECT * WHERE {
-  ?delivery a sc:Message .
-  ?delivery sc:contentType ?content .
+  ?s ?p ?o
+}
+LIMIT 20
+      </textarea>
+      <br/>
+      <input type="submit" value="Submit">
+    </form>
+  }
+
+  @widget("Examples", "float: left; width: 250px; height: 80%") {
+    @example("example_suppliers", "Suppliers by name")
+    @example("example_shippings", "20 most recent shippings")
+    @example("example_count", "Count shippings")
+  }
+}
+
+@example(id: String, text: String) = {
+  <a href="#" onclick="$('textarea').text($('#@id').text().trim())">@text</a><br/>
+}
+
+<div id="example_suppliers" style="display: none;">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+
+SELECT ?name ?product WHERE {
+  ?s a sc:Supplier .
+  ?s sc:name ?name .
+  ?s sc:product ?p .
+  ?p sc:name ?product
+}
+ORDER BY ?name
+</div>
+
+<div id="example_shippings" style="display: none;">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+
+SELECT ?date ?product ?count ?sender ?receiver WHERE {
+  ?delivery a sc:Shipping .
   ?delivery sc:count ?count .
   ?delivery sc:date ?date .
-  ?delivery sc:unloadingPoint ?unloadingPoint .
+  ?delivery sc:connection ?c .
 
-  ?delivery sc:sender ?sender .
-  ?sender sc:name ?sname .
-  ?sender sc:street ?sstreet .
-  ?sender sc:zipcode ?szipcode .
-  ?sender sc:city ?scity .
-  ?sender sc:country ?scountry .
-  ?sender geo:lat ?slat .
-  ?sender geo:lon ?slon .
+  ?c sc:product ?p .
+  ?p sc:name ?product .
 
-  ?delivery sc:receiver ?receiver .
-  ?receiver sc:name ?rname .
-  ?receiver sc:street ?rstreet .
-  ?receiver sc:zipcode ?rzipcode .
-  ?receiver sc:city ?rcity .
-  ?receiver sc:country ?rcountry .
-  ?receiver geo:lat ?rlat .
-  ?receiver geo:lon ?rlon .
-} LIMIT 20
-        </textarea>
-        <br/>
-        <input type="submit" value="Submit">
-      </form>
-    </div>
-  </div>
+  ?c sc:sender ?s .
+  ?s sc:name ?sender .
+
+  ?c sc:receiver ?r .
+  ?r sc:name ?receiver .
 }
+ORDER BY DESC(?date)
+LIMIT 20
+</div>
+
+<div id="example_count" style="display: none;">
+PREFIX sc: &lt;@{supplychain.dataset.Namespaces.schema}&gt;
+
+SELECT (count(?s) as ?shippings) WHERE {
+  ?s a sc:Shipping .
+}
+</div>

@@ -1,6 +1,6 @@
-@(title: String, height: String = "100%")(content: Html)
+@(title: String, style: String = "height: 100%")(content: Html)
 
-<div class="widget" style="height: @height">
+<div class="widget" style="@style">
   <div class="widget-header">
     @title
     @** TODO slide button <img src="@routes.Assets.at("images/favicon.png")" onclick="$(this).parent().siblings('.widget-content').slideToggle()"/> *@

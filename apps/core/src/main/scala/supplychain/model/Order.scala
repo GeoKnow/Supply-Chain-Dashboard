@@ -1,5 +1,5 @@
 package supplychain.model
 
-case class Order(date: String, connection: Connection, count: Int) extends Message {
+case class Order(uri: String, date: String, connection: Connection, count: Int) extends Message {
 
 }

@@ -1,6 +1,17 @@
 package supplychain.model
 
-case class Product(name: String, count: Int = 1, parts: List[Product] = Nil) {
+import supplychain.dataset.Namespaces
+import java.util.UUID
+
+/**
+ * Specifies a product.
+ *
+ * @param name Human-readable name for this product, e.g., windshield
+ * @param count
+ * @param parts List of parts needed for this product.
+ * @param uri Unique URI for this product, will be generated automatically if not provided.
+ */
+case class Product(name: String, count: Int = 1, parts: List[Product] = Nil, uri: String = Namespaces.product + UUID.randomUUID().toString) {
 
   /**
    * Generates a list of all parts of this product, including parts of parts.

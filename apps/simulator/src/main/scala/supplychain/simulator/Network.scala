@@ -1,7 +1,7 @@
 package supplychain.simulator
 
 import scala.util.Random
-import akka.actor.{Cancellable, Props, ActorRef}
+import akka.actor.{ActorSystem, Cancellable, Props, ActorRef}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import supplychain.model._
@@ -12,12 +12,13 @@ import supplychain.model.Coordinates
 import supplychain.model.Supplier
 import supplychain.model.Address
 import supplychain.model.Product
+import supplychain.dataset.Namespaces
 
-class Network(val actor: ActorRef, val product: Product, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
+class Network(simulator: Simulator, val actor: ActorRef, val product: Product, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
   // Create an OEM actor that is responsible for sending the initial orders for the product
   private val oemSupplier = Network.generateSupplier(Product("OEM", parts = product :: Nil))
-  Network.createActor(oemSupplier)
+  Network.createActor(oemSupplier)(simulator)
 
   private var scheduler: Option[Cancellable] = None
 
@@ -27,7 +28,7 @@ class Network(val actor: ActorRef, val product: Product, val suppliers: Seq[Supp
 
   def run() {
     if(!scheduler.isDefined)
-      scheduler = Option(Simulator.system.scheduler.schedule(1 seconds, 30 seconds, actor, newOrder))
+      scheduler = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 30 seconds, actor, newOrder))
   }
 
   def stop() {
@@ -40,6 +41,7 @@ class Network(val actor: ActorRef, val product: Product, val suppliers: Seq[Supp
    */
   private def newOrder =
     Order(
+      uri = Namespaces.message +  UUID.randomUUID.toString,
       date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
       connection = Connection("Initial", product, suppliers.head, oemSupplier),
       count = 1
@@ -50,16 +52,16 @@ object Network {
 
   private val random = new Random(0)
 
-  def build(product: Product): Network = {
+  def build(product: Product)(implicit simulator: Simulator): Network = {
     val suppliers = for(part <- product :: product.partList) yield generateSupplier(part)
     val connections = new SimpleNetworkBuilder(suppliers).apply(product)
     val actors = for(supplier <- suppliers) yield createActor(supplier)
 
-    new Network(actors.head, product, suppliers, connections)
+    new Network(simulator, actors.head, product, suppliers, connections)
   }
 
-  def createActor(supplier: Supplier): ActorRef = {
-    Simulator.system.actorOf(Props(classOf[SupplierActor], supplier), supplier.uri)
+  def createActor(supplier: Supplier)(implicit simulator: Simulator): ActorRef = {
+    simulator.actorSystem.actorOf(Props(classOf[SupplierActor], supplier, simulator), supplier.id)
   }
 
   def generateSupplier(product: Product) = {
@@ -68,7 +70,7 @@ object Network {
     val coordinates = Coordinates(lat, lon)
     val address = Address("Beispielstr. 1", "10123", "Musterstadt", "Deutschland")
     Supplier(
-      product.name + "-" + UUID.randomUUID.toString,
+      Namespaces.supplier + product.name + "-" + UUID.randomUUID.toString,
       product.name + " Supplier", address, coordinates, product)
   }
 }

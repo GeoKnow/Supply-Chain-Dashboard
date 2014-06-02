@@ -1,7 +1,7 @@
 <div class="accordion">
   <h3>Schnellecke</h3>
   <div>
-    <button onclick="$.post('/dataset/schnellecke', function(data) { window.location.reload() })" >
+    <button onclick="$.post('dataset/schnellecke', function(data) { window.location.reload() })" >
       Load Dataset
     </button>
   </div>
@@ -14,7 +14,7 @@
       <option value="21">Germany's Top Importers</option>
     </select>
     </p>
-    <button onclick="$.post('/dataset/sourcemap/' + $('#sourcemaps' ).val(), function(data) { window.location.reload() })" >
+    <button onclick="$.post('dataset/sourcemap/' + $('#sourcemaps' ).val(), function(data) { window.location.reload() })" >
       Load Dataset
     </button>
   </div>

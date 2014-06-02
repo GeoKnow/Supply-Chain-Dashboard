@@ -17,7 +17,7 @@ class AverageProductionTime extends Metric {
      var times = List[Double]()
 
      // Find all pairs of orders and shippings
-     for(Order(orderDate, connection, count) +: tail <- messages.tails;
+     for(Order(uri, orderDate, connection, count) +: tail <- messages.tails;
          Shipping(uri, shippingDate, connection, count) <- tail.find(_.connection.id == connection.id)) {
 
        // Parse times
@@ -26,7 +26,7 @@ class AverageProductionTime extends Metric {
 
        // Compute time difference
        val time = shippingDateParsed.getTimeInMillis - orderDateParsed.getTimeInMillis
-       times ::= time
+       times ::= time.abs
      }
 
      // Compute average

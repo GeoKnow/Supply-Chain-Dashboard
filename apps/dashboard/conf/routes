@@ -1,5 +1,5 @@
 # Pages
-GET         /                             controllers.Application.index
+GET         /                             controllers.Application.map
 GET         /query                        controllers.Application.query
 GET         /map                          controllers.Application.map
 GET         /metrics                      controllers.Application.metrics

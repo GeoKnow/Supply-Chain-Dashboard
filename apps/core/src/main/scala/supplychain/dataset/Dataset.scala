@@ -20,7 +20,7 @@ trait Dataset {
 
   def query(queryStr: String): ResultSet
 
-  def describe(queryStr: String): Model = ???
+  def describe(queryStr: String): Model
 
   def addListener(listener: Message => Unit): Unit = {}
 

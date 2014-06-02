@@ -26,6 +26,8 @@ class SourceMapDataset(id: Int) extends Dataset {
 
   def query(queryStr: String): ResultSet = throw new UnsupportedOperationException()
 
+  def describe(queryStr: String) = throw new UnsupportedOperationException()
+
   private def load() = {
     // Retrieve supply chain data
     val result = retrieveJson(s"http://free.sourcemap.com/services/supplychains/$id")
