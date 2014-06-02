@@ -11,7 +11,7 @@ import akka.actor.ActorSystem
 object Simulator extends Dataset {
 
   // The simulation to run
-  private val sim = CarSimulation
+  private val sim = FairPhoneSimulation // CarSimulation
 
   // The akka actor system
   private[simulator] val system = ActorSystem("system")
