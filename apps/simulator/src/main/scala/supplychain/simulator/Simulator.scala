@@ -15,7 +15,7 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   val scale = 24.0 * 60.0 * 60.0 // Simulate one day in one second
 
   // The simulation to run
-  private val sim = CarSimulation
+  private val sim = FairPhoneSimulation // CarSimulation
 
   // The supply chain network
   private val network = Network.build(sim.product)(this)
