@@ -11,7 +11,7 @@ import scala.collection.immutable.Queue
  */
 class Simulator(val actorSystem: ActorSystem) extends Dataset {
 
-  // The scale defined how simulation time is converted to actual time.
+  // The scale defines how simulation time is converted to actual time.
   val scale = 24.0 * 60.0 * 60.0 // Simulate one day in one second
 
   // The simulation to run
@@ -69,14 +69,4 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   def getActor(supplier: Supplier) = {
     actorSystem.actorSelection("/user/" + supplier.id)
   }
-}
-
-class Scheduler {
-
-  private val messages = Queue[Message]()
-
-  def schedule(msg: Message) {
-
-  }
-
 }
