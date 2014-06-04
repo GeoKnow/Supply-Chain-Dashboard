@@ -6,18 +6,18 @@ import scala.collection.mutable
 import scala.util.Random
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import supplychain.model.{Order, Shipping, Supplier, Connection}
-import java.util.{GregorianCalendar, UUID}
+import supplychain.model._
+import java.util.{Calendar, GregorianCalendar, UUID}
 import javax.xml.datatype.DatatypeFactory
-import supplychain.model.Supplier
 import supplychain.dataset.Namespaces
+import supplychain.model.Shipping
+import supplychain.model.Supplier
+import supplychain.model.Order
 
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
 class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
-
-  val productionTime: FiniteDuration = 1.seconds + Random.nextInt(10).seconds
 
   val delayProbability = Random.nextDouble() * 0.5
 
@@ -33,7 +33,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
       simulator.addMessage(order)
       orders.enqueue(order)
       tryProduce()
-      orderParts(count)
+      orderParts(date, count)
 
     case shipping @ Shipping(uri, date, connection, count, order) =>
       log.info("Received shipping of " + connection.content.name)
@@ -42,43 +42,43 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
       tryProduce()
   }
 
-  private def orderParts(count: Int): Unit = {
+  private def orderParts(date: DateTime, count: Int): Unit = {
     val incomingConnections = simulator.connections.filter(_.receiver == supplier)
-    for(connection <- incomingConnections)
-      simulator.getActor(connection.sender) ! Order(uri(), date(), connection, connection.content.count * count)
+    for(connection <- incomingConnections) {
+      val order =
+        Order(
+          date = date,
+          connection = connection,
+          count = count
+        )
+      simulator.getActor(connection.sender) ! order
+    }
   }
 
   private def tryProduce(): Unit = {
     for(order <- orders.headOption) {
       if(storage.take(supplier.product.parts)) {
         orders.dequeue()
-        // Determine production time
-        val time =
+        // Determine shipping time
+        val deliveryTime =
           if(Random.nextBoolean())
-            productionTime
+            supplier.product.productionTime + order.connection.shippingTime
           else {
             log.info(s"Shipping of ${supplier.product.name} will be delayed.")
-            productionTime * 2
+            supplier.product.productionTime * 2 + order.connection.shippingTime
           }
         // Schedule shipping message
-        val shipping =
-          Shipping(
-            uri = uri(),
-            date = date(),
-            connection = order.connection,
-            count = order.count,
-            order = order
-          )
-        context.system.scheduler.scheduleOnce(time) {
+        context.system.scheduler.scheduleOnce((deliveryTime.milliseconds / simulator.scale).millis) {
+          val shipping =
+            Shipping(
+              date = order.date + deliveryTime,
+              connection = order.connection,
+              count = order.count,
+              order = order
+            )
           simulator.getActor(order.connection.receiver) ! shipping
         }
       }
     }
   }
-
-  // Generates a new message URI
-  def uri() = Namespaces.message +  UUID.randomUUID.toString
-
-  // The current date as xsd:date
-  def date() = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat
 }

@@ -71,10 +71,11 @@ class RdfDataset {
    * Adds a new message to the RDF data set.
    */
   def addMessage(msg: Message) { msg match {
-    case Order(uri, date, connection, count) =>
+    case order @ Order(uri, date, connection, count) =>
       insert(s"""
         |  <${msg.uri}> a sc:Order ;
-        |               sc:date "$date" ;
+        |               sc:date "${date.toXSDFormat}" ;
+        |               sc:dueDate "${order.dueDate.toXSDFormat}" ;
         |               sc:connection <${connection.uri}> ;
         |               sc:count "$count" .
         """)
@@ -82,7 +83,7 @@ class RdfDataset {
     case Shipping(uri, date, connection, count, order) =>
       insert(s"""
         |  <${msg.uri}> a sc:Shipping ;
-        |               sc:date "$date" ;
+        |               sc:date "${date.toXSDFormat}" ;
         |               sc:connection <${connection.uri}> ;
         |               sc:count "$count" ;
         |               sc:order <${order.uri}> .

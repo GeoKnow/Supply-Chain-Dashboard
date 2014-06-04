@@ -2,6 +2,8 @@ package supplychain.model
 
 import supplychain.dataset.Namespaces
 import java.util.UUID
+import scala.concurrent.duration.FiniteDuration
+import scala.util.Random
 
 /**
  * Specifies a product.
@@ -12,6 +14,9 @@ import java.util.UUID
  * @param uri Unique URI for this product, will be generated automatically if not provided.
  */
 case class Product(name: String, count: Int = 1, parts: List[Product] = Nil, uri: String = Namespaces.product + UUID.randomUUID().toString) {
+
+  // Production time in days
+  val productionTime = Duration.days(1.0 + 10.0 * Random.nextDouble())
 
   /**
    * Generates a list of all parts of this product, including parts of parts.

@@ -7,7 +7,7 @@ trait Message {
 
   def uri: String
 
-  def date: String
+  def date: DateTime
 
   def connection: Connection
 

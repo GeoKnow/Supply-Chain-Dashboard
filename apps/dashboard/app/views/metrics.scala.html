@@ -14,7 +14,7 @@
     @metric.dimension.capitalize
   </div>
   <div class="metric-value">
-    @metric(CurrentDataset().messages) @metric.unit
+    @metric(CurrentDataset().messages).formatted("%.2f") @metric.unit
   </div>
 }
 

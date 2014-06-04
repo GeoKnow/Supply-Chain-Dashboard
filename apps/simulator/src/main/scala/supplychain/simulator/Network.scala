@@ -23,12 +23,12 @@ class Network(simulator: Simulator, val actor: ActorRef, val product: Product, v
   private var scheduler: Option[Cancellable] = None
 
   def order() {
-    actor ! newOrder
+    actor ! createOrder
   }
 
   def run() {
     if(!scheduler.isDefined)
-      scheduler = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 30 seconds, actor, newOrder))
+      scheduler = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 30 seconds, actor, createOrder))
   }
 
   def stop() {
@@ -37,15 +37,17 @@ class Network(simulator: Simulator, val actor: ActorRef, val product: Product, v
   }
 
   /**
-   * Creates a new order with a dummy connection
+   * Creates a new order with a dummy connection.
    */
-  private def newOrder =
+  private def createOrder = {
+    val connection = Connection("Initial", product, suppliers.head, oemSupplier)
+    val date = DateTime.now
     Order(
-      uri = Namespaces.message +  UUID.randomUUID.toString,
-      date = DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()).toXMLFormat,
-      connection = Connection("Initial", product, suppliers.head, oemSupplier),
+      date = date,
+      connection = connection,
       count = 1
     )
+  }
 }
 
 object Network {

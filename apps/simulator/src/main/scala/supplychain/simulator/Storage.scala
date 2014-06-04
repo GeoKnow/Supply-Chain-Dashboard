@@ -12,7 +12,7 @@ class Storage(products: List[Product]) {
 
   private val storage = mutable.Map[Product, Int]()
   for(product <- products)
-    storage(product) = 0
+    storage(product) = product.count
 
   /**
    * Puts a new product into the storage.

@@ -10,21 +10,12 @@ class AverageProductionTime extends Metric {
 
    val dimension = "average production time"
 
-   val unit = "seconds"
+   val unit = "days"
 
    def apply(messages: Seq[Message]): Double = {
      // Collect all production times
-     val times = messages.collect{ case s: Shipping => productionTime(s) }
+     val times = messages.collect { case s: Shipping => (s.date - s.order.date).milliseconds}
      // Compute average
-     times.sum / times.size / 1000.0
+     times.sum / times.size / 1000.0 / 60.0 / 60.0 / 24.0
    }
-
-   private def productionTime(shipping: Shipping) = {
-     // Parse dates
-     val orderDateParsed = DatatypeConverter.parseDateTime(shipping.order.date)
-     val shippingDateParsed = DatatypeConverter.parseDateTime(shipping.date)
-     // Compute time difference
-     shippingDateParsed.getTimeInMillis - orderDateParsed.getTimeInMillis
-   }
-
  }

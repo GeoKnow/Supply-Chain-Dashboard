@@ -148,7 +148,14 @@ function selectDelivery(deliveryId) {
   })
 }
 
+var refreshTimer;
+
 function refreshMetrics() {
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(function() { reloadMetrics(); }, 2000);
+}
+
+function reloadMetrics() {
   $.get("metrics", function(data) {
     $('#metrics-content' ).html(data)
   })
