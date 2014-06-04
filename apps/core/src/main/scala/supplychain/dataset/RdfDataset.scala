@@ -79,12 +79,13 @@ class RdfDataset {
         |               sc:count "$count" .
         """)
 
-    case Shipping(uri, date, connection, count) =>
+    case Shipping(uri, date, connection, count, order) =>
       insert(s"""
         |  <${msg.uri}> a sc:Shipping ;
         |               sc:date "$date" ;
         |               sc:connection <${connection.uri}> ;
-        |               sc:count "$count" .
+        |               sc:count "$count" ;
+        |               sc:order <${order.uri}> .
         """)
   }}
 

@@ -3,6 +3,8 @@
 @import supplychain.metric.Metric
 @import supplychain.metric.Metrics
 
+<button onclick="$.post('metrics/reload')">Reload</button>
+
 @for(metric <- Metrics.all) {
   @renderMetric(metric)
 }
@@ -15,3 +17,4 @@
     @metric(CurrentDataset().messages) @metric.unit
   </div>
 }
+

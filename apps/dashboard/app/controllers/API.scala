@@ -8,6 +8,7 @@ import scala.Some
 import java.io.StringWriter
 import supplychain.dataset.{DatasetStatistics, SchnelleckeDataset, Namespaces}
 import supplychain.simulator.{Simulator, Simulation}
+import supplychain.metric.Metrics
 
 /**
  * The REST API.
@@ -135,6 +136,11 @@ object API extends Controller {
 
   def stop() = Action {
     CurrentDataset.simulator.stop()
+    Ok
+  }
+
+  def reloadMetrics() = Action {
+    Metrics.reload()
     Ok
   }
 }

@@ -13,24 +13,18 @@ class AverageProductionTime extends Metric {
    val unit = "seconds"
 
    def apply(messages: Seq[Message]): Double = {
-     // Collect all times in a list
-     var times = List[Double]()
-
-     // Find all pairs of orders and shippings
-     for(Order(uri, orderDate, connection, count) +: tail <- messages.tails;
-         Shipping(uri, shippingDate, connection, count) <- tail.find(_.connection.id == connection.id)) {
-
-       // Parse times
-       val orderDateParsed = DatatypeConverter.parseDateTime(orderDate)
-       val shippingDateParsed = DatatypeConverter.parseDateTime(shippingDate)
-
-       // Compute time difference
-       val time = shippingDateParsed.getTimeInMillis - orderDateParsed.getTimeInMillis
-       times ::= time.abs
-     }
-
+     // Collect all production times
+     val times = messages.collect{ case s: Shipping => productionTime(s) }
      // Compute average
      times.sum / times.size / 1000.0
+   }
+
+   private def productionTime(shipping: Shipping) = {
+     // Parse dates
+     val orderDateParsed = DatatypeConverter.parseDateTime(shipping.order.date)
+     val shippingDateParsed = DatatypeConverter.parseDateTime(shipping.date)
+     // Compute time difference
+     shippingDateParsed.getTimeInMillis - orderDateParsed.getTimeInMillis
    }
 
  }

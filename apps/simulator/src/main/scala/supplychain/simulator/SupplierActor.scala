@@ -35,7 +35,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
       tryProduce()
       orderParts(count)
 
-    case shipping @ Shipping(uri, date, connection, count) =>
+    case shipping @ Shipping(uri, date, connection, count, order) =>
       log.info("Received shipping of " + connection.content.name)
       simulator.addMessage(shipping)
       storage.put(connection.content, count)
@@ -66,7 +66,8 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
             uri = uri(),
             date = date(),
             connection = order.connection,
-            count = order.count
+            count = order.count,
+            order = order
           )
         context.system.scheduler.scheduleOnce(time) {
           simulator.getActor(order.connection.receiver) ! shipping
