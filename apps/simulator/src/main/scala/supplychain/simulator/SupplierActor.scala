@@ -7,6 +7,7 @@ import scala.util.Random
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import supplychain.model._
+import supplychain.model.Duration
 import java.util.{Calendar, GregorianCalendar, UUID}
 import javax.xml.datatype.DatatypeFactory
 import supplychain.dataset.Namespaces
@@ -27,57 +28,81 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
 
   private val log = Logging(context.system, this)
 
+  /**
+   * Receives and processes messages.
+   */
   def receive = {
-    case order @ Order(uri, date, connection, count) =>
+    case ord @ Order(uri, date, connection, count) =>
       log.info("Received order of " + supplier.product.name)
-      simulator.addMessage(order)
-      orders.enqueue(order)
-      tryProduce()
-      orderParts(date, count)
+      simulator.addMessage(ord)
+      orders.enqueue(ord)
+      produce()
+      order(date, count)
 
-    case shipping @ Shipping(uri, date, connection, count, order) =>
+    case ship @ Shipping(uri, date, connection, count, order) =>
       log.info("Received shipping of " + connection.content.name)
-      simulator.addMessage(shipping)
+      simulator.addMessage(ship)
       storage.put(connection.content, count)
-      tryProduce()
+      produce()
   }
 
-  private def orderParts(date: DateTime, count: Int): Unit = {
+  /**
+   * Schedules new orders.
+   */
+  private def order(date: DateTime, count: Int): Unit = {
     val incomingConnections = simulator.connections.filter(_.receiver == supplier)
     for(connection <- incomingConnections) {
       val order =
         Order(
           date = date,
           connection = connection,
-          count = count
+          count = connection.content.count * count
         )
       simulator.getActor(connection.sender) ! order
     }
   }
 
-  private def tryProduce(): Unit = {
-    for(order <- orders.headOption) {
-      if(storage.take(supplier.product.parts)) {
+  /**
+   * Produces parts (if needed and possible).
+   */
+  private def produce(): Unit = {
+    for (order <- orders.headOption) {
+      if (storage.take(supplier.product.parts)) {
+        // Remove order
         orders.dequeue()
-        // Determine shipping time
-        val deliveryTime =
-          if(Random.nextBoolean())
-            supplier.product.productionTime + order.connection.shippingTime
-          else {
-            log.info(s"Shipping of ${supplier.product.name} will be delayed.")
-            supplier.product.productionTime * 2 + order.connection.shippingTime
-          }
-        // Schedule shipping message
-        context.system.scheduler.scheduleOnce((deliveryTime.milliseconds / simulator.scale).millis) {
-          val shipping =
-            Shipping(
-              date = order.date + deliveryTime,
-              connection = order.connection,
-              count = order.count,
-              order = order
-            )
-          simulator.getActor(order.connection.receiver) ! shipping
+        // Delivery times
+        val delayFactor = Random.nextDouble()
+        val deliveryTime = supplier.product.productionTime + order.connection.shippingTime
+        val delayedDeliveryTime = supplier.product.productionTime * (1.0 + delayFactor) + order.connection.shippingTime
+        // Number of parts delayed
+        val partsDelayed = 1 + Random.nextInt(order.count)
+        val partsOnTime = order.count - partsDelayed
+        // Schedule shipping messages
+        val productionDelayed = Random.nextBoolean()
+        if(productionDelayed) {
+          ship(order, partsOnTime, deliveryTime)
+          ship(order, partsDelayed, delayedDeliveryTime)
+        } else {
+          ship(order, order.count, deliveryTime)
         }
+      }
+    }
+  }
+
+  /**
+   * Schedules the shipping of parts.
+   */
+  private def ship(order: Order, count: Int, deliveryTime: Duration) = {
+    if(count >= 1) {
+      context.system.scheduler.scheduleOnce((deliveryTime.milliseconds / simulator.scale).millis) {
+        val shipping =
+          Shipping(
+            date = order.date + deliveryTime,
+            connection = order.connection,
+            count = count,
+            order = order
+          )
+        simulator.getActor(order.connection.receiver) ! shipping
       }
     }
   }

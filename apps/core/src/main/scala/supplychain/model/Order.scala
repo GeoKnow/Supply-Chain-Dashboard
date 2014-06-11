@@ -8,5 +8,5 @@ case class Order(uri: String = Namespaces.message + UUID.randomUUID.toString,
                  connection: Connection,
                  count: Int) extends Message {
 
-  val dueDate = date + ((connection.content.productionTime + connection.shippingTime) * 1.2)
+  val dueDate = date + (connection.content.productionTime + connection.shippingTime)
 }

@@ -45,7 +45,7 @@ class Network(simulator: Simulator, val actor: ActorRef, val product: Product, v
     Order(
       date = date,
       connection = connection,
-      count = 1
+      count = 10
     )
   }
 }
