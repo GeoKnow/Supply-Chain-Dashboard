@@ -4,11 +4,11 @@ import supplychain.model.{Shipping, Order, Message}
 import javax.xml.bind.DatatypeConverter
 
 /**
- * Computes the average production time.
+ * Computes the average delivery time.
  */
-class AverageProductionTime extends Metric {
+class AverageDeliveryTime extends Metric {
 
-   val dimension = "average production time"
+   val dimension = "average delivery time"
 
    val unit = "days"
 

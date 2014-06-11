@@ -2,9 +2,10 @@ package supplychain.model
 
 import javax.xml.datatype.DatatypeFactory
 
+/**
+ * A time duration.
+ */
 class Duration(val milliseconds: Long) {
-
-  override def toString = Duration.datetypeFactory.newDuration(milliseconds).toString
 
   def +(d: Duration) = new Duration(milliseconds + d.milliseconds)
 
@@ -15,12 +16,20 @@ class Duration(val milliseconds: Long) {
   def *(scale: Int) = new Duration(milliseconds * scale)
 
   def /(scale: Int) = new Duration(milliseconds / scale)
+
+  override def toString = Duration.datetypeFactory.newDuration(milliseconds).toString
 }
 
+/**
+ * Factory for specifying time durations.
+ */
 object Duration {
+
   private val datetypeFactory = DatatypeFactory.newInstance()
 
+  /* Specifies a duration in milliseconds. */
   def milliseconds(m: Long) = new Duration(m)
 
+  /* Specifies a duration in days */
   def days(d: Double) = new Duration((d * 24 * 60 * 60 * 1000).toLong)
 }

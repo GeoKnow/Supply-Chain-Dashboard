@@ -29,7 +29,7 @@ class SimpleNetworkBuilder(suppliers: Seq[Supplier]) {
    */
   protected def generate(supplier: Supplier, part: Product): List[Connection] = {
     val partSupplier = selectSupplier(part)
-    val connection = Connection(Namespaces.connection + UUID.randomUUID.toString, part, partSupplier, supplier)
+    val connection = Connection(UUID.randomUUID.toString, part, partSupplier, supplier)
     connection :: part.parts.flatMap(generate(partSupplier, _))
   }
 

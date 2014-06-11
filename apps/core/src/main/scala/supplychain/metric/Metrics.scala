@@ -10,7 +10,7 @@ object Metrics {
 
   Plugins.register()
 
-  val buildIn = new AverageProductionTime() :: new Timeliness() :: new AverageDelay() :: new DueParts() :: Nil
+  val buildIn = new AverageDeliveryTime() :: new Timeliness() :: new AverageDelay() :: new DueParts() :: Nil
 
   var all = buildIn ++ silkMetrics
 

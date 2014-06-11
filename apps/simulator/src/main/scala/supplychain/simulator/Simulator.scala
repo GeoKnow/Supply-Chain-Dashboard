@@ -12,7 +12,7 @@ import scala.collection.immutable.Queue
 class Simulator(val actorSystem: ActorSystem) extends Dataset {
 
   // The scale defines how simulation time is converted to actual time.
-  val scale = 24.0 * 60.0 * 60.0 // Simulate one day in one second
+  val scale = 24.0 * 60.0 * 20.0 // Simulate one day in three seconds
 
   // The simulation to run
   private val sim = FairPhoneSimulation // CarSimulation

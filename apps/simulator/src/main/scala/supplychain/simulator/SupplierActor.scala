@@ -8,9 +8,8 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import supplychain.model._
 import supplychain.model.Duration
-import java.util.{Calendar, GregorianCalendar, UUID}
+import java.util.GregorianCalendar
 import javax.xml.datatype.DatatypeFactory
-import supplychain.dataset.Namespaces
 import supplychain.model.Shipping
 import supplychain.model.Supplier
 import supplychain.model.Order
@@ -21,6 +20,10 @@ import supplychain.model.Order
 class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
 
   val delayProbability = Random.nextDouble() * 0.5
+
+  var demandForecast = 1
+
+  val demandTimeframe = Duration.days(30)
 
   private val storage = new Storage(supplier.product.parts)
 
@@ -71,14 +74,14 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
         // Remove order
         orders.dequeue()
         // Delivery times
-        val delayFactor = Random.nextDouble()
+        val delayFactor = 0.1 + Random.nextDouble()
         val deliveryTime = supplier.product.productionTime + order.connection.shippingTime
         val delayedDeliveryTime = supplier.product.productionTime * (1.0 + delayFactor) + order.connection.shippingTime
         // Number of parts delayed
         val partsDelayed = 1 + Random.nextInt(order.count)
         val partsOnTime = order.count - partsDelayed
         // Schedule shipping messages
-        val productionDelayed = Random.nextBoolean()
+        val productionDelayed = Random.nextDouble() <= delayProbability
         if(productionDelayed) {
           ship(order, partsOnTime, deliveryTime)
           ship(order, partsDelayed, delayedDeliveryTime)
