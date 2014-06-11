@@ -1,6 +1,7 @@
 var map = null; // Set during initialization
 var suppliers = []; //Map from a supplier ID to a marker
 var connections = []; //Map from connection ID to a polyline
+var selectedSupplier = null;
 
 function initialize() {
   // Initialize map
@@ -135,16 +136,18 @@ function showConnections(supplierId, contentType) {
   });
 }
 
-function selectSupplier(addressId) {
-  showConnections(addressId);
-  $.get("supplier/" + addressId, function(data) {
+function selectSupplier(supplierId) {
+  selectedSupplier = supplierId;
+  showConnections(supplierId);
+  $.get("supplier/" + supplierId, function(data) {
     $('#property-content' ).html(data)
-  })
+  });
+  reloadMetrics();
 }
 
 function selectDelivery(deliveryId) {
   $.get("delivery/" + deliveryId, function(data) {
-    $('#property-content' ).html(data)
+    $('#property-content').html(data)
   })
 }
 
@@ -156,7 +159,7 @@ function refreshMetrics() {
 }
 
 function reloadMetrics() {
-  $.get("metrics", function(data) {
+  $.get("metrics?supplierId=" + selectedSupplier, function(data) {
     $('#metrics-content' ).html(data)
   })
 }

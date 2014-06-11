@@ -1,20 +1,24 @@
-@()
+@(messages: Seq[supplychain.model.Message])
 
 @import supplychain.metric.Metric
 @import supplychain.metric.Metrics
 
-<button onclick="$.post('metrics/reload')">Reload</button>
-
-@for(metric <- Metrics.all) {
-  @renderMetric(metric)
+@if(messages.isEmpty) {
+  No supplier with received messages selected!
+} else {
+  @for(metric <- Metrics.all) {
+    @renderMetric(metric)
+  }
 }
+
+<button onclick="$.post('metrics/reload')">Reload</button>
 
 @renderMetric(metric: Metric) = {
   <div class="metric-dimension">
     @metric.dimension.capitalize
   </div>
   <div class="metric-value">
-    @metric(CurrentDataset().messages).formatted("%.2f") @metric.unit
+    @metric(messages).formatted("%.2f") @metric.unit
   </div>
 }
 

@@ -14,6 +14,9 @@ class Timeliness extends Metric {
     // Collect all production times
     val times = messages.collect{ case s: Shipping => s.date <= s.order.dueDate }
     // Compute average
-    times.count(identity).toDouble / times.size
+    if(!times.isEmpty)
+      times.count(identity).toDouble / times.size
+    else
+      0.0
   }
 }

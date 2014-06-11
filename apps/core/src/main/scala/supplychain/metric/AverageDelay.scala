@@ -15,6 +15,9 @@ class AverageDelay extends Metric {
     // Collect all production times
     val times = messages.collect { case s: Shipping => (s.date - s.order.dueDate).milliseconds}
     // Compute average
-    times.sum / times.size / 1000.0 / 60.0 / 60.0 / 24.0
+    if(!times.isEmpty)
+      times.sum / times.size / 1000.0 / 60.0 / 60.0 / 24.0
+    else
+      0.0
   }
 }

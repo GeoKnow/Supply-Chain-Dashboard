@@ -25,8 +25,9 @@ object Application extends Controller {
     Ok(views.html.map())
   }
 
-  def metrics = Action {
-    Ok(views.html.metrics())
+  def metrics(supplierId: String) = Action {
+    val messages = CurrentDataset().messages.filter(_.connection.receiver.id == supplierId)
+    Ok(views.html.metrics(messages))
   }
 
   def deliveryStream = Action {
