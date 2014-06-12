@@ -59,8 +59,8 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
     network.step()
   }
 
-  def run() = {
-    network.run()
+  def run(frequency: Double) = {
+    network.run(frequency)
   }
 
   def stop() = {

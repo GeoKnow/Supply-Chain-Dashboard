@@ -129,8 +129,8 @@ object API extends Controller {
     Ok
   }
 
-  def run() = Action {
-    CurrentDataset.simulator.run()
+  def run(frequency: Double) = Action {
+    CurrentDataset.simulator.run(frequency)
     Ok
   }
 

@@ -29,9 +29,9 @@ class Network(simulator: Simulator, val actor: ActorRef, val product: Product, v
     scheduler ! Scheduler.Tick
   }
 
-  def run() {
-    if(!metronom.isDefined)
-      metronom = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 1 seconds, scheduler, Scheduler.Tick))
+  def run(frequency: Double) {
+    stop()
+    metronom = Option(simulator.actorSystem.scheduler.schedule(0 seconds, frequency.seconds, scheduler, Scheduler.Tick))
   }
 
   def stop() {

@@ -17,7 +17,7 @@ POST        /dataset/schnellecke          controllers.API.loadSchnelleckeDataset
 POST        /dataset/sourcemap/:id        controllers.API.loadSourceMapDataset(id: Int)
 
 POST        /simulation/step              controllers.API.step()
-POST        /simulation/run               controllers.API.run()
+POST        /simulation/run               controllers.API.run(frequency: Double)
 POST        /simulation/stop              controllers.API.stop()
 
 POST        /metrics/reload               controllers.API.reloadMetrics()
