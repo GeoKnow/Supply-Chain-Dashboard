@@ -1,13 +1,22 @@
+// Variables
 var map = null; // Set during initialization
-var suppliers = []; //Map from a supplier ID to a marker
-var connections = []; //Map from connection ID to a polyline
-var selectedSupplier = null;
+var suppliers = []; // Map from a supplier ID to a marker
+var connections = []; // Map from connection ID to a polyline
+var selectedSupplier = null; // The ID of the selected supplier
+var selectedConnection = null; // The ID of the selected connection
+
+// Constants
+var supplierIcon = '../assets/images/supplier.png';
+var supplierSelectedIcon = '../assets/images/supplier-selected.png';
+var connectionIcon = {
+  path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
+};
 
 function initialize() {
   // Initialize map
   var mapOptions = {
-    center: new google.maps.LatLng(52.423, 10.787), // Wolfsburg
-    zoom: 8,
+    center: new google.maps.LatLng(50.708406, 10.382866),
+    zoom: 6,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("map-content"), mapOptions);
@@ -24,6 +33,7 @@ function addSupplier(id, title, latitude, longitude, dueParts) {
   var marker = new MarkerWithLabel({
     position: new google.maps.LatLng(latitude, longitude),
     title: title,
+    icon: supplierIcon,
     labelContent: "" + dueParts,
     labelClass: "supplier_label"
   });
@@ -33,24 +43,20 @@ function addSupplier(id, title, latitude, longitude, dueParts) {
 }
 
 function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
-  var arrowIcon = {
-    path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
-  };
-
   //Draw line
   var line = new google.maps.Polyline({
     path: [new google.maps.LatLng(senderLat, senderLon),
            new google.maps.LatLng(receiverLat, receiverLon)],
     strokeColor: '#0000FF',
-    strokeOpacity: 0.8,
+    strokeOpacity: 0.5,
     strokeWeight: 1.5,
     icons: [{
-      icon: arrowIcon,
+      icon: connectionIcon,
       offset: '100%'
     }]
   });
 
-  google.maps.event.addListener(line, 'click', function(event) { selectDelivery(id) });
+  google.maps.event.addListener(line, 'click', function(event) { selectConnection(id) });
   line.setMap(map);
   connections[id] = line;
 }
@@ -60,9 +66,9 @@ function addOrder(supplierId, connectionId, dueParts) {
   // Update dueOrders for supplier
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
   // Flash connection line
-  connections[connectionId].setOptions({ strokeWeight: 2, strokeColor: '#FF0000' });
+  connections[connectionId].setOptions({ strokeColor: '#FF0000' });
   setTimeout(function() {
-    connections[connectionId].setOptions({  strokeWeight: 1.5, strokeColor: '#0000FF' });
+    connections[connectionId].setOptions({  strokeColor: '#0000FF' });
   }, 1000);
 
 }
@@ -72,9 +78,9 @@ function addShipping(supplierId, connectionId, dueParts) {
   // Update dueOrders for supplier
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
   // Flash connection line
-  connections[connectionId].setOptions({  strokeWeight: 2, strokeColor: '#00FF00' });
+  connections[connectionId].setOptions({  strokeColor: '#00FF00' });
   setTimeout(function() {
-    connections[connectionId].setOptions({  strokeWeight: 1.5, strokeColor: '#0000FF' });
+    connections[connectionId].setOptions({ strokeColor: '#0000FF' });
   }, 1000);
 }
 
@@ -136,17 +142,38 @@ function showConnections(supplierId, contentType) {
   });
 }
 
+/**
+ * Highlights a supplier marker on the map.
+ */
 function selectSupplier(supplierId) {
+  // Hightlight selected supplier
+  if(selectedSupplier !== null)
+    suppliers[selectedSupplier].setIcon(supplierIcon);
+  suppliers[supplierId].setIcon(supplierSelectedIcon);
+  // Update selected supplier
   selectedSupplier = supplierId;
+  // Show all connections from/to this supplier
   showConnections(supplierId);
+  // Show supplier properties in the property widget
   $.get("supplier/" + supplierId, function(data) {
     $('#property-content' ).html(data)
   });
+  // Reload metrics
   reloadMetrics();
 }
 
-function selectDelivery(deliveryId) {
-  $.get("delivery/" + deliveryId, function(data) {
+/**
+ * Highlights a connection line on the map.
+ */
+function selectConnection(connectionId) {
+  // Highlight selected connection
+  if(selectedConnection !== null)
+    connections[selectedConnection].setOptions({ strokeWeight: 1.5, strokeOpacity: 0.5 });
+  connections[connectionId].setOptions({ strokeWeight: 2.5, strokeOpacity: 1.0 });
+  // Update selected connection
+  selectedConnection = connectionId;
+  // Show connection properties in the property widget
+  $.get("delivery/" + connectionId, function(data) {
     $('#property-content').html(data)
   })
 }
