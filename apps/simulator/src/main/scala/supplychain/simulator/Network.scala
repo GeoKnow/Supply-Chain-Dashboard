@@ -21,21 +21,26 @@ class Network(simulator: Simulator, val actor: ActorRef, val product: Product, v
   val rootConnection = Connection("Initial", product, suppliers.head, rootSupplier)
   Network.createActor(rootSupplier)(simulator)
 
-  val scheduler = simulator.actorSystem.actorOf(Props(classOf[Scheduler], rootConnection, simulator), "Scheduler")
+  private val scheduler = simulator.actorSystem.actorOf(Props(classOf[Scheduler], rootConnection, simulator), "Scheduler")
 
-  def order() {
-    //actor ! createOrder
+  private var metronom: Option[Cancellable] = None
+  
+  def step() {
+    scheduler ! Scheduler.Tick
   }
 
   def run() {
-    //if(!scheduler.isDefined)
-    //  scheduler = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 30 seconds, actor, createOrder))
-    simulator.actorSystem.scheduler.schedule(1 seconds, 1 seconds, scheduler, Scheduler.Tick)
+    if(!metronom.isDefined)
+      metronom = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 1 seconds, scheduler, Scheduler.Tick))
   }
 
   def stop() {
-    //scheduler.foreach(_.cancel())
-    //scheduler = None
+    metronom.foreach(_.cancel())
+    metronom = None
+  }
+
+  def schedule(msg: Message) {
+    scheduler ! msg
   }
 
 //  /**

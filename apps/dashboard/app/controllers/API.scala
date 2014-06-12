@@ -124,8 +124,8 @@ object API extends Controller {
     Ok
   }
 
-  def order() = Action {
-    CurrentDataset.simulator.order()
+  def step() = Action {
+    CurrentDataset.simulator.step()
     Ok
   }
 

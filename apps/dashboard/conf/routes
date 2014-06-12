@@ -16,7 +16,7 @@ GET         /map/loadConnections          controllers.API.loadConnections(suppli
 POST        /dataset/schnellecke          controllers.API.loadSchnelleckeDataset()
 POST        /dataset/sourcemap/:id        controllers.API.loadSourceMapDataset(id: Int)
 
-POST        /simulation/order             controllers.API.order()
+POST        /simulation/step              controllers.API.step()
 POST        /simulation/run               controllers.API.run()
 POST        /simulation/stop              controllers.API.stop()
 

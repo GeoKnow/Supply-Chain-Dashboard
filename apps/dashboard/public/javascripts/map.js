@@ -62,7 +62,6 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
 }
 
 function addOrder(supplierId, connectionId, dueParts) {
-  console.log("Received order " + connectionId + ". Due parts: " + dueParts);
   // Update dueOrders for supplier
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
   // Flash connection line
@@ -70,11 +69,9 @@ function addOrder(supplierId, connectionId, dueParts) {
   setTimeout(function() {
     connections[connectionId].setOptions({  strokeColor: '#0000FF' });
   }, 1000);
-
 }
 
 function addShipping(supplierId, connectionId, dueParts) {
-  console.log("Received shipping " + connectionId + ". Due parts: " + dueParts);
   // Update dueOrders for supplier
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
   // Flash connection line

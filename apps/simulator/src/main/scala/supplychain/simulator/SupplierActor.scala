@@ -55,13 +55,13 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
   private def order(date: DateTime, count: Int): Unit = {
     val incomingConnections = simulator.connections.filter(_.target == supplier)
     for(connection <- incomingConnections) {
-      val order =
+      simulator.scheduleMessage(
         Order(
           date = date,
           connection = connection,
           count = connection.content.count * count
         )
-      simulator.getActor(connection.source) ! order
+      )
     }
   }
 
@@ -97,16 +97,14 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
    */
   private def ship(order: Order, count: Int, deliveryTime: Duration) = {
     if(count >= 1) {
-      context.system.scheduler.scheduleOnce((deliveryTime.milliseconds / simulator.scale).millis) {
-        val shipping =
-          Shipping(
-            date = order.date + deliveryTime,
-            connection = order.connection,
-            count = count,
-            order = order
-          )
-        simulator.getActor(order.connection.target) ! shipping
-      }
+      simulator.scheduleMessage(
+        Shipping(
+          date = order.date + deliveryTime,
+          connection = order.connection,
+          count = count,
+          order = order
+        )
+      )
     }
   }
 }

@@ -8,17 +8,23 @@ import scala.collection.mutable
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
+  // The current simulation date
   private var currentDate = DateTime.now
 
+  // The simulation interval between two ticks
   private val tickInterval = Duration.days(1)
 
+  // The interval between two orders to the root supplier
   private val orderInterval = Duration.days(30)
 
+  // The number of parts to be ordered
   private val orderCount = 10
 
+  // Remembers the last order time
   private var lastOrderTime = currentDate - orderInterval
 
-  private val messageQueue = mutable.Queue[Message]()
+  // Scheduled messages ordered by date
+  private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
 
   /**
    * Receives and processes messages.
@@ -36,7 +42,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
         rootActor ! order
       }
       // Send all due messages
-      while(messageQueue.nonEmpty && messageQueue.front.date <= currentDate) {
+      while(messageQueue.nonEmpty && messageQueue.head.date <= currentDate) {
         val msg = messageQueue.dequeue()
         val receiverActor = simulator.getActor(msg.receiver)
         receiverActor ! msg
