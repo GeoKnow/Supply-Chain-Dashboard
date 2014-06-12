@@ -140,7 +140,7 @@ object API extends Controller {
   }
 
   def reloadMetrics() = Action {
-    Metrics.reload()
+    CurrentMetrics.load()
     Ok
   }
 }

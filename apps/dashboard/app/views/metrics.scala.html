@@ -1,12 +1,11 @@
 @(messages: Seq[supplychain.model.Message])
 
 @import supplychain.metric.Metric
-@import supplychain.metric.Metrics
 
 @if(messages.isEmpty) {
   No supplier with received messages selected!
 } else {
-  @for(metric <- Metrics.all) {
+  @for(metric <- CurrentMetrics()) {
     @renderMetric(metric)
   }
 }
