@@ -1,6 +1,7 @@
 @(messages: Seq[supplychain.model.Message])
 
 @import supplychain.metric.Metric
+@import supplychain.metric.SilkMetric
 
 @if(messages.isEmpty) {
   No supplier with received messages selected!
@@ -14,7 +15,12 @@
 
 @renderMetric(metric: Metric) = {
   <div class="metric-dimension">
-    @metric.dimension.capitalize
+   @metric.dimension.capitalize
+   @if(metric.isInstanceOf[SilkMetric]) {
+     <small>
+       <a href="@{Configuration.get.silkUrl + Configuration.get.silkProject + "/transform/" + metric.dimension + "/editor"}" target="_blank">edit</a>
+     </small>
+   }
   </div>
   <div class="metric-value">
     @metric(messages).formatted("%.2f") @metric.unit
