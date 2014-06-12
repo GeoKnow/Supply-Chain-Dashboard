@@ -46,8 +46,8 @@ object API extends Controller {
    */
   def supplier(id: String, format: Option[String]) = Action { implicit request =>
     val supplier = CurrentDataset().suppliers.find(_.id == id).get
-    val incomingConnections = CurrentDataset().connections.filter(_.receiver.id == id)
-    val outgoingConnections = CurrentDataset().connections.filter(_.sender.id == id)
+    val incomingConnections = CurrentDataset().connections.filter(_.target.id == id)
+    val outgoingConnections = CurrentDataset().connections.filter(_.source.id == id)
 
     render {
       case _ if format.exists(_.toLowerCase == "html") => {
@@ -103,7 +103,7 @@ object API extends Controller {
     // Retrieve connections
     val connections = addressId match {
       // Address provided => Only return deliveries that depart or arrive at the specified address
-      case Some(id) => CurrentDataset().connections.filter(d => d.sender.id == id || d.receiver.id == id)
+      case Some(id) => CurrentDataset().connections.filter(d => d.source.id == id || d.target.id == id)
       // No address provided => Check if contentType is provided
       case None => contentType match {
         case Some(content) => CurrentDataset().connections.filter(_.content == content)

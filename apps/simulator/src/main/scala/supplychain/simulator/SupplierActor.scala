@@ -53,7 +53,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
    * Schedules new orders.
    */
   private def order(date: DateTime, count: Int): Unit = {
-    val incomingConnections = simulator.connections.filter(_.receiver == supplier)
+    val incomingConnections = simulator.connections.filter(_.target == supplier)
     for(connection <- incomingConnections) {
       val order =
         Order(
@@ -61,7 +61,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
           connection = connection,
           count = connection.content.count * count
         )
-      simulator.getActor(connection.sender) ! order
+      simulator.getActor(connection.source) ! order
     }
   }
 
@@ -105,7 +105,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
             count = count,
             order = order
           )
-        simulator.getActor(order.connection.receiver) ! shipping
+        simulator.getActor(order.connection.target) ! shipping
       }
     }
   }

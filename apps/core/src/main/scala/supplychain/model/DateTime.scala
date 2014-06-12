@@ -12,17 +12,23 @@ class DateTime(val milliseconds: Long) extends Ordered[DateTime] {
     new DateTime(milliseconds + duration.milliseconds)
   }
 
+  def -(duration: Duration) = {
+    new DateTime(milliseconds - duration.milliseconds)
+  }
+
   def -(date: DateTime) = {
     Duration.milliseconds(milliseconds - date.milliseconds)
   }
 
-  def compare(d: DateTime) = (milliseconds - d.milliseconds).toInt
+  def compare(d: DateTime) = milliseconds.compare(d.milliseconds)
 
   def toXSDFormat = {
     val calendar = new GregorianCalendar()
     calendar.setTimeInMillis(milliseconds)
     DateTime.datetypeFactory.newXMLGregorianCalendar(calendar).toXMLFormat
   }
+
+  override def toString = toXSDFormat
 }
 
 object DateTime {

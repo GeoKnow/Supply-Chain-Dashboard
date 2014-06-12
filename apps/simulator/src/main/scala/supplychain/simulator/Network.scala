@@ -17,37 +17,39 @@ import supplychain.dataset.Namespaces
 class Network(simulator: Simulator, val actor: ActorRef, val product: Product, val suppliers: Seq[Supplier], val connections: Seq[Connection]) {
 
   // Create an OEM actor that is responsible for sending the initial orders for the product
-  private val oemSupplier = Network.generateSupplier(Product("OEM", parts = product :: Nil))
-  Network.createActor(oemSupplier)(simulator)
+  private val rootSupplier = Network.generateSupplier(Product("OEM", parts = product :: Nil))
+  val rootConnection = Connection("Initial", product, suppliers.head, rootSupplier)
+  Network.createActor(rootSupplier)(simulator)
 
-  private var scheduler: Option[Cancellable] = None
+  val scheduler = simulator.actorSystem.actorOf(Props(classOf[Scheduler], rootConnection, simulator), "Scheduler")
 
   def order() {
-    actor ! createOrder
+    //actor ! createOrder
   }
 
   def run() {
-    if(!scheduler.isDefined)
-      scheduler = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 30 seconds, actor, createOrder))
+    //if(!scheduler.isDefined)
+    //  scheduler = Option(simulator.actorSystem.scheduler.schedule(1 seconds, 30 seconds, actor, createOrder))
+    simulator.actorSystem.scheduler.schedule(1 seconds, 1 seconds, scheduler, Scheduler.Tick)
   }
 
   def stop() {
-    scheduler.foreach(_.cancel())
-    scheduler = None
+    //scheduler.foreach(_.cancel())
+    //scheduler = None
   }
 
-  /**
-   * Creates a new order with a dummy connection.
-   */
-  private def createOrder = {
-    val connection = Connection("Initial", product, suppliers.head, oemSupplier)
-    val date = DateTime.now
-    Order(
-      date = date,
-      connection = connection,
-      count = 10
-    )
-  }
+//  /**
+//   * Creates a new order with a dummy connection.
+//   */
+//  private def createOrder = {
+//    val connection = Connection("Initial", product, suppliers.head, oemSupplier)
+//    val date = DateTime.now
+//    Order(
+//      date = date,
+//      connection = connection,
+//      count = 10
+//    )
+//  }
 }
 
 object Network {

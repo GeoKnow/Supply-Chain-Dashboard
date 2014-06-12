@@ -9,8 +9,8 @@
 @for(msg <- downstreamMessages) {
   @msg.date:
   @msg match {
-    case Order(uri, date, conn, count) => { Order of @count @conn.content.name (s) from @conn.receiver.name }
-    case Shipping(uri, date, conn, count, order) => { Shipping of @count @conn.content.name (s) to @conn.receiver.name }
+    case Order(uri, date, conn, count) => { Order of @count @conn.content.name (s) from @conn.target.name }
+    case Shipping(uri, date, conn, count, order) => { Shipping of @count @conn.content.name (s) to @conn.target.name }
   }
   <br/>
 }
@@ -20,8 +20,8 @@
 @for(msg <- upstreamMessages) {
   @msg.date:
   @msg match {
-    case Order(uri, date, conn, count) => { Order of @count @conn.content.name (s) to @conn.sender.name }
-    case Shipping(uri, date, conn, count, order) => { Shipping of @count @conn.content.name (s) from @conn.sender.name }
+    case Order(uri, date, conn, count) => { Order of @count @conn.content.name (s) to @conn.source.name }
+    case Shipping(uri, date, conn, count, order) => { Shipping of @count @conn.content.name (s) from @conn.source.name }
   }
   <br/>
 }

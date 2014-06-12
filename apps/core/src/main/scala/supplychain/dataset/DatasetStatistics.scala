@@ -12,7 +12,7 @@ class DatasetStatistics(dataset: Dataset) {
   /** Computes the number of due parts (i.e., parts that have been ordered but not delivered yet) */
   def dueParts(supplier: Supplier) = {
     var due = 0
-    for(msg <- dataset.messages.filter(_.connection.sender.id == supplier.id)) msg match {
+    for(msg <- dataset.messages.filter(_.connection.source.id == supplier.id)) msg match {
       case o: Order => due += o.count
       case s: Shipping => due -= s.count
     }

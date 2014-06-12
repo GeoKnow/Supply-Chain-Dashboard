@@ -159,7 +159,7 @@ class SchnelleckeDataset extends Dataset {
         content = Product(result.getLiteral("content").getString),
         //count = result.getLiteral("count").getInt,
         //unloadingPoint = result.getLiteral("unloadingPoint").getString,
-        sender =
+        source =
             Supplier(
               uri = result.getResource("sender").getURI,
               name = result.getLiteral("sname").getString,
@@ -175,7 +175,7 @@ class SchnelleckeDataset extends Dataset {
               ),
               Product("")
             ),
-        receiver =
+        target =
             Supplier(
               uri = result.getResource("receiver").getURI,
               name = result.getLiteral("rname").getString,

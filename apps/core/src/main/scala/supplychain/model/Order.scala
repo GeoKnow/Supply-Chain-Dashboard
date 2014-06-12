@@ -8,5 +8,11 @@ case class Order(uri: String = Namespaces.message + UUID.randomUUID.toString,
                  connection: Connection,
                  count: Int) extends Message {
 
+  // The sender of this message.
+  override def sender = connection.target
+
+  // The receiver of this message.
+  override def receiver = connection.source
+
   val dueDate = date + (connection.content.productionTime + connection.shippingTime)
 }

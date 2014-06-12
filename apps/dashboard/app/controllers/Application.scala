@@ -26,7 +26,7 @@ object Application extends Controller {
   }
 
   def metrics(supplierId: String) = Action {
-    val messages = CurrentDataset().messages.filter(_.connection.receiver.id == supplierId)
+    val messages = CurrentDataset().messages.filter(_.connection.target.id == supplierId)
     Ok(views.html.metrics(messages))
   }
 
@@ -42,8 +42,8 @@ object Application extends Controller {
     CurrentDataset().addListener(listener)
 
     val stats = new DatasetStatistics(CurrentDataset())
-    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
-    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.sender.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
+    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.source.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
+    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.source.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
 
     val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
     val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")
@@ -53,8 +53,8 @@ object Application extends Controller {
   }
 
   def messages(supplierId: String) = Action {
-    val downstreamMessages = CurrentDataset().messages.filter(_.connection.sender.id == supplierId)
-    val upstreamMessages = CurrentDataset().messages.filter(_.connection.receiver.id == supplierId)
+    val downstreamMessages = CurrentDataset().messages.filter(_.connection.source.id == supplierId)
+    val upstreamMessages = CurrentDataset().messages.filter(_.connection.target.id == supplierId)
 
     Ok(views.html.messages(downstreamMessages, upstreamMessages))
   }

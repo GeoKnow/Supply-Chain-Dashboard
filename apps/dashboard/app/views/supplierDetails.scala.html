@@ -34,13 +34,13 @@
 @if(!incomingConnections.isEmpty) {
   <tr>
     <td><b>Incoming</b></td>
-    <td>@for(c <- incomingConnections) { @c.sender.name <br/> }</td>
+    <td>@for(c <- incomingConnections) { @c.source.name <br/> }</td>
   </tr>
 }
 @if(!outgoingConnections.isEmpty) {
   <tr>
     <td><b>Outgoing</b></td>
-    <td>@for(c <- outgoingConnections) { @c.receiver.name <br/> }</td>
+    <td>@for(c <- outgoingConnections) { @c.target.name <br/> }</td>
   </tr>
 }
 </table>

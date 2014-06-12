@@ -62,8 +62,8 @@ class RdfDataset {
     insert(s"""
      | <${c.uri}> a sc:Connection ;
      |            sc:product <${c.content.uri}> ;
-     |            sc:sender <${c.sender.uri}> ;
-     |            sc:receiver <${c.receiver.uri}> .
+     |            sc:sender <${c.source.uri}> ;
+     |            sc:receiver <${c.target.uri}> .
      """)
   }
 

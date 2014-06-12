@@ -7,6 +7,6 @@
 
 @for(c <- connections.take(300)) {
   addConnection('@c.id',
-                @c.sender.coords.lat, @c.sender.coords.lon,
-                @c.receiver.coords.lat, @c.receiver.coords.lon);
+                @c.source.coords.lat, @c.source.coords.lon,
+                @c.target.coords.lat, @c.target.coords.lon);
 }
