@@ -3,8 +3,12 @@ package supplychain.simulator
 import com.hp.hpl.jena.query.ResultSet
 import supplychain.dataset.{RdfDataset, Dataset}
 import supplychain.model.{Product, Connection, Supplier, Message}
-import akka.actor.ActorSystem
+import akka.actor.{Cancellable, Props, ActorSystem}
+import supplychain.simulator.network.Network
 import scala.collection.immutable.Queue
+import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
+import ExecutionContext.Implicits.global
 
 /**
  * The supply chain simulator.
@@ -14,8 +18,18 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   // The simulation to run
   private val sim = FairPhoneSimulation // CarSimulation
 
-  // The supply chain network
-  private val network = Network.build(sim.product)(this)
+  // Generate the supply chain network
+  private val network = Network.build(sim.product)
+
+  // Create actors for all suppliers
+  for(supplier <- network.suppliers)
+    actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this), supplier.id)
+
+  // The message scheduler.
+  private val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
+
+  // The metronom send ticks to the scheduler for advancing the simulation.
+  private var metronom: Option[Cancellable] = None
 
   // Listeners for intercepted messages
   @volatile
@@ -51,20 +65,22 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
       listener(msg)
   }
 
-  def scheduleMessage(msg: Message) = {
-    network.schedule(msg)
+  def step() {
+    scheduler ! Scheduler.Tick
   }
 
-  def step() = {
-    network.step()
+  def run(frequency: Double) {
+    stop()
+    metronom = Option(actorSystem.scheduler.schedule(0 seconds, frequency.seconds, scheduler, Scheduler.Tick))
   }
 
-  def run(frequency: Double) = {
-    network.run(frequency)
+  def stop() {
+    metronom.foreach(_.cancel())
+    metronom = None
   }
 
-  def stop() = {
-    network.stop()
+  def scheduleMessage(msg: Message) {
+    scheduler ! msg
   }
 
   def getActor(supplier: Supplier) = {

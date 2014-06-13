@@ -1,14 +1,10 @@
-package supplychain.simulator
+package supplychain.simulator.network
 
-import supplychain.model.{Connection, Supplier, Product}
 import java.util.UUID
-import supplychain.dataset.Namespaces
 
-trait NetworkBuilder {
-  def apply(product: Product)
-}
+import supplychain.model._
 
-class SimpleNetworkBuilder(suppliers: Seq[Supplier]) {
+class ConnectionsBuilder(suppliers: Seq[Supplier]) {
 
   // A map that returns all suppliers to a given product
   private val supplierMap = suppliers.groupBy(_.product)
