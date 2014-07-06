@@ -1,6 +1,7 @@
 package supplychain.metric
 
 import de.fuberlin.wiwiss.silk.execution.EvaluateTransform
+import de.fuberlin.wiwiss.silk.linkagerule.TransformRule
 import de.fuberlin.wiwiss.silk.plugins.Plugins
 import de.fuberlin.wiwiss.silk.workspace.{User, Project}
 import de.fuberlin.wiwiss.silk.workspace.modules.transform.TransformTask
@@ -21,15 +22,16 @@ object SilkMetrics {
     println(projectName)
 
     for(project <- User().workspace.projects if project.name.toString == projectName;
-        task <- project.transformModule.tasks) yield {
-      new SilkMetric(task, project)
+        task <- project.transformModule.tasks;
+        rule <- task.rules) yield {
+      new SilkMetric(rule, task, project)
     }
   }.toList
 }
 
-class SilkMetric(task: TransformTask, project: Project) extends Metric {
+class SilkMetric(rule: TransformRule, task: TransformTask, project: Project) extends Metric {
   /** The dimension that is measured, e.g., ''average production time'' */
-  override def dimension: String = task.name
+  override def dimension: String = rule.name
 
   /** The unit of the returned values, e.g., ''seconds'' */
   override def unit: String = ""
@@ -41,7 +43,7 @@ class SilkMetric(task: TransformTask, project: Project) extends Metric {
         new EvaluateTransform(
           source = project.sourceModule.task(task.dataset.sourceId).source,
           dataset = task.dataset,
-          rules = Seq(task.rule)
+          rules = Seq(rule)
         )
 
       val entities = excuteTransform()

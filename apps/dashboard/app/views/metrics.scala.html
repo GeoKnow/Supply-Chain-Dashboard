@@ -18,7 +18,7 @@
    @metric.dimension.capitalize
    @if(metric.isInstanceOf[SilkMetric]) {
      <small>
-       <a href="@{Configuration.get.silkUrl + Configuration.get.silkProject + "/transform/" + metric.dimension + "/editor"}" target="_blank">edit</a>
+       <a href="@{Configuration.get.silkUrl + Configuration.get.silkProject + "/transform/" + Configuration.get.silkTask + "/editor/" + metric.dimension }" target="_blank">edit</a>
      </small>
    }
   </div>

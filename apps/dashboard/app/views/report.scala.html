@@ -1,0 +1,8 @@
+@(scoreTable: Seq[Seq[Double]])
+
+@for(scores <- scoreTable) {
+  @for(score <- scores){
+    @score
+  }
+  <br/>
+}

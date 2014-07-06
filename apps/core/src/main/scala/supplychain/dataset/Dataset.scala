@@ -15,7 +15,10 @@ trait Dataset {
   /** The connections between suppliers. */
   def connections: Seq[Connection]
 
-  /** Messages that have been exchanged between suppliers along a connection. */
+  /**
+   * Messages that have been exchanged between suppliers along a connection.
+   * Messages are ordered by date.
+   */
   def messages: Seq[Message]
 
   def query(queryStr: String): ResultSet

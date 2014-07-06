@@ -106,7 +106,7 @@ object API extends Controller {
       case Some(id) => CurrentDataset().connections.filter(d => d.source.id == id || d.target.id == id)
       // No address provided => Check if contentType is provided
       case None => contentType match {
-        case Some(content) => CurrentDataset().connections.filter(_.content == content)
+        case Some(content) => CurrentDataset().connections.filter(_.content.name == content)
         case None => CurrentDataset().connections
       }
     }

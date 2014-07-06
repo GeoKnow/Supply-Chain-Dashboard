@@ -1,10 +1,11 @@
 package controllers
 
 import play.api.mvc._
-import models.CurrentDataset
+import models.{CurrentMetrics, CurrentDataset}
 import play.api.libs.iteratee.Concurrent
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
+import supplychain.metric.{Metrics, Evaluator}
 import scala.util.Random
 import supplychain.model._
 import supplychain.model.Shipping
@@ -28,6 +29,11 @@ object Application extends Controller {
   def metrics(supplierId: String) = Action {
     val messages = CurrentDataset().messages.filter(_.connection.target.id == supplierId)
     Ok(views.html.metrics(messages))
+  }
+
+  def report(supplierId: String) = Action {
+    val scoreTable = Evaluator.table(CurrentDataset(), Metrics.all, supplierId)
+    Ok(views.html.report(scoreTable))
   }
 
   def deliveryStream = Action {
