@@ -9,7 +9,7 @@ import play.api.Play.current
  * @param silkUrl The base URL of the Silk installation.
  * @param silkProject The project in the Silk Workbench that holds the metrics.
  */
-case class Configuration(silkUrl: String, silkProject: String, silkTask: String)
+case class Configuration(endpointUrl: String, silkUrl: String, silkProject: String, silkTask: String)
 
 /**
  * Holds the configuration.
@@ -21,6 +21,7 @@ object Configuration {
     val config = Play.configuration
 
     Configuration(
+      endpointUrl = config.getString("simulator.endpoint").getOrElse(""),
       silkUrl = config.getString("dashboard.silkUrl").getOrElse("http://localhost:9000/"),
       silkProject = config.getString("dashboard.silkProject").getOrElse("supplychainmetrics"),
       silkTask = config.getString("dashboard.silkTask").getOrElse("metrics")

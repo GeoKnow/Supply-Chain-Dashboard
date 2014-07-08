@@ -32,12 +32,12 @@
 
   // Single step through the simulation
   function step() {
-    $.post('simulation/step');
+    $.post('simulator/step');
   }
 
   // Run the simulation
   function run() {
-    $.post('simulation/run?frequency=' + frequency, function() {
+    $.post('simulator/run?frequency=' + frequency, function() {
       running = true;
       $('#simulation-run').button('disable');
       $('#simulation-stop').button('enable');
@@ -46,7 +46,7 @@
 
   // Stop the simulation
   function stop() {
-    $.post('simulation/stop',
+    $.post('simulator/stop',
       function() {
         running = false;
         $('#simulation-run').button('enable');

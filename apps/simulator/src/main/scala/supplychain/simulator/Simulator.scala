@@ -1,19 +1,17 @@
 package supplychain.simulator
 
-import com.hp.hpl.jena.query.ResultSet
-import supplychain.dataset.{RdfDataset, Dataset}
-import supplychain.model.{Product, Connection, Supplier, Message}
-import akka.actor.{Cancellable, Props, ActorSystem}
+import akka.actor.{ActorSystem, Cancellable, Props}
+import supplychain.dataset.{Dataset, RdfDataset}
+import supplychain.model.{Connection, Message, Supplier}
 import supplychain.simulator.network.Network
-import scala.collection.immutable.Queue
-import scala.concurrent.ExecutionContext
+
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import ExecutionContext.Implicits.global
 
 /**
  * The supply chain simulator.
  */
-class Simulator(val actorSystem: ActorSystem) extends Dataset {
+class Simulator(val actorSystem: ActorSystem, endpointUrl: String) extends Dataset {
 
   // The simulation to run
   private val sim = FairPhoneSimulation // CarSimulation
@@ -38,7 +36,7 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   // List of past messages.
   var messages = Seq[Message]()
 
-  private val dataset = new RdfDataset()
+  private val dataset = new RdfDataset(endpointUrl)
   dataset.addProduct(sim.product)
   for(supplier <- suppliers) dataset.addSupplier(supplier)
   for(connection <- connections) dataset.addConnection(connection)

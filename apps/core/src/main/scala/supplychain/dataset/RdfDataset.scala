@@ -1,20 +1,19 @@
 package supplychain.dataset
 
-import supplychain.model._
 import java.util.logging.Logger
-import com.hp.hpl.jena.rdf.model.ModelFactory
-import com.hp.hpl.jena.query.{QueryParseException, QueryExecutionFactory, QueryFactory}
-import com.hp.hpl.jena.update.UpdateAction
-import supplychain.model.Connection
-import supplychain.model.Supplier
-import supplychain.model.Order
 
-class RdfDataset {
+import com.hp.hpl.jena.query.QueryParseException
+import supplychain.model._
+
+class RdfDataset(endpointUrl: String) {
 
   private val log = Logger.getLogger(getClass.getName)
 
-  // Create new model
-  private val model = ModelFactory.createDefaultModel()
+  private val endpoint =
+    if (endpointUrl != null && !endpointUrl.trim.isEmpty)
+      new RemoteEndpoint(endpointUrl)
+    else
+      new LocalEndpoint()
 
   /**
    * Adds a product to the RDF data set.
@@ -104,10 +103,13 @@ class RdfDataset {
       """.stripMargin
 
     try {
-      UpdateAction.parseExecute(query, model)
+      endpoint.insert(query)
     } catch {
       case ex: QueryParseException =>
-        log.severe("The following Query is malformed:\n" + query)
+        log.severe("The following Query is malformed:\n" + query + "\nReason: " + ex.getMessage)
+        throw ex
+      case ex: Exception =>
+        log.severe("Could not execute query:\n" + query + "\nReason: " + ex.getMessage)
         throw ex
     }
   }
@@ -116,16 +118,13 @@ class RdfDataset {
    * Executes a SPARQL Select query on the data set.
    */
   def query(queryStr: String) = {
-    val query = QueryFactory.create(queryStr)
-    QueryExecutionFactory.create(query, model).execSelect()
+    endpoint.select(queryStr)
   }
 
   /**
    * Executes a SPARQL Describe query on the data set.
    */
   def describe(queryStr: String) = {
-    val query = QueryFactory.create(queryStr)
-    QueryExecutionFactory.create(query, model).execDescribe()
+    endpoint.describe(queryStr)
   }
-
 }

@@ -10,7 +10,7 @@ import play.api.Play.current
  */
 object CurrentDataset {
 
-  val simulator = new Simulator(Akka.system)
+  val simulator = new Simulator(Akka.system, Configuration.get.endpointUrl)
 
   // Reference to the current data set.
   @volatile
