@@ -5,7 +5,7 @@ import java.util.logging.Logger
 import com.hp.hpl.jena.query.QueryParseException
 import supplychain.model._
 
-class RdfDataset(endpointUrl: String) {
+class RdfDataset(endpointUrl: String, defaultGraph: String) {
 
   private val log = Logger.getLogger(getClass.getName)
 
@@ -14,6 +14,8 @@ class RdfDataset(endpointUrl: String) {
       new RemoteEndpoint(endpointUrl)
     else
       new LocalEndpoint()
+
+  private var graphCreated = false
 
   /**
    * Adds a product to the RDF data set.
@@ -93,17 +95,24 @@ class RdfDataset(endpointUrl: String) {
    * Inserts a number of statements into the RDF data set.
    */
   private def insert(statements: String) {
+    if(!graphCreated) {
+      endpoint.update(s"CREATE SILENT GRAPH <$defaultGraph>")
+      graphCreated = true
+    }
+
     val query =
       s"""
         | PREFIX sc: <${Namespaces.schema}>
         | PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         | INSERT DATA {
-        $statements
+        |   GRAPH <$defaultGraph> {
+        |     $statements
+        |   }
         | }
       """.stripMargin
 
     try {
-      endpoint.insert(query)
+      endpoint.update(query)
     } catch {
       case ex: QueryParseException =>
         log.severe("The following Query is malformed:\n" + query + "\nReason: " + ex.getMessage)

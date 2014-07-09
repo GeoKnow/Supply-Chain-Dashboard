@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 /**
  * The supply chain simulator.
  */
-class Simulator(val actorSystem: ActorSystem, endpointUrl: String) extends Dataset {
+class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph: String) extends Dataset {
 
   // The simulation to run
   private val sim = FairPhoneSimulation // CarSimulation
@@ -36,7 +36,7 @@ class Simulator(val actorSystem: ActorSystem, endpointUrl: String) extends Datas
   // List of past messages.
   var messages = Seq[Message]()
 
-  private val dataset = new RdfDataset(endpointUrl)
+  private val dataset = new RdfDataset(endpointUrl, defaultGraph)
   dataset.addProduct(sim.product)
   for(supplier <- suppliers) dataset.addSupplier(supplier)
   for(connection <- connections) dataset.addConnection(connection)

@@ -9,7 +9,7 @@ import play.api.Play.current
  * @param silkUrl The base URL of the Silk installation.
  * @param silkProject The project in the Silk Workbench that holds the metrics.
  */
-case class Configuration(endpointUrl: String, silkUrl: String, silkProject: String, silkTask: String)
+case class Configuration(endpointUrl: String, defaultGraph: String, silkUrl: String, silkProject: String, silkTask: String)
 
 /**
  * Holds the configuration.
@@ -22,6 +22,7 @@ object Configuration {
 
     Configuration(
       endpointUrl = config.getString("simulator.endpoint").getOrElse(""),
+      defaultGraph = config.getString("simulator.defaultGraph").getOrElse("http://xybermotive.com/geoknow"),
       silkUrl = config.getString("dashboard.silkUrl").getOrElse("http://localhost:9000/"),
       silkProject = config.getString("dashboard.silkProject").getOrElse("supplychainmetrics"),
       silkTask = config.getString("dashboard.silkTask").getOrElse("metrics")

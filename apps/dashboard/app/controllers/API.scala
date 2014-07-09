@@ -1,14 +1,14 @@
 package controllers
 
-import play.api.mvc.{Action, Controller}
+import java.io.StringWriter
+
 import com.hp.hpl.jena.query.ResultSetFormatter
 import models._
 import play.api.Logger
-import scala.Some
-import java.io.StringWriter
-import supplychain.dataset.{DatasetStatistics, SchnelleckeDataset, Namespaces}
-import supplychain.simulator.{Simulator, Simulation}
-import supplychain.metric.Metrics
+import play.api.mvc.{Action, Controller}
+import supplychain.dataset.{DatasetStatistics, Namespaces, SchnelleckeDataset}
+
+import scala.io.Source
 
 /**
  * The REST API.
@@ -141,6 +141,17 @@ object API extends Controller {
 
   def reloadMetrics() = Action {
     CurrentMetrics.load()
+    Ok
+  }
+
+  def log() = Action { request =>
+    val body =
+      for(raw <- request.body.asRaw;
+          bytes <- raw.asBytes()) yield
+          Source.fromBytes(bytes).getLines.mkString("\n")
+
+    Logger.info("Request received: " + request.path + request.rawQueryString + "\nBody:\n" + body.getOrElse("(Empty)"))
+
     Ok
   }
 }

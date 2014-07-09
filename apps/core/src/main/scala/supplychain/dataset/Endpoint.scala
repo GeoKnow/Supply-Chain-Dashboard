@@ -8,7 +8,7 @@ import com.hp.hpl.jena.update.{UpdateExecutionFactory, UpdateFactory, UpdateActi
  * An RDF endpoint, which may either be a local or a remote endpoint.
  */
 trait Endpoint {
-  def insert(query: String)
+  def update(query: String)
   def select(query: String): ResultSet
   def describe(query: String): Model
 }
@@ -17,7 +17,7 @@ class LocalEndpoint extends Endpoint {
   // Create new model
   private val model = ModelFactory.createDefaultModel()
 
-  def insert(query: String) = {
+  def update(query: String) = {
     UpdateAction.parseExecute(query, model)
   }
 
@@ -34,7 +34,7 @@ class LocalEndpoint extends Endpoint {
 
 class RemoteEndpoint(endpointUrl: String) extends Endpoint {
 
-  def insert(query: String) = {
+  def update(query: String) = {
     val parsedQuery = UpdateFactory.create(query)
     UpdateExecutionFactory.createRemote(parsedQuery, endpointUrl).execute()
   }
