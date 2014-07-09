@@ -52,7 +52,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
      |                   sc:city "${supplier.address.city}" ;
      |                   sc:product <${supplier.product.uri}> ;
      |                   geo:lat "${supplier.coords.lat}" ;
-     |                   geo:lon "${supplier.coords.lon}" ;
+     |                   geo:lon "${supplier.coords.lon}" .
      """)
   }
 

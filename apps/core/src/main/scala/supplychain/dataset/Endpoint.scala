@@ -61,7 +61,7 @@ class RemoteEndpoint(endpointUrl: String) extends Endpoint {
 
     //Check if the HTTP response code is in the range 2xx
     if (connection.getResponseCode / 100 == 2) {
-      log.info("Update query send:\n" + query)
+      log.fine("Update query send:\n" + query)
     }
     else {
       val errorStream = connection.getErrorStream
@@ -73,9 +73,6 @@ class RemoteEndpoint(endpointUrl: String) extends Endpoint {
         log.warning("SPARQL/Update query on " + endpointUrl + " failed. Server response: " + connection.getResponseCode + " " + connection.getResponseMessage + ".")
       }
     }
-
-    //val parsedQuery = UpdateFactory.create(query)
-    //UpdateExecutionFactory.createRemote(parsedQuery, endpointUrl).execute()
   }
 
   def select(query: String) = {
