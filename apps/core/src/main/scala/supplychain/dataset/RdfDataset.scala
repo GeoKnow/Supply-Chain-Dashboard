@@ -13,7 +13,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
     if (endpointUrl != null && !endpointUrl.trim.isEmpty)
       new RemoteEndpoint(endpointUrl)
     else
-      new LocalEndpoint()
+      new LocalEndpoint(defaultGraph)
 
   private var graphCreated = false
 

@@ -3,9 +3,8 @@ package supplychain.dataset
 import java.io.OutputStreamWriter
 import java.net.{HttpURLConnection, URL, URLEncoder}
 import java.util.logging.Logger
-
-import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory, ResultSet}
-import com.hp.hpl.jena.rdf.model.{Model, ModelFactory}
+import com.hp.hpl.jena.query.{DatasetFactory, QueryExecutionFactory, QueryFactory, ResultSet}
+import com.hp.hpl.jena.rdf.model.Model
 import com.hp.hpl.jena.update.UpdateAction
 
 import scala.io.Source
@@ -19,22 +18,22 @@ trait Endpoint {
   def describe(query: String): Model
 }
 
-class LocalEndpoint extends Endpoint {
-  // Create new model
-  private val model = ModelFactory.createDefaultModel()
+class LocalEndpoint(defaultGraph: String) extends Endpoint {
+
+  private val dataset = DatasetFactory.createMem()
 
   def update(query: String) = {
-    UpdateAction.parseExecute(query, model)
+    UpdateAction.parseExecute(query, dataset)
   }
 
   def select(query: String) = {
     val parsedQuery = QueryFactory.create(query)
-    QueryExecutionFactory.create(parsedQuery, model).execSelect()
+    QueryExecutionFactory.create(parsedQuery, dataset.getNamedModel(defaultGraph)).execSelect()
   }
 
   def describe(query: String) = {
     val parsedQuery = QueryFactory.create(query)
-    QueryExecutionFactory.create(parsedQuery, model).execDescribe()
+    QueryExecutionFactory.create(parsedQuery, dataset.getNamedModel(defaultGraph)).execDescribe()
   }
 }
 
