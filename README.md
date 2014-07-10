@@ -6,11 +6,11 @@ Initial prototype of the supply chain dashboard, a web application that allows t
 
 # Building
 
+The following commands are to be executed from the apps folder.
+
 ## Requirements
 
 - JDK 7 or later
-
-All commands are to be executed from the apps folder
  
 ## Running
 
