@@ -4,19 +4,27 @@ Initial prototype of the supply chain dashboard, a web application that allows t
 
 ![Screenshot](screenshot.png)
 
+# Building
+
 ## Requirements
 
-- JDK 6 or later
-- Simple Build Tool (http://www.sbt-scala.com)
+- JDK 7 or later
+
+All commands are to be executed from the apps folder
  
 ## Running
 
-- Navigate to the 'apps' folder
 - Execute sbt "project dashboard" run
 - In your browser, navigate to 'http://localhost:9000'
 
 ## Packaging
 
-- Navigate to the 'dashboard' folder
-- Execute 'sbt dist'
+### As tarball with start/stop scripts for Linux and Windows
+
+- Execute 'sbt universal:package-zip-tarball'
 - The package can be found in 'target/universal'
+
+### As WAR Archive
+
+- Execute 'sbt war'
+- The package can be found in 'target'
