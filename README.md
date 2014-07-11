@@ -14,17 +14,17 @@ The following commands are to be executed from the apps folder.
  
 ## Running
 
-- Execute sbt "project dashboard" run
+- Execute `sbt "project dashboard" run`
 - In your browser, navigate to 'http://localhost:9000'
 
 ## Packaging
 
 ### As tarball with start/stop scripts for Linux and Windows
 
-- Execute 'sbt universal:package-zip-tarball'
+- Execute `sbt "project dashboard" universal:package-zip-tarball`
 - The package can be found in 'target/universal'
 
 ### As WAR Archive
 
-- Execute 'sbt war'
+- Execute `sbt "project dashboard" war`
 - The package can be found in 'target'
