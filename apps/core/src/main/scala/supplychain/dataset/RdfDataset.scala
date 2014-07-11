@@ -2,7 +2,6 @@ package supplychain.dataset
 
 import java.util.logging.Logger
 
-import com.hp.hpl.jena.query.QueryParseException
 import supplychain.model._
 
 class RdfDataset(endpointUrl: String, defaultGraph: String) {
@@ -110,17 +109,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         |   }
         | }
       """.stripMargin
-
-    try {
-      endpoint.update(query)
-    } catch {
-      case ex: QueryParseException =>
-        log.severe("The following Query is malformed:\n" + query + "\nReason: " + ex.getMessage)
-        throw ex
-      case ex: Exception =>
-        log.severe("Could not execute query:\n" + query + "\nReason: " + ex.getMessage)
-        throw ex
-    }
+    endpoint.update(query)
   }
 
   /**
