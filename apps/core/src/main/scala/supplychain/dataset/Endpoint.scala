@@ -37,7 +37,7 @@ class LocalEndpoint(defaultGraph: String) extends Endpoint {
   }
 }
 
-class RemoteEndpoint(endpointUrl: String) extends Endpoint {
+class RemoteEndpoint(endpointUrl: String, defaultGraph: String) extends Endpoint {
 
   private val log = Logger.getLogger(classOf[RemoteEndpoint].getName)
 
@@ -52,7 +52,8 @@ class RemoteEndpoint(endpointUrl: String) extends Endpoint {
     // Write query
     val writer = new OutputStreamWriter(connection.getOutputStream, "UTF-8")
     try {
-      writer.write("query=")
+      writer.write("default-graph-uri=" + URLEncoder.encode(defaultGraph, "UTF-8"))
+      writer.write("&query=")
       writer.write(URLEncoder.encode(query, "UTF-8"))
     } finally {
       writer.close()

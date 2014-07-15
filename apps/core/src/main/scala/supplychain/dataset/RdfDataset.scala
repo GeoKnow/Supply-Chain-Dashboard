@@ -10,7 +10,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
 
   private val endpoint =
     if (endpointUrl != null && !endpointUrl.trim.isEmpty)
-      new RemoteEndpoint(endpointUrl)
+      new RemoteEndpoint(endpointUrl, defaultGraph)
     else
       new LocalEndpoint(defaultGraph)
 
@@ -104,9 +104,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         | PREFIX sc: <${Namespaces.schema}>
         | PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         | INSERT DATA {
-        |   GRAPH <$defaultGraph> {
-        |     $statements
-        |   }
+        |   $statements
         | }
       """.stripMargin
     endpoint.update(query)
