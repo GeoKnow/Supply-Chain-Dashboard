@@ -32,7 +32,7 @@ object Network {
     val connections = networkBuilder(product)
     // Create an OEM that is responsible for sending the initial orders for the product
     val rootSupplier = generateRootSupplier(product)
-    val rootConnection = Connection("Initial", product, suppliers.head, rootSupplier)
+    val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier)
 
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }
