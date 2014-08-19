@@ -1,5 +1,7 @@
 package supplychain.simulator
 
+import java.util.logging.Logger
+
 import akka.actor.{ActorSystem, Cancellable, Props}
 import supplychain.dataset.{Dataset, RdfDataset}
 import supplychain.model.{Connection, Message, Supplier}
@@ -12,6 +14,8 @@ import scala.concurrent.duration._
  * The supply chain simulator.
  */
 class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph: String) extends Dataset {
+
+  private val log = Logger.getLogger(classOf[Simulator].getName)
 
   // The simulation to run
   private val sim = FairPhoneSimulation // CarSimulation
@@ -69,6 +73,8 @@ class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph:
 
   def run(frequency: Double) {
     stop()
+    log.info("frequency: " + frequency)
+    log.info("frequency.seconds: " + frequency.seconds);
     metronom = Option(actorSystem.scheduler.schedule(0 seconds, frequency.seconds, scheduler, Scheduler.Tick))
   }
 
