@@ -14,4 +14,8 @@ object Namespaces {
 
   val message = base + "message/"
 
+  val weatherObservation = base + "weatherObservation/"
+
+  val weatherStation = base + "weatherStation/"
+
 }
