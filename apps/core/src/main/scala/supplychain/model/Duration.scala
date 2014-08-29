@@ -9,6 +9,16 @@ class Duration(val milliseconds: Long) {
 
   def +(d: Duration) = new Duration(milliseconds + d.milliseconds)
 
+  def <(d: Duration) = milliseconds < d.milliseconds
+
+  def >(d: Duration) = milliseconds > d.milliseconds
+
+  def <=(d:Duration) = milliseconds <= d.milliseconds
+
+  def >=(d: Duration) = milliseconds >= d.milliseconds
+
+  def ==(d: Duration) = milliseconds == d.milliseconds
+
   def *(scale: Double) = new Duration((milliseconds * scale).toLong)
 
   def /(scale: Double) = new Duration((milliseconds / scale).toLong)
