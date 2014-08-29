@@ -16,7 +16,7 @@ import scala.util.Random
 case class Product(name: String, count: Int = 1, parts: List[Product] = Nil, uri: String = Namespaces.product + UUID.randomUUID().toString) {
 
   // Production time in days
-  val productionTime = Duration.days(3.0 + 14.0 * Random.nextDouble())
+  val productionTime = Duration.days(0.1 + 0.4 * Random.nextDouble())
 
   /**
    * Generates a list of all parts of this product, including parts of parts.
