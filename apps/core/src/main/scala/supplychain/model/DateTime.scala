@@ -1,7 +1,7 @@
 package supplychain.model
 
 import javax.xml.datatype.{DatatypeFactory, XMLGregorianCalendar}
-import java.util.GregorianCalendar
+import java.util.{Calendar, GregorianCalendar}
 
 /**
  * Represents a date time.
@@ -29,6 +29,18 @@ class DateTime(val milliseconds: Long) extends Ordered[DateTime] {
   }
 
   override def toString = toXSDFormat
+
+  def getMonth(): Int = {
+    val gcal = new GregorianCalendar()
+    gcal.setTimeInMillis(milliseconds)
+    return gcal.get(Calendar.MONTH)
+  }
+
+  def getYear(): Int = {
+    val gcal = new GregorianCalendar()
+    gcal.setTimeInMillis(milliseconds)
+    return gcal.get(Calendar.YEAR)
+  }
 }
 
 object DateTime {
