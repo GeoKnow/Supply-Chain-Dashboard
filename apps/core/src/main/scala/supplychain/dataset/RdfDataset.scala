@@ -16,6 +16,8 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
 
   private var graphCreated = false
 
+  private var weatherStations: List[String] = List()
+
   /**
    * Adds a product to the RDF data set.
    */
@@ -63,8 +65,13 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
      | <${c.uri}> a sc:Connection ;
      |            sc:product <${c.content.uri}> ;
      |            sc:sender <${c.source.uri}> ;
-     |            sc:receiver <${c.target.uri}> .
+     |            sc:receiver <${c.target.uri}> ;
+     |            sc:hasWeatherStation <${c.wsSource.uri}> ;
+     |            sc:hasWeatherStation <${c.wsTarget.uri}> .
      """)
+
+    addWeatherStation(c.wsSource)
+    addWeatherStation(c.wsTarget)
   }
 
   /**
@@ -79,8 +86,9 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         |               sc:connection <${connection.uri}> ;
         |               sc:count "$count" .
         """)
+      log.info("Order date: " + date.toXSDFormat)
 
-    case Shipping(uri, date, connection, count, order) =>
+    case Shipping(uri, date, connection, count, order, woSource, woTarget) =>
       insert(s"""
         |  <${msg.uri}> a sc:Shipping ;
         |               sc:date "${date.toXSDFormat}" ;
@@ -88,7 +96,35 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         |               sc:count "$count" ;
         |               sc:order <${order.uri}> .
         """)
+      addWeatherObservation(woSource)
+      addWeatherObservation(woTarget)
+      log.info("Shipping date: " + date.toXSDFormat)
   }}
+
+  def addWeatherObservation(wo: WeatherObservation) {
+    insert(s"""
+         | <${wo.ws.uri}> sc:hasObservation <${wo.uri}> .
+         | <${wo.uri}> a sc:WeatherObservation ;
+         |            sc:date "${wo.date.toXSDFormat}" ;
+         |            sc:temp "${wo.temp}" ;
+         |            sc:prcp "${wo.prcp}" ;
+         |            sc:prcpCat "${wo.getPrcpCategory()}" ;
+         |            sc:fromStation <${wo.ws.uri}> ;
+         |            sc:snow "${wo.snow}" .
+         """)
+  }
+  
+  def addWeatherStation(ws: WeatherStation): Unit = {
+    if (!weatherStations.contains(ws.id)) {
+      insert( s"""
+               | <${ws.uri}> a sc:WeatherStation ;
+               |            geo:lon "${ws.coords.lon}" ;
+               |            geo:lat "${ws.coords.lat}" ;
+               |            sc:name "${ws.name}" .
+               """)
+      weatherStations = ws.id :: weatherStations
+    }
+  }
 
   /**
    * Inserts a number of statements into the RDF data set.

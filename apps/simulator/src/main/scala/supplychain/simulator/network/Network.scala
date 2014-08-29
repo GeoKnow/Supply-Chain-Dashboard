@@ -1,7 +1,8 @@
 package supplychain.simulator.network
 
 import supplychain.dataset.Namespaces
-import supplychain.model.{Address, Connection, Coordinates, Product, Supplier}
+import supplychain.model._
+import supplychain.simulator.WeatherProvider
 
 /**
  * Represents a supply chain network.
@@ -32,7 +33,9 @@ object Network {
     val connections = networkBuilder(product)
     // Create an OEM that is responsible for sending the initial orders for the product
     val rootSupplier = generateRootSupplier(product)
-    val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier)
+    val wsSource = WeatherStation(suppliers.head.coords, suppliers.head.name + WeatherUtil.WS_NAME_SUFIX)
+    val wsTarget = WeatherStation(rootSupplier.coords, rootSupplier.name + WeatherUtil.WS_NAME_SUFIX)
+    val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier, wsSource, wsTarget)
 
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }
