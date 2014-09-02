@@ -1,18 +1,28 @@
 package supplychain.simulator
 
+import java.util.GregorianCalendar
 import java.util.logging.Logger
 
 import akka.event.Logging
 import supplychain.model._
+
+import play.api.libs.json._ // JSON library
+import play.api.libs.json.Reads._ // Custom validation helpers
+import play.api.libs.functional.syntax._ // Combinator syntax
+
+import scala.collection.JavaConversions._
 
 import scala.util.Random
 
 /**
  * Created by rene on 27.08.14.
  */
-class WeatherProvider {
+object WeatherProvider {
 
   private val log = Logger.getLogger(getClass.getName)
+
+  private var weatherStations: Map[String, List[WeatherStation]] = Map()
+  private var lastMetadata: NcdcMetadata = null
 
   val dailyWeatherVariation = 0.1 // +/- 10% daily weather variation from monthly mean values
 
@@ -107,6 +117,157 @@ class WeatherProvider {
 
     val w = new WeatherObservation(d, temp, prcp, snow, ws)
     return w
+  }
+
+  def getNearesWeaterStation(coords: Coordinates): WeatherStation = {
+    var shortestDist: Double = -1
+    var nearestWs: WeatherStation = null
+
+    if (weatherStations.isEmpty) getWeatherStations()
+
+    for (locid <- weatherStations.keys) {
+      for (ws <- weatherStations(locid)) {
+        val dist = ws.coords.dist(coords)
+        if (shortestDist < 0 || dist < shortestDist) {
+          shortestDist = dist
+          nearestWs = ws
+        }
+      }
+    }
+    return nearestWs
+  }
+
+  def getDailySummary(ws: WeatherStation, startdate: DateTime, enddate: DateTime): List[WeatherObservation] = {
+    var offset = 0
+    val edStr = enddate.toFormat("yyyy-MM-dd")
+    val sdStr = startdate.toFormat("yyyy-MM-dd")
+    val uri = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&stationid=" + ws.id + "&startdate=" + sdStr + "&enddate=" + edStr + "&limit=1000&offset=" + offset
+    val result = new WeatherNCDCProvider().get(uri)
+    val res: NcdcDailySummaryResult = new NcdcGson().getDailySummaryResult(result)
+
+    System.out.println(res.getMetadata.getResultset.getCount)
+    return null
+  }
+
+  def getWeatherStations(locationid: String = "FIPS:GM"): List[WeatherStation] = {
+    if (weatherStations.keys.contains(locationid)) {
+      log.info("known location id requested, serving stations from cache...")
+      return weatherStations(locationid)
+    }
+
+    var wss: List[WeatherStation] = List()
+    val uri_stations_in_de = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=" + locationid + "&limit=1000"
+
+    val result = new WeatherNCDCProvider().get(uri_stations_in_de)
+
+    //val result = WeatherNcdc.get(uri_stations_in_de)
+
+    //val json: JsValue = Json.parse(result)
+
+    val res: NcdcLocationResult = new NcdcGson().getLocationResult(result)
+
+    for (loc <- res.getResults) {
+      val coords = new Coordinates(loc.getLatitude, loc.getLongitude)
+      val ws = new WeatherStation(coords, loc.getName)
+      System.out.println(ws.toString())
+      wss = ws :: wss
+    }
+
+    if (wss.size > 0) {
+      weatherStations += (locationid -> wss)
+    }
+
+    System.out.println(res.getMetadata.getResultset.getCount.toString)
+
+
+
+    val sdCal = new GregorianCalendar()
+    sdCal.set(2010, 0, 1, 0, 0, 0)
+    val sd = new DateTime(sdCal.getTimeInMillis)
+
+    val edCal = new GregorianCalendar()
+    edCal.set(2013, 11, 31, 0, 0, 0)
+    val ed = new DateTime(edCal.getTimeInMillis)
+
+    val wsLE = new WeatherStation(new Coordinates(0.0, 0.0), "", "GHCND:GME00102292")
+
+    getDailySummary(wsLE, sd, ed)
+
+
+
+    /*
+    implicit val ncdcLocationReads: Reads[NcdcLocation] = (
+      (JsPath \ "id").read[String] and
+        (JsPath /*\ "result" \ "results"*/ \ "elevation").read[Int] and
+        (JsPath /*\ "result" \ "results"*/ \ "name").read[String] and
+        (JsPath /*\ "result" \ "results"*/ \ "elevationUnit").read[String] and
+        (JsPath /*\ "result" \ "results"*/ \ "datacoverage").read[Double] and
+        (JsPath /*\ "result" \ "results"*/ \ "longitude").read[Double] and
+        (JsPath /*\ "result" \ "results"*/ \ "mindata").read[String] and
+        (JsPath /*\ "result" \ "results"*/ \ "latitude").read[Double] and
+        (JsPath /*\ "result" \ "results"*/ \ "maxdate").read[String]
+      )(NcdcLocation.apply _)
+
+    implicit val ncdcMetadataReads: Reads[NcdcMetadata] = (
+      (JsPath \/*"result" \ "metadata" \ "resultset" \*/ "limit").read[Int] and
+        (JsPath \/*"result" \ "metadata" \ "resultset" \*/ "count").read[Int] and
+        (JsPath \/*"result" \ "metadata" \ "resultset" \*/ "offset").read[Int]
+      )(NcdcMetadata.apply _)
+
+    /*
+    implicit val ncdcLocationResultsReader: Reads[NcdcLocationResults] = (
+      (JsPath \ "results").read[Seq[NcdcLocation]] andKeep Json.reads[NcdcLocationResults]
+      )
+    */
+    /*
+    implicit val ncdcLocationResultsReads: Reads[NcdcLocationResults] = (
+        (JsPath \ "results").read[Seq[NcdcLocation]] andKeep Json.reads[NcdcLocationResults]
+      )(NcdcLocationResults.apply _)
+    */
+
+    //implicit val ncdcLocationResultsReads: Reads[NcdcLocationResults] = (JsPath \ "results").read[Seq[NcdcLocation]].map(NcdcLocationResults(_))
+
+    implicit val ncdcLocationResultReads: Reads[NcdcLocationResults] = (
+      (JsPath \ "results").read[List[NcdcLocation]] and
+        (JsPath \ "metadata" \ "resultset").read[NcdcMetadata]
+      )(NcdcLocationResults.apply _)
+
+    // val results: JsResult[NcdcLocationResults] = json.validate[NcdcLocationResults]
+
+    json.validate[NcdcLocationResults] match {
+        case s: JsSuccess[NcdcLocationResults] => {
+          val locResults: NcdcLocationResults = s.get
+          for (location <- locResults.results) {
+            val coords = new Coordinates(location.latitude, location.longitude)
+            val ws = new WeatherStation(coords, location.name)
+            System.out.println(ws.toString())
+            weatherStations = ws :: weatherStations
+          }
+        }
+        case e: JsError => {
+          System.out.println("ERROR: " + e.toString)
+          // error handling flow
+        }
+      }
+
+    /*
+    json.validate[NcdcMetadata] match {
+      case s: JsSuccess[NcdcMetadata] => {
+        val metadata: NcdcMetadata = s.get
+        lastMetadata = metadata
+      }
+      case e: JsError => {
+        // error handling flow
+      }
+    }
+    */
+
+    //System.out.println(lastMetadata.toString)
+    System.out.println(weatherStations.size)
+    System.out.println(weatherStations.toString())
+    //System.out.println(results.toString)
+    */
+    return weatherStations(locationid)
   }
 
   private def getAvg(map: Map[String, List[Double]], index: Int): Double = {
