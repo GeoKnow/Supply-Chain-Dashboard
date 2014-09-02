@@ -37,6 +37,8 @@ object Network {
     val wsTarget = WeatherStation(rootSupplier.coords, rootSupplier.name + WeatherUtil.WS_NAME_SUFIX)
     val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier, wsSource, wsTarget)
 
+    val result = WeatherProvider.getWeatherStations()
+
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }
 
