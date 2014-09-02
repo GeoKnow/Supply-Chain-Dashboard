@@ -1,14 +1,16 @@
 *.class
 *.log
 apps/.idea*
-
-# sbt specific
 dist/*
 target/
 lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
-
-# Scala-IDE specific
 .scala_dependencies
+apps/simulator/.settings
+apps/simulator/.classpath
+apps/simulator/.project
+apps/core/.cache
+apps/core/.classpath
+apps/core/.project
