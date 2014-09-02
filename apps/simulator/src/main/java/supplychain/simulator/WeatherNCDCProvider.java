@@ -11,6 +11,7 @@ import java.net.URL;
 public class WeatherNCDCProvider {
 
     // HTTP GET request
+    /*
     public String get(String url) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -32,4 +33,5 @@ public class WeatherNCDCProvider {
         //System.out.println(response.toString());
         return response.toString();
     }
+    */
 }
