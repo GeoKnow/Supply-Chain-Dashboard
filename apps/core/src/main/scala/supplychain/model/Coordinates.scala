@@ -30,5 +30,5 @@ case class Coordinates(lat: Double, lon: Double) {
   }
 
   override def toString(): String =
-    return "lon: " + lon.toString + ", lat: " + lat.toString + ", which is here: http://google.com/maps/bylatlng?lat="+lat+"&lng="+lon
+    return "lon: " + lon.toString + ", lat: " + lat.toString
 }

@@ -33,11 +33,11 @@ object Network {
     val connections = networkBuilder(product)
     // Create an OEM that is responsible for sending the initial orders for the product
     val rootSupplier = generateRootSupplier(product)
-    val wsSource = WeatherStation(suppliers.head.coords, suppliers.head.name + WeatherUtil.WS_NAME_SUFIX)
-    val wsTarget = WeatherStation(rootSupplier.coords, rootSupplier.name + WeatherUtil.WS_NAME_SUFIX)
+    val wsSource = WeatherProvider.getNearesWeaterStation(suppliers.head.coords)
+      //WeatherStation(suppliers.head.coords, suppliers.head.name + WeatherUtil.WS_NAME_SUFIX)
+    val wsTarget = WeatherProvider.getNearesWeaterStation(rootSupplier.coords)
+        //WeatherStation(rootSupplier.coords, rootSupplier.name + WeatherUtil.WS_NAME_SUFIX)
     val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier, wsSource, wsTarget)
-
-    val result = WeatherProvider.getWeatherStations()
 
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }

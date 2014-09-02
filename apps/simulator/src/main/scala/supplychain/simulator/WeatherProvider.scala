@@ -10,10 +10,6 @@ import play.api.libs.json._
 
 import scala.concurrent.{Await, Future}
 
-// JSON library
-import play.api.libs.json.Reads._ // Custom validation helpers
-import play.api.libs.functional.syntax._ // Combinator syntax
-
 import scala.collection.JavaConversions._
 
 import scala.util.Random
@@ -25,8 +21,8 @@ object WeatherProvider {
 
   private val log = Logger.getLogger(getClass.getName)
 
-  private var weatherStations: Map[String, List[WeatherStation]] = Map()
-  private var lastMetadata: NcdcMetadata = null
+  private var weatherStationsByLocationId: Map[String, List[WeatherStation]] = Map()
+  private var weatherStationsByStationId: Map[String, WeatherStation] = Map()
 
   val dailyWeatherVariation = 0.1 // +/- 10% daily weather variation from monthly mean values
 
@@ -87,13 +83,13 @@ object WeatherProvider {
   /**
    * Generating some weather based on weather statistics
    */
-  def getCurrentWeather(ws: WeatherStation, d: DateTime): WeatherObservation = {
+  /*def getCurrentWeather(ws: WeatherStation, d: DateTime): WeatherObservation = {
     val y = d.getYear().toString
     val m = d.getMonth()
     val r = new Random()
     //double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
 
-    var variationFactor = 1 + (Random.nextDouble() * dailyWeatherVariation) - (dailyWeatherVariation / 2)
+    val variationFactor = 1 + (Random.nextDouble() * dailyWeatherVariation) - (dailyWeatherVariation / 2)
 
     var temp = 0.0
     var prcp = 0.0
@@ -119,18 +115,17 @@ object WeatherProvider {
       prcp = prcp / ( 1 + r.nextInt(9) )
     }
 
-    val w = new WeatherObservation(d, temp, prcp, snow, ws)
-    return w
-  }
+    new WeatherObservation(d, temp, temp, prcp, snow, ws)
+  }*/
 
   def getNearesWeaterStation(coords: Coordinates): WeatherStation = {
     var shortestDist: Double = -1
     var nearestWs: WeatherStation = null
 
-    if (weatherStations.isEmpty) getWeatherStations()
+    if (weatherStationsByLocationId.isEmpty) getWeatherStations()
 
-    for (locid <- weatherStations.keys) {
-      for (ws <- weatherStations(locid)) {
+    for (locid <- weatherStationsByLocationId.keys) {
+      for (ws <- weatherStationsByLocationId(locid)) {
         val dist = ws.coords.dist(coords)
         if (shortestDist < 0 || dist < shortestDist) {
           shortestDist = dist
@@ -138,16 +133,33 @@ object WeatherProvider {
         }
       }
     }
-    return nearestWs
+    nearestWs
   }
 
-  def getDailySummary(ws: WeatherStation, startdate: DateTime, enddate: DateTime): List[WeatherObservation] = {
+  def getCurrentWeather(ws: WeatherStation, date: DateTime): WeatherObservation = {
+    log.info(ws.toString())
+    if (!ws.observations.containsKey(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
+      getDailySummarys(ws, date, DateTime.now)
+    }
+    if (!ws.observations.containsKey(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
+      var nextday = date + Duration.days(1)
+      while (nextday <= DateTime.now) {
+        if (ws.observations.containsKey(nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
+          return ws.observations(nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+        }
+        nextday = nextday + Duration.days(1)
+      }
+    }
+    return ws.observations(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+  }
+
+  private def getDailySummarys(ws: WeatherStation, startdate: DateTime, enddate: DateTime): WeatherStation = {
+    log.info(ws.toString())
     var offset = 0
     var enddate_ = enddate
     var startdate_ = startdate
-    var woMap: Map[DateTime, WeatherObservation] = Map()
+    var woMap: Map[String, WeatherObservation] = Map()
     val now = DateTime.now
-
     var _start = now
     var _end = now
 
@@ -163,135 +175,124 @@ object WeatherProvider {
       _end = startdate_
     }
 
-    val step = _start + Duration.days(365)
+    var step = 0
     while (_start <= _end) {
-      var _stepEnd = now
+      var _stepEnd = _end
       if ((_end - _start) > Duration.days(365)) {
         _stepEnd = _start + Duration.days(365)
       } else {
         _stepEnd = _end
       }
-      val edStr = _start.toFormat("yyyy-MM-dd")
-      val sdStr = _stepEnd.toFormat("yyyy-MM-dd")
+      val sdStr = _start.toFormat(WeatherUtil.NCDC_DATA_FORMAT)
+      val edStr = _stepEnd.toFormat(WeatherUtil.NCDC_DATA_FORMAT)
 
-      val uri = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&stationid=" + ws.id + "&startdate=" + sdStr + "&enddate=" + edStr + "&limit=1000&offset=" + offset
-      val result = new WeatherNCDCProvider().get(uri)
-      val res: NcdcDailySummaryResult = new NcdcGson().getDailySummaryResult(result)
+      var offset = 0
+      var count = 0
+      var limit = 1000
+      do {
+        val uri = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&stationid=" + ws.id +
+          "&startdate=" + sdStr + "&enddate=" + edStr +
+          "&limit=" + limit + "&offset=" + offset
+        val result = WeatherNcdc.get(uri)
+        val resultResponse = Await.result(result, scala.concurrent.duration.Duration.create("600s"))
+        val json = Json.parse(resultResponse)
 
-      var cal = new GregorianCalendar()
-      for (nds <- res.getResults){
-        val date = DateTime.parse("yyyy-MM-dd", nds.getDate)
+        implicit val dailySummaryReads = Json.reads[NcdcDailySummary]
+        implicit val resultsetReads = Json.reads[NcdcResultset]
+        implicit val metadataReads = Json.reads[NcdcMetadata]
+        implicit val dailySummaryResultsReads = Json.reads[NcdcDailySummaryResult]
 
-        var wo: WeatherObservation = null
-        if (woMap.contains(date)) {
-          wo = woMap(date)
+        val locRes = json.as[NcdcDailySummaryResult]
+
+        var cal = new GregorianCalendar()
+        for (nds <- locRes.results) {
+          val date = DateTime.parse(WeatherUtil.NCDC_DATA_FORMAT, nds.date)
+
+          var wo: WeatherObservation = null
+          if (woMap.contains(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
+            wo = woMap(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+          }
+          else {
+            wo = new WeatherObservation(date)
+            wo.ws = ws
+            woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
+          }
+
+          if (nds.datatype == "PRCP") {
+            wo.prcp = nds.value / 10
+            woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
+          }
+          if (nds.datatype == "SNWD") {
+            wo.snow = nds.value / 10
+            woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
+          }
+          if (nds.datatype == "TMIN") {
+            wo.tmin = nds.value / 10
+            woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
+          }
+          if (nds.datatype == "TMAX") {
+            wo.tmax = nds.value / 10
+            woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
+          }
         }
-        else {
-          wo = new WeatherObservation(date)
-          wo.ws = ws
-        }
+        _start = _stepEnd + Duration.days(1)
 
-        if (nds.getDatatype == "PRCP") {
-          wo.prcp = nds.getValue / 10
-        }
-
-        if (nds.getDatatype == "SNWD") {
-          wo.snow = nds.getValue
-        }
-
-        if (nds.getDatatype == "TMIN") {
-          wo.snow = nds.getValue
-        }
-
-
-      }
-
-      /*
-      cal.set(2010, 0, 1, 0, 0, 0);
-      val date =
-
-      val wo = new WeatherObservation(date =
-      temp: Double = 0.0,
-      prcp: Double = 0.0,
-      snow: Double = 0.0,
-      ws: WeatherStation,)
-
-      wol = wo :: wol
-  */
-      _start = _stepEnd + Duration.days(1)
+        log.info(locRes.metadata.resultset.toString)
+        count = locRes.metadata.resultset.count
+        offset += limit
+      } while (count > offset)
     }
 
-
-
-    //System.out.println(res.getMetadata.getResultset.getCount)
-    return null
+    ws.observations = woMap
+    ws
   }
 
-  def getWeatherStations(locationid: String = "FIPS:GM"): List[WeatherStation] = {
-    if (weatherStations.keys.contains(locationid)) {
+  private def getWeatherStations(locationid: String = "FIPS:GM"): List[WeatherStation] = {
+    if (weatherStationsByLocationId.keys.contains(locationid)) {
       log.info("known location id requested, serving stations from cache...")
-      return weatherStations(locationid)
+      return weatherStationsByLocationId(locationid)
     }
 
     var wss: List[WeatherStation] = List()
-    val uri_stations_in_de = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=" + locationid + "&limit=1000"
+    var offset = 0
+    var count = 0
+    var limit = 1000
+    do {
+      val uri_stations_in_de = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=" + locationid + "&limit=" + limit + "&offset=" + offset
+      val result = WeatherNcdc.get(uri_stations_in_de)
+      val resultResponse = Await.result(result, scala.concurrent.duration.Duration.create("600s"))
+      val json: JsValue = Json.parse(resultResponse)
 
-    //val result = new WeatherNCDCProvider().get(uri_stations_in_de)
+      implicit val locationReads = Json.reads[NcdcLocation]
+      implicit val resultsetReads = Json.reads[NcdcResultset]
+      implicit val metadataReads = Json.reads[NcdcMetadata]
+      implicit val locationResultsReads = Json.reads[NcdcLocationResults]
+      val locRes = json.as[NcdcLocationResults]
 
-    val result = WeatherNcdc.get(uri_stations_in_de)
+      for (loc <- locRes.results) {
+        val coords = new Coordinates(loc.latitude, loc.longitude)
+        val ws = new WeatherStation(coords, loc.name, loc.id)
+        wss = ws :: wss
+        weatherStationsByStationId += (ws.id -> ws)
+      }
 
-    val json = Await.result(result, scala.concurrent.duration.Duration.create("10s"))
+      if (wss.size > 0) {
+        weatherStationsByLocationId += (locationid -> wss)
+      }
 
-    //val result = WeatherNcdc.get(uri_stations_in_de)
-
-    //val json: JsValue = Json.parse(result)
-
-    implicit val locationReads = Json.reads[NcdcLocation]
-    implicit val resultsetReads = Json.reads[NcdcResultset]
-    implicit val metadataReads = Json.reads[NcdcMetadata]
-    implicit val locationResultsReads = Json.reads[NcdcLocationResults]
-
-    System.out.println(json.as[NcdcLocationResults].toString)
+      log.info(locRes.metadata.resultset.toString)
+      count = locRes.metadata.resultset.count
+      offset += limit
+    } while (count > offset)
 
     /*
-    for (result <- json \\ "results") {
-      val wert = (result \ "id").as[String]
-      result.as
-
-    }
-    */
-    //val res: NcdcLocationResult = new NcdcGson().getLocationResult(result)
-
-    /*
-    for (loc <- res.getResults) {
-      val coords = new Coordinates(loc.getLatitude, loc.getLongitude)
-      val ws = new WeatherStation(coords, loc.getName)
-      System.out.println(ws.toString())
-      wss = ws :: wss
-    }
-
-    if (wss.size > 0) {
-      weatherStations += (locationid -> wss)
-    }
-
-    System.out.println(res.getMetadata.getResultset.getCount.toString)
-
-
-
-    val sdCal = new GregorianCalendar()
-    sdCal.set(2010, 0, 1, 0, 0, 0)
-    val sd = new DateTime(sdCal.getTimeInMillis)
-
-    val edCal = new GregorianCalendar()
-    edCal.set(2013, 11, 31, 0, 0, 0)
-    val ed = new DateTime(edCal.getTimeInMillis)
-
+    val sd = DateTime.parse("yyyy-MM-dd", "2010-01-01")
+    val ed = DateTime.parse("yyyy-MM-dd", "2013-12-31")
     val wsLE = new WeatherStation(new Coordinates(0.0, 0.0), "", "GHCND:GME00102292")
+    getDailySummary(wsLE, sd, ed)
     */
 
-    //getDailySummary(wsLE, sd, ed)
-
-    return weatherStations(locationid)
+    weatherStationsByLocationId(locationid)
   }
 
   private def getAvg(map: Map[String, List[Double]], index: Int): Double = {
@@ -305,7 +306,9 @@ object WeatherProvider {
   }
 
   def delayedDueToWeatherProbability(ws: WeatherStation, d: DateTime): Double = {
+    log.info(ws.toString())
     val w = getCurrentWeather(ws, d)
+    log.info(w.toString())
     var probab = 0.0
     if (w.getPrcpCategory() == WeatherUtil.PRCP_HEAVY) probab += 0.20
     if (w.getPrcpCategory() == WeatherUtil.PRCP_MID) probab += 0.10

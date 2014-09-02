@@ -4,6 +4,7 @@ import java.util.UUID
 
 import supplychain.dataset.Namespaces
 import supplychain.model._
+import supplychain.simulator.WeatherProvider
 
 class ConnectionsBuilder(suppliers: Seq[Supplier]) {
 
@@ -26,8 +27,10 @@ class ConnectionsBuilder(suppliers: Seq[Supplier]) {
    */
   protected def generate(supplier: Supplier, part: Product): List[Connection] = {
     val partSupplier = selectSupplier(part)
-    val wsSource = new WeatherStation(partSupplier.coords, partSupplier.name + WeatherUtil.WS_NAME_SUFIX)
-    val wsTarget = new WeatherStation(supplier.coords, supplier.name + WeatherUtil.WS_NAME_SUFIX)
+    val wsSource = WeatherProvider.getNearesWeaterStation(partSupplier.coords)
+      //new WeatherStation(partSupplier.coords, partSupplier.name + WeatherUtil.WS_NAME_SUFIX)
+    val wsTarget = WeatherProvider.getNearesWeaterStation(supplier.coords)
+      //new WeatherStation(supplier.coords, supplier.name + WeatherUtil.WS_NAME_SUFIX)
     val connection = Connection(Namespaces.connection + UUID.randomUUID.toString, part, partSupplier, supplier, wsSource, wsTarget)
     connection :: part.parts.flatMap(generate(partSupplier, _))
   }
