@@ -79,8 +79,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
         orders.dequeue()
 
         // Weather influence
-        var wp = new WeatherProvider()
-        var delayedDueToWeatherProbability = wp.delayedDueToWeatherProbability(order.connection.wsSource, order.dueDate) + (0.05 * Random.nextDouble())
+        val delayedDueToWeatherProbability = WeatherProvider.delayedDueToWeatherProbability(order.connection.wsSource, order.dueDate) + (0.05 * Random.nextDouble())
 
         // Production time, 10% fixed delay
         var productionTime = supplier.product.productionTime
@@ -96,7 +95,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
 
         // Delivery Times
         val perfectDeliveryTime = supplier.product.productionTime + order.connection.shippingTime
-        var realDeliveryTime = productionTime + shippingTime
+        val realDeliveryTime = productionTime + shippingTime
 
         // Number of parts delayed
         val partsDelayed = 1 + Random.nextInt(order.count)
@@ -118,7 +117,6 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
    * Schedules the shipping of parts.
    */
   private def ship(order: Order, count: Int, deliveryTime: Duration) = {
-    val wp = new WeatherProvider
     val shippingDate = order.date + deliveryTime
     if(count >= 1) {
       simulator.scheduleMessage(
@@ -127,8 +125,8 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
           connection = order.connection,
           count = count,
           order = order,
-          woSource = wp.getCurrentWeather(order.connection.wsSource, shippingDate),
-          woTarget = wp.getCurrentWeather(order.connection.wsTarget, shippingDate)
+          woSource = WeatherProvider.getCurrentWeather(order.connection.wsSource, shippingDate),
+          woTarget = WeatherProvider.getCurrentWeather(order.connection.wsTarget, shippingDate)
         )
       )
     }
