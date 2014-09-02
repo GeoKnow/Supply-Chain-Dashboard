@@ -1,5 +1,6 @@
 package supplychain.model
 
+import java.text.SimpleDateFormat
 import javax.xml.datatype.{DatatypeFactory, XMLGregorianCalendar}
 import java.util.{Calendar, GregorianCalendar}
 
@@ -26,6 +27,13 @@ class DateTime(val milliseconds: Long) extends Ordered[DateTime] {
     val calendar = new GregorianCalendar()
     calendar.setTimeInMillis(milliseconds)
     DateTime.datetypeFactory.newXMLGregorianCalendar(calendar).toXMLFormat
+  }
+
+  def toFormat(format: String): String = {
+    val calendar = new GregorianCalendar()
+    calendar.setTimeInMillis(milliseconds)
+    val formatted = new SimpleDateFormat(format)
+    return formatted.format(calendar.getTime)
   }
 
   override def toString = toXSDFormat
