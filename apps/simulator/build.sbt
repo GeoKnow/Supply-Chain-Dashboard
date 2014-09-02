@@ -12,4 +12,4 @@ libraryDependencies += "com.typesafe.play" %% "play-json" % "2.3.3"
 
 libraryDependencies += "com.typesafe.play" %% "play-ws" % "2.3.3"
 
-libraryDependencies += "com.google.code.gson" % "gson" % "2.2"
+// libraryDependencies += "com.google.code.gson" % "gson" % "2.2"
