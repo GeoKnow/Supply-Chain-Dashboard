@@ -9,16 +9,22 @@ import supplychain.dataset.Namespaces
  */
 
 case class WeatherObservation(date: DateTime = DateTime.now,
-                              temp: Double = 0.0,
-                              prcp: Double = 0.0,
-                              snow: Double = 0.0,
-                              ws: WeatherStation,
+                              //var tmin: Double = 0.0,
+                              var temp: Double = 0.0,
+                              //var tmax: Double = 0.0,
+                              var prcp: Double = 0.0,
+                              var snow: Double = 0.0,
+                              var ws: WeatherStation = null,
                               uri: String = Namespaces.weatherObservation + UUID.randomUUID.toString) {
 
   def id = uri.substring(uri.lastIndexOf('/') + 1)
 
+  /*
+  def temp = (tmin+tmax) / 2.0
+  */
+
   override def toString(): String =
-    return "uri: " + uri + ", Date: " + date.toString() + ", temp: " + temp.toString + ", prcp: " + prcp.toString + ", snow: " + snow.toString
+    "uri: " + uri + ", Date: " + date.toString() + ", temp: " + temp.toString + ", prcp: " + prcp.toString + ", snow: " + snow.toString
 
   def getPrcpCategory(): Int = {
     if (prcp >= 25.4) return WeatherUtil.PRCP_HEAVY
