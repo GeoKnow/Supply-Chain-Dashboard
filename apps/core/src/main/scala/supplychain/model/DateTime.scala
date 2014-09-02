@@ -56,4 +56,9 @@ object DateTime {
   private val datetypeFactory = DatatypeFactory.newInstance()
 
   def now = new DateTime(System.currentTimeMillis())
+
+  def parse(format: String, dateString: String): DateTime = {
+    val formatted = new java.text.SimpleDateFormat(format)
+    return new DateTime(formatted.parse(dateString).getTime)
+  }
 }
