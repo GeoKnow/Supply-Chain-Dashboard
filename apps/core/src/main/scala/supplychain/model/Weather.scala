@@ -26,17 +26,21 @@ case class WeatherObservation(date: DateTime = DateTime.now,
     if (prcp >= 2.54) return WeatherUtil.PRCP_LIGHT
     return WeatherUtil.PRCP_NO
   }
+
+  def hasSnow(): Boolean = {
+    return (snow > 0.0)
+  }
 }
 
 case class WeatherStation(coords: Coordinates,
                           name: String = "",
+                          id: String = "",
                           uri: String = Namespaces.weatherStation + UUID.randomUUID.toString) {
 
-  def id = uri.substring(uri.lastIndexOf('/') + 1)
+  def uri_id = uri.substring(uri.lastIndexOf('/') + 1)
 
   override def toString(): String =
-    return "uri: " + uri + ", name: " + name + ", coordinates: " + coords.toString
-
+    return "uri: " + uri + ", id: " + id + ", name: " + name + ", coordinates: " + coords.toString
 }
 
 object WeatherUtil {
