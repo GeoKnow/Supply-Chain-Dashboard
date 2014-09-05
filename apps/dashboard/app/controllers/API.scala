@@ -130,6 +130,7 @@ object API extends Controller {
   }
 
   def run(frequency: Double) = Action {
+    Logger.info("frequency: " + frequency)
     CurrentDataset.simulator.run(frequency)
     Ok
   }
