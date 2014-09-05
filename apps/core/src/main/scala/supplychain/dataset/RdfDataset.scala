@@ -70,8 +70,8 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
      |            sc:hasWeatherStation <${c.wsTarget.uri}> .
      """)
 
-    addWeatherStation(c.wsSource)
-    addWeatherStation(c.wsTarget)
+    addWeatherStation(c.wsSource, c.source)
+    addWeatherStation(c.wsTarget, c.target)
   }
 
   /**
@@ -114,12 +114,13 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
          """)
   }
   
-  def addWeatherStation(ws: WeatherStation): Unit = {
+  def addWeatherStation(ws: WeatherStation, suppl: Supplier): Unit = {
     if (!weatherStations.contains(ws.id)) {
       insert( s"""
                | <${ws.uri}> a sc:WeatherStation ;
                |            geo:lon "${ws.coords.lon}" ;
                |            geo:lat "${ws.coords.lat}" ;
+               |            sc:nextTo <${suppl.uri}> ;
                |            sc:name "${ws.name}" .
                """)
       weatherStations = ws.id :: weatherStations

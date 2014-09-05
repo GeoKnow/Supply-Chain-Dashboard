@@ -5,7 +5,7 @@ import javax.xml.datatype.DatatypeFactory
 /**
  * A time duration.
  */
-class Duration(val milliseconds: Long) {
+case class Duration(milliseconds: Long) {
 
   def +(d: Duration) = new Duration(milliseconds + d.milliseconds)
 

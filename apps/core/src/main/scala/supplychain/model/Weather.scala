@@ -8,7 +8,7 @@ import supplychain.dataset.Namespaces
  * Created by rene on 26.08.14.
  */
 
-case class WeatherObservation(date: DateTime = DateTime.now,
+case class WeatherObservation(var date: DateTime = DateTime.now,
                               var tmin: Double = 0.0,
                               //var temp: Double = 0.0,
                               var tmax: Double = 0.0,
@@ -39,6 +39,11 @@ case class WeatherObservation(date: DateTime = DateTime.now,
 case class WeatherStation(coords: Coordinates,
                           name: String = "",
                           id: String = "",
+                          mindate: DateTime,
+                          maxdate: DateTime,
+                          var datamindate: DateTime = null,
+                          var datamaxdate: DateTime = null,
+                          var supplier: Supplier = null,
                           uri: String = Namespaces.weatherStation + UUID.randomUUID.toString) {
 
   var observations: Map[String, WeatherObservation] = Map()
@@ -46,7 +51,8 @@ case class WeatherStation(coords: Coordinates,
   def uri_id = uri.substring(uri.lastIndexOf('/') + 1)
 
   override def toString(): String =
-    return "uri: " + uri + ", id: " + id + ", name: " + name + ", coordinates: " + coords.toString
+    return "uri: " + uri + ", id: " + id + ", name: " + name + ", mindate: " + mindate.toString +
+      ", maxdate: " + maxdate.toString + ", coordinates: " + coords.toString
 
   def getObservation(date: DateTime) = observations(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
 }

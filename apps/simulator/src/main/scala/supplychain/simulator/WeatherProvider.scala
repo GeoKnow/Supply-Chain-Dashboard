@@ -1,5 +1,6 @@
 package supplychain.simulator
 
+import java.io._
 import java.util.GregorianCalendar
 import java.util.logging.Logger
 
@@ -23,6 +24,7 @@ object WeatherProvider {
 
   private var weatherStationsByLocationId: Map[String, List[WeatherStation]] = Map()
   private var weatherStationsByStationId: Map[String, WeatherStation] = Map()
+  private var collectedDailySummaries: List[String] = List()
 
   val dailyWeatherVariation = 0.1 // +/- 10% daily weather variation from monthly mean values
 
@@ -118,46 +120,81 @@ object WeatherProvider {
     new WeatherObservation(d, temp, temp, prcp, snow, ws)
   }*/
 
-  def getNearesWeaterStation(coords: Coordinates): WeatherStation = {
+  // read weather data from local file
+  //deserialize()
+
+  def getNearesWeaterStation(supplier: Supplier, startdate: DateTime = Scheduler.simulationStartDate, enddate: DateTime = Scheduler.lastOrderDate): WeatherStation = {
     var shortestDist: Double = -1
     var nearestWs: WeatherStation = null
+    var nearestWsId: String = null
+    var nearestWsLocId: String = null
 
     if (weatherStationsByLocationId.isEmpty) getWeatherStations()
 
     for (locid <- weatherStationsByLocationId.keys) {
       for (ws <- weatherStationsByLocationId(locid)) {
-        val dist = ws.coords.dist(coords)
-        if (shortestDist < 0 || dist < shortestDist) {
-          shortestDist = dist
-          nearestWs = ws
+        val dist = ws.coords.dist(supplier.coords)
+        if (ws.mindate<= startdate && ws.maxdate >= enddate){
+          if (shortestDist < 0 || dist < shortestDist) {
+            shortestDist = dist
+            nearestWs = ws
+            nearestWsId = ws.id
+            nearestWsLocId = locid
+          }
         }
       }
     }
+    nearestWs.supplier = supplier
+
+    getDailySummarys(nearestWs, startdate, enddate)
+    if (nearestWs.datamindate > startdate || nearestWs.datamaxdate < enddate) {
+      log.info("searching other WS due to available data of: " + nearestWs.toString())
+      nearestWs = getNearesWeaterStation(supplier, startdate, enddate)
+    }
+
+    log.info("found WS: " + nearestWs.toString())
     nearestWs
   }
 
   def getCurrentWeather(ws: WeatherStation, date: DateTime): WeatherObservation = {
-    log.info(ws.toString())
+    //log.info(ws.toString())
     if (!ws.observations.containsKey(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
-      getDailySummarys(ws, date, DateTime.now)
+      getDailySummarys(ws, date, Scheduler.lastOrderDate)
     }
     if (!ws.observations.containsKey(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
       var nextday = date + Duration.days(1)
-      while (nextday <= DateTime.now) {
+      var previousday = date - Duration.days(1)
+      while (nextday <= (Scheduler.lastOrderDate + Duration.days(30)) && previousday >= Scheduler.simulationStartDate) {
         if (ws.observations.containsKey(nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
-          return ws.observations(nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+          var wo = ws.observations(nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+          wo.date = date
+          return wo
+        } else if (ws.observations.containsKey(previousday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
+          var wo = ws.observations(previousday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+          wo.date = date
+          return wo
         }
-        nextday = nextday + Duration.days(1)
+        nextday += Duration.days(1)
+        previousday -= Duration.days(1)
       }
     }
-    return ws.observations(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+    var wo = ws.observations(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+    wo.date = date
+    return wo
   }
 
   private def getDailySummarys(ws: WeatherStation, startdate: DateTime, enddate: DateTime): WeatherStation = {
-    log.info(ws.toString())
+    //log.info(ws.toString())
+    val queryKey = ws.id + "-" + startdate.toFormat(WeatherUtil.NCDC_DATA_FORMAT) + "-" + enddate.toFormat(WeatherUtil.NCDC_DATA_FORMAT)
+    if (collectedDailySummaries.contains(queryKey)) {
+      log.info("summaries cached skipping REST calls...")
+      return ws
+    }
+
     var offset = 0
     var enddate_ = enddate
     var startdate_ = startdate
+    var lastGotDate = startdate
     var woMap: Map[String, WeatherObservation] = Map()
     val now = DateTime.now
     var _start = now
@@ -207,6 +244,12 @@ object WeatherProvider {
         var cal = new GregorianCalendar()
         for (nds <- locRes.results) {
           val date = DateTime.parse(WeatherUtil.NCDC_DATA_FORMAT, nds.date)
+          if (ws.datamindate == null || date < ws.datamindate) {
+            ws.datamindate = date
+          }
+          if (ws.datamaxdate == null || date > ws.datamaxdate) {
+            ws.datamaxdate = date
+          }
 
           var wo: WeatherObservation = null
           if (woMap.contains(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
@@ -223,7 +266,7 @@ object WeatherProvider {
             woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
           }
           if (nds.datatype == "SNWD") {
-            wo.snow = nds.value / 10
+            wo.snow = nds.value
             woMap += (date.toFormat(WeatherUtil.NCDC_DATA_FORMAT) -> wo)
           }
           if (nds.datatype == "TMIN") {
@@ -244,7 +287,32 @@ object WeatherProvider {
     }
 
     ws.observations = woMap
+    collectedDailySummaries = queryKey :: collectedDailySummaries
     ws
+  }
+
+  def serialize() = {
+    val oos = new ObjectOutputStream(new FileOutputStream("WeatherStations.fos"))
+    try {
+      oos.writeObject(weatherStationsByLocationId)
+      oos.writeObject(weatherStationsByStationId)
+    } finally {
+      oos.close()
+    }
+  }
+
+  def deserialize() = {
+    try {
+      val ois = new ObjectInputStream(new FileInputStream("WeatherStations.fos"))
+      try {
+        weatherStationsByLocationId = ois.readObject().asInstanceOf[Map[String, List[WeatherStation]]]
+        weatherStationsByStationId = ois.readObject().asInstanceOf[Map[String, WeatherStation]]
+      } finally {
+        ois.close()
+      }
+    } catch {
+      case ex: IOException =>
+    }
   }
 
   private def getWeatherStations(locationid: String = "FIPS:GM"): List[WeatherStation] = {
@@ -258,7 +326,10 @@ object WeatherProvider {
     var count = 0
     var limit = 1000
     do {
-      val uri_stations_in_de = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations?locationid=" + locationid + "&limit=" + limit + "&offset=" + offset
+
+      // http://www.ncdc.noaa.gov/cdo-web/api/v2/stations?datasetid=GHCND&datasetid=GHCNDMS&datacategoryid=TEMP&datacategoryid=PRCP&
+      val uri_stations_in_de = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations?datasetid=GHCND&datasetid=GHCNDMS&datacategoryid=TEMP&datacategoryid=PRCP&locationid=" + locationid +
+        "&limit=" + limit + "&offset=" + offset
       val result = WeatherNcdc.get(uri_stations_in_de)
       val resultResponse = Await.result(result, scala.concurrent.duration.Duration.create("600s"))
       val json: JsValue = Json.parse(resultResponse)
@@ -271,9 +342,13 @@ object WeatherProvider {
 
       for (loc <- locRes.results) {
         val coords = new Coordinates(loc.latitude, loc.longitude)
-        val ws = new WeatherStation(coords, loc.name, loc.id)
-        wss = ws :: wss
-        weatherStationsByStationId += (ws.id -> ws)
+        val mindate = DateTime.parse(WeatherUtil.NCDC_DATA_FORMAT, loc.mindate)
+        val maxdate = DateTime.parse(WeatherUtil.NCDC_DATA_FORMAT, loc.maxdate)
+        if (maxdate >= Scheduler.lastOrderDate) {
+          val ws = new WeatherStation(coords, loc.name, loc.id, mindate, maxdate, null, null)
+          wss = ws :: wss
+          weatherStationsByStationId += (ws.id -> ws)
+        }
       }
 
       if (wss.size > 0) {
@@ -292,7 +367,11 @@ object WeatherProvider {
     getDailySummary(wsLE, sd, ed)
     */
 
-    weatherStationsByLocationId(locationid)
+    if (weatherStationsByLocationId.contains(locationid)){
+      weatherStationsByLocationId(locationid)
+    } else {
+      List()
+    }
   }
 
   private def getAvg(map: Map[String, List[Double]], index: Int): Double = {
@@ -317,6 +396,7 @@ object WeatherProvider {
     probab += (-1 * w.temp / 100)
     if (probab < 0.0) probab = 0.0
     if (probab > 1.0) probab = 1.0
+    log.info("delay probab: " + probab.toString)
     probab
 
     /*

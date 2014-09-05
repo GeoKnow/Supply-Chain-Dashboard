@@ -27,9 +27,9 @@ class ConnectionsBuilder(suppliers: Seq[Supplier]) {
    */
   protected def generate(supplier: Supplier, part: Product): List[Connection] = {
     val partSupplier = selectSupplier(part)
-    val wsSource = WeatherProvider.getNearesWeaterStation(partSupplier.coords)
+    val wsSource = WeatherProvider.getNearesWeaterStation(partSupplier)
       //new WeatherStation(partSupplier.coords, partSupplier.name + WeatherUtil.WS_NAME_SUFIX)
-    val wsTarget = WeatherProvider.getNearesWeaterStation(supplier.coords)
+    val wsTarget = WeatherProvider.getNearesWeaterStation(supplier)
       //new WeatherStation(supplier.coords, supplier.name + WeatherUtil.WS_NAME_SUFIX)
     val connection = Connection(Namespaces.connection + UUID.randomUUID.toString, part, partSupplier, supplier, wsSource, wsTarget)
     connection :: part.parts.flatMap(generate(partSupplier, _))

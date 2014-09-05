@@ -191,22 +191,8 @@ class SchnelleckeDataset extends Dataset {
               ),
               Product("")
             ),
-        wsSource =
-            WeatherStation(
-              Coordinates(
-                lat = result.getLiteral("slat").getDouble,
-                lon = result.getLiteral("slon").getDouble
-              ),
-              name = result.getLiteral("sname").getString + WeatherUtil.WS_NAME_SUFIX
-            ),
-        wsTarget =
-          WeatherStation(
-            Coordinates(
-              lat = result.getLiteral("rlat").getDouble,
-              lon = result.getLiteral("rlon").getDouble
-            ),
-            name = result.getLiteral("rname").getString + WeatherUtil.WS_NAME_SUFIX
-          )
+        wsSource = null,
+        wsTarget = null
       )
     }
   }

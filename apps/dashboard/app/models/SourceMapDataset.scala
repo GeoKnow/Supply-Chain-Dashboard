@@ -56,8 +56,8 @@ class SourceMapDataset(id: Int) extends Dataset {
 
         val sender = supplierMap(senderId)
         val receiver = supplierMap(receiverId)
-        val wsSender = WeatherStation(sender.coords, sender.name + WeatherUtil.WS_NAME_SUFIX)
-        val wsReceiver = WeatherStation(receiver.coords, receiver.name + WeatherUtil.WS_NAME_SUFIX)
+        val wsSender = null
+        val wsReceiver = null
 
         Connection(index.toString, Product(""), sender, receiver, wsSender, wsReceiver)
       }

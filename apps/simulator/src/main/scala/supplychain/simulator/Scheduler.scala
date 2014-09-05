@@ -10,16 +10,16 @@ import scala.collection.mutable
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
-  private val cal = new GregorianCalendar()
+  /*private val cal = new GregorianCalendar()
   cal.set(2010, 0, 1, 0, 0, 0);
 
   private val lastOrderCal = new GregorianCalendar()
   lastOrderCal.set(2013, 11, 31, 23, 59, 59)
 
   private val lastOrderDate = new DateTime(lastOrderCal.getTimeInMillis)
-
+  */
   // The current simulation date
-  private var currentDate = new DateTime(cal.getTimeInMillis)
+  private var currentDate = Scheduler.simulationStartDate //new DateTime(cal.getTimeInMillis)
   //DateTime.now
 
   // The simulation interval between two ticks
@@ -46,7 +46,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
       // Advance current date
       currentDate += tickInterval
       // Order
-      if(lastOrderTime + orderInterval <= currentDate && currentDate <= lastOrderDate) {
+      if(lastOrderTime + orderInterval <= currentDate && currentDate <= Scheduler.lastOrderDate) {
         lastOrderTime = currentDate
         val rootActor = simulator.getActor(rootConnection.source)
         val order = Order(date = currentDate, connection = rootConnection, count = orderCount)
@@ -63,4 +63,8 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 
 object Scheduler {
   object Tick
+
+  var simulationStartDate = DateTime.parse("yyyy-MM-dd", "2011-01-01")
+  var lastOrderDate = DateTime.parse("yyyy-MM-dd", "2013-12-31")
+
 }

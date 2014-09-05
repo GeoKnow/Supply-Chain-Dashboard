@@ -9,6 +9,7 @@ import supplychain.simulator.WeatherProvider._
 import scala.concurrent.Future
 import play.api.Play.current
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.Random
 
 /**
  * Created by rene on 01.09.14.
@@ -17,12 +18,22 @@ object WeatherNcdc {
 
   private val log = Logger.getLogger(getClass.getName)
 
+  private val tokens = List(//"grPjwwJDoWFSTtwDLxjZGoPBZNMVJthw",
+                            //"FHZLEZWsBusSZulVeicGwUzkXTCFTBIp",
+                            //"IzjHnCVFZDKHggEMUuHFbQUfDBSiiwHY",
+                            "iHuyuLYggIIcmaLqzcrnjnJZcBvUjtWV",
+                            "yUesEAjpGjUqeAAYYaHlctfGhbFtHpkT",
+                            "VFXjZbwWUijCSxMZrPJdczhGhOOWfNoT",
+                            "UjgFLEdUegHNIEfGKeECMsxTbjTKXbHy",
+                            "gZaRadlsQFNzIwSPQAhLutWoSrmrqpYB")
+
   private var nextRequest = DateTime.now
 
   def get(uri: String): Future[String] = {
     log.info("uri: " + uri)
     val holder = WS.url(uri)
-    val complexHolder = holder.withHeaders("token" -> "FHZLEZWsBusSZulVeicGwUzkXTCFTBIp")
+    val tokenIndex = Random.nextInt(tokens.size)
+    val complexHolder = holder.withHeaders("token" -> tokens(tokenIndex))
     val promise = complexHolder.get()
 
     for (response <- promise) yield {
@@ -32,8 +43,9 @@ object WeatherNcdc {
       }
 
       if (response.status == 429) {
-        log.info("sleeping for 5s")
-        Thread sleep 5000
+        //log.info("sleeping for 5s")
+        log.info("token:" + tokens(tokenIndex))
+        //Thread sleep 5000
         return get(uri)
       }
 

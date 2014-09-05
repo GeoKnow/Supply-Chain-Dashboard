@@ -7,7 +7,7 @@ import java.util.{Calendar, GregorianCalendar}
 /**
  * Represents a date time.
  */
-class DateTime(val milliseconds: Long) extends Ordered[DateTime] {
+case class DateTime(milliseconds: Long) extends Ordered[DateTime] {
 
   def +(duration: Duration) = {
     new DateTime(milliseconds + duration.milliseconds)
