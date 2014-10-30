@@ -23,7 +23,7 @@ class LocalEndpoint(defaultGraph: String) extends Endpoint {
   private val dataset = DatasetFactory.createMem()
 
   def update(query: String) = {
-    UpdateAction.parseExecute(query, dataset)
+    UpdateAction.parseExecute(query, dataset.getNamedModel(defaultGraph))
   }
 
   def select(query: String) = {
