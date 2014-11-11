@@ -1,6 +1,12 @@
 *.class
 *.log
 apps/.idea*
+apps/core/.cache
+apps/core/.classpath
+apps/core/.project
+apps/simulator/.classpath
+apps/simulator/.project
+apps/simulator/.settings/*
 
 # sbt specific
 dist/*
