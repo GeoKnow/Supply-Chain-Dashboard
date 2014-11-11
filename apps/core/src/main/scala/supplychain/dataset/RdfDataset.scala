@@ -114,13 +114,14 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
          |            sc:snow "${wo.snow}" .
          """)
   }
-  
+
   def addWeatherStation(ws: WeatherStation, suppl: Supplier): Unit = {
     if (!weatherStations.contains(ws.id)) {
       insert( s"""
                | <${ws.uri}> a sc:WeatherStation ;
-               |            geo:lon "${ws.coords.lon}" ;
+               |            geo:long "${ws.coords.lon}" ;
                |            geo:lat "${ws.coords.lat}" ;
+               |            rdfs:label "${ws.name}" ;
                |            sc:nextTo <${suppl.uri}> ;
                |            sc:name "${ws.name}" .
                """)
