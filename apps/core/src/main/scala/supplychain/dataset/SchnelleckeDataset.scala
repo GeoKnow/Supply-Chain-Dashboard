@@ -77,7 +77,7 @@ class SchnelleckeDataset extends Dataset {
          ?sender sc:city ?city .
          ?sender sc:country ?country .
          ?sender geo:lat ?lat .
-         ?sender geo:lon ?lon .
+         ?sender geo:long ?lon .
        }
       """
 
@@ -128,7 +128,7 @@ class SchnelleckeDataset extends Dataset {
          ?sender sc:city ?scity .
          ?sender sc:country ?scountry .
          ?sender geo:lat ?slat .
-         ?sender geo:lon ?slon .
+         ?sender geo:long ?slon .
 
          ?delivery sc:receiver ?receiver .
          ?receiver sc:name ?rname .
@@ -137,7 +137,7 @@ class SchnelleckeDataset extends Dataset {
          ?receiver sc:city ?rcity .
          ?receiver sc:country ?rcountry .
          ?receiver geo:lat ?rlat .
-         ?receiver geo:lon ?rlon .
+         ?receiver geo:long ?rlon .
        }
       """
 

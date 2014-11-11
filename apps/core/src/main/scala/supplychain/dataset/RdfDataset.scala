@@ -46,12 +46,13 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
      insert(s"""
      | <${supplier.uri}> a sc:Supplier ;
      |                   sc:name "${supplier.name}" ;
+     |                   rdfs:label "${supplier.name}" ;
      |                   sc:street "${supplier.address.street}" ;
      |                   sc:zipcode "${supplier.address.zipcode}" ;
      |                   sc:city "${supplier.address.city}" ;
      |                   sc:product <${supplier.product.uri}> ;
      |                   geo:lat "${supplier.coords.lat}" ;
-     |                   geo:lon "${supplier.coords.lon}" .
+     |                   geo:long "${supplier.coords.lon}" .
      """)
   }
 
@@ -103,6 +104,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
       s"""
         | PREFIX sc: <${Namespaces.schema}>
         | PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+        | PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         | INSERT DATA {
         |   $statements
         | }

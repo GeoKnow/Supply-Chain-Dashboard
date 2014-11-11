@@ -46,7 +46,7 @@ object Geocode {
       coordinates <- retrievesCoordinates(address)
     } {
       // Write coordinates
-      writer.write(s"<${coordinates.uri}> geo:lat ${coordinates.lat} ; geo:lon ${coordinates.lon} .")
+      writer.write(s"<${coordinates.uri}> geo:lat ${coordinates.lat} ; geo:long ${coordinates.lon} .")
       writer.newLine()
       // Wait 500ms to avoid overloading the geocooding API
       Thread.sleep(500)
