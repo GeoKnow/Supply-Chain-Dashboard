@@ -8,6 +8,8 @@ apps/core/.project
 apps/simulator/.classpath
 apps/simulator/.project
 apps/simulator/.settings/*
+apps/projectFilesBackup/
+apps/projectFilesBackup1/
 
 # sbt specific
 dist/*
