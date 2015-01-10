@@ -10,7 +10,7 @@
   @msg.date:
   @msg match {
     case Order(uri, date, conn, count) => { Order of @count @conn.content.name (s) from @conn.target.name }
-    case Shipping(uri, date, conn, count, order, senderWeather, receiverWeather) => { Shipping of @count @conn.content.name (s) to @conn.target.name }
+    case Shipping(uri, date, conn, count, order) => { Shipping of @count @conn.content.name (s) to @conn.target.name }
   }
   <br/>
 }
@@ -21,7 +21,7 @@
   @msg.date:
   @msg match {
     case Order(uri, date, conn, count) => { Order of @count @conn.content.name (s) to @conn.source.name }
-    case Shipping(uri, date, conn, count, order, senderWeather, receiverWeather) => { Shipping of @count @conn.content.name (s) from @conn.source.name }
+    case Shipping(uri, date, conn, count, order) => { Shipping of @count @conn.content.name (s) from @conn.source.name }
   }
   <br/>
 }

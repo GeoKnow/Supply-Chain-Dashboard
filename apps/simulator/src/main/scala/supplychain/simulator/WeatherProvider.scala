@@ -5,6 +5,7 @@ import java.util.GregorianCalendar
 import java.util.logging.Logger
 
 import akka.event.Logging
+import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
 import supplychain.model._
 
 import play.api.libs.json._
@@ -23,7 +24,7 @@ object WeatherProvider {
   private val log = Logger.getLogger(getClass.getName)
 
   private var weatherStationsByLocationId: Map[String, List[WeatherStation]] = Map()
-  private var weatherStationsByStationId: Map[String, WeatherStation] = Map()
+  private var weatherStationsByStationId: Map[List[String], WeatherStation] = Map()
   private var collectedDailySummaries: List[String] = List()
 
   val dailyWeatherVariation = 0.1 // +/- 10% daily weather variation from monthly mean values
@@ -123,7 +124,9 @@ object WeatherProvider {
   // read weather data from local file
   //deserialize()
 
+  /*
   def getNearesWeaterStation(supplier: Supplier, startdate: DateTime = Scheduler.simulationStartDate, enddate: DateTime = Scheduler.lastOrderDate): WeatherStation = {
+
     var shortestDist: Double = -1
     var nearestWs: WeatherStation = null
     var nearestWsId: String = null
@@ -154,8 +157,9 @@ object WeatherProvider {
 
     log.info("found WS: " + nearestWs.toString())
     nearestWs
-  }
+  }*/
 
+  /*
   def getCurrentWeather(ws: WeatherStation, date: DateTime): WeatherObservation = {
     //log.info(ws.toString())
     if (!ws.observations.containsKey(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
@@ -181,8 +185,9 @@ object WeatherProvider {
     var wo = ws.observations(date.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
     wo.date = date
     return wo
-  }
+  }*/
 
+  /*
   private def getDailySummarys(ws: WeatherStation, startdate: DateTime, enddate: DateTime): WeatherStation = {
     //log.info(ws.toString())
     val queryKey = ws.id + "-" + startdate.toFormat(WeatherUtil.NCDC_DATA_FORMAT) + "-" + enddate.toFormat(WeatherUtil.NCDC_DATA_FORMAT)
@@ -289,8 +294,9 @@ object WeatherProvider {
     ws.observations = woMap
     collectedDailySummaries = queryKey :: collectedDailySummaries
     ws
-  }
+  } */
 
+  /*
   def serialize() = {
     val oos = new ObjectOutputStream(new FileOutputStream("WeatherStations.fos"))
     try {
@@ -314,7 +320,9 @@ object WeatherProvider {
       case ex: IOException =>
     }
   }
+  */
 
+  /*
   private def getWeatherStations(locationid: String = "FIPS:GM"): List[WeatherStation] = {
     if (weatherStationsByLocationId.keys.contains(locationid)) {
       log.info("known location id requested, serving stations from cache...")
@@ -373,7 +381,9 @@ object WeatherProvider {
       List()
     }
   }
+  */
 
+  /*
   private def getAvg(map: Map[String, List[Double]], index: Int): Double = {
     var count = 0.0
     var sum = 0.0
@@ -383,7 +393,9 @@ object WeatherProvider {
     }
     sum/count
   }
+  */
 
+  /*
   def delayedDueToWeatherProbability(ws: WeatherStation, d: DateTime): Double = {
     log.info(ws.toString())
     val w = getCurrentWeather(ws, d)
@@ -398,26 +410,6 @@ object WeatherProvider {
     if (probab > 1.0) probab = 1.0
     log.info("delay probab: " + probab.toString)
     probab
-
-    /*
-    val y = d.getYear().toString
-    val m = d.getMonth()
-    var probab = 0.0
-
-    if (2010 <= d.getYear() && d.getYear() <= 2013) {
-      // temp < 0 °C assuming snow
-      if (mntm(y)(m) < 0.0) probab = ( ( dp01(y)(m) + dp05(y)(m) + dp10(y)(m) ) * 1.75 ) + ( -1 * mntm(y)(m) / 100 )
-      // no snow
-      else probab = ( ( dp01(y)(m) + dp05(y)(m) + dp10(y)(m) ) / 2 ) + ( -1 * mntm(y)(m) / 100 )
-    } else {
-      // temp < 0 °C assuming snow
-      if (getAvg(mntm, m) < 0.0) probab = ( ( getAvg(dp01, m) + getAvg(dp05, m) + getAvg(dp10, m) ) * 1.75 ) + ( -1 * getAvg(mntm, m) / 100 )
-      // no snow
-      else probab = ( ( getAvg(dp01, m) + getAvg(dp05, m) + getAvg(dp10, m) ) / 2 ) + ( -1 * getAvg(mntm, m) / 100 )
-    }
-    if (probab < 0.0) probab = 0.0
-    if (probab > 1.0) probab = 1.0
-    probab
-    */
   }
+  */
 }

@@ -2,7 +2,9 @@ package supplychain.dataset
 
 import java.util.logging.Logger
 
+import com.hp.hpl.jena.query.{QuerySolution, QueryExecutionFactory}
 import supplychain.model._
+import scala.collection.JavaConversions._
 
 class RdfDataset(endpointUrl: String, defaultGraph: String) {
 
@@ -16,7 +18,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
 
   private var graphCreated = false
 
-  private var weatherStations: List[String] = List()
+  //private var weatherStations: List[String] = List()
 
   /**
    * Adds a product to the RDF data set.
@@ -54,7 +56,8 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
      |                   sc:city "${supplier.address.city}" ;
      |                   sc:product <${supplier.product.uri}> ;
      |                   geo:lat "${supplier.coords.lat}" ;
-     |                   geo:long "${supplier.coords.lon}" .
+     |                   geo:long "${supplier.coords.lon}" ;
+     |                   sc:weatherStation <${supplier.weatherStation.uri}> .
      """)
   }
 
@@ -66,13 +69,11 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
      | <${c.uri}> a sc:Connection ;
      |            sc:product <${c.content.uri}> ;
      |            sc:sender <${c.source.uri}> ;
-     |            sc:receiver <${c.target.uri}> ;
-     |            sc:hasWeatherStation <${c.wsSource.uri}> ;
-     |            sc:hasWeatherStation <${c.wsTarget.uri}> .
+     |            sc:receiver <${c.target.uri}> .
      """)
 
-    addWeatherStation(c.wsSource, c.source)
-    addWeatherStation(c.wsTarget, c.target)
+    //addWeatherStation(c.wsSource, c.source)
+    //addWeatherStation(c.wsTarget, c.target)
   }
 
   /**
@@ -89,7 +90,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         """)
       log.info("Order date: " + date.toXSDFormat)
 
-    case Shipping(uri, date, connection, count, order, woSource, woTarget) =>
+    case Shipping(uri, date, connection, count, order) =>
       insert(s"""
         |  <${msg.uri}> a sc:Shipping ;
         |               sc:date "${date.toXSDFormat}" ;
@@ -97,11 +98,12 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         |               sc:count "$count" ;
         |               sc:order <${order.uri}> .
         """)
-      addWeatherObservation(woSource)
-      addWeatherObservation(woTarget)
+      //addWeatherObservation(woSource)
+      //addWeatherObservation(woTarget)
       log.info("Shipping date: " + date.toXSDFormat)
   }}
 
+  /*
   def addWeatherObservation(wo: WeatherObservation) {
     insert(s"""
          | <${wo.ws.uri}> sc:hasObservation <${wo.uri}> .
@@ -113,8 +115,9 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
          |            sc:fromStation <${wo.ws.uri}> ;
          |            sc:snow "${wo.snow}" .
          """)
-  }
+  } */
 
+  /*
   def addWeatherStation(ws: WeatherStation, suppl: Supplier): Unit = {
     if (!weatherStations.contains(ws.id)) {
       insert( s"""
@@ -127,7 +130,7 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
                """)
       weatherStations = ws.id :: weatherStations
     }
-  }
+  } */
 
   /**
    * Inserts a number of statements into the RDF data set.
@@ -155,6 +158,13 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
    */
   def query(queryStr: String) = {
     endpoint.select(queryStr)
+  }
+
+  /**
+   * Executes a SPARQL Select query on the data set.
+   */
+  def select(queryStr: String): Seq[QuerySolution] = {
+    return endpoint.select(queryStr).toSeq
   }
 
   /**

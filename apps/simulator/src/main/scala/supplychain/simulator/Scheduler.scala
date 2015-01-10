@@ -10,7 +10,8 @@ import scala.collection.mutable
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
-  /*private val cal = new GregorianCalendar()
+  /*
+  private val cal = new GregorianCalendar()
   cal.set(2010, 0, 1, 0, 0, 0);
 
   private val lastOrderCal = new GregorianCalendar()
@@ -18,6 +19,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 
   private val lastOrderDate = new DateTime(lastOrderCal.getTimeInMillis)
   */
+
   // The current simulation date
   private var currentDate = Scheduler.simulationStartDate //new DateTime(cal.getTimeInMillis)
   //DateTime.now
@@ -64,7 +66,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 object Scheduler {
   object Tick
 
-  var simulationStartDate = DateTime.parse("yyyy-MM-dd", "2011-01-01")
+  var simulationStartDate = DateTime.parse("yyyy-MM-dd", "2010-01-01")
   var lastOrderDate = DateTime.parse("yyyy-MM-dd", "2013-12-31")
 
 }

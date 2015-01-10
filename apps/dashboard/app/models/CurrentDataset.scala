@@ -10,7 +10,7 @@ import supplychain.simulator.Simulator
  */
 object CurrentDataset {
 
-  val simulator = new Simulator(Akka.system, Configuration.get.endpointUrl, Configuration.get.defaultGraph)
+  val simulator = new Simulator(Akka.system, Configuration.get.endpointUrl, Configuration.get.defaultGraph, Configuration.get.defaultGraphWeather)
 
   // Reference to the current data set.
   @volatile

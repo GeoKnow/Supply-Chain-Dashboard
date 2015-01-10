@@ -2,7 +2,7 @@ package supplychain.simulator.network
 
 import supplychain.dataset.Namespaces
 import supplychain.model._
-import supplychain.simulator.WeatherProvider
+import supplychain.simulator.{WeatherProvider_, WeatherProvider}
 
 /**
  * Represents a supply chain network.
@@ -24,33 +24,30 @@ object Network {
    * The network is built in two steps:
    * First, a list of suppliers is generated and than connections are generated between suppliers.
    */
-  def build(product: Product): Network = {
+  def build(product: Product, wp: WeatherProvider_): Network = {
     // Build Supplier List
-    val supplierBuilder = new SupplierBuilder()
+    val supplierBuilder = new SupplierBuilder(wp)
     val suppliers = supplierBuilder(product)
     // Build Network
     val networkBuilder = new ConnectionsBuilder(suppliers)
     val connections = networkBuilder(product)
     // Create an OEM that is responsible for sending the initial orders for the product
-    val rootSupplier = generateRootSupplier(product)
-    val wsSource = WeatherProvider.getNearesWeaterStation(suppliers.head)
-      //WeatherStation(suppliers.head.coords, suppliers.head.name + WeatherUtil.WS_NAME_SUFIX)
-    val wsTarget = WeatherProvider.getNearesWeaterStation(rootSupplier)
-        //WeatherStation(rootSupplier.coords, rootSupplier.name + WeatherUtil.WS_NAME_SUFIX)
-    val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier, wsSource, wsTarget)
-
-    WeatherProvider.serialize()
+    val rootSupplier = generateRootSupplier(product, wp)
+    val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier)
 
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }
 
-  private def generateRootSupplier(product: Product) = {
+  private def generateRootSupplier(product: Product, wp: WeatherProvider_) = {
+    val crds = Coordinates(50.0, 7.0)
+    val ws = wp.getNearesWeaterStation(crds)
     Supplier(
       uri = Namespaces.supplier + "OEM",
       name = "OEM",
       address = Address("", "", "", ""),
-      coords = Coordinates(0.0,0.0),
-      Product("OEM", parts = product :: Nil)
+      coords = crds,
+      Product("OEM", parts = product :: Nil),
+      ws
     )
   }
 }

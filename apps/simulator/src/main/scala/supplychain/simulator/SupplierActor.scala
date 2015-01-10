@@ -18,7 +18,7 @@ import supplychain.model.Order
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
+class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvider_) extends Actor {
 
   val delayProbability = Random.nextDouble() * 0.5
 
@@ -45,7 +45,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
       produce()
       order(date, count)
 
-    case ship @ Shipping(uri, date, connection, count, order, woSource, woTarget) =>
+    case ship @ Shipping(uri, date, connection, count, order) =>
       log.info("Received shipping of " + connection.content.name)
       simulator.addMessage(ship)
       storage.put(connection.content, count)
@@ -79,7 +79,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
         orders.dequeue()
 
         // Weather influence
-        val delayedDueToWeatherProbability = WeatherProvider.delayedDueToWeatherProbability(order.connection.wsSource, order.dueDate) + (0.05 * Random.nextDouble())
+        val delayedDueToWeatherProbability = wp.delayedDueToWeatherProbability(supplier.weatherStation, order.dueDate) + (0.05 * Random.nextDouble())
 
         // Production time, 10% fixed delay
         var productionTime = supplier.product.productionTime
@@ -124,9 +124,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator) extends Actor {
           date = shippingDate,
           connection = order.connection,
           count = count,
-          order = order,
-          woSource = WeatherProvider.getCurrentWeather(order.connection.wsSource, shippingDate),
-          woTarget = WeatherProvider.getCurrentWeather(order.connection.wsTarget, shippingDate)
+          order = order
         )
       )
     }

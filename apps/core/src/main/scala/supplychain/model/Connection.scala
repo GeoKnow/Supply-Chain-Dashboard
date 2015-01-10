@@ -2,7 +2,7 @@ package supplychain.model
 
 import scala.util.Random
 
-case class Connection(uri: String, content: Product, source: Supplier, target: Supplier, wsSource: WeatherStation, wsTarget: WeatherStation) {
+case class Connection(uri: String, content: Product, source: Supplier, target: Supplier) {
 
   def id = uri.substring(uri.lastIndexOf('/') + 1)
 

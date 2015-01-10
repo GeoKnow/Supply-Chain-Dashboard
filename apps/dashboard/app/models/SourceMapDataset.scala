@@ -44,7 +44,7 @@ class SourceMapDataset(id: Int) extends Dataset {
         val (lat, lon) = meters2degrees(coordinates(0), coordinates(1))
 
         // Create Supplier
-        Supplier(id, name, Address("", "", "", ""), Coordinates(lat, lon), Product(""))
+        Supplier(id, name, Address("", "", "", ""), Coordinates(lat, lon), Product(""), null)
       }
 
     val supplierMap = suppliers.groupBy(_.id).mapValues(_.head)
@@ -59,7 +59,7 @@ class SourceMapDataset(id: Int) extends Dataset {
         val wsSender = null
         val wsReceiver = null
 
-        Connection(index.toString, Product(""), sender, receiver, wsSender, wsReceiver)
+        Connection(index.toString, Product(""), sender, receiver)
       }
 
     (suppliers, deliveries)

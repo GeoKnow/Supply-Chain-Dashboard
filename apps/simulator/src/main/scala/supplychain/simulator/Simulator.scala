@@ -3,7 +3,7 @@ package supplychain.simulator
 import java.util.logging.Logger
 
 import akka.actor.{ActorSystem, Cancellable, Props}
-import supplychain.dataset.{Dataset, RdfDataset}
+import supplychain.dataset.{RdfWeatherDataset, Dataset, RdfDataset}
 import supplychain.model.{Connection, Message, Supplier}
 import supplychain.simulator.network.Network
 
@@ -13,19 +13,23 @@ import scala.concurrent.duration._
 /**
  * The supply chain simulator.
  */
-class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph: String) extends Dataset {
+class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph: String, defaultWeatherGraph: String ) extends Dataset {
 
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
   // The simulation to run
   private val sim = FairPhoneSimulation // CarSimulation
 
+  // get the weather data provider
+  private val wd = new RdfWeatherDataset(endpointUrl, defaultWeatherGraph)
+  private val wp = new WeatherProvider_(wd)
+
   // Generate the supply chain network
-  private val network = Network.build(sim.product)
+  private val network = Network.build(sim.product, wp)
 
   // Create actors for all suppliers
   for(supplier <- network.suppliers)
-    actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this), supplier.id)
+    actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), supplier.id)
 
   // The message scheduler.
   private val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
@@ -39,6 +43,7 @@ class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph:
 
   // List of past messages.
   var messages = Seq[Message]()
+
 
   private val dataset = new RdfDataset(endpointUrl, defaultGraph)
   dataset.addProduct(sim.product)
