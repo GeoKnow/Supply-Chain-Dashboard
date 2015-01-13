@@ -12,6 +12,8 @@ object CurrentDataset {
 
   val simulator = new Simulator(Akka.system, Configuration.get.endpointUrl, Configuration.get.defaultGraph, Configuration.get.defaultGraphWeather)
 
+  // supplychain.simulator.Scheduler.lastOrderDate
+
   // Reference to the current data set.
   @volatile
   private var dataset: Dataset = simulator

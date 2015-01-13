@@ -43,6 +43,14 @@
     <td>@for(c <- outgoingConnections) { @c.target.name <br/> }</td>
   </tr>
 }
+  <tr>
+    <td><b>Weather Station</b></td>
+    <td>@supplier.weatherStation.name</td>
+  </tr>
+  <tr>
+    <td><b>lon/lat</b></td>
+    <td>@supplier.weatherStation.coords.lon / @supplier.weatherStation.coords.lat</td>
+  </tr>
 </table>
 
 <br/>

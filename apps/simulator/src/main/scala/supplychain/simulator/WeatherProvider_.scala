@@ -38,6 +38,10 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
         |        gkwo:stationId ?sid ;
         |        rdfs:label ?label .
         |    ?s gkwo:hasObservation ?obs .
+        |    ?obs gkwo:tmin ?tmin .
+        |    ?obs gkwo:tmax ?tmax .
+        |    ?obs gkwo:prcp ?prcp .
+        |    ?obs gkwo:snwd ?snwd .
         |}
         |GROUP BY ?s ?sid ?label ?long ?lat
         |HAVING (count(?obs) > ${minObs})
@@ -55,6 +59,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
       val long = binding.getLiteral("long").getFloat
       val lat = binding.getLiteral("lat").getFloat
       ws = new WeatherStation(new Coordinates(long, lat), label, stationId, uri)
+      ws.observations = getDailySummaries(ws)
     }
     //log.info(ws.toString())
     return ws
@@ -72,10 +77,10 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
          |WHERE {
          |  <http://www.xybermotive.com/GeoKnowWeather#GME00111430> gkwo:hasObservation ?obsuri .
          |    ?obsuri gkwo:date ?date .
-         |    OPTIONAL { ?obsuri gkwo:tmin ?tmin . }
-         |    OPTIONAL { ?obsuri gkwo:tmax ?tmax . }
-         |    OPTIONAL { ?obsuri gkwo:prcp ?prcp . }
-         |    OPTIONAL { ?obsuri gkwo:snwd ?snwd . }
+         |     { ?obsuri gkwo:tmin ?tmin . }
+         |     { ?obsuri gkwo:tmax ?tmax . }
+         |     { ?obsuri gkwo:prcp ?prcp . }
+         |     { ?obsuri gkwo:snwd ?snwd . }
          |}
        """.stripMargin
 
@@ -100,7 +105,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
     if (w.getPrcpCategory() == WeatherUtil.PRCP_HEAVY) probab += 0.20
     if (w.getPrcpCategory() == WeatherUtil.PRCP_MID) probab += 0.10
     if (w.getPrcpCategory() == WeatherUtil.PRCP_LIGHT) probab += 0.5
-    if (w.snow > 0.0) probab = (probab + 0.5) * 1.75
+    if (w.snwd > 0.0) probab = (probab + 0.5) * 1.75
     probab += (-1 * w.temp / 100)
     if (probab < 0.0) probab = 0.0
     if (probab > 1.0) probab = 1.0
@@ -137,22 +142,32 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
   }
 
   def loadDailySummaries(ws: WeatherStation) = {
+    val observations = getDailySummaries(ws)
+
+    for ((k,v)<-observations) {
+      weatherObservationByStationIdAndDate += (ws.id + "-" + k -> v)
+    }
+  }
+
+  def getDailySummaries(ws: WeatherStation): Map[String, WeatherObservation] = {
+    var observations: Map[String, WeatherObservation] = Map() // string is date in format yyyy-MM-dd
+
     val queryStr =
       s"""
-         |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
-         |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-         |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-         |
-         |SELECT ?obsuri ?date ?tmin ?tmax ?prcp ?snwd FROM <http://www.xybermotive.com/GeoKnowWeather#>
-         |WHERE {
-         |  <${ws.uri}> gkwo:hasObservation ?obsuri .
-         |  ?obsuri gkwo:date ?date .
-         |  OPTIONAL { ?obsuri gkwo:tmin ?tmin . }
-         |  OPTIONAL { ?obsuri gkwo:tmax ?tmax . }
-         |  OPTIONAL { ?obsuri gkwo:prcp ?prcp . }
-         |  OPTIONAL { ?obsuri gkwo:snwd ?snwd . }
-         |}
-       """.stripMargin
+       |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
+       |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+       |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+       |
+       |SELECT ?obsuri ?date ?tmin ?tmax ?prcp ?snwd FROM <http://www.xybermotive.com/GeoKnowWeather#>
+       |WHERE {
+       |  <${ws.uri}> gkwo:hasObservation ?obsuri .
+       |  ?obsuri gkwo:date ?date .
+       |   { ?obsuri gkwo:tmin ?tmin . }
+       |   { ?obsuri gkwo:tmax ?tmax . }
+       |   { ?obsuri gkwo:prcp ?prcp . }
+       |   { ?obsuri gkwo:snwd ?snwd . }
+       |}
+     """.stripMargin
 
     //log.info(queryStr)
 
@@ -174,7 +189,8 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
       //val df: DateFormat = new SimpleDateFormat("yyyy-MM-dd");
       wo = new WeatherObservation(date_, obsuri, tmin, tmax, prcp, snwd, ws, ws.uri)
       //log.info(wo.toString())
-      weatherObservationByStationIdAndDate += (ws.id + "-" + dateStr -> wo)
+      observations += (dateStr -> wo)
     }
+    return observations
   }
 }

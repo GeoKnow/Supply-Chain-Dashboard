@@ -7,6 +7,7 @@ import supplychain.model._
 import supplychain.simulator.Scheduler.Tick
 
 import scala.collection.mutable
+import scala.util.Random
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
@@ -25,13 +26,13 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   //DateTime.now
 
   // The simulation interval between two ticks
-  private val tickInterval = Duration.days(0.25)
+  private val tickInterval = Duration.days(0.5)
 
   // The interval between two orders to the root supplier
   private val orderInterval = Duration.days(1)
 
   // The number of parts to be ordered
-  private val orderCount = 10
+  private val orderCount = 10 + (Random.nextDouble() * 10.0).toInt
 
   // Remembers the last order time
   private var lastOrderTime = currentDate - orderInterval
@@ -39,6 +40,9 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
 
+  def getCurrentDate(): DateTime = {
+    currentDate
+  }
   /**
    * Receives and processes messages.
    */

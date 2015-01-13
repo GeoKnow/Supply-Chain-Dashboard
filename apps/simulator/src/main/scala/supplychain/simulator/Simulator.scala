@@ -32,7 +32,7 @@ class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph:
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), supplier.id)
 
   // The message scheduler.
-  private val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
+  val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
 
   // The metronom send ticks to the scheduler for advancing the simulation.
   private var metronom: Option[Cancellable] = None

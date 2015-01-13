@@ -28,7 +28,8 @@ object Application extends Controller {
 
   def metrics(supplierId: String) = Action {
     val messages = CurrentDataset().messages.filter(_.connection.target.id == supplierId)
-    Ok(views.html.metrics(messages))
+    val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
+    Ok(views.html.metrics(messages, supplier))
   }
 
   def report(supplierId: String) = Action {
