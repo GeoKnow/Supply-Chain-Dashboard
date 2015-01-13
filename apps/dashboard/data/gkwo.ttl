@@ -1,0 +1,67 @@
+@prefix :<http://www.xybermotive.com/GeoKnowWeatherOnt#> .
+@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:<http://www.w3.org/2002/07/owl#> .
+@prefix geo:<http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd:<http://www.w3.org/2001/XMLSchema#> .
+
+# <${ws.uri}> a sc:WeatherStation ;
+#           geo:long "${ws.coords.lon}" ;
+#           geo:lat "${ws.coords.lat}" ;
+#           rdfs:label "${ws.name}" ;
+#			sc:hasObservation ; 
+#           # sc:nextTo <${suppl.uri}> ;
+
+:WeatherStation 
+	a owl:Class ;
+	rdfs:subClassOf geo:SpatialThing ; 
+    rdfs:comment "A Weather Station" ; 	
+    rdfs:label "A Weather Station" .
+
+:hasObservation 
+	a owl:ObjectProperty ;
+	rdfs:domain :WeatherStation ;
+    rdfs:range :WeatherObservation .
+
+# <${wo.uri}> a sc:WeatherObservation ;
+#         sc:date "${wo.date.toXSDFormat}" ;
+#         sc:temp "${wo.temp}" ; # computed avg of tmin / tmax
+#		  sc:tmin 
+#		  sc:tmax
+#         sc:prcp "${wo.prcp}" ;
+#         sc:snow "${wo.snow}" .
+
+:WeatherObservation
+	a owl:Class ;
+	rdfs:comment "A Weather Station" ;
+	rdfs:label "A Weather Station" .
+
+:date
+    a owl:DatatypeProperty ;
+    rdfs:comment "Specified the date of the observation."@en ;
+    rdfs:domain :WeatherObservation ;
+    rdfs:range xsd:date .
+
+:tmin
+    a owl:DatatypeProperty ;
+    rdfs:comment "The minimal temperature in degree celsius."@en ;
+    rdfs:domain :WeatherObservation ;
+    rdfs:range xsd:float .
+
+:tmax
+    a owl:DatatypeProperty ;
+    rdfs:comment "The maximum temperature in degree celsius."@en ;
+    rdfs:domain :WeatherObservation ;
+    rdfs:range xsd:float .
+
+:prcp
+    a owl:DatatypeProperty ;
+    rdfs:comment "The precipitation in mm."@en ;
+    rdfs:domain :WeatherObservation ;
+    rdfs:range xsd:float .
+
+:snwd
+    a owl:DatatypeProperty ;
+    rdfs:comment "The snow depth in mm."@en ;
+    rdfs:domain :WeatherObservation ;
+    rdfs:range xsd:float .
