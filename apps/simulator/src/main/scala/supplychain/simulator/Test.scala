@@ -33,14 +33,12 @@ object Test extends App {
 
   var result = QueryExecutionFactory.sparqlService("http://192.168.59.103/sparql", query).execSelect().toSeq
 
-  println(result.size)
-
   for(binding <- result) {
+    println(binding.toString)
     println(binding.getLiteral("label").getString)
     println(binding.getResource("s").toString)
     println(binding.getLiteral("long").getDouble)
     println(binding.getLiteral("lat").getDouble)
-    println(binding.getLiteral("alt").getDouble)
     println(binding.getLiteral("sid").getString)
   }
 

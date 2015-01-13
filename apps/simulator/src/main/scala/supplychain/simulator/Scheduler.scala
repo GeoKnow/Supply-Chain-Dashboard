@@ -26,13 +26,13 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   //DateTime.now
 
   // The simulation interval between two ticks
-  private val tickInterval = Duration.days(0.5)
+  private val tickInterval = Duration.days(1)
 
   // The interval between two orders to the root supplier
   private val orderInterval = Duration.days(1)
 
   // The number of parts to be ordered
-  private val orderCount = 10 + (Random.nextDouble() * 10.0).toInt
+  private val orderCount = 10 // + (Random.nextDouble() * 10.0).toInt
 
   // Remembers the last order time
   private var lastOrderTime = currentDate - orderInterval
