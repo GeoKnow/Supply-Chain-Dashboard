@@ -66,4 +66,12 @@ object Application extends Controller {
     Ok(views.html.messages(downstreamMessages, upstreamMessages))
   }
 
+  def xybermotive(supplierId: String) = Action {
+    val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
+
+    val xyData: XybermotiveData = null
+
+    Ok(views.html.xybermotive(xyData))
+  }
+
 }

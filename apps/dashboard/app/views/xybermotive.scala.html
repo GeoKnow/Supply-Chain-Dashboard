@@ -1,0 +1,27 @@
+@(xyData: supplychain.model.XybermotiveData)
+@import supplychain.model.XybermotiveInventory
+
+<table>
+  <th>
+    <td>Artikelnummer</td>
+    <td>Artikel</td>
+    <td>Lager</td>
+    <td>Frei</td>
+  </th>
+
+@for(xyInventory <- xyData.data) {
+  @renderInventroy(xyInventory)
+}
+</table>
+
+
+@renderInventroy(xyInv: XybermotiveInventory) = {
+  <tr>
+    <td>@xyInv.partNumber</td>
+    <td>@xyInv.partName</td>
+    <td>@xyInv.availableInventory</td>
+    <td>@xyInv.freeInventory</td>
+  </tr>
+
+
+}
