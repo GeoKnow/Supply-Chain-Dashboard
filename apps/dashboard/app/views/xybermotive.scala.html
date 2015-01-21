@@ -2,15 +2,15 @@
 @import supplychain.model.XybermotiveInventory
 
 <table>
-  <th>
-    <td>Artikelnummer</td>
-    <td>Artikel</td>
-    <td>Lager</td>
-    <td>Frei</td>
-  </th>
+  <tr>
+    <th>Artikelnummer</th>
+    <th>Artikel</th>
+    <th>Lager</th>
+    <th>Frei</th>
+  </tr>
 
-@for(xyInventory <- xyData.data) {
-  @renderInventroy(xyInventory)
+@for(xyInv <- xyData.data) {
+  @renderInventroy(xyInv)
 }
 </table>
 

@@ -3,7 +3,7 @@ GET         /                             controllers.Application.map
 GET         /query                        controllers.Application.query
 GET         /map                          controllers.Application.map
 GET         /metrics                      controllers.Application.metrics(supplierId)
-GET         /xybermotive                  controllers.Application.xybermotive(supplierId)
+GET         /xybermotive/:id              controllers.Application.xybermotive(id)
 GET         /report                       controllers.Application.report(supplierId)
 GET         /deliveryStream               controllers.Application.deliveryStream
 GET         /messages                     controllers.Application.messages(supplierId)

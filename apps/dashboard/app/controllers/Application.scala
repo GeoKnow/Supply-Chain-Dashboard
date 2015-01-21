@@ -1,11 +1,12 @@
 package controllers
 
-import play.api.mvc._
+import play.api.mvc.{Controller, Action}
 import models.{CurrentMetrics, CurrentDataset}
 import play.api.libs.iteratee.Concurrent
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
 import supplychain.metric.{Metrics, Evaluator}
+import scala.io.{Codec, Source}
 import scala.util.Random
 import supplychain.model._
 import supplychain.model.Shipping
@@ -67,9 +68,17 @@ object Application extends Controller {
   }
 
   def xybermotive(supplierId: String) = Action {
-    val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
+    //val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
 
-    val xyData: XybermotiveData = null
+    val url = new java.net.URL("http://217.24.49.173/Bestand.Txt")
+    val conn = url.openConnection()
+    val stream = conn.getInputStream
+
+    val source = Source.fromInputStream(stream)(Codec.ISO8859)
+
+    val xyData = XybermotiveData(source.getLines().toList.drop(1).filter(!_.trim().isEmpty).map(XybermotiveInventory.parseLine))
+
+    source.close()
 
     Ok(views.html.xybermotive(xyData))
   }

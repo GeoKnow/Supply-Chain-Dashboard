@@ -155,6 +155,11 @@ function selectSupplier(supplierId) {
   $.get("supplier/" + supplierId, function(data) {
     $('#property-content' ).html(data)
   });
+
+  $.get("xybermotive/" + supplierId, function(data) {
+    $('#xybermotive-content' ).html(data)
+  });
+
   // Reload metrics
   reloadMetrics();
 }
