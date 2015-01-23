@@ -80,7 +80,9 @@ object Application extends Controller {
 
     source.close()
 
-    Ok(views.html.xybermotive(xyData))
+    val dateString = DateTime.now.toFormat("dd.MM.yyyy hh:mm:ss")
+
+    Ok(views.html.xybermotive(xyData, dateString, supplierId))
   }
 
 }

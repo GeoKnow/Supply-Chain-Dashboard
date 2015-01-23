@@ -156,13 +156,24 @@ function selectSupplier(supplierId) {
     $('#property-content' ).html(data)
   });
 
-  $.get("xybermotive/" + supplierId, function(data) {
-    $('#xybermotive-content' ).html(data)
-  });
+  // load stock data from suppliers xybermotive system
+  loadXybermotive(supplierId)
 
   // Reload metrics
   reloadMetrics();
 }
+
+var xyRefreshTimer;
+
+function loadXybermotive(supplierId) {
+  $.get("xybermotive/" + supplierId, function(data) {
+    $('#xybermotive-content' ).html(data)
+  });
+
+  clearTimeout(xyRefreshTimer);
+  xyRefreshTimer = setTimeout(function() { loadXybermotive(supplierId); }, 5000);
+}
+
 
 /**
  * Highlights a connection line on the map.
