@@ -15,7 +15,7 @@ case class XybermotiveInventory(partNumber: String, partName: String, availableI
 object XybermotiveInventory {
 
   def parseLine(line: String): XybermotiveInventory = {
-    println(line.split("\"?,\"?").toList)
+    //println(line.split("\"?,\"?").toList)
     val Array(partNo, partName, availInv, freeInv) = line.substring(1).split("\"?,\"?")
     XybermotiveInventory(partNo, partName, availInv.toInt, freeInv.toInt)
   }
