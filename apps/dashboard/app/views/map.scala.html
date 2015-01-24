@@ -6,15 +6,69 @@
   <script type="text/javascript" src="@routes.Assets.at("javascripts/googlemaps.js")" ></script>
   <script src="@routes.Assets.at("javascripts/markerwithlabel.js")" type="text/javascript"></script>
   <script src="@routes.Assets.at("javascripts/map.js")" type="text/javascript"></script>
+  <script>
+  var running = false;
+  var frequency = 1.0;
+
+  // Initialization
+  $(function() {
+    $("#slider").slider({
+      value: 1,
+      min: 0.5,
+      max: 1000,
+      step: 0.5,
+      change: function( event, ui ) {
+        frequency = 1.0 / ui.value;
+        console.log("Frequency changed: " + frequency);
+        if(running)
+          run()
+      }
+    });
+  });
+
+  // Single step through the simulation
+  function step() {
+    $.post('simulator/step');
+  }
+
+  // Run the simulation
+  function run() {
+    $.post('simulator/run?frequency=' + frequency, function() {
+      running = true;
+      $('#simulation-run').button('disable');
+      $('#simulation-stop').button('enable');
+    });
+  }
+
+  // Stop the simulation
+  function stop() {
+    $.post('simulator/stop', function() {
+        running = false;
+        $('#simulation-run').button('enable');
+        $('#simulation-stop').button('disable');
+    });
+  }
+  </script>
 }
 
 @content = {
   <div id="filter-pane" >
     <div class="widget" style="height: 100%">
-      <div class="widget-header">
-        Xybermotive
-      </div>
-      <div id="xybermotive-content" class="widget-content">
+      <div class="widget-header">Xybermotive</div>
+      <div class="widget-content">
+        <div id="xybermotive-content"></div>
+        <div id="simulation-control">
+          <p></p><b>Simulation Control</b></p>
+          <p>
+            <button onclick="step()">Step</button>
+
+            <button id="simulation-run" onclick="run()">Run</button>
+
+            <button id="simulation-stop" onclick="stop()" disabled="disabled">Stop</button>
+          </p>
+
+          <div id="slider"></div>
+        </div>
       </div>
     </div>
     <!--
