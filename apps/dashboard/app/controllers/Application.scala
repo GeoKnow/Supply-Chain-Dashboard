@@ -70,7 +70,14 @@ object Application extends Controller {
   def xybermotive(supplierId: String) = Action {
     //val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
 
-    val url = new java.net.URL("http://217.24.49.173/Bestand.Txt")
+    var id = "0"
+    if (supplierId.trim().toLowerCase().startsWith("optic")) id = "1"
+    if (supplierId.trim().toLowerCase().startsWith("pls")) id = "2"
+    if (supplierId.trim().toLowerCase().startsWith("getrag")) id = "3"
+    if (supplierId.trim().toLowerCase().startsWith("allgaier")) id = "4"
+
+    val url = new java.net.URL("http://217.24.49.173/bestand_" + id + ".txt")
+    println(url.toString)
     val conn = url.openConnection()
     val stream = conn.getInputStream
 

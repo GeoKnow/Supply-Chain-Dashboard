@@ -39,7 +39,7 @@ object Network {
   }
 
   private def generateRootSupplier(product: Product, wp: WeatherProvider_) = {
-    val crds = Coordinates(50.0, 7.0)
+    val crds = Coordinates(0.0, 0.0)
     val ws = wp.getNearesWeaterStation(crds)
     Supplier(
       uri = Namespaces.supplier + "OEM",

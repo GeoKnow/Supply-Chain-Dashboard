@@ -22,10 +22,10 @@ object ChairSimulation extends Simulation {
           name = "Legs",
           count = 4
         ) ::
-          Product(
-            name = "Back",
-            parts = Product("Side_Rails", 2) :: Product("Back_Support", 1) :: Nil
-          ) :: Nil
+        Product(
+          name = "Back",
+          parts = Product("Side_Rails", 2) :: Product("Back_Support", 1) :: Nil
+        ) :: Nil
     )
 
 }
@@ -63,6 +63,28 @@ object CarSimulation extends Simulation {
       parts = doors :: windows
     )
 
+}
+
+object XybermotiveDemoSimulation extends Simulation {
+  private def zulieferer =
+    Product(
+      name = "PLS-Zulieferer",
+      count = 4,
+      parts = unterzulieferer :: Product("Allgaier-Lohnfertiger") :: Nil
+    )
+
+  private def unterzulieferer =
+    Product(
+      name = "OpticBalzer-Unterzulieferer",
+      count = 16,
+      parts = Nil
+    )
+
+  val product =
+    Product(
+      name = "Getrag-OEM",
+      parts = zulieferer :: Nil
+    )
 }
 
 /**

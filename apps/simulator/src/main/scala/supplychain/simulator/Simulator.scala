@@ -18,7 +18,7 @@ class Simulator(val actorSystem: ActorSystem, endpointUrl: String, defaultGraph:
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
   // The simulation to run
-  private val sim = FairPhoneSimulation // CarSimulation
+  private val sim = XybermotiveDemoSimulation // FairPhoneSimulation // CarSimulation
 
   // get the weather data provider
   private val wd = new RdfWeatherDataset(endpointUrl, defaultWeatherGraph)

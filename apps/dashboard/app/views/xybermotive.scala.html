@@ -15,7 +15,9 @@
   </tr>
 
 @for(xyInv <- xyData.data) {
-  @renderInventroy(xyInv)
+  @if(xyInv != null) {
+    @renderInventroy(xyInv)
+  }
 }
 </table>
 </small>
