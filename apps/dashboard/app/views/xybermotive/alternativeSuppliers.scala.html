@@ -1,0 +1,9 @@
+@(xyData: Traversable[supplychain.model.XybermotiveData])
+
+@for(xd <- xyData) {
+    <b><a href="#" onclick="selectSupplier('@xd.supplierId');">@xd.supplierId</a></b><br/>
+    @for(data <- xd.data) {
+        <a href="#" onclick="searchTable('@data.partNumber');">@data.partNumber:</a> @data.availableInventory <br />
+    }
+    <br />
+}

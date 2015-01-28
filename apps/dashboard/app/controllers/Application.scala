@@ -67,29 +67,4 @@ object Application extends Controller {
     Ok(views.html.messages(downstreamMessages, upstreamMessages))
   }
 
-  def xybermotive(supplierId: String) = Action {
-    //val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
-
-    var id = "0"
-    if (supplierId.trim().toLowerCase().startsWith("optic")) id = "1"
-    if (supplierId.trim().toLowerCase().startsWith("pls")) id = "2"
-    if (supplierId.trim().toLowerCase().startsWith("getrag")) id = "3"
-    if (supplierId.trim().toLowerCase().startsWith("allgaier")) id = "4"
-
-    val url = new java.net.URL("http://217.24.49.173/bestand_" + id + ".txt")
-    println(url.toString)
-    val conn = url.openConnection()
-    val stream = conn.getInputStream
-
-    val source = Source.fromInputStream(stream)(Codec.ISO8859)
-
-    val xyData = XybermotiveData(source.getLines().toList.drop(1).filter(!_.trim().isEmpty).map(XybermotiveInventory.parseLine))
-
-    source.close()
-
-    val dateString = DateTime.now.toFormat("dd.MM.yyyy hh:mm:ss")
-
-    Ok(views.html.xybermotive(xyData, dateString, supplierId))
-  }
-
 }

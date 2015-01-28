@@ -1,31 +1,34 @@
 # Pages
-GET         /                             controllers.Application.map
-GET         /query                        controllers.Application.query
-GET         /map                          controllers.Application.map
-GET         /metrics                      controllers.Application.metrics(supplierId)
-GET         /xybermotive/:id              controllers.Application.xybermotive(id)
-GET         /report                       controllers.Application.report(supplierId)
-GET         /deliveryStream               controllers.Application.deliveryStream
-GET         /messages                     controllers.Application.messages(supplierId)
+GET         /                                             controllers.Application.map
+GET         /query                                        controllers.Application.query
+GET         /map                                          controllers.Application.map
+GET         /metrics                                      controllers.Application.metrics(supplierId)
+GET         /xybermotive/supplierInventory/:id            controllers.Xybermotive.inventory(id)
+GET         /xybermotive/supplierInventoryJson/:id        controllers.Xybermotive.inventoryJson(id)
+GET         /xybermotive/alternateSupplier                controllers.Xybermotive.alternativeSupplier(sid, pnr)
+GET         /xybermotive/alternateSupplierJson            controllers.Xybermotive.alternativeSupplierJson(sid, pnr)
+GET         /report                                       controllers.Application.report(supplierId)
+GET         /deliveryStream                               controllers.Application.deliveryStream
+GET         /messages                                     controllers.Application.messages(supplierId)
 
 # REST API
-GET         /sparql                       controllers.API.sparql(query)
-GET         /supplier/:id                 controllers.API.supplier(id, format: Option[String])
-GET         /delivery/:id                 controllers.API.connection(id, format: Option[String])
-GET         /map/loadSuppliers            controllers.API.loadSuppliers()
-GET         /map/loadConnections          controllers.API.loadConnections(supplierId: Option[String], contentType: Option[String])
+GET         /sparql                                       controllers.API.sparql(query)
+GET         /supplier/:id                                 controllers.API.supplier(id, format: Option[String])
+GET         /delivery/:id                                 controllers.API.connection(id, format: Option[String])
+GET         /map/loadSuppliers                            controllers.API.loadSuppliers()
+GET         /map/loadConnections                          controllers.API.loadConnections(supplierId: Option[String], contentType: Option[String])
 
-POST        /dataset/schnellecke          controllers.API.loadSchnelleckeDataset()
-POST        /dataset/sourcemap/:id        controllers.API.loadSourceMapDataset(id: Int)
+POST        /dataset/schnellecke                          controllers.API.loadSchnelleckeDataset()
+POST        /dataset/sourcemap/:id                        controllers.API.loadSourceMapDataset(id: Int)
 
-POST        /simulator/step               controllers.API.step()
-POST        /simulator/run                controllers.API.run(frequency: Double)
+POST        /simulator/step                               controllers.API.step()
+POST        /simulator/run                                controllers.API.run(frequency: Double)
 # = 0.5)
-POST        /simulator/stop               controllers.API.stop()
+POST        /simulator/stop                               controllers.API.stop()
 
-POST        /metrics/reload               controllers.API.reloadMetrics()
+POST        /metrics/reload                               controllers.API.reloadMetrics()
 
-POST        /log                          controllers.API.log()
+POST        /log                                          controllers.API.log()
 
 # Static resources
-GET         /assets/*file                 controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                 controllers.Assets.at(path="/public", file)

@@ -1,0 +1,40 @@
+@(xyData: supplychain.model.XybermotiveData, date: String, supplierId: String)
+@import supplychain.model.XybermotiveInventory
+
+@if(xyData.data.length > 0) {
+  @render()
+}
+
+@render() = {
+  <small>
+    <b>Date:</b> @date<br />
+    <b>Supplier:</b> @supplierId<br/>
+    <br />
+
+    <table cellspacing="0">
+      <tr><th colspan="4" style="border-top : medium solid #000000 ; ">Artikelnummer</th></tr>
+      <tr>
+        <th style="border-bottom : medium solid #000000 ; ">Artikel</th>
+        <th style="border-bottom : medium solid #000000 ; ">Lager</th>
+        <th style="border-bottom : medium solid #000000 ; ">Frei</th>
+        <th style="border-bottom : medium solid #000000 ; ">Altern.</th>
+      </tr>
+
+      @for(xyInv <- xyData.data) {
+        @if(xyInv != null) {
+          @renderInventroy(xyInv)
+        }
+      }
+    </table>
+  </small>
+}
+
+@renderInventroy(xyInv: XybermotiveInventory) = {
+  <tr><td colspan="4">@xyInv.partNumber</td></tr>
+  <tr>
+    <td style="border-bottom: thin solid #000000; ">@xyInv.partName</td>
+    <td style="border-bottom: thin solid #000000; ">@xyInv.availableInventory</td>
+    <td style="border-bottom: thin solid #000000; ">@xyInv.freeInventory</td>
+    <td style="border-bottom: thin solid #000000; "><img width="15" src="@routes.Assets.at("images/noun_14378_.svg")" onclick="loadAlternativeSupplier('@xyData.supplierId', '@xyInv.partNumber');" style="cursor:pointer; "/></td>
+  </tr>
+}

@@ -1,8 +1,10 @@
 package supplychain.model
 
 import java.text.SimpleDateFormat
-import javax.xml.datatype.{DatatypeFactory, XMLGregorianCalendar}
+import javax.xml.datatype.{DatatypeFactory}
 import java.util.{Calendar, GregorianCalendar}
+
+import play.api.libs.json._
 
 /**
  * Represents a date time.
@@ -52,6 +54,13 @@ case class DateTime(milliseconds: Long) extends Ordered[DateTime] {
 }
 
 object DateTime {
+
+  implicit val dateTimeWrites = new Writes[DateTime] {
+    def writes(dt: DateTime) = Json.obj(
+      "milliseconds" -> dt.milliseconds,
+      "formatted" -> dt.toFormat("YYYY-MM-dd hh:mm:ss")
+    )
+  }
 
   private val datetypeFactory = DatatypeFactory.newInstance()
 

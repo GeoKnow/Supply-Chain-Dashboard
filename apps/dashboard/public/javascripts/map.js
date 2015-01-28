@@ -153,7 +153,9 @@ function selectSupplier(supplierId) {
   showConnections(supplierId);
   // Show supplier properties in the property widget
   $.get("supplier/" + supplierId, function(data) {
-    $('#property-content' ).html(data)
+    if (data.trim().length > 0) {
+      $('#property-content').html(data)
+    }
   });
 
   // load stock data from suppliers xybermotive system
@@ -164,14 +166,83 @@ function selectSupplier(supplierId) {
 }
 
 var xyRefreshTimer;
+var dataTable;
 
 function loadXybermotive(supplierId) {
-  $.get("xybermotive/" + supplierId, function(data) {
-    $('#xybermotive-content' ).html(data)
+  $.get("xybermotive/supplierInventory/" + supplierId, function(data) {
+    $('#xybermotive-content').html(data);
   });
 
-  clearTimeout(xyRefreshTimer);
-  xyRefreshTimer = setTimeout(function() { loadXybermotive(supplierId); }, 5000);
+  $.getJSON("xybermotive/supplierInventoryJson/" + supplierId, function( data ) {
+    var dataSet = [];
+    $.each(data.data, function(i, item) {
+      //console.log(item);
+      dataSet.push([item.partNumber, item.availableInventory])
+    });
+
+    $('#supplier-id').html(data.supplierId);
+    $('#last-inventory-update').html(data.date.formatted);
+
+    var len = 10;
+    var page = 1;
+    var needle = "";
+    if ( $.fn.dataTable.isDataTable( '#supplierInventory' ) ) {
+      dataTable = $('#supplierInventory').DataTable();
+      dataTable.clear();
+      len = dataTable.page.len();
+      page = dataTable.page();
+      needle = dataTable.search();
+      dataTable.page.len(-1);
+      dataTable.search("");
+      dataTable.rows.add(dataSet);
+      dataTable.draw();
+    }
+    else {
+      dataTable = $('#supplierInventory').DataTable( {
+        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+        //"paging":   false,
+        "order": [[ 0, "asc" ]],
+        "data": dataSet,
+        "columns": [
+          { "title": "ArtNr.", "class": "artnr" },
+          { "title": "Lager", "class": "lager" },
+          {
+            "className":      'alternateimgtd',
+            "orderable":      false,
+            "data":           null,
+            "defaultContent": '<img width="15" class="altimg" src="/assets/images/noun_14378_.svg" style="cursor:pointer; "/>'
+          }
+        ]
+      });
+      len = dataTable.page.len();
+      dataTable.page.len(-1);
+      dataTable.search("");
+      dataTable.draw();
+    }
+
+    $("#supplierInventory tbody tr td img").on("click", function(event) {
+      var src = $(event.target).closest('tr').contents();
+      loadAlternativeSupplier(supplierId, $(src[0]).text());
+      //console.log($(src[0]));
+      //console.log($(src[0]).text());
+    });
+
+    dataTable.page.len(len);
+    dataTable.page(page);
+    dataTable.search(needle);
+    dataTable.draw();
+  });
+
+  //clearTimeout(xyRefreshTimer);
+  //xyRefreshTimer = setTimeout(function() { loadXybermotive(supplierId); }, 5000);
+}
+
+function searchTable(needle) {
+  if ( $.fn.dataTable.isDataTable( '#supplierInventory' ) ) {
+    dataTable = $('#supplierInventory').DataTable();
+    dataTable.search(needle);
+    dataTable.draw();
+  }
 }
 
 
@@ -187,7 +258,7 @@ function selectConnection(connectionId) {
   selectedConnection = connectionId;
   // Show connection properties in the property widget
   $.get("delivery/" + connectionId, function(data) {
-    $('#property-content').html(data)
+    $('#property-content').html(data);
   })
 }
 
@@ -198,9 +269,16 @@ function refreshMetrics() {
   refreshTimer = setTimeout(function() { reloadMetrics(); }, 2000);
 }
 
+function loadAlternativeSupplier(sid, pnr) {
+  $.get("xybermotive/alternateSupplier?sid=" + sid + "&pnr=" + encodeURIComponent(pnr), function(data) {
+    $('#alternateSupplier-content').html(data);
+    $('#alternateSupplier-content').dialog();
+  })
+}
+
 function reloadMetrics() {
   $.get("metrics?supplierId=" + selectedSupplier, function(data) {
-    $('#metrics-content' ).html(data)
+    $('#metrics-content' ).html(data);
   })
 }
 

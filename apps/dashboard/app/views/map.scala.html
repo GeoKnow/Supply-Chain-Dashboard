@@ -48,6 +48,10 @@
         $('#simulation-stop').button('disable');
     });
   }
+
+  $(function() {
+    $("#accordion").accordion({heightStyle: "content"});
+  });
   </script>
 }
 
@@ -56,19 +60,32 @@
     <div class="widget" style="height: 100%">
       <div class="widget-header">Xybermotive</div>
       <div class="widget-content">
-        <div id="xybermotive-content"></div>
-        <div id="simulation-control">
-          <p></p><b>Simulation Control</b></p>
-          <p>
-            <button onclick="step()">Step</button>
+        <div id="accordion">
+          <h3>Searchable Inventory</h3>
+          <div>
+            <small>
+              <b>Date:</b> <span id="last-inventory-update"></span><br />
+              <b>Supplier Id:</b> <span id="supplier-id"></span><br/>
+              <br />
+              <table id="supplierInventory" class="display compact"></table>
+            </small>
+          </div>
+          <h3>Standard Inventory</h3>
+          <div id="xybermotive-content"></div>
+          <h3>Simulation Control</h3>
+          <div id="simulation-control">
+            <p>
+              <button onclick="step()">Step</button>
 
-            <button id="simulation-run" onclick="run()">Run</button>
+              <button id="simulation-run" onclick="run()">Run</button>
 
-            <button id="simulation-stop" onclick="stop()" disabled="disabled">Stop</button>
-          </p>
+              <button id="simulation-stop" onclick="stop()" disabled="disabled">Stop</button>
+            </p>
 
-          <div id="slider"></div>
+            <div id="slider"></div>
+          </div>
         </div>
+        <div id="alternateSupplier-content" style="display:none;"></div>
       </div>
     </div>
     <!--
