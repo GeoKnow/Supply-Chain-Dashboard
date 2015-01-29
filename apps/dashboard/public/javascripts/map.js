@@ -217,7 +217,7 @@ function loadXybermotive(supplierId) {
             "className":      'alternateimgtd',
             "orderable":      false,
             "data":           null,
-            "defaultContent": '<img width="15" class="altimg" src="/assets/images/noun_14378_.svg" style="cursor:pointer; "/>'
+            "defaultContent": '<img width="10" class="altimg" src="/assets/images/noun_14378_.svg" style="cursor:pointer; "/>'
           }
         ]
       });
