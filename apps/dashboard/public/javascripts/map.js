@@ -15,8 +15,8 @@ var connectionIcon = {
 function initialize() {
   // Initialize map
   var mapOptions = {
-    center: new google.maps.LatLng(50.708406, 10.382866),
-    zoom: 6,
+    center: new google.maps.LatLng(49.8175279,10.595024), //(50.708406, 10.382866),
+    zoom: 8,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("map-content"), mapOptions);
@@ -48,8 +48,8 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
     path: [new google.maps.LatLng(senderLat, senderLon),
            new google.maps.LatLng(receiverLat, receiverLon)],
     strokeColor: '#0000FF',
-    strokeOpacity: 0.5,
-    strokeWeight: 1.5,
+    strokeOpacity: 0.66,
+    strokeWeight: 3.0,
     icons: [{
       icon: connectionIcon,
       offset: '100%'
@@ -199,14 +199,21 @@ function loadXybermotive(supplierId) {
     }
     else {
       dataTable = $('#supplierInventory').DataTable( {
-        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+        "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]],
         //"paging":   false,
         "order": [[ 0, "asc" ]],
         "data": dataSet,
         "columns": [
-          { "title": "ArtNr.", "class": "artnr" },
-          { "title": "Lager", "class": "lager" },
           {
+            "title": "ArtNr.",
+            "class": "artnr"
+          },
+          {
+            "title": "Lager",
+            "class": "lager"
+          },
+          {
+            "title":          "Alt",
             "className":      'alternateimgtd',
             "orderable":      false,
             "data":           null,

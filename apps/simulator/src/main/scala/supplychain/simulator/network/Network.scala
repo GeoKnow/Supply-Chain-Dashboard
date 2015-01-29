@@ -47,7 +47,8 @@ object Network {
       address = Address("", "", "", ""),
       coords = crds,
       Product("OEM", parts = product :: Nil),
-      ws
+      ws,
+      logoUri = ""
     )
   }
 }

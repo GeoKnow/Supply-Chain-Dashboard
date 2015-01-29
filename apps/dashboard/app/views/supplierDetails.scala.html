@@ -3,6 +3,9 @@
   outgoingConnections: Seq[supplychain.model.Connection])
 
 <table>
+  @if(!supplier.logoUri.trim.isEmpty) {
+    <tr><td colspan="2" style="text-align: center;"><img src="@supplier.logoUri" height="50" /></td></tr>
+  }
   <tr>
     <td><b>Name</b></td>
     <td>@supplier.name</td>
@@ -25,11 +28,11 @@
   </tr>
   <tr>
     <td><b>Latitude</b></td>
-    <td>@supplier.coords.lat</td>
+    <td>@{"%.8f".format(supplier.coords.lat)}</td>
   </tr>
   <tr>
     <td><b>Longitude</b></td>
-    <td>@supplier.coords.lon</td>
+    <td>@{"%.8f".format(supplier.coords.lon)}</td>
   </tr>
 @if(!incomingConnections.isEmpty) {
   <tr>
@@ -48,8 +51,12 @@
     <td>@supplier.weatherStation.name</td>
   </tr>
   <tr>
-    <td><b>lon/lat</b></td>
-    <td>@supplier.weatherStation.coords.lon / @supplier.weatherStation.coords.lat</td>
+    <td><b>Latitude</b></td>
+    <td>@{"%.8f".format(supplier.weatherStation.coords.lon)}</td>
+  </tr>
+  <tr>
+    <td><b>Longitude</b></td>
+    <td>@{"%.8f".format(supplier.weatherStation.coords.lat)}</td>
   </tr>
 </table>
 

@@ -98,7 +98,8 @@ class SchnelleckeDataset extends Dataset {
           lat = result.getLiteral("lat").getDouble,
           lon = result.getLiteral("lon").getDouble),
         Product(""),
-        weatherStation = null
+        weatherStation = null,
+        logoUri = ""
       )
     }
   }
@@ -175,7 +176,8 @@ class SchnelleckeDataset extends Dataset {
                 lon = result.getLiteral("slon").getDouble
               ),
               Product(""),
-              weatherStation = null
+              weatherStation = null,
+              logoUri = ""
             ),
         target =
             Supplier(
@@ -192,7 +194,8 @@ class SchnelleckeDataset extends Dataset {
                 lon = result.getLiteral("rlon").getDouble
               ),
               Product(""),
-              weatherStation = null
+              weatherStation = null,
+              logoUri = ""
             )
       )
     }

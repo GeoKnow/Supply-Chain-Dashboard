@@ -23,13 +23,13 @@ object Xybermotive extends Controller {
   }
 
   def alternativeSupplierJson(sid: String, pnr: String) = Action {
-    val allInventories = XybermotiveData.getAllInventory(CurrentDataset().suppliers)
+    val allInventories = XybermotiveData.getAllInventory(CurrentDataset().suppliers.drop(1))
     val filteredInventory = allInventories.map(_.filter(pnr)).filter(_.data.nonEmpty)
     Ok(Json.toJson(filteredInventory))
   }
 
   def alternativeSupplier(sid: String, pnr: String) = Action {
-    val allInventories = XybermotiveData.getAllInventory(CurrentDataset().suppliers)
+    val allInventories = XybermotiveData.getAllInventory(CurrentDataset().suppliers.drop(1))
     val filteredInventory = allInventories.map(_.filter(pnr)).filter(_.data.nonEmpty)
     Ok(views.html.xybermotive.alternativeSuppliers(filteredInventory))
   }

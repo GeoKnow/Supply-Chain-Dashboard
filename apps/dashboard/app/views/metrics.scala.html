@@ -5,32 +5,30 @@
 @if(messages.isEmpty) {
   No supplier with received messages selected!
 } else {
+    <table>
     @renderWeather(messages(messages.size - 1).date.toFormat("yyyy-MM-dd"))
     @for(metric <- CurrentMetrics()) {
         @renderMetric(metric)
     }
-
+    </table>
 }
 
 <button onclick="$.post('metrics/reload')">Reload</button>
 
 @renderWeather(dateStr: String) = {
-    <div class="weather-info">
-        <span class="metric-dimension">Date:</span> <span class="metric-value">@dateStr</span><br />
-        <span class="metric-dimension">Tmin:</span> <span class="metric-value">@supplier.weatherStation.observations(dateStr).tmin.formatted("%.2f") °C</span><br />
-        <span class="metric-dimension">Tmax:</span> <span class="metric-value">@supplier.weatherStation.observations(dateStr).tmax.formatted("%.2f") °C</span><br />
-        <span class="metric-dimension">PRCP:</span> <span class="metric-value">@supplier.weatherStation.observations(dateStr).prcp.formatted("%.2f") mm</span><br />
-        <span class="metric-dimension">SNWD:</span> <span class="metric-value">@supplier.weatherStation.observations(dateStr).snwd.formatted("%.2f") mm</span><br />
-    </div>
+    <tr><td><span class="metric-dimension">Date:</span></td><td><span class="metric-value">@dateStr</span></td></tr>
+    <tr><td><span class="metric-dimension">Tmin:</span></td><td><span class="metric-value">@supplier.weatherStation.observations(dateStr).tmin.formatted("%.2f") °C</span></tr>
+    <tr><td><span class="metric-dimension">Tmax:</span></td><td><span class="metric-value">@supplier.weatherStation.observations(dateStr).tmax.formatted("%.2f") °C</span></tr>
+    <tr><td><span class="metric-dimension">PRCP:</span></td><td><span class="metric-value">@supplier.weatherStation.observations(dateStr).prcp.formatted("%.2f") mm</span></tr>
+    <tr><td><span class="metric-dimension">SNWD:</span></td><td><span class="metric-value">@supplier.weatherStation.observations(dateStr).snwd.formatted("%.2f") mm</span></tr>
 }
 
 @renderMetric(metric: Metric) = {
-    <div class="metric-info">
-        <span class="metric-dimension">@metric.dimension.capitalize</span> <span class="metric-value">@metric(messages).formatted("%.2f") @metric.unit</span>
+    <tr><td class="metric-info"><span class="metric-dimension">@metric.dimension.capitalize</span></td><td><span class="metric-value">@metric(messages).formatted("%.2f") @metric.unit</span>
 @if(metric.isInstanceOf[SilkMetric]) {
     <small><a href="@{Configuration.get.silkUrl+ "transform/" + Configuration.get.silkProject + "/"  + Configuration.get.silkTask + "/editor/" + metric.dimension }" target="_blank">edit</a></small>
 }
-    </div>
+    </td></tr>
 }
 
 
