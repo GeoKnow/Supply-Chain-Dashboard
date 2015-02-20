@@ -1,6 +1,6 @@
 *.class
 *.log
-apps/.idea*
+.idea
 
 apps/core/.cache
 apps/core/.classpath
