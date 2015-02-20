@@ -240,8 +240,9 @@ function loadXybermotive(supplierId) {
     dataTable.draw();
   });
 
-  //clearTimeout(xyRefreshTimer);
-  //xyRefreshTimer = setTimeout(function() { loadXybermotive(supplierId); }, 5000);
+
+  clearTimeout(xyRefreshTimer);
+  xyRefreshTimer = setTimeout(function() { loadXybermotive(supplierId); }, 5000);
 }
 
 function searchTable(needle) {
