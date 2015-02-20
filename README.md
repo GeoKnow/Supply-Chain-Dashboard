@@ -16,8 +16,8 @@ The following commands are to be executed from the apps folder.
 
 - gunzip data/ncdc/ncdc-ghcnd_2010-2013.nt.gz
 - load .nt file into virtuoso 
-	- via conductor frontende using IRI http://www.xybermotive.com/GeoKnowWeather#
-	- via isql ``DB.DBA.TTLP_MT (file_to_string_output ('/path/to/data.nt'), '', 'http://www.xybermotive.com/GeoKnowWeather#');`` (path need to be allowed in virtuoso.ini)
+	- via conductor frontend using IRI: http://www.xybermotive.com/GeoKnowWeather#
+	- via isql: ``DB.DBA.TTLP_MT (file_to_string_output ('/path/to/data.nt'), '', 'http://www.xybermotive.com/GeoKnowWeather#');`` (path need to be allowed in virtuoso.ini)
  
 ## Running
 
