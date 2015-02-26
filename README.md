@@ -11,6 +11,7 @@ The following commands are to be executed from the apps folder.
 ## Requirements
 
 - JDK 7 or later
+- Virtuoso 7.1 or later 
 
 ## Loading Weather data into virtuoso
 
