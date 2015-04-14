@@ -2,7 +2,7 @@ package models
 
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
-import supplychain.dataset.Dataset
+import supplychain.dataset.{EndpointConfig, Dataset}
 import supplychain.simulator.Simulator
 
 /**
@@ -10,7 +10,17 @@ import supplychain.simulator.Simulator
  */
 object CurrentDataset {
 
-  val simulator = new Simulator(Akka.system, Configuration.get.endpointUrl, Configuration.get.defaultGraph, Configuration.get.defaultGraphWeather)
+  val endpointConfig = new EndpointConfig(
+    Configuration.get.endpointType,
+    Configuration.get.defaultGraph,
+    Configuration.get.defaultGraphWeather,
+    Configuration.get.endpointUrl,
+    Configuration.get.virtuosoHost,
+    Configuration.get.virtuosoPort,
+    Configuration.get.virtuosoUser,
+    Configuration.get.virtuosoPassword)
+
+  val simulator = new Simulator(Akka.system, endpointConfig)
 
   // supplychain.simulator.Scheduler.lastOrderDate
 

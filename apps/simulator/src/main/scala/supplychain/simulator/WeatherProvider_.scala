@@ -5,7 +5,7 @@ import java.util.logging.Logger
 import javax.swing.text.DateFormatter
 
 import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
-import supplychain.dataset.RdfWeatherDataset
+import supplychain.dataset.{EndpointConfig, Endpoint, RdfWeatherDataset}
 import supplychain.model.{Coordinates, WeatherStation, WeatherObservation, DateTime, WeatherUtil, Duration}
 import scala.collection.JavaConversions._
 import scala.util.Random
@@ -13,7 +13,7 @@ import scala.util.Random
 /**
  * Created by rene on 09.01.15.
  */
-class WeatherProvider_(dataset: RdfWeatherDataset) {
+class WeatherProvider_(ec: EndpointConfig) {
 
   private val log = Logger.getLogger(getClass.getName)
   private val minObs = 1200
@@ -30,7 +30,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
         |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         |
-        |SELECT ?s ?sid ?label ?long ?lat FROM <http://www.xybermotive.com/GeoKnowWeather#>
+        |SELECT ?s ?sid ?label ?long ?lat FROM <${ec.getDefaultGraphWeather()}>
         |WHERE {
         |    ?s a gkwo:WeatherStation ;
         |        geo:long ?long ;
@@ -49,7 +49,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
       """.stripMargin
 
     //log.info(queryStr)
-    val result = dataset.select(queryStr).toSeq
+    val result = ec.getEndpoint().select(queryStr).toSeq
     var ws: WeatherStation = null
 
     for (binding <- result) {
@@ -73,7 +73,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
          |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
          |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
          |
-         |SELECT (count(*) AS ?total) FROM <http://www.xybermotive.com/GeoKnowWeather#>
+         |SELECT (count(*) AS ?total) FROM <${ec.getDefaultGraphWeather()}>
          |WHERE {
          |  <http://www.xybermotive.com/GeoKnowWeather#GME00111430> gkwo:hasObservation ?obsuri .
          |    ?obsuri gkwo:date ?date .
@@ -84,7 +84,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
          |}
        """.stripMargin
 
-    val result = dataset.select(queryStr).toSeq
+    val result = ec.getEndpoint().select(queryStr).toSeq
 
     var total = 0
     for (binding <- result) {
@@ -158,7 +158,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
        |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
        |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
        |
-       |SELECT ?obsuri ?date ?tmin ?tmax ?prcp ?snwd FROM <http://www.xybermotive.com/GeoKnowWeather#>
+       |SELECT ?obsuri ?date ?tmin ?tmax ?prcp ?snwd FROM <${ec.getDefaultGraphWeather()}>
        |WHERE {
        |  <${ws.uri}> gkwo:hasObservation ?obsuri .
        |  ?obsuri gkwo:date ?date .
@@ -171,7 +171,7 @@ class WeatherProvider_(dataset: RdfWeatherDataset) {
 
     //log.info(queryStr)
 
-    val result = dataset.select(queryStr).toSeq
+    val result = ec.getEndpoint().select(queryStr).toSeq
 
     var wo: WeatherObservation = null
 

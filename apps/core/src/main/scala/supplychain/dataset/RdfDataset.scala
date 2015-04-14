@@ -6,15 +6,9 @@ import com.hp.hpl.jena.query.{QuerySolution, QueryExecutionFactory}
 import supplychain.model._
 import scala.collection.JavaConversions._
 
-class RdfDataset(endpointUrl: String, defaultGraph: String) {
+class RdfDataset(ec: EndpointConfig) {
 
   private val log = Logger.getLogger(getClass.getName)
-
-  private val endpoint =
-    if (endpointUrl != null && !endpointUrl.trim.isEmpty)
-      new RemoteEndpoint(endpointUrl, defaultGraph)
-    else
-      new LocalEndpoint(defaultGraph)
 
   private var graphCreated = false
 
@@ -137,7 +131,8 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
    */
   private def insert(statements: String) {
     if(!graphCreated) {
-      endpoint.update(s"CREATE SILENT GRAPH <$defaultGraph>")
+      ec.getDefaultGraph()
+      ec.getEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraph()}>")
       graphCreated = true
     }
 
@@ -147,30 +142,56 @@ class RdfDataset(endpointUrl: String, defaultGraph: String) {
         | PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         | PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         | INSERT DATA {
-        |   $statements
+        |   GRAPH <${ec.getDefaultGraph()}> {
+        |     $statements
+        |   }
         | }
       """.stripMargin
-    endpoint.update(query)
+    ec.getEndpoint().update(query)
   }
 
   /**
    * Executes a SPARQL Select query on the data set.
    */
   def query(queryStr: String) = {
-    endpoint.select(queryStr)
+    ec.getEndpoint().select(queryStr)
   }
 
   /**
    * Executes a SPARQL Select query on the data set.
    */
   def select(queryStr: String): Seq[QuerySolution] = {
-    return endpoint.select(queryStr).toSeq
+    return ec.getEndpoint().select(queryStr).toSeq
   }
 
   /**
    * Executes a SPARQL Describe query on the data set.
    */
   def describe(queryStr: String) = {
-    endpoint.describe(queryStr)
+    ec.getEndpoint().describe(queryStr)
   }
+
+
+  /*
+  def load(): Seq[DumpSource] = {
+    val query =
+      s"""
+         | $queryPrefix
+          | SELECT * WHERE {
+          |   GRAPH <${GraphNamespaces.datasources}> {
+                                                     |     ?uri a ds:DumpDataSource .
+                                                     |     ?uri ds:name ?name .
+                                                     |     ?uri ds:description ?description .
+                                                     |   }
+                                                     | }
+       """.stripMargin
+
+    val results = SparqlEndpoint.select(query)
+    for(r <- results) yield {
+      DumpSource(
+        name = r.getLiteral("name").getString,
+        description = r.getLiteral("description").getString
+      )
+    }
+  }*/
 }
