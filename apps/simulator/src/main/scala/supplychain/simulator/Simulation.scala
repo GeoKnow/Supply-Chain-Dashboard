@@ -62,7 +62,6 @@ object CarSimulation extends Simulation {
       name = "Car",
       parts = doors :: windows
     )
-
 }
 
 /**

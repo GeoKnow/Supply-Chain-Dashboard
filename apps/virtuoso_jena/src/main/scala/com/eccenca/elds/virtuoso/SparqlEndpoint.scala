@@ -3,10 +3,13 @@ package com.eccenca.elds.virtuoso
 import java.io.File
 import java.util.logging.Logger
 
+import com.hp.hpl.jena.graph.GraphUtil
 import com.hp.hpl.jena.query.QuerySolution
 import com.hp.hpl.jena.rdf.model.Model
+import com.hp.hpl.jena.sparql.util.graph.GraphUtils
+import com.hp.hpl.jena.util.FileManager
 import org.apache.jena.riot.{RDFLanguages, Lang, RDFDataMgr}
-import virtuoso.jena.driver.{VirtuosoUpdateRequest, VirtGraph, VirtuosoQueryExecutionFactory}
+import virtuoso.jena.driver.{VirtuosoUpdateRequest, VirtGraph, VirtuosoQueryExecutionFactory, VirtDataset, VirtModel}
 import com.hp.hpl.jena.query.ResultSet
 
 import scala.collection.JavaConversions._
@@ -15,14 +18,15 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
 
   private val logger = Logger.getLogger(getClass.getName)
 
-  private val jdbcConnString = "jdbc:virtuoso://" + virtuosoHost + ":" + virtuosoPort
+  private val jdbcConnString = "jdbc:virtuoso://" + virtuosoHost + ":" + virtuosoPort + "/charset=UTF-8/log_enable=2"
 
   def select(query: String): ResultSet = {
     val virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
     virtGraph.setReadFromAllGraphs(true)
     val queryExecution = VirtuosoQueryExecutionFactory.create(query, virtGraph)
     val result = queryExecution.execSelect()
-    virtGraph.close()
+    // close kills the ResultSet, so do not close
+    //virtGraph.close()
     logger.info(s"Query issued:$query")
     result
   }
@@ -52,9 +56,19 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
   def uploadDataset(graph: String, file: File, lang: Option[Lang]=None) = {
     createGraph(graph, clear = true)
     val virtGraph = new VirtGraph(graph, jdbcConnString, virtuosoUser, virtuosoPassword)
+    val virtModel = new VirtModel(virtGraph)
+    val m = FileManager.get().loadModel( file.getAbsolutePath )
+
+    virtGraph.getBulkUpdateHandler.add(m.getGraph)
+
     logger.info(s"Uploading dataset into graph < $graph > ...")
-    val rdfLang = lang.getOrElse(RDFLanguages.filenameToLang(file.getName))
-    RDFDataMgr.read(virtGraph, file.getAbsolutePath, rdfLang)
+
+    //virtModel.add(m)
+
+    //val rdfLang = lang.getOrElse(RDFLanguages.filenameToLang(file.getName))
+    //RDFDataMgr.read(virtGraph, file.getAbsolutePath, rdfLang)
+
+    //virtModel.close()
     virtGraph.close()
     logger.info(s"Uploaded dataset!")
   }
