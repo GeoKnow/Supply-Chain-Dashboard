@@ -20,7 +20,9 @@ case class Configuration(
                           silkUrl: String,
                           silkProject: String,
                           silkTask: String,
-                          defaultGraphWeather: String)
+                          defaultGraphWeather: String,
+                          defaultGraphConfiguration: String,
+                          productUri: String)
 
 /**
  * Holds the configuration.
@@ -42,7 +44,9 @@ object Configuration {
       silkUrl = config.getString("dashboard.silkUrl").getOrElse("http://localhost:9000/"),
       silkProject = config.getString("dashboard.silkProject").getOrElse("supplychainmetrics"),
       silkTask = config.getString("dashboard.silkTask").getOrElse("metrics"),
-      defaultGraphWeather = config.getString("simulator.defaultGraphWeather").getOrElse("http://www.xybermotive.com/GeoKnowWeather#")
+      defaultGraphWeather = config.getString("simulator.defaultGraphWeather").getOrElse("http://www.xybermotive.com/GeoKnowWeather#"),
+      defaultGraphConfiguration = config.getString("simulator.defaultGraphConfiguration").getOrElse("http://www.xybermotive.com/configuration"),
+      productUri = config.getString("simulator.product.uri").getOrElse(null)
     )
   }
 }

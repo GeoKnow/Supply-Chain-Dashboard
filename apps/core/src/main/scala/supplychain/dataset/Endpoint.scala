@@ -28,6 +28,7 @@ trait Endpoint {
 class EndpointConfig(kind: String,
                      defaultGraph: String,
                      defaultGraphWeather: String = null,
+                     defaultGraphConfiguration: String = null,
                      http: String = "",
                      host: String = "",
                      port: String = "",
@@ -65,15 +66,19 @@ class EndpointConfig(kind: String,
     if (!isDataInitialized) {
       endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraph()}>")
       endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraphWeather()}>")
-      val file = new File("dashboard/data/ncdc-ghcnd_2010-2013.nt.gz")
-      endpoint.uploadDataset(getDefaultGraphWeather(), file, Option(Lang.NT))
+      endpoint.update(s"DROP SILENT GRAPH <${getDefaultGraphConfiguration()}>")
+      endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraphConfiguration()}>")
+      val weatherFile = new File("dashboard/data/ncdc-ghcnd_2010-2013.nt.gz")
+      endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.NT))
+      val configurationFile = new File("dashboard/data/configuration.ttl")
+      endpoint.uploadDataset(getDefaultGraphConfiguration(), configurationFile, Option(Lang.TTL))
     }
     isDataInitialized = true
   }
 
   def getDefaultGraph(): String = defaultGraph
   def getDefaultGraphWeather(): String = defaultGraphWeather
-
+  def getDefaultGraphConfiguration(): String = defaultGraphConfiguration
 }
 
 class LocalEndpoint(defaultGraph: String) extends Endpoint {

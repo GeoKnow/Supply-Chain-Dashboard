@@ -22,4 +22,12 @@ case class Product(name: String, count: Int = 1, parts: List[Product] = Nil, uri
    * Generates a list of all parts of this product, including parts of parts.
    */
   def partList: List[Product] = parts ::: parts.flatMap(_.partList)
+
+  override def toString: String = {
+    var str = name
+    for (p <- partList) {
+      str += ", " + p.count.toString + "x " + p.name
+    }
+    str
+  }
 }

@@ -14,13 +14,14 @@ object CurrentDataset {
     Configuration.get.endpointType,
     Configuration.get.defaultGraph,
     Configuration.get.defaultGraphWeather,
+    Configuration.get.defaultGraphConfiguration,
     Configuration.get.endpointUrl,
     Configuration.get.virtuosoHost,
     Configuration.get.virtuosoPort,
     Configuration.get.virtuosoUser,
     Configuration.get.virtuosoPassword)
 
-  val simulator = new Simulator(Akka.system, endpointConfig)
+  val simulator = new Simulator(Akka.system, endpointConfig, Configuration.get.productUri)
 
   // supplychain.simulator.Scheduler.lastOrderDate
 
