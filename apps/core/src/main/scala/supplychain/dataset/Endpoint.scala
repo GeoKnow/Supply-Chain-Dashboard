@@ -68,8 +68,12 @@ class EndpointConfig(kind: String,
       endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraphWeather()}>")
       endpoint.update(s"DROP SILENT GRAPH <${getDefaultGraphConfiguration()}>")
       endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraphConfiguration()}>")
+
+      val weatherStationFile = new File("dashboard/data/ncdc-stations.nt")
+      endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.NT))
       val weatherFile = new File("dashboard/data/ncdc-ghcnd_2010-2013.nt.gz")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.NT))
+
       val configurationFile = new File("dashboard/data/configuration.ttl")
       endpoint.uploadDataset(getDefaultGraphConfiguration(), configurationFile, Option(Lang.TTL))
     }

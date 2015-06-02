@@ -10,6 +10,10 @@
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix sc: <http://www.xybermotive.com/ontology/> .
 
+#############################
+# Supplier Configuration
+#############################
+
 suppl:VW
   a sc:Supplier ;
   a schema:Organization ;
@@ -36,8 +40,7 @@ suppl:VW
     geo:lat "52.43014"^^xsd:float ;
     geo:long "10.76341"^^xsd:float ;
     schema:containedIn dbpedia:Wolfsburg
-  ] ;
-  schema:manufacturer prod:Chair01 .
+  ] .
 
 suppl:Foo
   a sc:Supplier ;
@@ -63,8 +66,7 @@ suppl:Foo
     geo:lat "52.6126859"^^xsd:float ;
     geo:long "13.3158887"^^xsd:float ;
     schema:containedIn dbpedia:Berlin
-  ] ;
-  schema:manufacturer prod:ChairBack01 .
+  ] .
 
 suppl:Bar
   a sc:Supplier ;
@@ -90,16 +92,23 @@ suppl:Bar
     geo:lat "49.0756505"^^xsd:float ;
     geo:long "9.1550064"^^xsd:float ;
     schema:containedIn dbpedia:Lauffen_am_Neckar
-  ] ;
-  schema:manufacturer prod:ChairBack01 .
+  ] .
 
 dbpedia:Lauffen_am_Neckar schema:containedIn dbpedia:Heilbronn .
-dbpedia:Lauffen_am_Neckar schema:containedIn dbpedia:Baden-Württemberg .
+dbpedia:Heilbronn schema:containedIn dbpedia:Baden-Württemberg .
 dbpedia:Baden-Württemberg schema:containedIn dbpedia:Germany .
 dbpedia:Berlin schema:containedIn dbpedia:Germany .
 dbpedia:Wolfsburg schema:containedIn dbpedia:Lower_Saxony .
 dbpedia:Lower_Saxony schema:containedIn dbpedia:Germany .
 dbpedia:Germany schema:containedIn dbpedia:Europe .
+
+#############################
+# Product Configuration
+#############################
+
+suppl:VW schema:manufacturer prod:Chair01 .
+suppl:Foo schema:manufacturer prod:ChairBack01 .
+suppl:Bar schema:manufacturer prod:ChairBack01 .
 
 prod:Chair01
   a schema:Product ;
