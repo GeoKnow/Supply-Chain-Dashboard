@@ -1,0 +1,45 @@
+@prefix suppl: <http://www.xybermotive.com/supplier/> .
+@prefix prod: <http://www.xybermotive.com/products/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix schema: <http://schema.org/> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix sc: <http://www.xybermotive.com/ontology/> .
+
+#############################
+# Product Configuration
+#############################
+
+suppl:VW schema:manufacturer prod:Chair01 .
+suppl:Foo schema:manufacturer prod:ChairBack01 .
+suppl:Bar schema:manufacturer prod:ChairBack01 .
+
+prod:Chair01
+  a schema:Product ;
+  schema:name "Stuhl"@de ;
+  schema:name "Chair"@en ;
+  sc:productPart [
+    sc:product prod:ChairLeg01 ;
+    sc:quantity "4"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:ChairBack01 ;
+    sc:quantity  "1"^^xsd:integer
+  ] .
+
+prod:ChairLeg01
+  a schema:Product ;
+  schema:name "Stuhlbein"@de ;
+  schema:name "Chair Leg"@en ;
+  schema:name "Chair Leg" .
+
+prod:ChairBack01
+  a schema:Product ;
+  schema:name "Stuhllehne"@de ;
+  schema:name "Back Rest"@en ;
+  schema:name "Back Rest" .
+
