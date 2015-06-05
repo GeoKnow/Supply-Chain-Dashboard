@@ -14,10 +14,6 @@
 # Product Configuration
 #############################
 
-suppl:VW schema:manufacturer prod:Chair01 .
-suppl:Foo schema:manufacturer prod:ChairBack01 .
-suppl:Bar schema:manufacturer prod:ChairBack01 .
-
 prod:Chair01
   a schema:Product ;
   schema:name "Stuhl"@de ;
@@ -42,4 +38,8 @@ prod:ChairBack01
   schema:name "Stuhllehne"@de ;
   schema:name "Back Rest"@en ;
   schema:name "Back Rest" .
+
+suppl:VW schema:manufacturer prod:Chair01 .
+suppl:August_Friedberg_GmbH schema:manufacturer prod:ChairBack01 .
+suppl:Bergmann_Maschinenbau schema:manufacturer prod:ChairBack01 .
 

@@ -76,7 +76,7 @@ suppl:VW_loc1 a schema:Place ;
     schema:longitude "10.76341"^^xsd:float
   ] .
 
-suppl:VW_loc1 schema:containedIn dbpedia:Wolfsburg
+suppl:VW_loc1 schema:containedIn dbpedia:Wolfsburg .
 
 suppl:VW_adr1 a schema:PostalAddress ;
   schema:streetAddress "Berliner Ring 2" ;
