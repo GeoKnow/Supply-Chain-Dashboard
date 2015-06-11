@@ -3,10 +3,7 @@ package com.eccenca.elds.virtuoso
 import java.io.File
 import java.util.logging.Logger
 
-import com.hp.hpl.jena.graph.GraphUtil
-import com.hp.hpl.jena.query.QuerySolution
 import com.hp.hpl.jena.rdf.model.Model
-import com.hp.hpl.jena.sparql.util.graph.GraphUtils
 import com.hp.hpl.jena.util.FileManager
 import org.apache.jena.riot.{RDFLanguages, Lang, RDFDataMgr}
 import virtuoso.jena.driver.{VirtuosoUpdateRequest, VirtGraph, VirtuosoQueryExecutionFactory, VirtDataset, VirtModel}
@@ -53,22 +50,22 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     result.map(_.getResource("g")).filter(_ != null).map(_.getURI) // filter to remove unnamed graphs
   }
 
-  def uploadDataset(graph: String, file: File, lang: Option[Lang]=None) = {
-    createGraph(graph, clear = true)
+  def uploadDataset(graph: String, file: File, lang: Option[Lang]=None, clear: Boolean=false) = {
+    createGraph(graph, clear)
     val virtGraph = new VirtGraph(graph, jdbcConnString, virtuosoUser, virtuosoPassword)
     val virtModel = new VirtModel(virtGraph)
     val m = FileManager.get().loadModel( file.getAbsolutePath )
 
-    virtGraph.getBulkUpdateHandler.add(m.getGraph)
-
     logger.info(s"Uploading dataset into graph < $graph > ...")
 
-    //virtModel.add(m)
+    //virtGraph.getBulkUpdateHandler.add(m.getGraph)
+
+    virtModel.add(m)
 
     //val rdfLang = lang.getOrElse(RDFLanguages.filenameToLang(file.getName))
     //RDFDataMgr.read(virtGraph, file.getAbsolutePath, rdfLang)
 
-    //virtModel.close()
+    virtModel.close()
     virtGraph.close()
     logger.info(s"Uploaded dataset!")
   }

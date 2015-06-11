@@ -10,6 +10,7 @@ GET         /messages                     controllers.Application.messages(suppl
 # REST API
 GET         /sparql                       controllers.API.sparql(query)
 GET         /supplier/:id                 controllers.API.supplier(id, format: Option[String])
+# GET         /supplier/metrics:id
 GET         /delivery/:id                 controllers.API.connection(id, format: Option[String])
 GET         /map/loadSuppliers            controllers.API.loadSuppliers()
 GET         /map/loadConnections          controllers.API.loadConnections(supplierId: Option[String], contentType: Option[String])
@@ -28,3 +29,5 @@ POST        /log                          controllers.API.log()
 
 # Static resources
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)
+
+

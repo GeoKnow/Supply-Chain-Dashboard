@@ -26,27 +26,34 @@ class WeatherProvider_(ec: EndpointConfig) {
 
     val queryStr =
       s"""
-        |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
-        |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-        |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        |
-        |SELECT ?s ?sid ?label ?long ?lat FROM <${ec.getDefaultGraphWeather()}>
-        |WHERE {
-        |    ?s a gkwo:WeatherStation ;
-        |        geo:long ?long ;
-        |        geo:lat ?lat ;
-        |        gkwo:stationId ?sid ;
-        |        rdfs:label ?label .
-        |    ?s gkwo:hasObservation ?obs .
-        |    ?obs gkwo:tmin ?tmin .
-        |    ?obs gkwo:tmax ?tmax .
-        |    ?obs gkwo:prcp ?prcp .
-        |    ?obs gkwo:snwd ?snwd .
-        |}
-        |GROUP BY ?s ?sid ?label ?long ?lat
-        |HAVING (count(?obs) > ${minObs})
-        |ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat}))) LIMIT 1
-      """.stripMargin
+         |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
+         |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+         |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+         |
+         |SELECT DISTINCT ?s ?sid ?label ?long ?lat
+         |FROM <${ec.getDefaultGraphWeather()}>
+         |WHERE
+         |{
+         |    ?s geo:long ?long .
+         |    ?s geo:lat ?lat .
+         |    ?s gkwo:stationId ?sid .
+         |    ?s rdfs:label ?label .
+         |    {
+         |        SELECT DISTINCT ?s
+         |        FROM <${ec.getDefaultGraphWeather()}>
+         |        WHERE {
+         |            ?s a gkwo:WeatherStation .
+         |            ?s gkwo:hasObservation ?obs .
+         |            ?obs gkwo:tmin ?tmin .
+         |            ?obs gkwo:tmax ?tmax .
+         |            ?obs gkwo:prcp ?prcp .
+         |            ?obs gkwo:snwd ?snwd .
+         |        }
+         |        GROUP BY ?s
+         |        HAVING (count(?obs) > ${minObs})
+         |    }
+         |}ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat}))) LIMIT 1
+       """.stripMargin
 
     //log.info(queryStr)
     val result = ec.getEndpoint().select(queryStr).toSeq
@@ -75,7 +82,7 @@ class WeatherProvider_(ec: EndpointConfig) {
          |
          |SELECT (count(*) AS ?total) FROM <${ec.getDefaultGraphWeather()}>
          |WHERE {
-         |  <http://www.xybermotive.com/GeoKnowWeather#GME00111430> gkwo:hasObservation ?obsuri .
+         |  <${ws.uri}> gkwo:hasObservation ?obsuri .
          |    ?obsuri gkwo:date ?date .
          |     { ?obsuri gkwo:tmin ?tmin . }
          |     { ?obsuri gkwo:tmax ?tmax . }

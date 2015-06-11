@@ -21,7 +21,7 @@ trait Endpoint {
 
   def update(query: String)
   def select(query: String): ResultSet
-  def uploadDataset(graph: String, file: File, lang: Option[Lang]=None)
+  def uploadDataset(graph: String, file: File, lang: Option[Lang]=None, clear: Boolean=false)
   def describe(query: String): Model
 }
 
@@ -65,18 +65,14 @@ class EndpointConfig(kind: String,
   def initData() {
     if (!isDataInitialized) {
       endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraph()}>")
-      endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraphWeather()}>")
-      endpoint.update(s"DROP SILENT GRAPH <${getDefaultGraphConfiguration()}>")
-      endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraphConfiguration()}>")
-
 
       val weatherStationFile = new File("dashboard/data/ncdc-stations.ttl")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
-      val weatherFile = new File("dashboard/data/ncdc-ghcnd-2010-2014.nt.gz")
-      endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.NT))
+      val weatherFile = new File("dashboard/data/ncdc-ghcnd-2010-2014.ttl.gz")
+      endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.TTL))
 
       val supplConfFile = new File("dashboard/data/supplier.ttl")
-      endpoint.uploadDataset(getDefaultGraphConfiguration(), supplConfFile, Option(Lang.TTL))
+      endpoint.uploadDataset(getDefaultGraphConfiguration(), supplConfFile, Option(Lang.TTL), true)
       val prodConfFile = new File("dashboard/data/products.ttl")
       endpoint.uploadDataset(getDefaultGraphConfiguration(), prodConfFile, Option(Lang.TTL))
     }
@@ -106,7 +102,7 @@ class LocalEndpoint(defaultGraph: String) extends Endpoint {
     QueryExecutionFactory.create(parsedQuery, dataset.getNamedModel(defaultGraph)).execDescribe()
   }
 
-  override def uploadDataset(graph: String, file: File, lang: Option[Lang]): Unit = ???
+  override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = ???
 }
 
 class VirtuosoJdbcEndpoint(host: String, port: String, user: String, password: String) extends Endpoint {
@@ -125,7 +121,7 @@ class VirtuosoJdbcEndpoint(host: String, port: String, user: String, password: S
     endpoint.describe(query)
   }
 
-  override def uploadDataset(graph: String, file: File, lang: Option[Lang]): Unit = {
+  override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = {
     endpoint.uploadDataset(graph, file, lang)
   }
 }
@@ -179,5 +175,5 @@ class RemoteEndpoint(endpointUrl: String, defaultGraph: String) extends Endpoint
     QueryExecutionFactory.sparqlService(endpointUrl, parsedQuery).execDescribe()
   }
 
-  override def uploadDataset(graph: String, file: File, lang: Option[Lang]): Unit = ???
+  override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = ???
 }
