@@ -25,8 +25,14 @@
         var refreshMetrics = function() {
           console.log("refreshMetrics");
         }
+
+          // Single step through the simulation
+          var step = function() {
+            $.post('/simulator/step');
+          }
       </script>
       <iframe src="/deliveryStream" frameborder="0"></iframe>
+      <p><button onclick="step()">Step</button></p>
       <div id="content">
         <div id="orders"><strong>Orders:</strong><br /></div>
         <div id="shippings"><strong>Shippings:</strong><br /></div>
