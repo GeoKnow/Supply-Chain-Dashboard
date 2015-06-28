@@ -1,60 +1,14 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix schema: <http://schema.org/> .
+@prefix db:    <http://www.xybermotive.com/supplier/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix suppl: <http://www.xybermotive.com/supplier/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix dbpedia: <http://dbpedia.org/resource/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix map: <http://www.xybermotive.com/supplier/#> .
-@prefix sc: <http://www.xybermotive.com/ontology/> .
-
-schema:Organization
-    a rdfs:Class .
-
-schema:Place
-    a rdfs:Class ;
-    rdfs:label "supplier location" .
-
-schema:PostalAddress
-    a rdfs:Class ;
-    rdfs:label "location postal address" .
-
-schema:address
-    a rdf:Property ;
-    rdfs:label "location address" .
-
-schema:addressCountry
-    a rdf:Property ;
-    rdfs:label "supplier country" .
-
-schema:addressLocality
-    a rdf:Property ;
-    rdfs:label "supplier locality" .
-
-schema:legalName
-    a rdf:Property ;
-    rdfs:label "supplier legal name" .
-
-schema:location
-    a rdf:Property ;
-    rdfs:label "supplier location" .
-
-schema:name
-    a rdf:Property ;
-    rdfs:label "supplier legal name" .
-
-schema:postalCode
-    a rdf:Property ;
-    rdfs:label "supplier postal code" .
-
-schema:streetAddress
-    a rdf:Property ;
-    rdfs:label "street" .
-
-sc:Supplier
-    a rdfs:Class ;
-    rdfs:label "supplier" .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix map:   <http://www.xybermotive.com/supplier/#> .
+@prefix sc:    <http://www.xybermotive.com/ontology/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
 suppl:VW
   a sc:Supplier, schema:Organization ;
@@ -82,1497 +36,1722 @@ suppl:VW_adr1 a schema:PostalAddress ;
   schema:streetAddress "Berliner Ring 2" ;
   schema:postalCode "38440" ;
   schema:addressLocality "Wolfsburg" ;
-  schema:addressCountry "Deutschland"@de .
-
-suppl:August_Friedberg_GmbH
-    schema:legalName "August Friedberg GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/August_Friedberg_GmbH/location/03238/An_der_Schraube_28> ;
-    schema:name "August Friedberg GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/August_Friedberg_GmbH/address/03238/An_der_Schraube_28>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Finsterwalde" ;
-    schema:postalCode "03238" ;
-    schema:streetAddress "An der Schraube 28" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/August_Friedberg_GmbH/location/03238/An_der_Schraube_28>
-    schema:address <http://www.xybermotive.com/supplier/August_Friedberg_GmbH/address/03238/An_der_Schraube_28> ;
-    schema:geo [
-        schema:latitude "51.635944"^^xsd:float ;
-        schema:longitude "13.714496"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.635944"^^xsd:float ;
-    geo:long "13.714496"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG>
-    schema:legalName "Autoliv B.V. & Co. KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/25337/Otto-Hahn-Str._4>, <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/38112/HANSESTR._46> ;
-    schema:name "Autoliv B.V. & Co. KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/25337/Otto-Hahn-Str._4>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Elmshorn" ;
-    schema:postalCode "25337" ;
-    schema:streetAddress "Otto-Hahn-Str. 4" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/38112/HANSESTR._46>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Braunschweig" ;
-    schema:postalCode "38112" ;
-    schema:streetAddress "HANSESTR. 46" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/25337/Otto-Hahn-Str._4>
-    schema:address <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/25337/Otto-Hahn-Str._4> ;
-    schema:geo [
-        schema:latitude "53.746754"^^xsd:float ;
-        schema:longitude "9.687774"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.746754"^^xsd:float ;
-    geo:long "9.687774"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/38112/HANSESTR._46>
-    schema:address <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/38112/HANSESTR._46> ;
-    schema:geo [
-        schema:latitude "52.321007"^^xsd:float ;
-        schema:longitude "10.475569"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.321007"^^xsd:float ;
-    geo:long "10.475569"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld>
-    schema:legalName "Berg & Co. GmbH Bielefeld" ;
-    schema:location <http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/location/33689/Gildemeister_80> ;
-    schema:name "Berg & Co. GmbH Bielefeld" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/address/33689/Gildemeister_80>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Bielefeld" ;
-    schema:postalCode "33689" ;
-    schema:streetAddress "Gildemeister 80" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/location/33689/Gildemeister_80>
-    schema:address <http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/address/33689/Gildemeister_80> ;
-    schema:geo [
-        schema:latitude "51.92747"^^xsd:float ;
-        schema:longitude "8.594566"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.92747"^^xsd:float ;
-    geo:long "8.594566"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG>
-    schema:legalName "Bergler GmbH & Co. KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/location/39646/Lunapark_2> ;
-    schema:name "Bergler GmbH & Co. KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/address/39646/Lunapark_2>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Oebisfelde" ;
-    schema:postalCode "39646" ;
-    schema:streetAddress "Lunapark 2" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/location/39646/Lunapark_2>
-    schema:address <http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/address/39646/Lunapark_2> ;
-    a schema:Place .
-
-suppl:Bergmann_Maschinenbau
-    schema:legalName "Bergmann Maschinenbau" ;
-    schema:location <http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/location/49716/Essener_Str._7> ;
-    schema:name "Bergmann Maschinenbau" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/address/49716/Essener_Str._7>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Meppen" ;
-    schema:postalCode "49716" ;
-    schema:streetAddress "Essener Str. 7" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/location/49716/Essener_Str._7>
-    schema:address <http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/address/49716/Essener_Str._7> ;
-    schema:geo [
-        schema:latitude "52.751743"^^xsd:float ;
-        schema:longitude "7.28459"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.751743"^^xsd:float ;
-    geo:long "7.28459"^^xsd:float .
-
-suppl:Blechformwerke_Bernsbach_GmbH
-    schema:legalName "Blechformwerke Bernsbach GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/location/08315/Stra%C3%9Fe_der_Einheit_45%2F47> ;
-    schema:name "Blechformwerke Bernsbach GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/address/08315/Stra%C3%9Fe_der_Einheit_45%2F47>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Bernsbach" ;
-    schema:postalCode "08315" ;
-    schema:streetAddress "Straße der Einheit 45/47" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/location/08315/Stra%C3%9Fe_der_Einheit_45%2F47>
-    schema:address <http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/address/08315/Stra%C3%9Fe_der_Einheit_45%2F47> ;
-    schema:geo [
-        schema:latitude "50.580204"^^xsd:float ;
-        schema:longitude "12.766584"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "50.580204"^^xsd:float ;
-    geo:long "12.766584"^^xsd:float .
-
-suppl:Blomberger_Holzindustrie
-    schema:legalName "Blomberger Holzindustrie" ;
-    schema:location <http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/location/32825/K%C3%B6nigswinkel_2> ;
-    schema:name "Blomberger Holzindustrie" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/address/32825/K%C3%B6nigswinkel_2>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Blomberg" ;
-    schema:postalCode "32825" ;
-    schema:streetAddress "Königswinkel 2" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/location/32825/K%C3%B6nigswinkel_2>
-    schema:address <http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/address/32825/K%C3%B6nigswinkel_2> ;
-    schema:geo [
-        schema:latitude "51.934895"^^xsd:float ;
-        schema:longitude "9.100199"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.934895"^^xsd:float ;
-    geo:long "9.100199"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH>
-    schema:legalName "Brangs & Heinrich GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/location/30855/INDUSTRIESTR._4> ;
-    schema:name "Brangs & Heinrich GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/address/30855/INDUSTRIESTR._4>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Langenhagen" ;
-    schema:postalCode "30855" ;
-    schema:streetAddress "INDUSTRIESTR. 4" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/location/30855/INDUSTRIESTR._4>
-    schema:address <http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/address/30855/INDUSTRIESTR._4> ;
-    schema:geo [
-        schema:latitude "52.477448"^^xsd:float ;
-        schema:longitude "9.742584"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.477448"^^xsd:float ;
-    geo:long "9.742584"^^xsd:float .
-
-suppl:Con_Garcia_Industrielackierung
-    schema:legalName "Con Garcia Industrielackierung" ;
-    schema:location <http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/location/42551/Stahlstr._6-8> ;
-    schema:name "Con Garcia Industrielackierung" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/address/42551/Stahlstr._6-8>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Velbert" ;
-    schema:postalCode "42551" ;
-    schema:streetAddress "Stahlstr. 6-8" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/location/42551/Stahlstr._6-8>
-    schema:address <http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/address/42551/Stahlstr._6-8> ;
-    schema:geo [
-        schema:latitude "51.346676"^^xsd:float ;
-        schema:longitude "7.073582"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.346676"^^xsd:float ;
-    geo:long "7.073582"^^xsd:float .
-
-suppl:ContiTech
-    schema:legalName "ContiTech" ;
-    schema:location <http://www.xybermotive.com/supplier/ContiTech/location/38239/Am_G%C3%BCterverkehrszentrum> ;
-    schema:name "ContiTech" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/ContiTech/address/38239/Am_G%C3%BCterverkehrszentrum>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Salzgitter" ;
-    schema:postalCode "38239" ;
-    schema:streetAddress "Am Güterverkehrszentrum" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/ContiTech/location/38239/Am_G%C3%BCterverkehrszentrum>
-    schema:address <http://www.xybermotive.com/supplier/ContiTech/address/38239/Am_G%C3%BCterverkehrszentrum> ;
-    schema:geo [
-        schema:latitude "52.19036"^^xsd:float ;
-        schema:longitude "10.437383"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.19036"^^xsd:float ;
-    geo:long "10.437383"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG>
-    schema:legalName "Continental Teves AG & Co.OHG" ;
-    schema:location <http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/location/38518/Alfred-Teves-Stra%C3%9Fe_11> ;
-    schema:name "Continental Teves AG & Co.OHG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/address/38518/Alfred-Teves-Stra%C3%9Fe_11>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Gifhorn" ;
-    schema:postalCode "38518" ;
-    schema:streetAddress "Alfred-Teves-Straße 11" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/location/38518/Alfred-Teves-Stra%C3%9Fe_11>
-    schema:address <http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/address/38518/Alfred-Teves-Stra%C3%9Fe_11> ;
-    schema:geo [
-        schema:latitude "52.46578"^^xsd:float ;
-        schema:longitude "10.538422"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.46578"^^xsd:float ;
-    geo:long "10.538422"^^xsd:float .
-
-suppl:Contitech_Antriebssysteme_GmbH
-    schema:legalName "Contitech Antriebssysteme GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/location/30165/Philipsbornstr._1> ;
-    schema:name "Contitech Antriebssysteme GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/address/30165/Philipsbornstr._1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hannover" ;
-    schema:postalCode "30165" ;
-    schema:streetAddress "Philipsbornstr. 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/location/30165/Philipsbornstr._1>
-    schema:address <http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/address/30165/Philipsbornstr._1> ;
-    schema:geo [
-        schema:latitude "52.389786"^^xsd:float ;
-        schema:longitude "9.731607"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.389786"^^xsd:float ;
-    geo:long "9.731607"^^xsd:float .
-
-suppl:Contitech_Vibration_Control_GmbH
-    schema:legalName "Contitech Vibration Control GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/location/30419/J%C3%A4dekamp_30> ;
-    schema:name "Contitech Vibration Control GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/address/30419/J%C3%A4dekamp_30>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hannover" ;
-    schema:postalCode "30419" ;
-    schema:streetAddress "Jädekamp 30" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/location/30419/J%C3%A4dekamp_30>
-    schema:address <http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/address/30419/J%C3%A4dekamp_30> ;
-    schema:geo [
-        schema:latitude "52.417652"^^xsd:float ;
-        schema:longitude "9.638126"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.417652"^^xsd:float ;
-    geo:long "9.638126"^^xsd:float .
-
-suppl:DBW_Metallverarbeitungs_GmbH
-    schema:legalName "DBW Metallverarbeitungs GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/location/17373/Am_Gewerbepark_1> ;
-    schema:name "DBW Metallverarbeitungs GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/address/17373/Am_Gewerbepark_1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Ueckermünde" ;
-    schema:postalCode "17373" ;
-    schema:streetAddress "Am Gewerbepark 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/location/17373/Am_Gewerbepark_1>
-    schema:address <http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/address/17373/Am_Gewerbepark_1> ;
-    schema:geo [
-        schema:latitude "53.725235"^^xsd:float ;
-        schema:longitude "14.058035"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.725235"^^xsd:float ;
-    geo:long "14.058035"^^xsd:float .
-
-suppl:DKM_Dodendorfer_Kunststoff-
-    schema:legalName "DKM Dodendorfer Kunststoff-" ;
-    schema:location <http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/location/39171/Am_Bahnhof_5> ;
-    schema:name "DKM Dodendorfer Kunststoff-" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/address/39171/Am_Bahnhof_5>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Dodendorf" ;
-    schema:postalCode "39171" ;
-    schema:streetAddress "Am Bahnhof 5" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/location/39171/Am_Bahnhof_5>
-    schema:address <http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/address/39171/Am_Bahnhof_5> ;
-    schema:geo [
-        schema:latitude "52.048412"^^xsd:float ;
-        schema:longitude "11.611962"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.048412"^^xsd:float ;
-    geo:long "11.611962"^^xsd:float .
-
-suppl:Deutsche_Pentosin-Werke_GmbH
-    schema:legalName "Deutsche Pentosin-Werke GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/location/22880/Industriestr._35_-_53> ;
-    schema:name "Deutsche Pentosin-Werke GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/address/22880/Industriestr._35_-_53>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Wedel" ;
-    schema:postalCode "22880" ;
-    schema:streetAddress "Industriestr. 35 - 53" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/location/22880/Industriestr._35_-_53>
-    schema:address <http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/address/22880/Industriestr._35_-_53> ;
-    schema:geo [
-        schema:latitude "53.571735"^^xsd:float ;
-        schema:longitude "9.730497"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.571735"^^xsd:float ;
-    geo:long "9.730497"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss>
-    schema:legalName "Dichtungstechnik G.Bruss" ;
-    schema:location <http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/location/22955/Schultwiete_12> ;
-    schema:name "Dichtungstechnik G.Bruss" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/address/22955/Schultwiete_12>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hoisdorf" ;
-    schema:postalCode "22955" ;
-    schema:streetAddress "Schultwiete 12" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/location/22955/Schultwiete_12>
-    schema:address <http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/address/22955/Schultwiete_12> ;
-    schema:geo [
-        schema:latitude "53.65229"^^xsd:float ;
-        schema:longitude "10.330367"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.65229"^^xsd:float ;
-    geo:long "10.330367"^^xsd:float .
-
-suppl:ESKA_Automotive_GmbH
-    schema:legalName "ESKA Automotive GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/location/09126/Lutherstr._87> ;
-    schema:name "ESKA Automotive GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/address/09126/Lutherstr._87>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Chemnitz" ;
-    schema:postalCode "09126" ;
-    schema:streetAddress "Lutherstr. 87" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/location/09126/Lutherstr._87>
-    schema:address <http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/address/09126/Lutherstr._87> ;
-    schema:geo [
-        schema:latitude "50.81895"^^xsd:float ;
-        schema:longitude "12.925559"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "50.81895"^^xsd:float ;
-    geo:long "12.925559"^^xsd:float .
-
-suppl:FILZFABRIK
-    schema:legalName "FILZFABRIK" ;
-    schema:location <http://www.xybermotive.com/supplier/FILZFABRIK/location/38100/FALLERSLEBER-TOR-WALL_7-9> ;
-    schema:name "FILZFABRIK" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/FILZFABRIK/address/38100/FALLERSLEBER-TOR-WALL_7-9>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Braunschweig" ;
-    schema:postalCode "38100" ;
-    schema:streetAddress "FALLERSLEBER-TOR-WALL 7-9" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/FILZFABRIK/location/38100/FALLERSLEBER-TOR-WALL_7-9>
-    schema:address <http://www.xybermotive.com/supplier/FILZFABRIK/address/38100/FALLERSLEBER-TOR-WALL_7-9> ;
-    schema:geo [
-        schema:latitude "52.271027"^^xsd:float ;
-        schema:longitude "10.529604"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.271027"^^xsd:float ;
-    geo:long "10.529604"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH>
-    schema:legalName "Fischer + Plath GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/location/27804/Gansper_Helmer_4> ;
-    schema:name "Fischer + Plath GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/address/27804/Gansper_Helmer_4>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Berne" ;
-    schema:postalCode "27804" ;
-    schema:streetAddress "Gansper Helmer 4" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/location/27804/Gansper_Helmer_4>
-    schema:address <http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/address/27804/Gansper_Helmer_4> ;
-    schema:geo [
-        schema:latitude "53.1775"^^xsd:float ;
-        schema:longitude "8.545835"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.1775"^^xsd:float ;
-    geo:long "8.545835"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG>
-    schema:legalName "FlammMOTEC GmbH & Co. KG" ;
-    schema:location <http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/location/13403/Waldstr._91-94> ;
-    schema:name "FlammMOTEC GmbH & Co. KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/address/13403/Waldstr._91-94>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Berlin" ;
-    schema:postalCode "13403" ;
-    schema:streetAddress "Waldstr. 91-94" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/location/13403/Waldstr._91-94>
-    schema:address <http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/address/13403/Waldstr._91-94> ;
-    schema:geo [
-        schema:latitude "52.528484"^^xsd:float ;
-        schema:longitude "13.330963"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.528484"^^xsd:float ;
-    geo:long "13.330963"^^xsd:float .
-
-suppl:Frankenfeld_Service_GmbH
-    schema:legalName "Frankenfeld Service GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/location/33415/Chromstr._129> ;
-    schema:name "Frankenfeld Service GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/address/33415/Chromstr._129>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Verl" ;
-    schema:postalCode "33415" ;
-    schema:streetAddress "Chromstr. 129" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/location/33415/Chromstr._129>
-    schema:address <http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/address/33415/Chromstr._129> ;
-    schema:geo [
-        schema:latitude "51.866795"^^xsd:float ;
-        schema:longitude "8.469339"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.866795"^^xsd:float ;
-    geo:long "8.469339"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH>
-    schema:legalName "Friedr. Schmücker GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/location/49624/Gutenbergstr._1> ;
-    schema:name "Friedr. Schmücker GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/address/49624/Gutenbergstr._1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Löningen" ;
-    schema:postalCode "49624" ;
-    schema:streetAddress "Gutenbergstr. 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/location/49624/Gutenbergstr._1>
-    schema:address <http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/address/49624/Gutenbergstr._1> ;
-    schema:geo [
-        schema:latitude "52.737408"^^xsd:float ;
-        schema:longitude "7.7835174"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.737408"^^xsd:float ;
-    geo:long "7.7835174"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG>
-    schema:legalName "Galvanotechnik Kessel GmbH & Co. KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/location/38159/Raiffeisenstr._2> ;
-    schema:name "Galvanotechnik Kessel GmbH & Co. KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/address/38159/Raiffeisenstr._2>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Vechelde" ;
-    schema:postalCode "38159" ;
-    schema:streetAddress "Raiffeisenstr. 2" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/location/38159/Raiffeisenstr._2>
-    schema:address <http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/address/38159/Raiffeisenstr._2> ;
-    schema:geo [
-        schema:latitude "52.25804"^^xsd:float ;
-        schema:longitude "10.351301"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.25804"^^xsd:float ;
-    geo:long "10.351301"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH>
-    schema:legalName "Gutbrod Schmölln GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/location/04626/Zum_Wasserturm_79-1> ;
-    schema:name "Gutbrod Schmölln GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/address/04626/Zum_Wasserturm_79-1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Schmölln" ;
-    schema:postalCode "04626" ;
-    schema:streetAddress "Zum Wasserturm 79-1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/location/04626/Zum_Wasserturm_79-1>
-    schema:address <http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/address/04626/Zum_Wasserturm_79-1> ;
-    schema:geo [
-        schema:latitude "50.876545"^^xsd:float ;
-        schema:longitude "12.331494"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "50.876545"^^xsd:float ;
-    geo:long "12.331494"^^xsd:float .
-
-suppl:Hella_Fahrzeug-Komponenten_GmbH
-    schema:legalName "Hella Fahrzeug-Komponenten GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/location/28199/Dortmunder_Str._6> ;
-    schema:name "Hella Fahrzeug-Komponenten GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/address/28199/Dortmunder_Str._6>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Bremen" ;
-    schema:postalCode "28199" ;
-    schema:streetAddress "Dortmunder Str. 6" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/location/28199/Dortmunder_Str._6>
-    schema:address <http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/address/28199/Dortmunder_Str._6> ;
-    schema:geo [
-        schema:latitude "53.05898"^^xsd:float ;
-        schema:longitude "8.778902"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.05898"^^xsd:float ;
-    geo:long "8.778902"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co.>
-    schema:legalName "Hilgendorf GmbH + Co." ;
-    schema:location <http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./location/31135/Benzstr._1> ;
-    schema:name "Hilgendorf GmbH + Co." ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./address/31135/Benzstr._1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hildesheim" ;
-    schema:postalCode "31135" ;
-    schema:streetAddress "Benzstr. 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./location/31135/Benzstr._1>
-    schema:address <http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./address/31135/Benzstr._1> ;
-    schema:geo [
-        schema:latitude "52.168915"^^xsd:float ;
-        schema:longitude "9.986784"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.168915"^^xsd:float ;
-    geo:long "9.986784"^^xsd:float .
-
-suppl:Ina_Schaeffler_KG
-    schema:legalName "Ina Schaeffler KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/location/14943/Industriestr._2A> ;
-    schema:name "Ina Schaeffler KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/address/14943/Industriestr._2A>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Luckenwalde" ;
-    schema:postalCode "14943" ;
-    schema:streetAddress "Industriestr. 2A" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/location/14943/Industriestr._2A>
-    schema:address <http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/address/14943/Industriestr._2A> ;
-    schema:geo [
-        schema:latitude "52.077927"^^xsd:float ;
-        schema:longitude "13.144384"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.077927"^^xsd:float ;
-    geo:long "13.144384"^^xsd:float .
-
-suppl:Jama_Kunststoffverarbeitung
-    schema:legalName "Jama Kunststoffverarbeitung" ;
-    schema:location <http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/location/29640/Gallhorner_Flatt_4> ;
-    schema:name "Jama Kunststoffverarbeitung" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/address/29640/Gallhorner_Flatt_4>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Schneverdingen" ;
-    schema:postalCode "29640" ;
-    schema:streetAddress "Gallhorner Flatt 4" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/location/29640/Gallhorner_Flatt_4>
-    schema:address <http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/address/29640/Gallhorner_Flatt_4> ;
-    schema:geo [
-        schema:latitude "53.103786"^^xsd:float ;
-        schema:longitude "9.7973175"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.103786"^^xsd:float ;
-    geo:long "9.7973175"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH>
-    schema:legalName "Küster ACS GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/location/29462/Bahnhofstr._52> ;
-    schema:name "Küster ACS GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/address/29462/Bahnhofstr._52>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Wustrow" ;
-    schema:postalCode "29462" ;
-    schema:streetAddress "Bahnhofstr. 52" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/location/29462/Bahnhofstr._52>
-    schema:address <http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/address/29462/Bahnhofstr._52> ;
-    schema:geo [
-        schema:latitude "52.92258"^^xsd:float ;
-        schema:longitude "11.131526"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.92258"^^xsd:float ;
-    geo:long "11.131526"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG>
-    schema:legalName "KKF Fels GmbH & Co.KG" ;
-    schema:location <http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/location/38644/Schweppenkamp_1> ;
-    schema:name "KKF Fels GmbH & Co.KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/address/38644/Schweppenkamp_1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Goslar" ;
-    schema:postalCode "38644" ;
-    schema:streetAddress "Schweppenkamp 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/location/38644/Schweppenkamp_1>
-    schema:address <http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/address/38644/Schweppenkamp_1> ;
-    schema:geo [
-        schema:latitude "51.935547"^^xsd:float ;
-        schema:longitude "10.419878"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.935547"^^xsd:float ;
-    geo:long "10.419878"^^xsd:float .
-
-suppl:KUKA_Werkzeugbau
-    schema:legalName "KUKA Werkzeugbau" ;
-    schema:location <http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/location/08340/Weidauer_Str._15> ;
-    schema:name "KUKA Werkzeugbau" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/address/08340/Weidauer_Str._15>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Schwarzenberg" ;
-    schema:postalCode "08340" ;
-    schema:streetAddress "Weidauer Str. 15" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/location/08340/Weidauer_Str._15>
-    schema:address <http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/address/08340/Weidauer_Str._15> ;
-    schema:geo [
-        schema:latitude "50.545162"^^xsd:float ;
-        schema:longitude "12.788759"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "50.545162"^^xsd:float ;
-    geo:long "12.788759"^^xsd:float .
-
-suppl:KWD_Automobiltechnik_GmbH
-    schema:legalName "KWD Automobiltechnik GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/location/38442/Stellfelderstr._39> ;
-    schema:name "KWD Automobiltechnik GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/address/38442/Stellfelderstr._39>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Wolfsburg" ;
-    schema:postalCode "38442" ;
-    schema:streetAddress "Stellfelderstr. 39" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/location/38442/Stellfelderstr._39>
-    schema:address <http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/address/38442/Stellfelderstr._39> ;
-    schema:geo [
-        schema:latitude "52.430405"^^xsd:float ;
-        schema:longitude "10.736115"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.430405"^^xsd:float ;
-    geo:long "10.736115"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG>
-    schema:legalName "Karl Schöngen KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/location/38229/Karl-Scharfenberg-Str._1> ;
-    schema:name "Karl Schöngen KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/address/38229/Karl-Scharfenberg-Str._1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Salzgitter" ;
-    schema:postalCode "38229" ;
-    schema:streetAddress "Karl-Scharfenberg-Str. 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/location/38229/Karl-Scharfenberg-Str._1>
-    schema:address <http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/address/38229/Karl-Scharfenberg-Str._1> ;
-    schema:geo [
-        schema:latitude "52.08836"^^xsd:float ;
-        schema:longitude "10.378682"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.08836"^^xsd:float ;
-    geo:long "10.378682"^^xsd:float .
-
-suppl:Karosseriewerke_Dresden_GmbH
-    schema:legalName "Karosseriewerke Dresden GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/location/01454/Heinrich-Gl%C3%A4ser-Str._20> ;
-    schema:name "Karosseriewerke Dresden GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/address/01454/Heinrich-Gl%C3%A4ser-Str._20>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Radeberg" ;
-    schema:postalCode "01454" ;
-    schema:streetAddress "Heinrich-Gläser-Str. 20" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/location/01454/Heinrich-Gl%C3%A4ser-Str._20>
-    schema:address <http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/address/01454/Heinrich-Gl%C3%A4ser-Str._20> ;
-    schema:geo [
-        schema:latitude "51.111145"^^xsd:float ;
-        schema:longitude "13.904076"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.111145"^^xsd:float ;
-    geo:long "13.904076"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG>
-    schema:legalName "Kautex Textron GmbH & Co. KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/location/26789/Eisenstra%C3%9Fe_18> ;
-    schema:name "Kautex Textron GmbH & Co. KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/address/26789/Eisenstra%C3%9Fe_18>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Leer" ;
-    schema:postalCode "26789" ;
-    schema:streetAddress "Eisenstraße 18" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/location/26789/Eisenstra%C3%9Fe_18>
-    schema:address <http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/address/26789/Eisenstra%C3%9Fe_18> ;
-    schema:geo [
-        schema:latitude "53.266174"^^xsd:float ;
-        schema:longitude "7.41215"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.266174"^^xsd:float ;
-    geo:long "7.41215"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG>
-    schema:legalName "Kayser A. GmbH & Co. KG" ;
-    schema:location <http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/location/37574/Hullerser_Landstr._48> ;
-    schema:name "Kayser A. GmbH & Co. KG" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/address/37574/Hullerser_Landstr._48>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Einbeck" ;
-    schema:postalCode "37574" ;
-    schema:streetAddress "Hullerser Landstr. 48" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/location/37574/Hullerser_Landstr._48>
-    schema:address <http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/address/37574/Hullerser_Landstr._48> ;
-    schema:geo [
-        schema:latitude "51.816956"^^xsd:float ;
-        schema:longitude "9.845711"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.816956"^^xsd:float ;
-    geo:long "9.845711"^^xsd:float .
-
-suppl:KmB_Technologie
-    schema:legalName "KmB Technologie" ;
-    schema:location <http://www.xybermotive.com/supplier/KmB_Technologie/location/39261/Industrieweg_9> ;
-    schema:name "KmB Technologie" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/KmB_Technologie/address/39261/Industrieweg_9>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Zerbst" ;
-    schema:postalCode "39261" ;
-    schema:streetAddress "Industrieweg 9" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/KmB_Technologie/location/39261/Industrieweg_9>
-    schema:address <http://www.xybermotive.com/supplier/KmB_Technologie/address/39261/Industrieweg_9> ;
-    schema:geo [
-        schema:latitude "51.957592"^^xsd:float ;
-        schema:longitude "12.092744"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.957592"^^xsd:float ;
-    geo:long "12.092744"^^xsd:float .
-
-suppl:Kunststoffverarbeitung
-    schema:legalName "Kunststoffverarbeitung" ;
-    schema:location <http://www.xybermotive.com/supplier/Kunststoffverarbeitung/location/29394/Nienwohler_Eck_5-6> ;
-    schema:name "Kunststoffverarbeitung" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Kunststoffverarbeitung/address/29394/Nienwohler_Eck_5-6>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Lüder" ;
-    schema:postalCode "29394" ;
-    schema:streetAddress "Nienwohler Eck 5-6" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Kunststoffverarbeitung/location/29394/Nienwohler_Eck_5-6>
-    schema:address <http://www.xybermotive.com/supplier/Kunststoffverarbeitung/address/29394/Nienwohler_Eck_5-6> ;
-    a schema:Place .
-
-<http://www.xybermotive.com/supplier/Linde_%26_Wiemann>
-    schema:legalName "Linde & Wiemann" ;
-    schema:location <http://www.xybermotive.com/supplier/Linde_%26_Wiemann/location/01920/Am_Sandberg_9> ;
-    schema:name "Linde & Wiemann" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Linde_%26_Wiemann/address/01920/Am_Sandberg_9>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Elstra" ;
-    schema:postalCode "01920" ;
-    schema:streetAddress "Am Sandberg 9" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Linde_%26_Wiemann/location/01920/Am_Sandberg_9>
-    schema:address <http://www.xybermotive.com/supplier/Linde_%26_Wiemann/address/01920/Am_Sandberg_9> ;
-    schema:geo [
-        schema:latitude "51.192173"^^xsd:float ;
-        schema:longitude "14.136885"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.192173"^^xsd:float ;
-    geo:long "14.136885"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH>
-    schema:legalName "Magna Intern. Stanztechnik GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/location/38229/Peiner_Str._151-155> ;
-    schema:name "Magna Intern. Stanztechnik GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/address/38229/Peiner_Str._151-155>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Salzgitter" ;
-    schema:postalCode "38229" ;
-    schema:streetAddress "Peiner Str. 151-155" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/location/38229/Peiner_Str._151-155>
-    schema:address <http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/address/38229/Peiner_Str._151-155> ;
-    schema:geo [
-        schema:latitude "52.16587"^^xsd:float ;
-        schema:longitude "10.353252"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.16587"^^xsd:float ;
-    geo:long "10.353252"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH>
-    schema:legalName "Mann & Hummel Automotive GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/location/38667/Grubenweg_22> ;
-    schema:name "Mann & Hummel Automotive GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/address/38667/Grubenweg_22>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Bad Harzburg" ;
-    schema:postalCode "38667" ;
-    schema:streetAddress "Grubenweg 22" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/location/38667/Grubenweg_22>
-    schema:address <http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/address/38667/Grubenweg_22> ;
-    schema:geo [
-        schema:latitude "51.88534"^^xsd:float ;
-        schema:longitude "10.547675"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.88534"^^xsd:float ;
-    geo:long "10.547675"^^xsd:float .
-
-suppl:Nedschroef_Plettenberg_GmbH
-    schema:legalName "Nedschroef Plettenberg GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/location/58840/M%C3%BChlhoff_5> ;
-    schema:name "Nedschroef Plettenberg GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/address/58840/M%C3%BChlhoff_5>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Plettenberg" ;
-    schema:postalCode "58840" ;
-    schema:streetAddress "Mühlhoff 5" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/location/58840/M%C3%BChlhoff_5>
-    schema:address <http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/address/58840/M%C3%BChlhoff_5> ;
-    schema:geo [
-        schema:latitude "51.19533"^^xsd:float ;
-        schema:longitude "7.8153534"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.19533"^^xsd:float ;
-    geo:long "7.8153534"^^xsd:float .
-
-suppl:Oris_Fahrzeugteile
-    schema:legalName "Oris Fahrzeugteile" ;
-    schema:location <http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/location/09356/Achatstr._2-4> ;
-    schema:name "Oris Fahrzeugteile" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/address/09356/Achatstr._2-4>
-    schema:addressCountry "D" ;
-    schema:addressLocality "St. Egidien" ;
-    schema:postalCode "09356" ;
-    schema:streetAddress "Achatstr. 2-4" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/location/09356/Achatstr._2-4>
-    schema:address <http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/address/09356/Achatstr._2-4> ;
-    schema:geo [
-        schema:latitude "50.817493"^^xsd:float ;
-        schema:longitude "12.641877"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "50.817493"^^xsd:float ;
-    geo:long "12.641877"^^xsd:float .
-
-suppl:Pierburg_Pump_Technology_GmbH
-    schema:legalName "Pierburg Pump Technology GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/location/04746/Sonnenstr._29> ;
-    schema:name "Pierburg Pump Technology GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/address/04746/Sonnenstr._29>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hartha" ;
-    schema:postalCode "04746" ;
-    schema:streetAddress "Sonnenstr. 29" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/location/04746/Sonnenstr._29>
-    schema:address <http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/address/04746/Sonnenstr._29> ;
-    schema:geo [
-        schema:latitude "51.09362"^^xsd:float ;
-        schema:longitude "12.977704"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "51.09362"^^xsd:float ;
-    geo:long "12.977704"^^xsd:float .
-
-<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA>
-    schema:legalName "Procter&Gamble Intern.Operations SA" ;
-    schema:location <http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/location/74564/Procter_%26_Gamble_Str._1> ;
-    schema:name "Procter&Gamble Intern.Operations SA" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/address/74564/Procter_%26_Gamble_Str._1>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Crailsheim" ;
-    schema:postalCode "74564" ;
-    schema:streetAddress "Procter & Gamble Str. 1" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/location/74564/Procter_%26_Gamble_Str._1>
-    schema:address <http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/address/74564/Procter_%26_Gamble_Str._1> ;
-    schema:geo [
-        schema:latitude "49.12969"^^xsd:float ;
-        schema:longitude "10.032352"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "49.12969"^^xsd:float ;
-    geo:long "10.032352"^^xsd:float .
-
-suppl:Profas_GmbH
-    schema:legalName "Profas GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Profas_GmbH/location/21337/Otto-Brenner-Str._7> ;
-    schema:name "Profas GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Profas_GmbH/address/21337/Otto-Brenner-Str._7>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Lüneburg" ;
-    schema:postalCode "21337" ;
-    schema:streetAddress "Otto-Brenner-Str. 7" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Profas_GmbH/location/21337/Otto-Brenner-Str._7>
-    schema:address <http://www.xybermotive.com/supplier/Profas_GmbH/address/21337/Otto-Brenner-Str._7> ;
-    schema:geo [
-        schema:latitude "53.240395"^^xsd:float ;
-        schema:longitude "10.478692"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.240395"^^xsd:float ;
-    geo:long "10.478692"^^xsd:float .
-
-suppl:Radsystem_GmbH
-    schema:legalName "Radsystem GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Radsystem_GmbH/location/30419/J%C3%A4dekamp_30> ;
-    schema:name "Radsystem GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Radsystem_GmbH/address/30419/J%C3%A4dekamp_30>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hannover" ;
-    schema:postalCode "30419" ;
-    schema:streetAddress "Jädekamp 30" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Radsystem_GmbH/location/30419/J%C3%A4dekamp_30>
-    schema:address <http://www.xybermotive.com/supplier/Radsystem_GmbH/address/30419/J%C3%A4dekamp_30> ;
-    schema:geo [
-        schema:latitude "52.417652"^^xsd:float ;
-        schema:longitude "9.638126"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.417652"^^xsd:float ;
-    geo:long "9.638126"^^xsd:float .
-
-suppl:Robert_Bosch_Elektronik_GmbH
-    schema:legalName "Robert Bosch Elektronik GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/location/38228/J.-F.-Kennedy-Str._43-53> ;
-    schema:name "Robert Bosch Elektronik GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/address/38228/J.-F.-Kennedy-Str._43-53>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Salzgitter" ;
-    schema:postalCode "38228" ;
-    schema:streetAddress "J.-F.-Kennedy-Str. 43-53" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/location/38228/J.-F.-Kennedy-Str._43-53>
-    schema:address <http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/address/38228/J.-F.-Kennedy-Str._43-53> ;
-    schema:geo [
-        schema:latitude "52.13603"^^xsd:float ;
-        schema:longitude "10.292674"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.13603"^^xsd:float ;
-    geo:long "10.292674"^^xsd:float .
-
-suppl:Robert_Bosch_GmbH
-    schema:legalName "Robert Bosch GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/location/31139/Robert-Bosch-Str._200> ;
-    schema:name "Robert Bosch GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/address/31139/Robert-Bosch-Str._200>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hildesheim" ;
-    schema:postalCode "31139" ;
-    schema:streetAddress "Robert-Bosch-Str. 200" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/location/31139/Robert-Bosch-Str._200>
-    schema:address <http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/address/31139/Robert-Bosch-Str._200> ;
-    schema:geo [
-        schema:latitude "52.11531"^^xsd:float ;
-        schema:longitude "9.898382"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.11531"^^xsd:float ;
-    geo:long "9.898382"^^xsd:float .
-
-suppl:SMH_Stahlmagazin
-    schema:legalName "SMH Stahlmagazin" ;
-    schema:location <http://www.xybermotive.com/supplier/SMH_Stahlmagazin/location/30926/Industriestra%C3%9Fe_2> ;
-    schema:name "SMH Stahlmagazin" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/SMH_Stahlmagazin/address/30926/Industriestra%C3%9Fe_2>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Seelze" ;
-    schema:postalCode "30926" ;
-    schema:streetAddress "Industriestraße 2" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/SMH_Stahlmagazin/location/30926/Industriestra%C3%9Fe_2>
-    schema:address <http://www.xybermotive.com/supplier/SMH_Stahlmagazin/address/30926/Industriestra%C3%9Fe_2> ;
-    schema:geo [
-        schema:latitude "52.393566"^^xsd:float ;
-        schema:longitude "9.646405"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.393566"^^xsd:float ;
-    geo:long "9.646405"^^xsd:float .
-
-suppl:SMP_Deutschland_GmbH
-    schema:legalName "SMP Deutschland GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/location/26135/Rheinstra%C3%9Fe_40> ;
-    schema:name "SMP Deutschland GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/address/26135/Rheinstra%C3%9Fe_40>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Oldenburg" ;
-    schema:postalCode "26135" ;
-    schema:streetAddress "Rheinstraße 40" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/location/26135/Rheinstra%C3%9Fe_40>
-    schema:address <http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/address/26135/Rheinstra%C3%9Fe_40> ;
-    schema:geo [
-        schema:latitude "53.13862"^^xsd:float ;
-        schema:longitude "8.227399"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.13862"^^xsd:float ;
-    geo:long "8.227399"^^xsd:float .
-
-suppl:Sachsentrans
-    schema:legalName "Sachsentrans" ;
-    schema:location <http://www.xybermotive.com/supplier/Sachsentrans/location/08058/B%C3%BCttenstr._4> ;
-    schema:name "Sachsentrans" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Sachsentrans/address/08058/B%C3%BCttenstr._4>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Zwickau" ;
-    schema:postalCode "08058" ;
-    schema:streetAddress "Büttenstr. 4" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Sachsentrans/location/08058/B%C3%BCttenstr._4>
-    schema:address <http://www.xybermotive.com/supplier/Sachsentrans/address/08058/B%C3%BCttenstr._4> ;
-    schema:geo [
-        schema:latitude "50.750877"^^xsd:float ;
-        schema:longitude "12.484334"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "50.750877"^^xsd:float ;
-    geo:long "12.484334"^^xsd:float .
-
-suppl:Salzgitter_Automotive
-    schema:legalName "Salzgitter Automotive" ;
-    schema:location <http://www.xybermotive.com/supplier/Salzgitter_Automotive/location/49124/Malbergerstr._20> ;
-    schema:name "Salzgitter Automotive" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Salzgitter_Automotive/address/49124/Malbergerstr._20>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Georgsmarienhütte" ;
-    schema:postalCode "49124" ;
-    schema:streetAddress "Malbergerstr. 20" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Salzgitter_Automotive/location/49124/Malbergerstr._20>
-    schema:address <http://www.xybermotive.com/supplier/Salzgitter_Automotive/address/49124/Malbergerstr._20> ;
-    schema:geo [
-        schema:latitude "52.21167"^^xsd:float ;
-        schema:longitude "8.039024"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.21167"^^xsd:float ;
-    geo:long "8.039024"^^xsd:float .
-
-suppl:Schnellecke_Logistics
-    schema:legalName "Schnellecke Logistics" ;
-    schema:location <http://www.xybermotive.com/supplier/Schnellecke_Logistics/location/38440/Stellfelder_Str._39> ;
-    schema:name "Schnellecke Logistics" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Schnellecke_Logistics/address/38440/Stellfelder_Str._39>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Wolfsburg" ;
-    schema:postalCode "38440" ;
-    schema:streetAddress "Stellfelder Str. 39" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Schnellecke_Logistics/location/38440/Stellfelder_Str._39>
-    schema:address <http://www.xybermotive.com/supplier/Schnellecke_Logistics/address/38440/Stellfelder_Str._39> ;
-    schema:geo [
-        schema:latitude "52.430405"^^xsd:float ;
-        schema:longitude "10.736115"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.430405"^^xsd:float ;
-    geo:long "10.736115"^^xsd:float .
-
-suppl:Schnellecke_Transportlogistik_GmbH
-    schema:legalName "Schnellecke Transportlogistik GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/location/38112/Hansestrasse_60> ;
-    schema:name "Schnellecke Transportlogistik GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/address/38112/Hansestrasse_60>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Braunschweig" ;
-    schema:postalCode "38112" ;
-    schema:streetAddress "Hansestrasse 60" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/location/38112/Hansestrasse_60>
-    schema:address <http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/address/38112/Hansestrasse_60> ;
-    schema:geo [
-        schema:latitude "52.31558"^^xsd:float ;
-        schema:longitude "10.4927845"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.31558"^^xsd:float ;
-    geo:long "10.4927845"^^xsd:float .
-
-suppl:Sika_Automotive
-    schema:legalName "Sika Automotive" ;
-    schema:location <http://www.xybermotive.com/supplier/Sika_Automotive/location/22525/Reichsbahnstr._99> ;
-    schema:name "Sika Automotive" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Sika_Automotive/address/22525/Reichsbahnstr._99>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Hamburg" ;
-    schema:postalCode "22525" ;
-    schema:streetAddress "Reichsbahnstr. 99" ;
-    a schema:PostalAddress .
-
-<http://www.xybermotive.com/supplier/Sika_Automotive/location/22525/Reichsbahnstr._99>
-    schema:address <http://www.xybermotive.com/supplier/Sika_Automotive/address/22525/Reichsbahnstr._99> ;
-    schema:geo [
-        schema:latitude "53.59745"^^xsd:float ;
-        schema:longitude "9.906536"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.59745"^^xsd:float ;
-    geo:long "9.906536"^^xsd:float .
-
-suppl:Sumitomo_Electric_Bordnetze_GmbH
-    schema:legalName "Sumitomo Electric Bordnetze GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/location/38444/Heinenkamp_18> ;
-    schema:name "Sumitomo Electric Bordnetze GmbH" ;
-    a schema:Organization, sc:Supplier .
-
-<http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/address/38444/Heinenkamp_18>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Wolfsburg" ;
-    schema:postalCode "38444" ;
-    schema:streetAddress "Heinenkamp 18" ;
-    a schema:PostalAddress .
+  schema:addressCountry "Deutschland" .
 
 <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/location/38444/Heinenkamp_18>
-    schema:address <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/address/38444/Heinenkamp_18> ;
-    schema:geo [
-        schema:latitude "52.371784"^^xsd:float ;
-        schema:longitude "10.738105"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.371784"^^xsd:float ;
-    geo:long "10.738105"^^xsd:float .
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/address/38444/Heinenkamp_18> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.7381045 52.3717856)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.371784"^^xsd:float ;
+        geo:long        "10.738105"^^xsd:float .
 
-<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH>
-    schema:legalName "TI Automotive (Gifhorn) GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/location/38550/Gehrenkamp_3> ;
-    schema:name "TI Automotive (Gifhorn) GmbH" ;
-    a schema:Organization, sc:Supplier .
+suppl:Dichtungstechnik_G.Bruss
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Dichtungstechnik G.Bruss" ;
+        schema:location   <http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/location/22955/Schultwiete_12> ;
+        schema:name       "Dichtungstechnik G.Bruss" .
 
-<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/address/38550/Gehrenkamp_3>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Isenbüttel" ;
-    schema:postalCode "38550" ;
-    schema:streetAddress "Gehrenkamp 3" ;
-    a schema:PostalAddress .
+<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/address/30855/INDUSTRIESTR._4>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Langenhagen" ;
+        schema:postalCode       "30855" ;
+        schema:streetAddress    "INDUSTRIESTR. 4" .
 
-<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/location/38550/Gehrenkamp_3>
-    schema:address <http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/address/38550/Gehrenkamp_3> ;
-    schema:geo [
-        schema:latitude "52.444412"^^xsd:float ;
-        schema:longitude "10.590179"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.444412"^^xsd:float ;
-    geo:long "10.590179"^^xsd:float .
+suppl:ContiTech  a        schema:Organization , sc:Supplier ;
+        schema:legalName  "ContiTech" ;
+        schema:location   <http://www.xybermotive.com/supplier/ContiTech/location/38239/Am_G%C3%BCterverkehrszentrum> ;
+        schema:name       "ContiTech" .
 
-suppl:TRW_Deutschland_GmbH
-    schema:legalName "TRW Deutschland GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/location/31699/Hauptstrasse_80> ;
-    schema:name "TRW Deutschland GmbH" ;
-    a schema:Organization, sc:Supplier .
+suppl:FILZFABRIK  a       schema:Organization , sc:Supplier ;
+        schema:legalName  "FILZFABRIK" ;
+        schema:location   <http://www.xybermotive.com/supplier/FILZFABRIK/location/38100/FALLERSLEBER-TOR-WALL_7-9> ;
+        schema:name       "FILZFABRIK" .
 
-<http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/address/31699/Hauptstrasse_80>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Beckedorf" ;
-    schema:postalCode "31699" ;
-    schema:streetAddress "Hauptstrasse 80" ;
-    a schema:PostalAddress .
+schema:Place  a     rdfs:Class ;
+        rdfs:label  "supplier location" .
 
-<http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/location/31699/Hauptstrasse_80>
-    schema:address <http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/address/31699/Hauptstrasse_80> ;
-    schema:geo [
-        schema:latitude "52.349346"^^xsd:float ;
-        schema:longitude "9.31517"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.349346"^^xsd:float ;
-    geo:long "9.31517"^^xsd:float .
+<http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/location/38112/Hansestrasse_60>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/address/38112/Hansestrasse_60> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.49278415 52.31557835)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.31558"^^xsd:float ;
+        geo:long        "10.4927845"^^xsd:float .
+
+suppl:Nedschroef_Plettenberg_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Nedschroef Plettenberg GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/location/58840/M%C3%BChlhoff_5> ;
+        schema:name       "Nedschroef Plettenberg GmbH" .
+
+<http://www.xybermotive.com/supplier/Radsystem_GmbH/location/30419/J%C3%A4dekamp_30>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Radsystem_GmbH/address/30419/J%C3%A4dekamp_30> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.6381268 52.4176515)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.417652"^^xsd:float ;
+        geo:long        "9.638126"^^xsd:float .
+
+schema:address  a   rdf:Property ;
+        rdfs:label  "location address" .
+
+<http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/location/04746/Sonnenstr._29>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/address/04746/Sonnenstr._29> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.9777036 51.0936186)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.09362"^^xsd:float ;
+        geo:long        "12.977704"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/location/39646/Lunapark_2>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/address/39646/Lunapark_2> .
+
+<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Fischer + Plath GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/location/27804/Gansper_Helmer_4> ;
+        schema:name       "Fischer + Plath GmbH" .
+
+<http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/address/09356/Achatstr._2-4>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "St. Egidien" ;
+        schema:postalCode       "09356" ;
+        schema:streetAddress    "Achatstr. 2-4" .
+
+<http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/location/22880/Industriestr._35_-_53>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/address/22880/Industriestr._35_-_53> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.7304974 53.5717349)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.571735"^^xsd:float ;
+        geo:long        "9.730497"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/SMH_Stahlmagazin/location/30926/Industriestra%C3%9Fe_2>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/SMH_Stahlmagazin/address/30926/Industriestra%C3%9Fe_2> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.646405 52.3935654)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.393566"^^xsd:float ;
+        geo:long        "9.646405"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/address/08340/Weidauer_Str._15>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Schwarzenberg" ;
+        schema:postalCode       "08340" ;
+        schema:streetAddress    "Weidauer Str. 15" .
+
+<http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/location/29640/Gallhorner_Flatt_4>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/address/29640/Gallhorner_Flatt_4> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.7973175 53.1037852)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.103786"^^xsd:float ;
+        geo:long        "9.7973175"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/address/38444/Heinenkamp_18>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Wolfsburg" ;
+        schema:postalCode       "38444" ;
+        schema:streetAddress    "Heinenkamp 18" .
+
+suppl:Kunststoffverarbeitung
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Kunststoffverarbeitung" ;
+        schema:location   <http://www.xybermotive.com/supplier/Kunststoffverarbeitung/location/29394/Nienwohler_Eck_5-6> ;
+        schema:name       "Kunststoffverarbeitung" .
+
+<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/location/04626/Zum_Wasserturm_79-1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/address/04626/Zum_Wasserturm_79-1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.3314948 50.8765433)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "50.876545"^^xsd:float ;
+        geo:long        "12.331494"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Kautex Textron GmbH & Co. KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/location/26789/Eisenstra%C3%9Fe_18> ;
+        schema:name       "Kautex Textron GmbH & Co. KG" .
+
+<http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/address/49716/Essener_Str._7>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Meppen" ;
+        schema:postalCode       "49716" ;
+        schema:streetAddress    "Essener Str. 7" .
+
+suppl:Blechformwerke_Bernsbach_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Blechformwerke Bernsbach GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/location/08315/Stra%C3%9Fe_der_Einheit_45%2F47> ;
+        schema:name       "Blechformwerke Bernsbach GmbH" .
+
+<http://www.xybermotive.com/supplier/Profas_GmbH/address/21337/Otto-Brenner-Str._7>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Lüneburg" ;
+        schema:postalCode       "21337" ;
+        schema:streetAddress    "Otto-Brenner-Str. 7" .
+
+<http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/location/01454/Heinrich-Gl%C3%A4ser-Str._20>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/address/01454/Heinrich-Gl%C3%A4ser-Str._20> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(13.9040753264122 51.1111437)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.111145"^^xsd:float ;
+        geo:long        "13.904076"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/address/39171/Am_Bahnhof_5>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Dodendorf" ;
+        schema:postalCode       "39171" ;
+        schema:streetAddress    "Am Bahnhof 5" .
+
+<http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/address/38228/J.-F.-Kennedy-Str._43-53>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Salzgitter" ;
+        schema:postalCode       "38228" ;
+        schema:streetAddress    "J.-F.-Kennedy-Str. 43-53" .
+
+<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/location/38667/Grubenweg_22>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/address/38667/Grubenweg_22> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.5476749 51.8853434)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.88534"^^xsd:float ;
+        geo:long        "10.547675"^^xsd:float .
+
+suppl:Schnellecke_Transportlogistik_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Schnellecke Transportlogistik GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/location/38112/Hansestrasse_60> ;
+        schema:name       "Schnellecke Transportlogistik GmbH" .
+
+<http://www.xybermotive.com/supplier/Schnellecke_Logistics/location/38440/Stellfelder_Str._39>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Schnellecke_Logistics/address/38440/Stellfelder_Str._39> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.736115 52.4304046)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.430405"^^xsd:float ;
+        geo:long        "10.736115"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/address/04626/Zum_Wasserturm_79-1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Schmölln" ;
+        schema:postalCode       "04626" ;
+        schema:streetAddress    "Zum Wasserturm 79-1" .
+
+schema:Organization  a  rdfs:Class .
+
+<http://www.xybermotive.com/supplier/Sika_Automotive/address/22525/Reichsbahnstr._99>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hamburg" ;
+        schema:postalCode       "22525" ;
+        schema:streetAddress    "Reichsbahnstr. 99" .
 
 suppl:Theysohn_Kunststoff_GmbH
-    schema:legalName "Theysohn Kunststoff GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/location/38228/J.F._Kennedy-Stra%C3%9Fe_50> ;
-    schema:name "Theysohn Kunststoff GmbH" ;
-    a schema:Organization, sc:Supplier .
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Theysohn Kunststoff GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/location/38228/J.F._Kennedy-Stra%C3%9Fe_50> ;
+        schema:name       "Theysohn Kunststoff GmbH" .
 
-<http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/address/38228/J.F._Kennedy-Stra%C3%9Fe_50>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Salzgitter" ;
-    schema:postalCode "38228" ;
-    schema:streetAddress "J.F. Kennedy-Straße 50" ;
-    a schema:PostalAddress .
+suppl:Frankenfeld_Service_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Frankenfeld Service GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/location/33415/Chromstr._129> ;
+        schema:name       "Frankenfeld Service GmbH" .
 
-<http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/location/38228/J.F._Kennedy-Stra%C3%9Fe_50>
-    schema:address <http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/address/38228/J.F._Kennedy-Stra%C3%9Fe_50> ;
-    schema:geo [
-        schema:latitude "52.13603"^^xsd:float ;
-        schema:longitude "10.292674"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "52.13603"^^xsd:float ;
-    geo:long "10.292674"^^xsd:float .
+<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/address/38550/Gehrenkamp_3>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Isenbüttel" ;
+        schema:postalCode       "38550" ;
+        schema:streetAddress    "Gehrenkamp 3" .
+
+<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/location/49624/Gutenbergstr._1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/address/49624/Gutenbergstr._1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(7.7835171438928 52.73740945)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.737408"^^xsd:float ;
+        geo:long        "7.7835174"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/location/09126/Lutherstr._87>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/address/09126/Lutherstr._87> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.9255592466461 50.8189515)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "50.81895"^^xsd:float ;
+        geo:long        "12.925559"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/address/38229/Karl-Scharfenberg-Str._1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Salzgitter" ;
+        schema:postalCode       "38229" ;
+        schema:streetAddress    "Karl-Scharfenberg-Str. 1" .
+
+suppl:Blomberger_Holzindustrie
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Blomberger Holzindustrie" ;
+        schema:location   <http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/location/32825/K%C3%B6nigswinkel_2> ;
+        schema:name       "Blomberger Holzindustrie" .
+
+suppl:Sika_Automotive
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Sika Automotive" ;
+        schema:location   <http://www.xybermotive.com/supplier/Sika_Automotive/location/22525/Reichsbahnstr._99> ;
+        schema:name       "Sika Automotive" .
+
+<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/address/26789/Eisenstra%C3%9Fe_18>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Leer" ;
+        schema:postalCode       "26789" ;
+        schema:streetAddress    "Eisenstraße 18" .
+
+<http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/address/14943/Industriestr._2A>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Luckenwalde" ;
+        schema:postalCode       "14943" ;
+        schema:streetAddress    "Industriestr. 2A" .
+
+<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./address/31135/Benzstr._1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hildesheim" ;
+        schema:postalCode       "31135" ;
+        schema:streetAddress    "Benzstr. 1" .
+
+<http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/location/31139/Robert-Bosch-Str._200>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/address/31139/Robert-Bosch-Str._200> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.89838226675087 52.1153098)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.11531"^^xsd:float ;
+        geo:long        "9.898382"^^xsd:float .
+
+suppl:Schnellecke_Logistics
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Schnellecke Logistics" ;
+        schema:location   <http://www.xybermotive.com/supplier/Schnellecke_Logistics/location/38440/Stellfelder_Str._39> ;
+        schema:name       "Schnellecke Logistics" .
+
+suppl:Contitech_Vibration_Control_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Contitech Vibration Control GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/location/30419/J%C3%A4dekamp_30> ;
+        schema:name       "Contitech Vibration Control GmbH" .
+
+<http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/address/30165/Philipsbornstr._1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hannover" ;
+        schema:postalCode       "30165" ;
+        schema:streetAddress    "Philipsbornstr. 1" .
+
+<http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/address/39646/Lunapark_2>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Oebisfelde" ;
+        schema:postalCode       "39646" ;
+        schema:streetAddress    "Lunapark 2" .
+
+<http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/address/58840/M%C3%BChlhoff_5>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Plettenberg" ;
+        schema:postalCode       "58840" ;
+        schema:streetAddress    "Mühlhoff 5" .
+
+suppl:Profas_GmbH  a      schema:Organization , sc:Supplier ;
+        schema:legalName  "Profas GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Profas_GmbH/location/21337/Otto-Brenner-Str._7> ;
+        schema:name       "Profas GmbH" .
+
+schema:legalName  a  rdf:Property ;
+        rdfs:label  "supplier legal name" .
+
+suppl:August_Friedberg_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "August Friedberg GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/August_Friedberg_GmbH/location/03238/An_der_Schraube_28> ;
+        schema:name       "August Friedberg GmbH" .
+
+<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/address/74564/Procter_%26_Gamble_Str._1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Crailsheim" ;
+        schema:postalCode       "74564" ;
+        schema:streetAddress    "Procter & Gamble Str. 1" .
+
+<http://www.xybermotive.com/supplier/Linde_%26_Wiemann/address/01920/Am_Sandberg_9>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Elstra" ;
+        schema:postalCode       "01920" ;
+        schema:streetAddress    "Am Sandberg 9" .
 
 suppl:Wolpers_Technik_GmbH
-    schema:legalName "Wolpers Technik GmbH" ;
-    schema:location <http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/location/22844/Oststra%C3%9Fe_138> ;
-    schema:name "Wolpers Technik GmbH" ;
-    a schema:Organization, sc:Supplier .
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Wolpers Technik GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/location/22844/Oststra%C3%9Fe_138> ;
+        schema:name       "Wolpers Technik GmbH" .
 
-<http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/address/22844/Oststra%C3%9Fe_138>
-    schema:addressCountry "D" ;
-    schema:addressLocality "Norderstedt" ;
-    schema:postalCode "22844" ;
-    schema:streetAddress "Oststraße 138" ;
-    a schema:PostalAddress .
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/25337/Otto-Hahn-Str._4>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/25337/Otto-Hahn-Str._4> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.6877735 53.7467539)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.746754"^^xsd:float ;
+        geo:long        "9.687774"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/address/37574/Hullerser_Landstr._48>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Einbeck" ;
+        schema:postalCode       "37574" ;
+        schema:streetAddress    "Hullerser Landstr. 48" .
+
+<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/location/38518/Alfred-Teves-Stra%C3%9Fe_11>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/address/38518/Alfred-Teves-Stra%C3%9Fe_11> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.5384217618795 52.46577875)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.46578"^^xsd:float ;
+        geo:long        "10.538422"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/location/33415/Chromstr._129>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/address/33415/Chromstr._129> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(8.46933904940138 51.86679545)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.866795"^^xsd:float ;
+        geo:long        "8.469339"^^xsd:float .
+
+suppl:Contitech_Antriebssysteme_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Contitech Antriebssysteme GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/location/30165/Philipsbornstr._1> ;
+        schema:name       "Contitech Antriebssysteme GmbH" .
+
+schema:location  a  rdf:Property ;
+        rdfs:label  "supplier location" .
+
+<http://www.xybermotive.com/supplier/Salzgitter_Automotive/address/49124/Malbergerstr._20>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Georgsmarienhütte" ;
+        schema:postalCode       "49124" ;
+        schema:streetAddress    "Malbergerstr. 20" .
+
+<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Berg & Co. GmbH Bielefeld" ;
+        schema:location   <http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/location/33689/Gildemeister_80> ;
+        schema:name       "Berg & Co. GmbH Bielefeld" .
+
+<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Karl Schöngen KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/location/38229/Karl-Scharfenberg-Str._1> ;
+        schema:name       "Karl Schöngen KG" .
+
+<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/location/26789/Eisenstra%C3%9Fe_18>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/address/26789/Eisenstra%C3%9Fe_18> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(7.41215 53.2661746)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.266174"^^xsd:float ;
+        geo:long        "7.41215"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/KmB_Technologie/address/39261/Industrieweg_9>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Zerbst" ;
+        schema:postalCode       "39261" ;
+        schema:streetAddress    "Industrieweg 9" .
+
+<http://www.xybermotive.com/supplier/FILZFABRIK/location/38100/FALLERSLEBER-TOR-WALL_7-9>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/FILZFABRIK/address/38100/FALLERSLEBER-TOR-WALL_7-9> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.5296042 52.2710275)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.271027"^^xsd:float ;
+        geo:long        "10.529604"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Linde_%26_Wiemann>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Linde & Wiemann" ;
+        schema:location   <http://www.xybermotive.com/supplier/Linde_%26_Wiemann/location/01920/Am_Sandberg_9> ;
+        schema:name       "Linde & Wiemann" .
+
+<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Mann & Hummel Automotive GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/location/38667/Grubenweg_22> ;
+        schema:name       "Mann & Hummel Automotive GmbH" .
+
+<http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/location/28199/Dortmunder_Str._6>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/address/28199/Dortmunder_Str._6> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(8.778902 53.0589779)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.05898"^^xsd:float ;
+        geo:long        "8.778902"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/KmB_Technologie/location/39261/Industrieweg_9>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/KmB_Technologie/address/39261/Industrieweg_9> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.0927436 51.957593)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.957592"^^xsd:float ;
+        geo:long        "12.092744"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/location/38229/Peiner_Str._151-155>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/address/38229/Peiner_Str._151-155> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.3532521 52.1658707)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.16587"^^xsd:float ;
+        geo:long        "10.353252"^^xsd:float .
+
+suppl:KWD_Automobiltechnik_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "KWD Automobiltechnik GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/location/38442/Stellfelderstr._39> ;
+        schema:name       "KWD Automobiltechnik GmbH" .
+
+<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Brangs & Heinrich GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/location/30855/INDUSTRIESTR._4> ;
+        schema:name       "Brangs & Heinrich GmbH" .
+
+suppl:Hella_Fahrzeug-Komponenten_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Hella Fahrzeug-Komponenten GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/location/28199/Dortmunder_Str._6> ;
+        schema:name       "Hella Fahrzeug-Komponenten GmbH" .
+
+<http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/address/31139/Robert-Bosch-Str._200>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hildesheim" ;
+        schema:postalCode       "31139" ;
+        schema:streetAddress    "Robert-Bosch-Str. 200" .
+
+suppl:KUKA_Werkzeugbau
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "KUKA Werkzeugbau" ;
+        schema:location   <http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/location/08340/Weidauer_Str._15> ;
+        schema:name       "KUKA Werkzeugbau" .
+
+<http://www.xybermotive.com/supplier/ContiTech/address/38239/Am_G%C3%BCterverkehrszentrum>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Salzgitter" ;
+        schema:postalCode       "38239" ;
+        schema:streetAddress    "Am Güterverkehrszentrum" .
+
+<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/location/37574/Hullerser_Landstr._48>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/address/37574/Hullerser_Landstr._48> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.845711 51.8169562)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.816956"^^xsd:float ;
+        geo:long        "9.845711"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/address/22880/Industriestr._35_-_53>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Wedel" ;
+        schema:postalCode       "22880" ;
+        schema:streetAddress    "Industriestr. 35 - 53" .
+
+<http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/address/42551/Stahlstr._6-8>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Velbert" ;
+        schema:postalCode       "42551" ;
+        schema:streetAddress    "Stahlstr. 6-8" .
+
+<http://www.xybermotive.com/supplier/FILZFABRIK/address/38100/FALLERSLEBER-TOR-WALL_7-9>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Braunschweig" ;
+        schema:postalCode       "38100" ;
+        schema:streetAddress    "FALLERSLEBER-TOR-WALL 7-9" .
+
+<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/address/29462/Bahnhofstr._52>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Wustrow" ;
+        schema:postalCode       "29462" ;
+        schema:streetAddress    "Bahnhofstr. 52" .
+
+<http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/location/17373/Am_Gewerbepark_1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/address/17373/Am_Gewerbepark_1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(14.058035 53.7252359)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.725235"^^xsd:float ;
+        geo:long        "14.058035"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/address/04746/Sonnenstr._29>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hartha" ;
+        schema:postalCode       "04746" ;
+        schema:streetAddress    "Sonnenstr. 29" .
+
+<http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/location/38442/Stellfelderstr._39>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/address/38442/Stellfelderstr._39> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.736115 52.4304046)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.430405"^^xsd:float ;
+        geo:long        "10.736115"^^xsd:float .
+
+suppl:Magna_Intern._Stanztechnik_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Magna Intern. Stanztechnik GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/location/38229/Peiner_Str._151-155> ;
+        schema:name       "Magna Intern. Stanztechnik GmbH" .
+
+<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co.>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Hilgendorf GmbH + Co." ;
+        schema:location   <http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./location/31135/Benzstr._1> ;
+        schema:name       "Hilgendorf GmbH + Co." .
+
+<http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/location/30165/Philipsbornstr._1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/address/30165/Philipsbornstr._1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.731607 52.3897852)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.389786"^^xsd:float ;
+        geo:long        "9.731607"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Sachsentrans/location/08058/B%C3%BCttenstr._4>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Sachsentrans/address/08058/B%C3%BCttenstr._4> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.4843342 50.7508784)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "50.750877"^^xsd:float ;
+        geo:long        "12.484334"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/location/30419/J%C3%A4dekamp_30>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/address/30419/J%C3%A4dekamp_30> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.6381268 52.4176515)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.417652"^^xsd:float ;
+        geo:long        "9.638126"^^xsd:float .
+
+suppl:Robert_Bosch_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Robert Bosch GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/location/31139/Robert-Bosch-Str._200> ;
+        schema:name       "Robert Bosch GmbH" .
+
+<http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/address/38229/Peiner_Str._151-155>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Salzgitter" ;
+        schema:postalCode       "38229" ;
+        schema:streetAddress    "Peiner Str. 151-155" .
+
+<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Kayser A. GmbH & Co. KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/location/37574/Hullerser_Landstr._48> ;
+        schema:name       "Kayser A. GmbH & Co. KG" .
+
+<http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/location/08340/Weidauer_Str._15>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/address/08340/Weidauer_Str._15> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.7887593 50.5451629)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "50.545162"^^xsd:float ;
+        geo:long        "12.788759"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Sika_Automotive/location/22525/Reichsbahnstr._99>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Sika_Automotive/address/22525/Reichsbahnstr._99> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.9065363 53.5974503)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.59745"^^xsd:float ;
+        geo:long        "9.906536"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/location/38159/Raiffeisenstr._2>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/address/38159/Raiffeisenstr._2> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.3513012 52.2580429)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.25804"^^xsd:float ;
+        geo:long        "10.351301"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Küster ACS GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/location/29462/Bahnhofstr._52> ;
+        schema:name       "Küster ACS GmbH" .
+
+<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/location/30855/INDUSTRIESTR._4>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/address/30855/INDUSTRIESTR._4> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.7425839 52.477449)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.477448"^^xsd:float ;
+        geo:long        "9.742584"^^xsd:float .
+
+schema:postalCode  a  rdf:Property ;
+        rdfs:label  "supplier postal code" .
+
+suppl:ESKA_Automotive_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "ESKA Automotive GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/location/09126/Lutherstr._87> ;
+        schema:name       "ESKA Automotive GmbH" .
+
+suppl:KmB_Technologie
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "KmB Technologie" ;
+        schema:location   <http://www.xybermotive.com/supplier/KmB_Technologie/location/39261/Industrieweg_9> ;
+        schema:name       "KmB Technologie" .
+
+suppl:Salzgitter_Automotive
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Salzgitter Automotive" ;
+        schema:location   <http://www.xybermotive.com/supplier/Salzgitter_Automotive/location/49124/Malbergerstr._20> ;
+        schema:name       "Salzgitter Automotive" .
+
+suppl:Con_Garcia_Industrielackierung
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Con Garcia Industrielackierung" ;
+        schema:location   <http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/location/42551/Stahlstr._6-8> ;
+        schema:name       "Con Garcia Industrielackierung" .
+
+suppl:SMP_Deutschland_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "SMP Deutschland GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/location/26135/Rheinstra%C3%9Fe_40> ;
+        schema:name       "SMP Deutschland GmbH" .
+
+<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./location/31135/Benzstr._1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./address/31135/Benzstr._1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.986784 52.1689165)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.168915"^^xsd:float ;
+        geo:long        "9.986784"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/address/27804/Gansper_Helmer_4>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Berne" ;
+        schema:postalCode       "27804" ;
+        schema:streetAddress    "Gansper Helmer 4" .
+
+<http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/address/08315/Stra%C3%9Fe_der_Einheit_45%2F47>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Bernsbach" ;
+        schema:postalCode       "08315" ;
+        schema:streetAddress    "Straße der Einheit 45/47" .
+
+<http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/address/17373/Am_Gewerbepark_1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Ueckermünde" ;
+        schema:postalCode       "17373" ;
+        schema:streetAddress    "Am Gewerbepark 1" .
+
+<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/address/38667/Grubenweg_22>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Bad Harzburg" ;
+        schema:postalCode       "38667" ;
+        schema:streetAddress    "Grubenweg 22" .
+
+<http://www.xybermotive.com/supplier/Profas_GmbH/location/21337/Otto-Brenner-Str._7>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Profas_GmbH/address/21337/Otto-Brenner-Str._7> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.4786921 53.2403962)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.240395"^^xsd:float ;
+        geo:long        "10.478692"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Sachsentrans/address/08058/B%C3%BCttenstr._4>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Zwickau" ;
+        schema:postalCode       "08058" ;
+        schema:streetAddress    "Büttenstr. 4" .
+
+<http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/address/38442/Stellfelderstr._39>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Wolfsburg" ;
+        schema:postalCode       "38442" ;
+        schema:streetAddress    "Stellfelderstr. 39" .
+
+<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/address/33689/Gildemeister_80>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Bielefeld" ;
+        schema:postalCode       "33689" ;
+        schema:streetAddress    "Gildemeister 80" .
+
+suppl:DKM_Dodendorfer_Kunststoff-
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "DKM Dodendorfer Kunststoff-" ;
+        schema:location   <http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/location/39171/Am_Bahnhof_5> ;
+        schema:name       "DKM Dodendorfer Kunststoff-" .
+
+<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "FlammMOTEC GmbH & Co. KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/location/13403/Waldstr._91-94> ;
+        schema:name       "FlammMOTEC GmbH & Co. KG" .
+
+<http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/location/26135/Rheinstra%C3%9Fe_40>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/address/26135/Rheinstra%C3%9Fe_40> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(8.227399 53.1386178)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.13862"^^xsd:float ;
+        geo:long        "8.227399"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/location/42551/Stahlstr._6-8>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/address/42551/Stahlstr._6-8> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(7.0735822 51.3466772)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.346676"^^xsd:float ;
+        geo:long        "7.073582"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/address/38644/Schweppenkamp_1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Goslar" ;
+        schema:postalCode       "38644" ;
+        schema:streetAddress    "Schweppenkamp 1" .
+
+<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/location/27804/Gansper_Helmer_4>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/address/27804/Gansper_Helmer_4> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(8.5458341 53.1775003)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.1775"^^xsd:float ;
+        geo:long        "8.545835"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/address/38112/Hansestrasse_60>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Braunschweig" ;
+        schema:postalCode       "38112" ;
+        schema:streetAddress    "Hansestrasse 60" .
+
+sc:Supplier  a      rdfs:Class ;
+        rdfs:label  "supplier" .
+
+suppl:Robert_Bosch_Elektronik_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Robert Bosch Elektronik GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/location/38228/J.-F.-Kennedy-Str._43-53> ;
+        schema:name       "Robert Bosch Elektronik GmbH" .
+
+<http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/location/08315/Stra%C3%9Fe_der_Einheit_45%2F47>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/address/08315/Stra%C3%9Fe_der_Einheit_45%2F47> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.7665844 50.580203)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "50.580204"^^xsd:float ;
+        geo:long        "12.766584"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/location/29462/Bahnhofstr._52>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/address/29462/Bahnhofstr._52> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(11.1315257927496 52.9225798)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.92258"^^xsd:float ;
+        geo:long        "11.131526"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/location/31699/Hauptstrasse_80>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/address/31699/Hauptstrasse_80> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.3151704 52.3493449)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.349346"^^xsd:float ;
+        geo:long        "9.31517"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/location/13403/Waldstr._91-94>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/address/13403/Waldstr._91-94> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(13.3309635 52.5284841)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.528484"^^xsd:float ;
+        geo:long        "13.330963"^^xsd:float .
+
+suppl:Karosseriewerke_Dresden_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Karosseriewerke Dresden GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/location/01454/Heinrich-Gl%C3%A4ser-Str._20> ;
+        schema:name       "Karosseriewerke Dresden GmbH" .
+
+schema:streetAddress  a  rdf:Property ;
+        rdfs:label  "street" .
+
+schema:name  a      rdf:Property ;
+        rdfs:label  "supplier legal name" .
+
+<http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/location/32825/K%C3%B6nigswinkel_2>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/address/32825/K%C3%B6nigswinkel_2> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(9.1001991 51.9348963)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.934895"^^xsd:float ;
+        geo:long        "9.100199"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/location/38550/Gehrenkamp_3>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/address/38550/Gehrenkamp_3> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.5901795 52.4444135)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.444412"^^xsd:float ;
+        geo:long        "10.590179"^^xsd:float .
+
+suppl:DBW_Metallverarbeitungs_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "DBW Metallverarbeitungs GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/location/17373/Am_Gewerbepark_1> ;
+        schema:name       "DBW Metallverarbeitungs GmbH" .
+
+<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/location/33689/Gildemeister_80>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/address/33689/Gildemeister_80> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(8.59456595038452 51.92747185)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.92747"^^xsd:float ;
+        geo:long        "8.594566"^^xsd:float .
 
 <http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/location/22844/Oststra%C3%9Fe_138>
-    schema:address <http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/address/22844/Oststra%C3%9Fe_138> ;
-    schema:geo [
-        schema:latitude "53.742054"^^xsd:float ;
-        schema:longitude "10.022736"^^xsd:float ;
-        a schema:GeoCoordinates
-    ] ;
-    a schema:Place ;
-    geo:lat "53.742054"^^xsd:float ;
-    geo:long "10.022736"^^xsd:float .
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/address/22844/Oststra%C3%9Fe_138> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.0227354 53.7420545)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.742054"^^xsd:float ;
+        geo:long        "10.022736"^^xsd:float .
 
+<http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/location/49716/Essener_Str._7>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/address/49716/Essener_Str._7> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(7.2845898 52.7517434)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.751743"^^xsd:float ;
+        geo:long        "7.28459"^^xsd:float .
+
+suppl:Sachsentrans  a     schema:Organization , sc:Supplier ;
+        schema:legalName  "Sachsentrans" ;
+        schema:location   <http://www.xybermotive.com/supplier/Sachsentrans/location/08058/B%C3%BCttenstr._4> ;
+        schema:name       "Sachsentrans" .
+
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Autoliv B.V. & Co. KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/25337/Otto-Hahn-Str._4> , <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/38112/HANSESTR._46> ;
+        schema:name       "Autoliv B.V. & Co. KG" .
+
+<http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/location/38228/J.F._Kennedy-Stra%C3%9Fe_50>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/address/38228/J.F._Kennedy-Stra%C3%9Fe_50> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.2926745 52.1360267)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.13603"^^xsd:float ;
+        geo:long        "10.292674"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Friedr. Schmücker GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/location/49624/Gutenbergstr._1> ;
+        schema:name       "Friedr. Schmücker GmbH" .
+
+<http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/location/38228/J.-F.-Kennedy-Str._43-53>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/address/38228/J.-F.-Kennedy-Str._43-53> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.2926745 52.1360267)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.13603"^^xsd:float ;
+        geo:long        "10.292674"^^xsd:float .
+
+suppl:Pierburg_Pump_Technology_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Pierburg Pump Technology GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/location/04746/Sonnenstr._29> ;
+        schema:name       "Pierburg Pump Technology GmbH" .
+
+<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/location/38229/Karl-Scharfenberg-Str._1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/address/38229/Karl-Scharfenberg-Str._1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.3786822 52.0883582)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.08836"^^xsd:float ;
+        geo:long        "10.378682"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/location/58840/M%C3%BChlhoff_5>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/address/58840/M%C3%BChlhoff_5> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(7.8153535 51.1953333)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.19533"^^xsd:float ;
+        geo:long        "7.8153534"^^xsd:float .
+
+schema:addressLocality
+        a           rdf:Property ;
+        rdfs:label  "supplier locality" .
+
+<http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/location/14943/Industriestr._2A>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/address/14943/Industriestr._2A> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(13.1443844 52.077928)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.077927"^^xsd:float ;
+        geo:long        "13.144384"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/location/38644/Schweppenkamp_1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/address/38644/Schweppenkamp_1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.4198784 51.9355455)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.935547"^^xsd:float ;
+        geo:long        "10.419878"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/address/38228/J.F._Kennedy-Stra%C3%9Fe_50>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Salzgitter" ;
+        schema:postalCode       "38228" ;
+        schema:streetAddress    "J.F. Kennedy-Straße 50" .
+
+suppl:Sumitomo_Electric_Bordnetze_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Sumitomo Electric Bordnetze GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/location/38444/Heinenkamp_18> ;
+        schema:name       "Sumitomo Electric Bordnetze GmbH" .
+
+<http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/address/22955/Schultwiete_12>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hoisdorf" ;
+        schema:postalCode       "22955" ;
+        schema:streetAddress    "Schultwiete 12" .
+
+<http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/address/09126/Lutherstr._87>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Chemnitz" ;
+        schema:postalCode       "09126" ;
+        schema:streetAddress    "Lutherstr. 87" .
+
+suppl:Ina_Schaeffler_KG
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Ina Schaeffler KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/location/14943/Industriestr._2A> ;
+        schema:name       "Ina Schaeffler KG" .
+
+suppl:Oris_Fahrzeugteile
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Oris Fahrzeugteile" ;
+        schema:location   <http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/location/09356/Achatstr._2-4> ;
+        schema:name       "Oris Fahrzeugteile" .
+
+<http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/address/22844/Oststra%C3%9Fe_138>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Norderstedt" ;
+        schema:postalCode       "22844" ;
+        schema:streetAddress    "Oststraße 138" .
+
+<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "KKF Fels GmbH & Co.KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/location/38644/Schweppenkamp_1> ;
+        schema:name       "KKF Fels GmbH & Co.KG" .
+
+<http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/address/01454/Heinrich-Gl%C3%A4ser-Str._20>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Radeberg" ;
+        schema:postalCode       "01454" ;
+        schema:streetAddress    "Heinrich-Gläser-Str. 20" .
+
+<http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/location/22955/Schultwiete_12>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/address/22955/Schultwiete_12> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.3303673 53.6522918)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "53.65229"^^xsd:float ;
+        geo:long        "10.330367"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/address/26135/Rheinstra%C3%9Fe_40>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Oldenburg" ;
+        schema:postalCode       "26135" ;
+        schema:streetAddress    "Rheinstraße 40" .
+
+<http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/address/29640/Gallhorner_Flatt_4>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Schneverdingen" ;
+        schema:postalCode       "29640" ;
+        schema:streetAddress    "Gallhorner Flatt 4" .
+
+<http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/address/33415/Chromstr._129>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Verl" ;
+        schema:postalCode       "33415" ;
+        schema:streetAddress    "Chromstr. 129" .
+
+<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/address/38159/Raiffeisenstr._2>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Vechelde" ;
+        schema:postalCode       "38159" ;
+        schema:streetAddress    "Raiffeisenstr. 2" .
+
+<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "TI Automotive (Gifhorn) GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/location/38550/Gehrenkamp_3> ;
+        schema:name       "TI Automotive (Gifhorn) GmbH" .
+
+<http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/address/31699/Hauptstrasse_80>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Beckedorf" ;
+        schema:postalCode       "31699" ;
+        schema:streetAddress    "Hauptstrasse 80" .
+
+<http://www.xybermotive.com/supplier/Linde_%26_Wiemann/location/01920/Am_Sandberg_9>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Linde_%26_Wiemann/address/01920/Am_Sandberg_9> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(14.1368846 51.1921721)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.192173"^^xsd:float ;
+        geo:long        "14.136885"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Bergler GmbH & Co. KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Bergler_GmbH_%26_Co._KG/location/39646/Lunapark_2> ;
+        schema:name       "Bergler GmbH & Co. KG" .
+
+<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Gutbrod Schmölln GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/location/04626/Zum_Wasserturm_79-1> ;
+        schema:name       "Gutbrod Schmölln GmbH" .
+
+suppl:TRW_Deutschland_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "TRW Deutschland GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/location/31699/Hauptstrasse_80> ;
+        schema:name       "TRW Deutschland GmbH" .
+
+<http://www.xybermotive.com/supplier/Kunststoffverarbeitung/location/29394/Nienwohler_Eck_5-6>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Kunststoffverarbeitung/address/29394/Nienwohler_Eck_5-6> .
+
+<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/location/74564/Procter_%26_Gamble_Str._1>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/address/74564/Procter_%26_Gamble_Str._1> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.0323521 49.129687)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "49.12969"^^xsd:float ;
+        geo:long        "10.032352"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Salzgitter_Automotive/location/49124/Malbergerstr._20>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Salzgitter_Automotive/address/49124/Malbergerstr._20> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(8.0390242 52.2116685)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.21167"^^xsd:float ;
+        geo:long        "8.039024"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Radsystem_GmbH/address/30419/J%C3%A4dekamp_30>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hannover" ;
+        schema:postalCode       "30419" ;
+        schema:streetAddress    "Jädekamp 30" .
+
+<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Galvanotechnik Kessel GmbH & Co. KG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/location/38159/Raiffeisenstr._2> ;
+        schema:name       "Galvanotechnik Kessel GmbH & Co. KG" .
+
+suppl:Deutsche_Pentosin-Werke_GmbH
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Deutsche Pentosin-Werke GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/location/22880/Industriestr._35_-_53> ;
+        schema:name       "Deutsche Pentosin-Werke GmbH" .
+
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/38112/HANSESTR._46>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/38112/HANSESTR._46> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.4755685041795 52.3210049)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.321007"^^xsd:float ;
+        geo:long        "10.475569"^^xsd:float .
+
+suppl:Radsystem_GmbH  a   schema:Organization , sc:Supplier ;
+        schema:legalName  "Radsystem GmbH" ;
+        schema:location   <http://www.xybermotive.com/supplier/Radsystem_GmbH/location/30419/J%C3%A4dekamp_30> ;
+        schema:name       "Radsystem GmbH" .
+
+<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Continental Teves AG & Co.OHG" ;
+        schema:location   <http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/location/38518/Alfred-Teves-Stra%C3%9Fe_11> ;
+        schema:name       "Continental Teves AG & Co.OHG" .
+
+<http://www.xybermotive.com/supplier/ContiTech/location/38239/Am_G%C3%BCterverkehrszentrum>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/ContiTech/address/38239/Am_G%C3%BCterverkehrszentrum> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(10.4373828 52.1903595)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.19036"^^xsd:float ;
+        geo:long        "10.437383"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/address/30419/J%C3%A4dekamp_30>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Hannover" ;
+        schema:postalCode       "30419" ;
+        schema:streetAddress    "Jädekamp 30" .
+
+<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/address/49624/Gutenbergstr._1>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Löningen" ;
+        schema:postalCode       "49624" ;
+        schema:streetAddress    "Gutenbergstr. 1" .
+
+<http://www.xybermotive.com/supplier/August_Friedberg_GmbH/address/03238/An_der_Schraube_28>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Finsterwalde" ;
+        schema:postalCode       "03238" ;
+        schema:streetAddress    "An der Schraube 28" .
+
+<http://www.xybermotive.com/supplier/SMH_Stahlmagazin/address/30926/Industriestra%C3%9Fe_2>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Seelze" ;
+        schema:postalCode       "30926" ;
+        schema:streetAddress    "Industriestraße 2" .
+
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/38112/HANSESTR._46>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Braunschweig" ;
+        schema:postalCode       "38112" ;
+        schema:streetAddress    "HANSESTR. 46" .
+
+<http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/location/39171/Am_Bahnhof_5>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/address/39171/Am_Bahnhof_5> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(11.6119621 52.0484122)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "52.048412"^^xsd:float ;
+        geo:long        "11.611962"^^xsd:float .
+
+schema:addressCountry
+        a           rdf:Property ;
+        rdfs:label  "supplier country" .
+
+<http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/address/28199/Dortmunder_Str._6>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Bremen" ;
+        schema:postalCode       "28199" ;
+        schema:streetAddress    "Dortmunder Str. 6" .
+
+<http://www.xybermotive.com/supplier/Schnellecke_Logistics/address/38440/Stellfelder_Str._39>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Wolfsburg" ;
+        schema:postalCode       "38440" ;
+        schema:streetAddress    "Stellfelder Str. 39" .
+
+<http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/address/32825/K%C3%B6nigswinkel_2>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Blomberg" ;
+        schema:postalCode       "32825" ;
+        schema:streetAddress    "Königswinkel 2" .
+
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/address/25337/Otto-Hahn-Str._4>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Elmshorn" ;
+        schema:postalCode       "25337" ;
+        schema:streetAddress    "Otto-Hahn-Str. 4" .
+
+suppl:Bergmann_Maschinenbau
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Bergmann Maschinenbau" ;
+        schema:location   <http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/location/49716/Essener_Str._7> ;
+        schema:name       "Bergmann Maschinenbau" .
+
+<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/address/38518/Alfred-Teves-Stra%C3%9Fe_11>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Gifhorn" ;
+        schema:postalCode       "38518" ;
+        schema:streetAddress    "Alfred-Teves-Straße 11" .
+
+suppl:SMH_Stahlmagazin
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "SMH Stahlmagazin" ;
+        schema:location   <http://www.xybermotive.com/supplier/SMH_Stahlmagazin/location/30926/Industriestra%C3%9Fe_2> ;
+        schema:name       "SMH Stahlmagazin" .
+
+<http://www.xybermotive.com/supplier/August_Friedberg_GmbH/location/03238/An_der_Schraube_28>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/August_Friedberg_GmbH/address/03238/An_der_Schraube_28> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(13.7144955 51.6359439)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "51.635944"^^xsd:float ;
+        geo:long        "13.714496"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA>
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Procter&Gamble Intern.Operations SA" ;
+        schema:location   <http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/location/74564/Procter_%26_Gamble_Str._1> ;
+        schema:name       "Procter&Gamble Intern.Operations SA" .
+
+suppl:Jama_Kunststoffverarbeitung
+        a                 schema:Organization , sc:Supplier ;
+        schema:legalName  "Jama Kunststoffverarbeitung" ;
+        schema:location   <http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/location/29640/Gallhorner_Flatt_4> ;
+        schema:name       "Jama Kunststoffverarbeitung" .
+
+schema:PostalAddress  a  rdfs:Class ;
+        rdfs:label  "location postal address" .
+
+<http://www.xybermotive.com/supplier/Kunststoffverarbeitung/address/29394/Nienwohler_Eck_5-6>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Lüder" ;
+        schema:postalCode       "29394" ;
+        schema:streetAddress    "Nienwohler Eck 5-6" .
+
+<http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/location/09356/Achatstr._2-4>
+        a               schema:Place ;
+        schema:address  <http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/address/09356/Achatstr._2-4> ;
+        <http://www.opengis.net/ont/geosparql#asWKT>
+                "POINT(12.6418767 50.8174924)"^^<http://www.opengis.net/ont/geosparql#wktLiteral> ;
+        geo:lat         "50.817493"^^xsd:float ;
+        geo:long        "12.641877"^^xsd:float .
+
+<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/address/13403/Waldstr._91-94>
+        a                       schema:PostalAddress ;
+        schema:addressCountry   "D" ;
+        schema:addressLocality  "Berlin" ;
+        schema:postalCode       "13403" ;
+        schema:streetAddress    "Waldstr. 91-94" .
+@prefix schema: <http://schema.org/> .
+@prefix db:    <http://www.xybermotive.com/supplier/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix suppl: <http://www.xybermotive.com/supplier/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix map:   <http://www.xybermotive.com/supplier/#> .
+@prefix sc:    <http://www.xybermotive.com/ontology/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<http://www.xybermotive.com/supplier/Bergmann_Maschinenbau/location/49716/Essener_Str._7>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.751743"^^xsd:float ;
+                      schema:longitude  "7.28459"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Hilgendorf_GmbH_%2B_Co./location/31135/Benzstr._1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.168915"^^xsd:float ;
+                      schema:longitude  "9.986784"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Frankenfeld_Service_GmbH/location/33415/Chromstr._129>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.866795"^^xsd:float ;
+                      schema:longitude  "8.469339"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Blomberger_Holzindustrie/location/32825/K%C3%B6nigswinkel_2>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.934895"^^xsd:float ;
+                      schema:longitude  "9.100199"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/25337/Otto-Hahn-Str._4>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.746754"^^xsd:float ;
+                      schema:longitude  "9.687774"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Deutsche_Pentosin-Werke_GmbH/location/22880/Industriestr._35_-_53>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.571735"^^xsd:float ;
+                      schema:longitude  "9.730497"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Friedr._Schm%C3%BCcker_GmbH/location/49624/Gutenbergstr._1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.737408"^^xsd:float ;
+                      schema:longitude  "7.7835174"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Berg_%26_Co._GmbH_Bielefeld/location/33689/Gildemeister_80>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.92747"^^xsd:float ;
+                      schema:longitude  "8.594566"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Gutbrod_Schm%C3%B6lln_GmbH/location/04626/Zum_Wasserturm_79-1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "50.876545"^^xsd:float ;
+                      schema:longitude  "12.331494"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Profas_GmbH/location/21337/Otto-Brenner-Str._7>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.240395"^^xsd:float ;
+                      schema:longitude  "10.478692"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/location/38112/Hansestrasse_60>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.31558"^^xsd:float ;
+                      schema:longitude  "10.4927845"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/DBW_Metallverarbeitungs_GmbH/location/17373/Am_Gewerbepark_1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.725235"^^xsd:float ;
+                      schema:longitude  "14.058035"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH/location/27804/Gansper_Helmer_4>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.1775"^^xsd:float ;
+                      schema:longitude  "8.545835"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/SMH_Stahlmagazin/location/30926/Industriestra%C3%9Fe_2>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.393566"^^xsd:float ;
+                      schema:longitude  "9.646405"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/K%C3%BCster_ACS_GmbH/location/29462/Bahnhofstr._52>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.92258"^^xsd:float ;
+                      schema:longitude  "11.131526"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/KKF_Fels_GmbH_%26_Co.KG/location/38644/Schweppenkamp_1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.935547"^^xsd:float ;
+                      schema:longitude  "10.419878"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Radsystem_GmbH/location/30419/J%C3%A4dekamp_30>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.417652"^^xsd:float ;
+                      schema:longitude  "9.638126"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Blechformwerke_Bernsbach_GmbH/location/08315/Stra%C3%9Fe_der_Einheit_45%2F47>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "50.580204"^^xsd:float ;
+                      schema:longitude  "12.766584"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/TI_Automotive_%28Gifhorn%29_GmbH/location/38550/Gehrenkamp_3>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.444412"^^xsd:float ;
+                      schema:longitude  "10.590179"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Sachsentrans/location/08058/B%C3%BCttenstr._4>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "50.750877"^^xsd:float ;
+                      schema:longitude  "12.484334"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Magna_Intern._Stanztechnik_GmbH/location/38229/Peiner_Str._151-155>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.16587"^^xsd:float ;
+                      schema:longitude  "10.353252"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Theysohn_Kunststoff_GmbH/location/38228/J.F._Kennedy-Stra%C3%9Fe_50>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.13603"^^xsd:float ;
+                      schema:longitude  "10.292674"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/August_Friedberg_GmbH/location/03238/An_der_Schraube_28>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.635944"^^xsd:float ;
+                      schema:longitude  "13.714496"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Continental_Teves_AG_%26_Co.OHG/location/38518/Alfred-Teves-Stra%C3%9Fe_11>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.46578"^^xsd:float ;
+                      schema:longitude  "10.538422"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/KUKA_Werkzeugbau/location/08340/Weidauer_Str._15>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "50.545162"^^xsd:float ;
+                      schema:longitude  "12.788759"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Wolpers_Technik_GmbH/location/22844/Oststra%C3%9Fe_138>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.742054"^^xsd:float ;
+                      schema:longitude  "10.022736"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Karl_Sch%C3%B6ngen_KG/location/38229/Karl-Scharfenberg-Str._1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.08836"^^xsd:float ;
+                      schema:longitude  "10.378682"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/ESKA_Automotive_GmbH/location/09126/Lutherstr._87>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "50.81895"^^xsd:float ;
+                      schema:longitude  "12.925559"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Nedschroef_Plettenberg_GmbH/location/58840/M%C3%BChlhoff_5>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.19533"^^xsd:float ;
+                      schema:longitude  "7.8153534"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Kautex_Textron_GmbH_%26_Co._KG/location/26789/Eisenstra%C3%9Fe_18>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.266174"^^xsd:float ;
+                      schema:longitude  "7.41215"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Mann_%26_Hummel_Automotive_GmbH/location/38667/Grubenweg_22>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.88534"^^xsd:float ;
+                      schema:longitude  "10.547675"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Karosseriewerke_Dresden_GmbH/location/01454/Heinrich-Gl%C3%A4ser-Str._20>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.111145"^^xsd:float ;
+                      schema:longitude  "13.904076"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Oris_Fahrzeugteile/location/09356/Achatstr._2-4>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "50.817493"^^xsd:float ;
+                      schema:longitude  "12.641877"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Schnellecke_Logistics/location/38440/Stellfelder_Str._39>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.430405"^^xsd:float ;
+                      schema:longitude  "10.736115"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/FILZFABRIK/location/38100/FALLERSLEBER-TOR-WALL_7-9>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.271027"^^xsd:float ;
+                      schema:longitude  "10.529604"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Robert_Bosch_GmbH/location/31139/Robert-Bosch-Str._200>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.11531"^^xsd:float ;
+                      schema:longitude  "9.898382"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Ina_Schaeffler_KG/location/14943/Industriestr._2A>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.077927"^^xsd:float ;
+                      schema:longitude  "13.144384"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/ContiTech/location/38239/Am_G%C3%BCterverkehrszentrum>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.19036"^^xsd:float ;
+                      schema:longitude  "10.437383"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/TRW_Deutschland_GmbH/location/31699/Hauptstrasse_80>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.349346"^^xsd:float ;
+                      schema:longitude  "9.31517"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Jama_Kunststoffverarbeitung/location/29640/Gallhorner_Flatt_4>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.103786"^^xsd:float ;
+                      schema:longitude  "9.7973175"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Pierburg_Pump_Technology_GmbH/location/04746/Sonnenstr._29>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.09362"^^xsd:float ;
+                      schema:longitude  "12.977704"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/KmB_Technologie/location/39261/Industrieweg_9>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.957592"^^xsd:float ;
+                      schema:longitude  "12.092744"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Contitech_Vibration_Control_GmbH/location/30419/J%C3%A4dekamp_30>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.417652"^^xsd:float ;
+                      schema:longitude  "9.638126"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Galvanotechnik_Kessel_GmbH_%26_Co._KG/location/38159/Raiffeisenstr._2>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.25804"^^xsd:float ;
+                      schema:longitude  "10.351301"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Contitech_Antriebssysteme_GmbH/location/30165/Philipsbornstr._1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.389786"^^xsd:float ;
+                      schema:longitude  "9.731607"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/location/22955/Schultwiete_12>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.65229"^^xsd:float ;
+                      schema:longitude  "10.330367"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Procter%26Gamble_Intern.Operations_SA/location/74564/Procter_%26_Gamble_Str._1>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "49.12969"^^xsd:float ;
+                      schema:longitude  "10.032352"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Autoliv_B.V._%26_Co._KG/location/38112/HANSESTR._46>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.321007"^^xsd:float ;
+                      schema:longitude  "10.475569"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Robert_Bosch_Elektronik_GmbH/location/38228/J.-F.-Kennedy-Str._43-53>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.13603"^^xsd:float ;
+                      schema:longitude  "10.292674"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Sika_Automotive/location/22525/Reichsbahnstr._99>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.59745"^^xsd:float ;
+                      schema:longitude  "9.906536"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/KWD_Automobiltechnik_GmbH/location/38442/Stellfelderstr._39>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.430405"^^xsd:float ;
+                      schema:longitude  "10.736115"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/DKM_Dodendorfer_Kunststoff-/location/39171/Am_Bahnhof_5>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.048412"^^xsd:float ;
+                      schema:longitude  "11.611962"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Hella_Fahrzeug-Komponenten_GmbH/location/28199/Dortmunder_Str._6>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.05898"^^xsd:float ;
+                      schema:longitude  "8.778902"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Brangs_%26_Heinrich_GmbH/location/30855/INDUSTRIESTR._4>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.477448"^^xsd:float ;
+                      schema:longitude  "9.742584"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Kayser_A._GmbH_%26_Co._KG/location/37574/Hullerser_Landstr._48>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.816956"^^xsd:float ;
+                      schema:longitude  "9.845711"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Linde_%26_Wiemann/location/01920/Am_Sandberg_9>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.192173"^^xsd:float ;
+                      schema:longitude  "14.136885"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/SMP_Deutschland_GmbH/location/26135/Rheinstra%C3%9Fe_40>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "53.13862"^^xsd:float ;
+                      schema:longitude  "8.227399"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/location/38444/Heinenkamp_18>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.371784"^^xsd:float ;
+                      schema:longitude  "10.738105"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Salzgitter_Automotive/location/49124/Malbergerstr._20>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.21167"^^xsd:float ;
+                      schema:longitude  "8.039024"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG/location/13403/Waldstr._91-94>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "52.528484"^^xsd:float ;
+                      schema:longitude  "13.330963"^^xsd:float
+                    ] .
+
+<http://www.xybermotive.com/supplier/Con_Garcia_Industrielackierung/location/42551/Stahlstr._6-8>
+        schema:geo  [ a                 schema:GeoCoordinates ;
+                      schema:latitude   "51.346676"^^xsd:float ;
+                      schema:longitude  "7.073582"^^xsd:float
+                    ] .
