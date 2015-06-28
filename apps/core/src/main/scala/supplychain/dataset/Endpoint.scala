@@ -68,7 +68,7 @@ class EndpointConfig(kind: String,
 
       val weatherStationFile = new File("dashboard/data/ncdc-stations.ttl")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
-      val weatherFile = new File("dashboard/data/ncdc-ghcnd-2010-2014.ttl.gz")
+      val weatherFile = new File("dashboard/data/ncdc-ghcnd-2014.ttl.gz")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.TTL))
 
       val supplConfFile = new File("dashboard/data/supplier.ttl")
@@ -122,7 +122,7 @@ class VirtuosoJdbcEndpoint(host: String, port: String, user: String, password: S
   }
 
   override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = {
-    endpoint.uploadDataset(graph, file, lang)
+    endpoint.uploadDataset(graph, file, lang, clear)
   }
 }
 

@@ -825,6 +825,870 @@ gkw:GME00121282
     geo:long "7.45"^^xsd:float ;
     gkwo:stationId "GME00121282" .
 
+gkw:GMM00010022
+    ogc:asWKT "POINT(8.95 54.8)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LECK" ;
+    geo:alt "17.0"^^xsd:float ;
+    geo:lat "54.8"^^xsd:float ;
+    geo:long "8.95"^^xsd:float ;
+    gkwo:stationId "GMM00010022" .
+
+gkw:GMM00010028
+    ogc:asWKT "POINT(8.6 54.333)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ST PETER-ORDING" ;
+    geo:alt "11.0"^^xsd:float ;
+    geo:lat "54.333"^^xsd:float ;
+    geo:long "8.6"^^xsd:float ;
+    gkwo:stationId "GMM00010028" .
+
+gkw:GMM00010042
+    ogc:asWKT "POINT(10.033 54.667)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "OLPENITZ (AUT)" ;
+    geo:alt "4.0"^^xsd:float ;
+    geo:lat "54.667"^^xsd:float ;
+    geo:long "10.033"^^xsd:float ;
+    gkwo:stationId "GMM00010042" .
+
+gkw:GMM00010093
+    ogc:asWKT "POINT(13.483 54.367)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "PUTBUS" ;
+    geo:alt "34.0"^^xsd:float ;
+    geo:lat "54.367"^^xsd:float ;
+    geo:long "13.483"^^xsd:float ;
+    gkwo:stationId "GMM00010093" .
+
+gkw:GMM00010097
+    ogc:asWKT "POINT(13.917 54.25)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GREIFSWALDER OIE" ;
+    geo:alt "12.0"^^xsd:float ;
+    geo:lat "54.25"^^xsd:float ;
+    geo:long "13.917"^^xsd:float ;
+    gkwo:stationId "GMM00010097" .
+
+gkw:GMM00010129
+    ogc:asWKT "POINT(8.583 53.533)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BREMERHAVEN" ;
+    geo:alt "7.0"^^xsd:float ;
+    geo:lat "53.533"^^xsd:float ;
+    geo:long "8.583"^^xsd:float ;
+    gkwo:stationId "GMM00010129" .
+
+gkw:GMM00010130
+    ogc:asWKT "POINT(9.017 54.067)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ELPERSBUETTEL (AUT)" ;
+    geo:alt "1.0"^^xsd:float ;
+    geo:lat "54.067"^^xsd:float ;
+    geo:long "9.017"^^xsd:float ;
+    gkwo:stationId "GMM00010130" .
+
+gkw:GMM00010139
+    ogc:asWKT "POINT(9.167 53.5)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BREMERVOERDE (AUT)" ;
+    geo:alt "5.0"^^xsd:float ;
+    geo:lat "53.5"^^xsd:float ;
+    geo:long "9.167"^^xsd:float ;
+    gkwo:stationId "GMM00010139" .
+
+gkw:GMM00010142
+    ogc:asWKT "POINT(9.567 53.983)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ITZEHOE" ;
+    geo:alt "26.0"^^xsd:float ;
+    geo:lat "53.983"^^xsd:float ;
+    geo:long "9.567"^^xsd:float ;
+    gkwo:stationId "GMM00010142" .
+
+gkw:GMM00010146
+    ogc:asWKT "POINT(9.883 53.733)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "QUICKBORN" ;
+    geo:alt "17.0"^^xsd:float ;
+    geo:lat "53.733"^^xsd:float ;
+    geo:long "9.883"^^xsd:float ;
+    gkwo:stationId "GMM00010146" .
+
+gkw:GMM00010150
+    ogc:asWKT "POINT(10.35 54.167)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "DOERNICK" ;
+    geo:alt "28.0"^^xsd:float ;
+    geo:lat "54.167"^^xsd:float ;
+    geo:long "10.35"^^xsd:float ;
+    gkwo:stationId "GMM00010150" .
+
+gkw:GMM00010152
+    ogc:asWKT "POINT(10.883 54.083)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "PELZERHAKEN (AUT)" ;
+    geo:alt "2.0"^^xsd:float ;
+    geo:lat "54.083"^^xsd:float ;
+    geo:long "10.883"^^xsd:float ;
+    gkwo:stationId "GMM00010152" .
+
+gkw:GMM00010156
+    ogc:asWKT "POINT(10.719 53.805)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LUBECK BLANKENSEE" ;
+    geo:alt "16.2"^^xsd:float ;
+    geo:lat "53.805"^^xsd:float ;
+    geo:long "10.719"^^xsd:float ;
+    gkwo:stationId "GMM00010156" .
+
+gkw:GMM00010161
+    ogc:asWKT "POINT(11.2 54.0)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BOLTENHAGEN" ;
+    geo:alt "17.0"^^xsd:float ;
+    geo:lat "54.0"^^xsd:float ;
+    geo:long "11.2"^^xsd:float ;
+    gkwo:stationId "GMM00010161" .
+
+gkw:GMM00010168
+    ogc:asWKT "POINT(12.1 53.6)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GOLDBERG (AUT)" ;
+    geo:alt "58.0"^^xsd:float ;
+    geo:lat "53.6"^^xsd:float ;
+    geo:long "12.1"^^xsd:float ;
+    gkwo:stationId "GMM00010168" .
+
+gkw:GMM00010180
+    ogc:asWKT "POINT(12.733 54.367)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BARTH" ;
+    geo:alt "7.0"^^xsd:float ;
+    geo:lat "54.367"^^xsd:float ;
+    geo:long "12.733"^^xsd:float ;
+    gkwo:stationId "GMM00010180" .
+
+gkw:GMM00010193
+    ogc:asWKT "POINT(14.067 53.75)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "UECKERMUENDE (AUT)" ;
+    geo:alt "7.0"^^xsd:float ;
+    geo:lat "53.75"^^xsd:float ;
+    geo:long "14.067"^^xsd:float ;
+    gkwo:stationId "GMM00010193" .
+
+gkw:GMM00010210
+    ogc:asWKT "POINT(7.9 53.067)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "FRIESOYTHE-ALTENOYTHE" ;
+    geo:alt "7.0"^^xsd:float ;
+    geo:lat "53.067"^^xsd:float ;
+    geo:long "7.9"^^xsd:float ;
+    gkwo:stationId "GMM00010210" .
+
+gkw:GMM00010235
+    ogc:asWKT "POINT(9.833 53.0)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "SOLTAU" ;
+    geo:alt "77.0"^^xsd:float ;
+    geo:lat "53.0"^^xsd:float ;
+    geo:long "9.833"^^xsd:float ;
+    gkwo:stationId "GMM00010235" .
+
+gkw:GMM00010249
+    ogc:asWKT "POINT(10.683 53.4)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BOIZENBURG (AUT)" ;
+    geo:alt "46.0"^^xsd:float ;
+    geo:lat "53.4"^^xsd:float ;
+    geo:long "10.683"^^xsd:float ;
+    gkwo:stationId "GMM00010249" .
+
+gkw:GMM00010253
+    ogc:asWKT "POINT(11.133 52.967)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LUCHOW/REHBECK" ;
+    geo:alt "17.0"^^xsd:float ;
+    geo:lat "52.967"^^xsd:float ;
+    geo:long "11.133"^^xsd:float ;
+    gkwo:stationId "GMM00010253" .
+
+gkw:GMM00010261
+    ogc:asWKT "POINT(11.733 52.9)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "SEEHAUSEN/ALTMARK" ;
+    geo:alt "23.0"^^xsd:float ;
+    geo:lat "52.9"^^xsd:float ;
+    geo:long "11.733"^^xsd:float ;
+    gkwo:stationId "GMM00010261" .
+
+gkw:GMM00010267
+    ogc:asWKT "POINT(12.417 52.933)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "KYRITZ (AUT)" ;
+    geo:alt "40.0"^^xsd:float ;
+    geo:lat "52.933"^^xsd:float ;
+    geo:long "12.417"^^xsd:float ;
+    gkwo:stationId "GMM00010267" .
+
+gkw:GMM00010268
+    ogc:asWKT "POINT(12.667 53.517)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WAREN" ;
+    geo:alt "71.0"^^xsd:float ;
+    geo:lat "53.517"^^xsd:float ;
+    geo:long "12.667"^^xsd:float ;
+    gkwo:stationId "GMM00010268" .
+
+gkw:GMM00010281
+    ogc:asWKT "POINT(13.306 53.602)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "NEUBRANDENBURG" ;
+    geo:alt "69.5"^^xsd:float ;
+    geo:lat "53.602"^^xsd:float ;
+    geo:long "13.306"^^xsd:float ;
+    gkwo:stationId "GMM00010281" .
+
+gkw:GMM00010289
+    ogc:asWKT "POINT(13.933 53.317)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GRUENOW (AUT)" ;
+    geo:alt "57.0"^^xsd:float ;
+    geo:lat "53.317"^^xsd:float ;
+    geo:long "13.933"^^xsd:float ;
+    gkwo:stationId "GMM00010289" .
+
+gkw:GMM00010305
+    ogc:asWKT "POINT(7.317 52.517)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LINGEN" ;
+    geo:alt "21.0"^^xsd:float ;
+    geo:lat "52.517"^^xsd:float ;
+    geo:long "7.317"^^xsd:float ;
+    gkwo:stationId "GMM00010305" .
+
+gkw:GMM00010309
+    ogc:asWKT "POINT(6.95 52.083)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "AHAUS" ;
+    geo:alt "46.0"^^xsd:float ;
+    geo:lat "52.083"^^xsd:float ;
+    geo:long "6.95"^^xsd:float ;
+    gkwo:stationId "GMM00010309" .
+
+gkw:GMM00010312
+    ogc:asWKT "POINT(8.17 52.318)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BELM" ;
+    geo:alt "104.0"^^xsd:float ;
+    geo:lat "52.318"^^xsd:float ;
+    geo:long "8.17"^^xsd:float ;
+    gkwo:stationId "GMM00010312" .
+
+gkw:GMM00010321
+    ogc:asWKT "POINT(8.341 52.586)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "DIEPHOLZ" ;
+    geo:alt "38.7"^^xsd:float ;
+    geo:lat "52.586"^^xsd:float ;
+    geo:long "8.341"^^xsd:float ;
+    gkwo:stationId "GMM00010321" .
+
+gkw:GMM00010325
+    ogc:asWKT "POINT(8.75 52.1)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BAD SALZUFLEN" ;
+    geo:alt "98.0"^^xsd:float ;
+    geo:lat "52.1"^^xsd:float ;
+    geo:long "8.75"^^xsd:float ;
+    gkwo:stationId "GMM00010325" .
+
+gkw:GMM00010348
+    ogc:asWKT "POINT(10.556 52.319)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BRAUNSCHWEIG WOLFSBURG" ;
+    geo:alt "89.9"^^xsd:float ;
+    geo:lat "52.319"^^xsd:float ;
+    geo:long "10.556"^^xsd:float ;
+    gkwo:stationId "GMM00010348" .
+
+gkw:GMM00010356
+    ogc:asWKT "POINT(11.183 52.167)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "UMMENDORF(AUT)" ;
+    geo:alt "163.0"^^xsd:float ;
+    geo:lat "52.167"^^xsd:float ;
+    geo:long "11.183"^^xsd:float ;
+    gkwo:stationId "GMM00010356" .
+
+gkw:GMM00010359
+    ogc:asWKT "POINT(11.4 52.517)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GARDELEGEN (AUT)" ;
+    geo:alt "48.0"^^xsd:float ;
+    geo:lat "52.517"^^xsd:float ;
+    geo:long "11.4"^^xsd:float ;
+    gkwo:stationId "GMM00010359" .
+
+gkw:GMM00010365
+    ogc:asWKT "POINT(12.167 52.383)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GENTHIN (AUT)" ;
+    geo:alt "39.0"^^xsd:float ;
+    geo:lat "52.383"^^xsd:float ;
+    geo:long "12.167"^^xsd:float ;
+    gkwo:stationId "GMM00010365" .
+
+gkw:GMM00010368
+    ogc:asWKT "POINT(12.467 52.117)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WIESENBURG" ;
+    geo:alt "188.0"^^xsd:float ;
+    geo:lat "52.117"^^xsd:float ;
+    geo:long "12.467"^^xsd:float ;
+    gkwo:stationId "GMM00010368" .
+
+gkw:GMM00010376
+    ogc:asWKT "POINT(13.617 52.117)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BARUTH" ;
+    geo:alt "57.0"^^xsd:float ;
+    geo:lat "52.117"^^xsd:float ;
+    geo:long "13.617"^^xsd:float ;
+    gkwo:stationId "GMM00010376" .
+
+gkw:GMM00010385
+    ogc:asWKT "POINT(13.523 52.38)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "SCHONEFELD" ;
+    geo:alt "47.9"^^xsd:float ;
+    geo:lat "52.38"^^xsd:float ;
+    geo:long "13.523"^^xsd:float ;
+    gkwo:stationId "GMM00010385" .
+
+gkw:GMM00010396
+    ogc:asWKT "POINT(14.55 52.55)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MANSCHNOW" ;
+    geo:alt "16.0"^^xsd:float ;
+    geo:lat "52.55"^^xsd:float ;
+    geo:long "14.55"^^xsd:float ;
+    gkwo:stationId "GMM00010396" .
+
+gkw:GMM00010410
+    ogc:asWKT "POINT(6.967 51.4)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ESSEN/MULHEIM" ;
+    geo:alt "161.0"^^xsd:float ;
+    geo:lat "51.4"^^xsd:float ;
+    geo:long "6.967"^^xsd:float ;
+    gkwo:stationId "GMM00010410" .
+
+gkw:GMM00010418
+    ogc:asWKT "POINT(7.65 51.25)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LUEDENSCHEID" ;
+    geo:alt "392.0"^^xsd:float ;
+    geo:lat "51.25"^^xsd:float ;
+    geo:long "7.65"^^xsd:float ;
+    gkwo:stationId "GMM00010418" .
+
+gkw:GMM00010424
+    ogc:asWKT "POINT(7.883 51.583)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WERL" ;
+    geo:alt "85.0"^^xsd:float ;
+    geo:lat "51.583"^^xsd:float ;
+    geo:long "7.883"^^xsd:float ;
+    gkwo:stationId "GMM00010424" .
+
+gkw:GMM00010433
+    ogc:asWKT "POINT(9.267 51.867)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LUEGDE-PAENBRUCH" ;
+    geo:alt "260.0"^^xsd:float ;
+    geo:lat "51.867"^^xsd:float ;
+    geo:long "9.267"^^xsd:float ;
+    gkwo:stationId "GMM00010433" .
+
+gkw:GMM00010435
+    ogc:asWKT "POINT(9.183 51.5)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WARBURG (AUT)" ;
+    geo:alt "225.0"^^xsd:float ;
+    geo:lat "51.5"^^xsd:float ;
+    geo:long "9.183"^^xsd:float ;
+    gkwo:stationId "GMM00010435" .
+
+gkw:GMM00010442
+    ogc:asWKT "POINT(9.8 51.967)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ALFELF" ;
+    geo:alt "66.0"^^xsd:float ;
+    geo:lat "51.967"^^xsd:float ;
+    geo:long "9.8"^^xsd:float ;
+    gkwo:stationId "GMM00010442" .
+
+gkw:GMM00010444
+    ogc:asWKT "POINT(9.95 51.55)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GOETTINGEN" ;
+    geo:alt "176.0"^^xsd:float ;
+    geo:lat "51.55"^^xsd:float ;
+    geo:long "9.95"^^xsd:float ;
+    gkwo:stationId "GMM00010444" .
+
+gkw:GMM00010449
+    ogc:asWKT "POINT(10.317 51.4)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LEINEFELDE (AUT)" ;
+    geo:alt "356.0"^^xsd:float ;
+    geo:lat "51.4"^^xsd:float ;
+    geo:long "10.317"^^xsd:float ;
+    gkwo:stationId "GMM00010449" .
+
+gkw:GMM00010452
+    ogc:asWKT "POINT(10.6 51.733)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BRAUNLAGE" ;
+    geo:alt "607.0"^^xsd:float ;
+    geo:lat "51.733"^^xsd:float ;
+    geo:long "10.6"^^xsd:float ;
+    gkwo:stationId "GMM00010452" .
+
+gkw:GMM00010454
+    ogc:asWKT "POINT(10.767 51.85)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WERNIGERODE (AUT)" ;
+    geo:alt "240.0"^^xsd:float ;
+    geo:lat "51.85"^^xsd:float ;
+    geo:long "10.767"^^xsd:float ;
+    gkwo:stationId "GMM00010454" .
+
+gkw:GMM00010458
+    ogc:asWKT "POINT(11.133 51.65)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "HARZGERODE" ;
+    geo:alt "405.0"^^xsd:float ;
+    geo:lat "51.65"^^xsd:float ;
+    geo:long "11.133"^^xsd:float ;
+    gkwo:stationId "GMM00010458" .
+
+gkw:GMM00010460
+    ogc:asWKT "POINT(11.3 51.383)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ARTERN" ;
+    geo:alt "166.0"^^xsd:float ;
+    geo:lat "51.383"^^xsd:float ;
+    geo:long "11.3"^^xsd:float ;
+    gkwo:stationId "GMM00010460" .
+
+gkw:GMM00010471
+    ogc:asWKT "POINT(12.45 51.317)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LEIPZIG-HOLZHAUSEN" ;
+    geo:alt "151.0"^^xsd:float ;
+    geo:lat "51.317"^^xsd:float ;
+    geo:long "12.45"^^xsd:float ;
+    gkwo:stationId "GMM00010471" .
+
+gkw:GMM00010474
+    ogc:asWKT "POINT(12.65 51.883)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WITTENBERG" ;
+    geo:alt "106.0"^^xsd:float ;
+    geo:lat "51.883"^^xsd:float ;
+    geo:long "12.65"^^xsd:float ;
+    gkwo:stationId "GMM00010474" .
+
+gkw:GMM00010480
+    ogc:asWKT "POINT(13.1 51.3)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "OSCHATZ" ;
+    geo:alt "152.0"^^xsd:float ;
+    geo:lat "51.3"^^xsd:float ;
+    geo:long "13.1"^^xsd:float ;
+    gkwo:stationId "GMM00010480" .
+
+gkw:GMM00010488
+    ogc:asWKT "POINT(13.767 51.133)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "DRESDEN" ;
+    geo:alt "230.1"^^xsd:float ;
+    geo:lat "51.133"^^xsd:float ;
+    geo:long "13.767"^^xsd:float ;
+    gkwo:stationId "GMM00010488" .
+
+gkw:GMM00010490
+    ogc:asWKT "POINT(13.583 51.65)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "DOBERLUG/KIRCHHAIN" ;
+    geo:alt "100.0"^^xsd:float ;
+    geo:lat "51.65"^^xsd:float ;
+    geo:long "13.583"^^xsd:float ;
+    gkwo:stationId "GMM00010490" .
+
+gkw:GMM00010519
+    ogc:asWKT "POINT(7.2 50.733)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BONN-ROLEBER" ;
+    geo:alt "162.0"^^xsd:float ;
+    geo:lat "50.733"^^xsd:float ;
+    geo:long "7.2"^^xsd:float ;
+    gkwo:stationId "GMM00010519" .
+
+gkw:GMM00010526
+    ogc:asWKT "POINT(7.967 50.667)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BAD MARIENBERG" ;
+    geo:alt "547.0"^^xsd:float ;
+    geo:lat "50.667"^^xsd:float ;
+    geo:long "7.967"^^xsd:float ;
+    gkwo:stationId "GMM00010526" .
+
+gkw:GMM00010542
+    ogc:asWKT "POINT(9.717 50.867)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BAD HERSFELD (AHP)" ;
+    geo:alt "212.0"^^xsd:float ;
+    geo:lat "50.867"^^xsd:float ;
+    geo:long "9.717"^^xsd:float ;
+    gkwo:stationId "GMM00010542" .
+
+gkw:GMM00010552
+    ogc:asWKT "POINT(10.767 50.65)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "SCHMUECKE (RIDGE)" ;
+    geo:alt "942.0"^^xsd:float ;
+    geo:lat "50.65"^^xsd:float ;
+    geo:long "10.767"^^xsd:float ;
+    gkwo:stationId "GMM00010552" .
+
+gkw:GMM00010557
+    ogc:asWKT "POINT(11.133 50.5)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "NEUHAUS" ;
+    geo:alt "850.0"^^xsd:float ;
+    geo:lat "50.5"^^xsd:float ;
+    geo:long "11.133"^^xsd:float ;
+    gkwo:stationId "GMM00010557" .
+
+gkw:GMM00010564
+    ogc:asWKT "POINT(11.817 50.567)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "SCHLEIZ (AUT)" ;
+    geo:alt "502.0"^^xsd:float ;
+    geo:lat "50.567"^^xsd:float ;
+    geo:long "11.817"^^xsd:float ;
+    gkwo:stationId "GMM00010564" .
+
+gkw:GMM00010565
+    ogc:asWKT "POINT(11.933 51.083)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "OSTERFELD (AUT)" ;
+    geo:alt "263.0"^^xsd:float ;
+    geo:lat "51.083"^^xsd:float ;
+    geo:long "11.933"^^xsd:float ;
+    gkwo:stationId "GMM00010565" .
+
+gkw:GMM00010569
+    ogc:asWKT "POINT(12.133 50.483)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "PLAUEN (AUT)" ;
+    geo:alt "389.0"^^xsd:float ;
+    geo:lat "50.483"^^xsd:float ;
+    geo:long "12.133"^^xsd:float ;
+    gkwo:stationId "GMM00010569" .
+
+gkw:GMM00010574
+    ogc:asWKT "POINT(12.617 50.433)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "CARLSFELD" ;
+    geo:alt "899.0"^^xsd:float ;
+    geo:lat "50.433"^^xsd:float ;
+    geo:long "12.617"^^xsd:float ;
+    gkwo:stationId "GMM00010574" .
+
+gkw:GMM00010577
+    ogc:asWKT "POINT(12.867 50.8)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "CHEMNITZ" ;
+    geo:alt "420.0"^^xsd:float ;
+    geo:lat "50.8"^^xsd:float ;
+    geo:long "12.867"^^xsd:float ;
+    gkwo:stationId "GMM00010577" .
+
+gkw:GMM00010579
+    ogc:asWKT "POINT(13.15 50.65)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MARIENBERG" ;
+    geo:alt "640.0"^^xsd:float ;
+    geo:lat "50.65"^^xsd:float ;
+    geo:long "13.15"^^xsd:float ;
+    gkwo:stationId "GMM00010579" .
+
+gkw:GMM00010582
+    ogc:asWKT "POINT(13.75 50.733)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ZINNWALD/GEORGENFE" ;
+    geo:alt "882.0"^^xsd:float ;
+    geo:lat "50.733"^^xsd:float ;
+    geo:long "13.75"^^xsd:float ;
+    gkwo:stationId "GMM00010582" .
+
+gkw:GMM00010591
+    ogc:asWKT "POINT(14.217 50.933)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "LICHTENHAIN-MITTELD" ;
+    geo:alt "300.0"^^xsd:float ;
+    geo:lat "50.933"^^xsd:float ;
+    geo:long "14.217"^^xsd:float ;
+    gkwo:stationId "GMM00010591" .
+
+gkw:GMM00010615
+    ogc:asWKT "POINT(7.05 49.767)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "DEUSELBACH" ;
+    geo:alt "479.0"^^xsd:float ;
+    geo:lat "49.767"^^xsd:float ;
+    geo:long "7.05"^^xsd:float ;
+    gkwo:stationId "GMM00010615" .
+
+gkw:GMM00010628
+    ogc:asWKT "POINT(7.95 49.983)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GEISENHEIM" ;
+    geo:alt "123.0"^^xsd:float ;
+    geo:lat "49.983"^^xsd:float ;
+    geo:long "7.95"^^xsd:float ;
+    gkwo:stationId "GMM00010628" .
+
+gkw:GMM00010635
+    ogc:asWKT "POINT(8.45 50.217)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "KLEINER FELDBERG" ;
+    geo:alt "805.0"^^xsd:float ;
+    geo:lat "50.217"^^xsd:float ;
+    geo:long "8.45"^^xsd:float ;
+    gkwo:stationId "GMM00010635" .
+
+gkw:GMM00010648
+    ogc:asWKT "POINT(9.1 49.717)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MICHELSTADT/VIELBRU" ;
+    geo:alt "405.0"^^xsd:float ;
+    geo:lat "49.717"^^xsd:float ;
+    geo:long "9.1"^^xsd:float ;
+    gkwo:stationId "GMM00010648" .
+
+gkw:GMM00010658
+    ogc:asWKT "POINT(10.083 50.2)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BAD KISSINGEN" ;
+    geo:alt "224.0"^^xsd:float ;
+    geo:lat "50.2"^^xsd:float ;
+    geo:long "10.083"^^xsd:float ;
+    gkwo:stationId "GMM00010658" .
+
+gkw:GMM00010671
+    ogc:asWKT "POINT(10.983 50.283)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "COBURG" ;
+    geo:alt "337.0"^^xsd:float ;
+    geo:lat "50.283"^^xsd:float ;
+    geo:long "10.983"^^xsd:float ;
+    gkwo:stationId "GMM00010671" .
+
+gkw:GMM00010686
+    ogc:asWKT "POINT(11.967 50.033)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WUNSIEDEL-SCHOENBRUNN" ;
+    geo:alt "623.0"^^xsd:float ;
+    geo:lat "50.033"^^xsd:float ;
+    geo:long "11.967"^^xsd:float ;
+    gkwo:stationId "GMM00010686" .
+
+gkw:GMM00010704
+    ogc:asWKT "POINT(6.683 49.283)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "BERUS" ;
+    geo:alt "363.0"^^xsd:float ;
+    geo:lat "49.283"^^xsd:float ;
+    geo:long "6.683"^^xsd:float ;
+    gkwo:stationId "GMM00010704" .
+
+gkw:GMM00010706
+    ogc:asWKT "POINT(7.05 49.483)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "THOLEY" ;
+    geo:alt "398.0"^^xsd:float ;
+    geo:lat "49.483"^^xsd:float ;
+    geo:long "7.05"^^xsd:float ;
+    gkwo:stationId "GMM00010706" .
+
+gkw:GMM00010724
+    ogc:asWKT "POINT(8.117 49.383)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WEINBIET (AUT)" ;
+    geo:alt "553.0"^^xsd:float ;
+    geo:lat "49.383"^^xsd:float ;
+    geo:long "8.117"^^xsd:float ;
+    gkwo:stationId "GMM00010724" .
+
+gkw:GMM00010729
+    ogc:asWKT "POINT(8.514 49.473)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MANNHEIM CITY" ;
+    geo:alt "94.2"^^xsd:float ;
+    geo:lat "49.473"^^xsd:float ;
+    geo:long "8.514"^^xsd:float ;
+    gkwo:stationId "GMM00010729" .
+
+gkw:GMM00010733
+    ogc:asWKT "POINT(8.9 49.3)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WAIBSTADT" ;
+    geo:alt "237.0"^^xsd:float ;
+    geo:lat "49.3"^^xsd:float ;
+    geo:long "8.9"^^xsd:float ;
+    gkwo:stationId "GMM00010733" .
+
+gkw:GMM00010736
+    ogc:asWKT "POINT(8.867 48.967)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MUEHLACKER (AUT)" ;
+    geo:alt "244.0"^^xsd:float ;
+    geo:lat "48.967"^^xsd:float ;
+    geo:long "8.867"^^xsd:float ;
+    gkwo:stationId "GMM00010736" .
+
+gkw:GMM00010761
+    ogc:asWKT "POINT(10.967 49.017)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WEISSENBURG" ;
+    geo:alt "422.0"^^xsd:float ;
+    geo:lat "49.017"^^xsd:float ;
+    geo:long "10.967"^^xsd:float ;
+    gkwo:stationId "GMM00010761" .
+
+gkw:GMM00010765
+    ogc:asWKT "POINT(11.1 49.218)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ROTH" ;
+    geo:alt "386.5"^^xsd:float ;
+    geo:lat "49.218"^^xsd:float ;
+    geo:long "11.1"^^xsd:float ;
+    gkwo:stationId "GMM00010765" .
+
+gkw:GMM00010777
+    ogc:asWKT "POINT(11.433 48.95)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GELBELSEE" ;
+    geo:alt "539.0"^^xsd:float ;
+    geo:lat "48.95"^^xsd:float ;
+    geo:long "11.433"^^xsd:float ;
+    gkwo:stationId "GMM00010777" .
+
+gkw:GMM00010796
+    ogc:asWKT "POINT(13.233 49.033)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ZWIESEL (AUT)" ;
+    geo:alt "581.0"^^xsd:float ;
+    geo:lat "49.033"^^xsd:float ;
+    geo:long "13.233"^^xsd:float ;
+    gkwo:stationId "GMM00010796" .
+
+gkw:GMM00010803
+    ogc:asWKT "POINT(7.85 48.0)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "FREIBURG (CIV/FAFB)" ;
+    geo:alt "269.0"^^xsd:float ;
+    geo:lat "48.0"^^xsd:float ;
+    geo:long "7.85"^^xsd:float ;
+    gkwo:stationId "GMM00010803" .
+
+gkw:GMM00010818
+    ogc:asWKT "POINT(8.75 48.1)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "KLIPPENECK (CLIFF)" ;
+    geo:alt "973.0"^^xsd:float ;
+    geo:lat "48.1"^^xsd:float ;
+    geo:long "8.75"^^xsd:float ;
+    gkwo:stationId "GMM00010818" .
+
+gkw:GMM00010827
+    ogc:asWKT "POINT(9.0 48.183)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MESSSTETTEN" ;
+    geo:alt "920.0"^^xsd:float ;
+    geo:lat "48.183"^^xsd:float ;
+    geo:long "9.0"^^xsd:float ;
+    gkwo:stationId "GMM00010827" .
+
+gkw:GMM00010838
+    ogc:asWKT "POINT(9.95 48.383)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "ULM (MIL/MET)" ;
+    geo:alt "522.0"^^xsd:float ;
+    geo:lat "48.383"^^xsd:float ;
+    geo:long "9.95"^^xsd:float ;
+    gkwo:stationId "GMM00010838" .
+
+gkw:GMM00010850
+    ogc:asWKT "POINT(10.7 48.783)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "HARBURG (AUT)" ;
+    geo:alt "457.0"^^xsd:float ;
+    geo:lat "48.783"^^xsd:float ;
+    geo:long "10.7"^^xsd:float ;
+    gkwo:stationId "GMM00010850" .
+
+gkw:GMM00010863
+    ogc:asWKT "POINT(11.7 48.4)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "WEIHENSTEPHAN-DURNA" ;
+    geo:alt "470.0"^^xsd:float ;
+    geo:lat "48.4"^^xsd:float ;
+    geo:long "11.7"^^xsd:float ;
+    gkwo:stationId "GMM00010863" .
+
+gkw:GMM00010870
+    ogc:asWKT "POINT(11.783 48.35)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MUNICH ARPT" ;
+    geo:alt "448.0"^^xsd:float ;
+    geo:lat "48.35"^^xsd:float ;
+    geo:long "11.783"^^xsd:float ;
+    gkwo:stationId "GMM00010870" .
+
+gkw:GMM00010875
+    ogc:asWKT "POINT(12.5 48.283)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "MUHLDORF" ;
+    geo:alt "401.0"^^xsd:float ;
+    geo:lat "48.283"^^xsd:float ;
+    geo:long "12.5"^^xsd:float ;
+    gkwo:stationId "GMM00010875" .
+
+gkw:GMM00010963
+    ogc:asWKT "POINT(11.067 47.483)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "GARMISCH (USA-HP)" ;
+    geo:alt "719.0"^^xsd:float ;
+    geo:lat "47.483"^^xsd:float ;
+    geo:long "11.067"^^xsd:float ;
+    gkwo:stationId "GMM00010963" .
+
+gkw:GMM00010982
+    ogc:asWKT "POINT(12.533 47.883)"^^ogc:wktLiteral ;
+    a gkwo:WeatherStation ;
+    rdfs:label "CHIEMING (AUT)" ;
+    geo:alt "549.0"^^xsd:float ;
+    geo:lat "47.883"^^xsd:float ;
+    geo:long "12.533"^^xsd:float ;
+    gkwo:stationId "GMM00010982" .
+
 gkw:GMW00034036
     ogc:asWKT "POINT(9.966 49.65)"^^ogc:wktLiteral ;
     a gkwo:WeatherStation ;
