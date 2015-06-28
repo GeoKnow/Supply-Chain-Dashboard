@@ -4,7 +4,7 @@ import java.util.logging.Logger
 
 import play.api.libs.ws
 import supplychain.dataset.EndpointConfig
-import supplychain.model.{Coordinates, DateTime, Duration, WeatherObservation, WeatherStation, WeatherUtil}
+import supplychain.model.{Coordinates, DateTime, Duration, WeatherObservation, WeatherStation, Address, Supplier}
 import supplychain.model.Product
 
 import scala.collection.JavaConversions._
@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 /**
  * Created by rene on 09.01.15.
  */
-class ConfigurationProvider(ec: EndpointConfig, productUri: String) {
+class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider_, productUri: String) {
 
   private val log = Logger.getLogger(getClass.getName)
 
@@ -37,11 +37,11 @@ class ConfigurationProvider(ec: EndpointConfig, productUri: String) {
 
     val queryStr =
       s"""
-        |SELECT ?name FROM <${ec.getDefaultGraphConfiguration()}>
+        |SELECT DISTINCT ?name FROM <${ec.getDefaultGraphConfiguration()}>
         |WHERE {
         |  <${uri}> schema:name ?name .
-        |  FILTER( LANGMATCHES( LANG( ?name ), "DE" ) ) .
-        |}
+        |  #FILTER( LANGMATCHES( LANG( ?name ), "DE" ) ) .
+        |} LIMIT 1
       """.stripMargin
 
     val prefixedQS = prefix(queryStr)
@@ -53,7 +53,53 @@ class ConfigurationProvider(ec: EndpointConfig, productUri: String) {
       val name = binding.getLiteral("name").getString
       p = new Product(name, 1, getParts(uri), uri)
     }
+    log.info("# PRODUCT: " + p.toString)
     p
+  }
+
+  def getSupplier(product: Product): Supplier = {
+    val queryStr =
+      s"""
+        |PREFIX suppl: <http://www.xybermotive.com/supplier/>
+        |PREFIX schema: <http://schema.org/>
+        |PREFIX prod: <http://www.xybermotive.com/products/>
+        |
+        |SELECT DISTINCT ?suppl ?name ?street ?zip ?city ?country ?long ?lat FROM <http://www.xybermotive.com/configuration>
+        |WHERE {
+        |  ?suppl schema:manufacturer <${product.uri}> .
+        |  ?suppl schema:legalName ?name .
+        |  ?suppl schema:location ?loc .
+        |  ?loc schema:address ?adr .
+        |  ?loc geo:lat ?lat .
+        |  ?loc geo:long ?long .
+        |  ?adr schema:streetAddress ?street .
+        |  ?adr schema:postalCode ?zip .
+        |  ?adr schema:addressLocality ?city .
+        |  ?adr schema:addressCountry ?country .
+        |} LIMIT 1
+      """.stripMargin
+    val prefixedQS = prefix(queryStr)
+    //log.info(prefixedQS)
+    val result = ec.getEndpoint().select(prefixedQS).toSeq
+
+    var s: Supplier = null
+    for (binding <- result) {
+      val uri = binding.getResource("suppl").getURI
+      val name = binding.getLiteral("name").getString
+      val street = binding.getLiteral("street").getString
+      val zip = binding.getLiteral("zip").getString
+      val city = binding.getLiteral("city").getString
+      val country = binding.getLiteral("country").getString
+      val long = binding.getLiteral("long").getFloat
+      val lat = binding.getLiteral("lat").getFloat
+
+      val adr = new Address(street, zip, city, country)
+      val coords = new Coordinates(lat, long)
+      val ws = wp.getNearesWeaterStation(coords)
+      s = new Supplier(uri, name, adr, coords, product, ws)
+    }
+    log.info("# SUPPLIER: " + s.toString)
+    s
   }
 
   private def getParts(uri: String): List[Product] = {
@@ -65,7 +111,7 @@ class ConfigurationProvider(ec: EndpointConfig, productUri: String) {
         |  ?pp sc:product ?uri .
         |  ?pp sc:quantity ?quantity .
         |  ?uri schema:name ?name .
-        |  FILTER( LANGMATCHES( LANG( ?name ), "DE" ) ) .
+        |  #FILTER( LANGMATCHES( LANG( ?name ), "DE" ) ) .
         |}
        """.stripMargin
 

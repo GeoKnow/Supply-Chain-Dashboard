@@ -18,21 +18,20 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
   // The simulation to run
-  private val sim = FairPhoneSimulation // CarSimulation
+  //private val sim = FairPhoneSimulation // CarSimulation
 
   // get the weather data provider
   //private val wd = new RdfWeatherDataset(ec.getEndpoint(), defaultWeatherGraph)
   private val wp = new WeatherProvider_(ec)
 
   // get the application configuration from endpoint
-  private val cp = new ConfigurationProvider(ec, productUri)
+  private val cp = new ConfigurationProvider(ec, wp, productUri)
   val product = cp.getProduct()
-  log.info("##########")
-  log.info("# PRODUCT: " + product.toString)
-  log.info("##########")
+
 
   // Generate the supply chain network
-  private val network = Network.build(sim.product, wp)
+  //private val network = Network.build(sim.product, wp, cp)
+  private val network = Network.build(product, wp, cp)
 
   // Create actors for all suppliers
   for(supplier <- network.suppliers)
@@ -53,7 +52,11 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
 
   // write generated product / supplier-network to endpoint
   private val dataset = new RdfDataset(ec)
-  dataset.addProduct(sim.product)
+
+  // for legacy reasons write this data
+  // TODO: remove this duplicated Data
+  //dataset.addProduct(sim.product)
+  dataset.addProduct(product)
   for(supplier <- suppliers) dataset.addSupplier(supplier)
   for(connection <- connections) dataset.addConnection(connection)
 

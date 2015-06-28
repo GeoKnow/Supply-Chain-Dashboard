@@ -2,7 +2,7 @@ package supplychain.simulator.network
 
 import supplychain.dataset.Namespaces
 import supplychain.model._
-import supplychain.simulator.{WeatherProvider_, WeatherProvider}
+import supplychain.simulator.{ConfigurationProvider, WeatherProvider_, WeatherProvider}
 
 /**
  * Represents a supply chain network.
@@ -24,9 +24,9 @@ object Network {
    * The network is built in two steps:
    * First, a list of suppliers is generated and than connections are generated between suppliers.
    */
-  def build(product: Product, wp: WeatherProvider_): Network = {
+  def build(product: Product, wp: WeatherProvider_, cp:ConfigurationProvider): Network = {
     // Build Supplier List
-    val supplierBuilder = new SupplierBuilder(wp)
+    val supplierBuilder = new SupplierBuilder(wp, cp)
     val suppliers = supplierBuilder(product)
     // Build Network
     val networkBuilder = new ConnectionsBuilder(suppliers)
@@ -39,7 +39,7 @@ object Network {
   }
 
   private def generateRootSupplier(product: Product, wp: WeatherProvider_) = {
-    val crds = Coordinates(50.0, 7.0)
+    val crds = Coordinates(0.0, 0.0)
     val ws = wp.getNearesWeaterStation(crds)
     Supplier(
       uri = Namespaces.supplier + "OEM",
