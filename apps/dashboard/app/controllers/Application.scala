@@ -32,6 +32,17 @@ object Application extends Controller {
     Ok(views.html.metrics(messages, supplier))
   }
 
+
+  def news(supplierId: String) = Action {
+    /*
+    val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
+    val news = CurrentDataset().news.filter(_.subject.id == supplierId)
+    Ok(views.html.metrics(messages, supplier))
+    */
+    NotImplemented
+  }
+
+
   def report(supplierId: String) = Action {
     val scoreTable = Evaluator.table(CurrentDataset(), Metrics.all, supplierId)
     Ok(views.html.report(scoreTable))

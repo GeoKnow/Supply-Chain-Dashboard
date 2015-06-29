@@ -78,10 +78,11 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
   def createGraph(graphUri: String, clear: Boolean): Unit = {
     val dropQuery = s"DROP SILENT GRAPH <$graphUri>"
     val createQuery = s"CREATE SILENT GRAPH <$graphUri>"
-    if(clear)
-      update(s"$dropQuery $createQuery")
-    else
-      update(createQuery)
+    if(clear) {
+      logger.info(s"drop graph < $graphUri > ...")
+      update(dropQuery)
+    }
+    logger.info(s"create graph < $graphUri > ...")
+    update(createQuery)
   }
-
 }

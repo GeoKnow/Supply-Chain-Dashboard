@@ -145,6 +145,10 @@ object API extends Controller {
     Ok
   }
 
+  def reloadNews() = Action {
+    NotImplemented
+  }
+
   def log() = Action { request =>
     val body =
       for(raw <- request.body.asRaw;

@@ -64,7 +64,7 @@ class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider_, productUri
         |PREFIX schema: <http://schema.org/>
         |PREFIX prod: <http://www.xybermotive.com/products/>
         |
-        |SELECT DISTINCT ?suppl ?name ?street ?zip ?city ?country ?long ?lat FROM <http://www.xybermotive.com/configuration>
+        |SELECT DISTINCT ?suppl ?name ?street ?zip ?city ?country ?long ?lat FROM <${ec.getDefaultGraphConfiguration()}>
         |WHERE {
         |  ?suppl schema:manufacturer <${product.uri}> .
         |  ?suppl schema:legalName ?name .

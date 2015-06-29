@@ -40,12 +40,12 @@ object Configuration {
       virtuosoUser = config.getString("simulator.virtuoso.user").getOrElse("dba"),
       virtuosoPassword = config.getString("simulator.virtuoso.password").getOrElse("dba"),
       endpointType = config.getString("simulator.endpoint.kind").getOrElse("local"),
-      defaultGraph = config.getString("simulator.defaultGraph").getOrElse("http://xybermotive.com/geoknow"),
+      defaultGraph = config.getString("simulator.defaultGraph").getOrElse("http://xybermotive.com/geoknow/"),
       silkUrl = config.getString("dashboard.silkUrl").getOrElse("http://localhost:9000/"),
       silkProject = config.getString("dashboard.silkProject").getOrElse("supplychainmetrics"),
       silkTask = config.getString("dashboard.silkTask").getOrElse("metrics"),
       defaultGraphWeather = config.getString("simulator.defaultGraphWeather").getOrElse("http://www.xybermotive.com/GeoKnowWeather#"),
-      defaultGraphConfiguration = config.getString("simulator.defaultGraphConfiguration").getOrElse("http://www.xybermotive.com/configuration"),
+      defaultGraphConfiguration = config.getString("simulator.defaultGraphConfiguration").getOrElse("http://www.xybermotive.com/configuration/"),
       productUri = config.getString("simulator.product.uri").getOrElse(null)
     )
   }

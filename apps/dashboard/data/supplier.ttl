@@ -38,6 +38,61 @@ suppl:VW_adr1 a schema:PostalAddress ;
   schema:addressLocality "Wolfsburg" ;
   schema:addressCountry "Deutschland" .
 
+suppl:Conti
+  a sc:Supplier, schema:Organization ;
+  schema:name "Continental AG" ;
+  schema:legalName "Continental AG" ;
+  schema:alternateName "Continental" ;
+  schema:alternateName "Conti" ;
+  schema:alternateName "DE0005439004" ;
+  schema:location suppl:Conti_loc1 .
+
+suppl:Conti_loc1 a schema:Place ;
+  schema:address suppl:Conti_adr1 ;
+  geo:lat "52.3898851"^^xsd:float ;
+  geo:long "9.7305602"^^xsd:float ;
+  schema:geo [
+    a schema:GeoCoordinates ;
+    schema:latitude "52.3898851"^^xsd:float ;
+    schema:longitude "9.7305602"^^xsd:float
+  ] .
+
+suppl:Conti_loc1 schema:containedIn dbpedia:Niedersachsen .
+
+suppl:Conti_adr1 a schema:PostalAddress ;
+  schema:streetAddress "Vahrenwalder Straße 9" ;
+  schema:postalCode "30165" ;
+  schema:addressLocality "Hanover" ;
+  schema:addressCountry "Deutschland" .
+
+
+suppl:ZF
+  a sc:Supplier, schema:Organization ;
+  schema:name "ZF Friedrichshafen AG" ;
+  schema:legalName "ZF Friedrichshafen AG" ;
+  schema:alternateName "ZF Friedrichshafen" ;
+  schema:alternateName "ZF Group" ;
+  schema:alternateName "ZF" ;
+  schema:location suppl:ZF_loc1 .
+
+suppl:ZF_loc1 a schema:Place ;
+  schema:address suppl:ZF_adr1 ;
+  geo:lat "47.66757"^^xsd:float ;
+  geo:long "9.49342"^^xsd:float ;
+  schema:geo [
+    a schema:GeoCoordinates ;
+    schema:latitude "47.66757"^^xsd:float ;
+    schema:longitude "9.49342"^^xsd:float
+  ] .
+
+suppl:ZF_loc1 schema:containedIn dbpedia:Baden_Wuertemberg .
+
+suppl:ZF_adr1 a schema:PostalAddress ;
+  schema:streetAddress "Graf-von-Soden-Platz 1" ;
+  schema:postalCode "88046" ;
+  schema:addressLocality "Friedrichshafen" ;
+  schema:addressCountry "Deutschland" .
+
 <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/location/38444/Heinenkamp_18>
         a               schema:Place ;
         schema:address  <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/address/38444/Heinenkamp_18> ;
@@ -234,7 +289,10 @@ suppl:Schnellecke_Transportlogistik_GmbH
         a                 schema:Organization , sc:Supplier ;
         schema:legalName  "Schnellecke Transportlogistik GmbH" ;
         schema:location   <http://www.xybermotive.com/supplier/Schnellecke_Transportlogistik_GmbH/location/38112/Hansestrasse_60> ;
-        schema:name       "Schnellecke Transportlogistik GmbH" .
+        schema:name       "Schnellecke Transportlogistik GmbH" ;
+        schema:alternateName "Schnellecke Logistik" ;
+        schema:alternateName "Schnellecke" .
+
 
 <http://www.xybermotive.com/supplier/Schnellecke_Logistics/location/38440/Stellfelder_Str._39>
         a               schema:Place ;
@@ -387,6 +445,7 @@ schema:legalName  a  rdf:Property ;
 suppl:August_Friedberg_GmbH
         a                 schema:Organization , sc:Supplier ;
         schema:legalName  "August Friedberg GmbH" ;
+        schema:alternateName "August Friedberg" ;
         schema:location   <http://www.xybermotive.com/supplier/August_Friedberg_GmbH/location/03238/An_der_Schraube_28> ;
         schema:name       "August Friedberg GmbH" .
 
@@ -1051,7 +1110,8 @@ suppl:Sumitomo_Electric_Bordnetze_GmbH
         a                 schema:Organization , sc:Supplier ;
         schema:legalName  "Sumitomo Electric Bordnetze GmbH" ;
         schema:location   <http://www.xybermotive.com/supplier/Sumitomo_Electric_Bordnetze_GmbH/location/38444/Heinenkamp_18> ;
-        schema:name       "Sumitomo Electric Bordnetze GmbH" .
+        schema:name       "Sumitomo Electric Bordnetze GmbH" ;
+        schema:alternateName "Sumitomo" .
 
 <http://www.xybermotive.com/supplier/Dichtungstechnik_G.Bruss/address/22955/Schultwiete_12>
         a                       schema:PostalAddress ;

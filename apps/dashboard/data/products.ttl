@@ -14,31 +14,38 @@
 # Product Configuration
 #############################
 
-prod:Chair01
+prod:Car
   a schema:Product ;
-  schema:name "Chair" ;
+  schema:name "Car" ;
   sc:productPart [
-    sc:product prod:ChairLeg01 ;
-    sc:quantity "4"^^xsd:integer
+    sc:product prod:Engine ;
+    sc:quantity "1"^^xsd:integer
   ] ;
   sc:productPart [
-    sc:product prod:ChairBack01 ;
+    sc:product prod:Wheel ;
+    sc:quantity  "4"^^xsd:integer
+  ] ;
+.
+suppl:VW schema:manufacturer prod:Car .
+
+prod:Engine
+  a schema:Product ;
+  schema:name "Engine" ;
+.
+suppl:ZF schema:manufacturer prod:Engine.
+
+prod:Wheel
+  a schema:Product ;
+  schema:name "Wheel" ;
+  sc:productPart [
+    sc:product prod:Rim ;
     sc:quantity  "1"^^xsd:integer
   ] ;
 .
+suppl:Conti schema:manufacturer prod:Wheel .
 
-suppl:VW schema:manufacturer prod:Chair01 .
-
-prod:ChairLeg01
+prod:Rim
   a schema:Product ;
-  schema:name "Chair Leg" ;
+  schema:name "Rim" ;
 .
-
-suppl:August_Friedberg_GmbH schema:manufacturer prod:ChairLeg01 .
-
-prod:ChairBack01
-  a schema:Product ;
-  schema:name "Back Rest" ;
-.
-
-suppl:Bergmann_Maschinenbau schema:manufacturer prod:ChairBack01 .
+suppl:Schnellecke_Transportlogistik_GmbH schema:manufacturer prod:Rim.

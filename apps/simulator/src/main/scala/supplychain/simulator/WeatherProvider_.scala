@@ -16,7 +16,7 @@ import scala.util.Random
 class WeatherProvider_(ec: EndpointConfig) {
 
   private val log = Logger.getLogger(getClass.getName)
-  private val minObs = 1200
+  private val minObs = 300
 
   val dailyWeatherVariation = 0.1 // +/- 10% daily weather variation from monthly mean values
 
@@ -105,7 +105,7 @@ class WeatherProvider_(ec: EndpointConfig) {
     log.info(ws.toString() + " " + d.toXSDFormat)
     val w = getDailySummary(ws, d)
     if (w == null) {
-      log.info("no Daily Summary found for this Weather Station!")
+      log.info("no Daily Summary found for this Weather Station! " + ws.id + ", " + d.toFormat("yyyy-MM-dd"))
     }
     log.info(w.toString())
     var probab = 0.0

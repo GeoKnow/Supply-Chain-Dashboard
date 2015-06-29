@@ -3,6 +3,7 @@ GET         /                             controllers.Application.map
 GET         /query                        controllers.Application.query
 GET         /map                          controllers.Application.map
 GET         /metrics                      controllers.Application.metrics(supplierId)
+GET         /news                         controllers.Application.news(supplierId)
 GET         /report                       controllers.Application.report(supplierId)
 GET         /deliveryStream               controllers.Application.deliveryStream
 GET         /messages                     controllers.Application.messages(supplierId)
@@ -24,6 +25,7 @@ POST        /simulator/run                controllers.API.run(frequency: Double)
 POST        /simulator/stop               controllers.API.stop()
 
 POST        /metrics/reload               controllers.API.reloadMetrics()
+POST        /news/reload                  controllers.API.reloadNews()
 
 POST        /log                          controllers.API.log()
 

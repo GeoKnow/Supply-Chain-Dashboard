@@ -70,7 +70,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 object Scheduler {
   object Tick
 
-  var simulationStartDate = DateTime.parse("yyyy-MM-dd", "2010-01-01")
-  var lastOrderDate = DateTime.parse("yyyy-MM-dd", "2013-12-31")
+  var simulationStartDate = DateTime.parse("yyyy-MM-dd", "2014-01-01")
+  var lastOrderDate = DateTime.parse("yyyy-MM-dd", "2014-12-31")
 
 }

@@ -23,6 +23,7 @@ trait Endpoint {
   def select(query: String): ResultSet
   def uploadDataset(graph: String, file: File, lang: Option[Lang]=None, clear: Boolean=false)
   def describe(query: String): Model
+  def createGraph(graphUri: String, clear: Boolean): Unit
 }
 
 class EndpointConfig(kind: String,
@@ -64,7 +65,7 @@ class EndpointConfig(kind: String,
 
   def initData() {
     if (!isDataInitialized) {
-      endpoint.update(s"CREATE SILENT GRAPH <${getDefaultGraph()}>")
+      endpoint.createGraph(getDefaultGraph(), false)
 
       val weatherStationFile = new File("dashboard/data/ncdc-stations.ttl")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
@@ -103,6 +104,11 @@ class LocalEndpoint(defaultGraph: String) extends Endpoint {
   }
 
   override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = ???
+
+  override def createGraph(graphUri: String, clear: Boolean): Unit = {
+    if (clear) update(s"DROP SILENT GRAPH <${graphUri}>")
+    update(s"CREATE SILENT GRAPH <${graphUri}>")
+  }
 }
 
 class VirtuosoJdbcEndpoint(host: String, port: String, user: String, password: String) extends Endpoint {
@@ -123,6 +129,10 @@ class VirtuosoJdbcEndpoint(host: String, port: String, user: String, password: S
 
   override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = {
     endpoint.uploadDataset(graph, file, lang, clear)
+  }
+
+  override def createGraph(graphUri: String, clear: Boolean): Unit = {
+    endpoint.createGraph(graphUri, clear)
   }
 }
 
@@ -176,4 +186,9 @@ class RemoteEndpoint(endpointUrl: String, defaultGraph: String) extends Endpoint
   }
 
   override def uploadDataset(graph: String, file: File, lang: Option[Lang], clear: Boolean=false): Unit = ???
+
+  override def createGraph(graphUri: String, clear: Boolean): Unit = {
+    if (clear) update(s"DROP SILENT GRAPH <${graphUri}>")
+    update(s"CREATE SILENT GRAPH <${graphUri}>")
+  }
 }

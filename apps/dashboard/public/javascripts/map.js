@@ -157,6 +157,7 @@ function selectSupplier(supplierId) {
   });
   // Reload metrics
   reloadMetrics();
+  reloadNews();
 }
 
 /**
@@ -179,7 +180,13 @@ var refreshTimer;
 
 function refreshMetrics() {
   clearTimeout(refreshTimer);
-  refreshTimer = setTimeout(function() { reloadMetrics(); }, 2000);
+  refreshTimer = setTimeout(function() { reloadMetrics(); reloadNews(); }, 2000);
+}
+
+function reloadNews() {
+  $.get("news?supplierId=" + selectedSupplier, function(data) {
+    $('#news-content' ).html(data)
+  })
 }
 
 function reloadMetrics() {

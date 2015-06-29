@@ -10,7 +10,7 @@
 
 @content = {
   <div id="filter-pane">
-    <div class="widget" style="height: 34%">
+    <div class="widget" style="height: 20%">
       <div class="widget-header">
         Simulator
       </div>
@@ -19,35 +19,9 @@
         @** loadDataset() *@
       </div>
     </div>
-    <div class="widget" style="height: 33%">
-      <div class="widget-header">
-        Suppliers
-      </div>
-      <div class="widget-content">
-        <button onclick="showSuppliers()">Show all</button>
-        <button onclick="hideSuppliers()">Hide all</button>
-        <p><input type="text" /> <button>Search</button></p>
-      </div>
-    </div>
-    <div class="widget" style="height: 33%">
-      <div class="widget-header">
-        Connections
-      </div>
-      <div class="widget-content">
-        <button onclick="showConnections()">Show all</button>
-        <button onclick="hideConnections()">Hide all</button>
-        <p><input type="text" /> <button>Search</button></p>
-        <p>
-          Content Types:
-          <select id="contentFilter" onchange="showConnections(null, $(this).val())">
-            <option value="all" selected="selected">all</option>
-            @for((content, count) <- CurrentDataset().contentTypes.take(20)) {
-              <option value="@content">@content (@count)</option>
-            }
-          </select>
-        </p>
-      </div>
-    </div>
+    @widget("News", "height: 80%") {
+      <div id="news-content"></div>
+    }
   </div>
   <div id="map-pane" class="widget">
     <div class="widget-header">

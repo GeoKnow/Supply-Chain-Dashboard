@@ -1,7 +1,10 @@
 package supplychain.simulator.network
 
+import java.util.logging.Logger
+
 import supplychain.dataset.Namespaces
 import supplychain.model._
+import supplychain.simulator.network.Network._
 import supplychain.simulator.{ConfigurationProvider, WeatherProvider_, WeatherProvider}
 
 /**
@@ -12,12 +15,16 @@ import supplychain.simulator.{ConfigurationProvider, WeatherProvider_, WeatherPr
  * @param connections List of connections between suppliers.
  * @param rootConnection The root connection in the supply chain tree.
  */
-case class Network(product: Product, suppliers: Seq[Supplier], connections: Seq[Connection], rootConnection: Connection)
+case class Network(product: Product, suppliers: Seq[Supplier], connections: Seq[Connection], rootConnection: Connection) {
+
+}
 
 /**
  * Factory for building supply chain networks.
  */
 object Network {
+
+  private val log = Logger.getLogger(getClass.getName)
 
   /**
    * Builds a new network for a given product.
@@ -28,6 +35,11 @@ object Network {
     // Build Supplier List
     val supplierBuilder = new SupplierBuilder(wp, cp)
     val suppliers = supplierBuilder(product)
+    log.info("related suppliers: ")
+    for (s <- suppliers) {
+      log.info(s.uri)
+    }
+    log.info("")
     // Build Network
     val networkBuilder = new ConnectionsBuilder(suppliers)
     val connections = networkBuilder(product)
