@@ -21,9 +21,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   private val lastOrderDate = new DateTime(lastOrderCal.getTimeInMillis)
   */
 
-  // The current simulation date
-  private var currentDate = Scheduler.simulationStartDate //new DateTime(cal.getTimeInMillis)
-  //DateTime.now
+  def currentDate = simulator.currentDate
 
   // The simulation interval between two ticks
   private val tickInterval = Duration.days(1)
@@ -40,9 +38,6 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
 
-  def getCurrentDate(): DateTime = {
-    currentDate
-  }
   /**
    * Receives and processes messages.
    */
@@ -50,7 +45,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
     case msg: Message => messageQueue.enqueue(msg)
     case Tick =>
       // Advance current date
-      currentDate += tickInterval
+      simulator.currentDate += tickInterval
       // Order
       if(lastOrderTime + orderInterval <= currentDate && currentDate <= Scheduler.lastOrderDate) {
         lastOrderTime = currentDate

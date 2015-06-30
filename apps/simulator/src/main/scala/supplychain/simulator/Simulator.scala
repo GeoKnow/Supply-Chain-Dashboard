@@ -17,6 +17,10 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
 
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
+  // The current simulation date
+  var currentDate = Scheduler.simulationStartDate //new DateTime(cal.getTimeInMillis)
+  //DateTime.now
+
   // The simulation to run
   //private val sim = FairPhoneSimulation // CarSimulation
 
@@ -36,6 +40,7 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
   // Create actors for all suppliers
   for(supplier <- network.suppliers)
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), supplier.id)
+
 
   // The message scheduler.
   val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
