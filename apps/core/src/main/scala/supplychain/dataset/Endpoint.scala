@@ -26,11 +26,11 @@ trait Endpoint {
   def createGraph(graphUri: String, clear: Boolean): Unit
 }
 
-class EndpointConfig(kind: String,
+case class EndpointConfig(kind: String,
                      defaultGraph: String,
                      defaultGraphWeather: String = null,
                      defaultGraphConfiguration: String = null,
-                     http: String = "",
+                     url: String = "",
                      host: String = "",
                      port: String = "",
                      user: String = "",
@@ -50,7 +50,7 @@ class EndpointConfig(kind: String,
       endpoint = new LocalEndpoint(defaultGraph)
     }
     if (kind == TYPE_HTTP_SPARQL) {
-      endpoint = new RemoteEndpoint(http, defaultGraph)
+      endpoint = new RemoteEndpoint(url, defaultGraph)
     }
     if (kind == TYPE_JDBC_VIRTUOSO) {
       endpoint = new VirtuosoJdbcEndpoint(host, port, user, password)
