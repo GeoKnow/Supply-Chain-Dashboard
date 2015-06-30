@@ -15,7 +15,7 @@
 <button onclick="$.post('news/reload')">Reload</button>
 
 @renderNews(news: News) = {
-    <div class="news-info">
+    <div class="news-info" style="font-size: 75%; ">
         <ul>
         <li><a href="@news.uri">@news.headline.getOrElse("NO HEADLINE")</a><br />
             <ul>@for(ann <- news.annotations) { @renderAnnotation(ann: Annotation) }</ul>

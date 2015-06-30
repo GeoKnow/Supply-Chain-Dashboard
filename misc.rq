@@ -4,6 +4,19 @@ PREFIX sno: <http://www.xybermotive.com/newsOnt/>
 PREFIX ann: <http://www.w3.org/2000/10/annotation-ns#>
 PREFIX schema: <http://schema.org/>
 PREFIX sc: <http://www.xybermotive.com/ontology/>
+PREFIX suppl: <http://www.xybermotive.com/supplier/>
+
+SELECT DISTINCT ?headline ?artUrl ?means ?body WHERE {
+  ?search sno:subject <suppl:VW> .
+  ?search sno:beginDate ?beginDate .
+  FILTER ( STRSTARTS( ?beginDate, "2014-01-01") ) .
+  ?search schema:result ?article .
+  ?article schema:headline ?headline .
+  ?article sno:annotation ?ann .
+  ?article schema:url ?artUrl .
+  ?ann <http://ns.aksw.org/scms/means> ?means .
+  ?ann <http://www.w3.org/2000/10/annotation-ns#body> ?body .
+}
 
 SELECT DISTINCT ?subject ?date ?artUrl ?means ?body WHERE {
 #SELECT count(DISTINCT ?artUrl) WHERE {
@@ -15,6 +28,8 @@ SELECT DISTINCT ?subject ?date ?artUrl ?means ?body WHERE {
   ?ann <http://ns.aksw.org/scms/means> ?means .
   ?ann <http://www.w3.org/2000/10/annotation-ns#body> ?body .
 } ORDER BY DESC (?date)
+
+
 
 SELECT ?article count(?ann) ?fetched ?error
 WHERE {
@@ -38,4 +53,20 @@ SELECT count(*)
 WHERE {
   ?article a schema:NewsArticle .
   FILTER NOT EXISTS { ?article sno:isFetched true . }
+}
+
+## remove connection settings (cleanup config)
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sc: <http://www.xybermotive.com/ontology/>
+WITH <http://www.xybermotive.com/geoknow/>
+DELETE {
+  ?conn a sc:Connection .
+  ?conn sc:sender ?sender .
+  ?conn sc:receiver ?receiver .
+  ?conn sc:product ?product .
+} WHERE {
+  ?conn a sc:Connection .
+  ?conn sc:sender ?sender .
+  ?conn sc:receiver ?receiver .
+  ?conn sc:product ?product .
 }
