@@ -1,9 +1,9 @@
-package supplychain.news
+package models.news
 
 /**
  * Created by rene on 29.06.15.
  */
-case class Annotation(annType: String, beginIndex: Int, endIndex: Int, meansUri: String, body: String) {
+case class Annotation(annClass: String, meansUri: String, body: String) {
 
 }
 

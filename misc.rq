@@ -1,0 +1,41 @@
+
+PREFIX art: <http://www.xybermotive.com/news/Article/>
+PREFIX sno: <http://www.xybermotive.com/newsOnt/>
+PREFIX ann: <http://www.w3.org/2000/10/annotation-ns#>
+PREFIX schema: <http://schema.org/>
+PREFIX sc: <http://www.xybermotive.com/ontology/>
+
+SELECT DISTINCT ?subject ?date ?artUrl ?means ?body WHERE {
+#SELECT count(DISTINCT ?artUrl) WHERE {
+  ?search sno:subject ?subject .
+  ?search schema:result ?article .
+  ?search sno:beginDate ?date .
+  ?article sno:annotation ?ann .
+  ?article schema:url ?artUrl .
+  ?ann <http://ns.aksw.org/scms/means> ?means .
+  ?ann <http://www.w3.org/2000/10/annotation-ns#body> ?body .
+} ORDER BY DESC (?date)
+
+SELECT ?article count(?ann) ?fetched ?error
+WHERE {
+  ?article a schema:NewsArticle .
+  ?article schema:text ?text .
+  ?article schema:headline ?headline .
+  OPTIONAL { ?article sno:isFetched ?fetched . }
+  OPTIONAL { ?article sno:fetchError ?error . }
+  OPTIONAL { ?article sno:annotation ?ann . }
+}
+
+WITH <http://www.xybermotive.com/news/>
+DELETE {
+  ?article schema:text ""@de .
+} WHERE {
+  ?article a schema:NewsArticle .
+  ?article schema:text ""@de .
+}
+
+SELECT count(*)
+WHERE {
+  ?article a schema:NewsArticle .
+  FILTER NOT EXISTS { ?article sno:isFetched true . }
+}

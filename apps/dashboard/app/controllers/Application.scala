@@ -1,7 +1,7 @@
 package controllers
 
 import play.api.mvc._
-import models.{CurrentMetrics, CurrentDataset}
+import models.{NewsProvider, Configuration, CurrentMetrics, CurrentDataset}
 import play.api.libs.iteratee.Concurrent
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
@@ -11,7 +11,7 @@ import supplychain.model._
 import supplychain.model.Shipping
 import supplychain.model.Order
 import javax.xml.bind.DatatypeConverter
-import supplychain.dataset.DatasetStatistics
+import supplychain.dataset.{EndpointConfig, DatasetStatistics}
 
 object Application extends Controller {
 
@@ -34,12 +34,12 @@ object Application extends Controller {
 
 
   def news(supplierId: String) = Action {
-    /*
+    val ec = Configuration.get.endpointConfig
+    val np = new NewsProvider(ec)
     val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
-    val news = CurrentDataset().news.filter(_.subject.id == supplierId)
-    Ok(views.html.metrics(messages, supplier))
-    */
-    NotImplemented
+    val date =  CurrentDataset.simulator.currentDate
+    val news = np.getNews(supplier, date)
+    Ok(views.html.news(news, supplier))
   }
 
 
