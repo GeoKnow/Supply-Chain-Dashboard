@@ -39,6 +39,7 @@ object Application extends Controller {
     val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
     val date =  CurrentDataset.simulator.currentDate
     val news = np.getNews(supplier, date)
+
     Ok(views.html.news(news, supplier))
   }
 
