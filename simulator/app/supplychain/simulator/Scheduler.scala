@@ -20,7 +20,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   private val orderCount = 10 // + (Random.nextDouble() * 10.0).toInt
 
   // Remembers the last order time
-  private var lastOrderTime: DateTime = _
+  private var lastOrderTime: DateTime = null
 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))

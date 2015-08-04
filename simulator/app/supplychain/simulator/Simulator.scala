@@ -35,7 +35,6 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   private val cp = new ConfigurationProvider(Configuration.get.endpointConfig, wp, Configuration.get.productUri)
   val product = cp.getProduct()
 
-
   // Generate the supply chain network
   private val network = Network.build(product, wp, cp)
 

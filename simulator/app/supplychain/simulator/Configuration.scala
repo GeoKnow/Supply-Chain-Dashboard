@@ -35,8 +35,8 @@ object Configuration {
         password = config.getString("simulator.virtuoso.password").getOrElse("dba")
       ),
       productUri = config.getString("simulator.product.uri").getOrElse(null),
-      minStartDate = DateTime.parse("yyyy-MM-dd", config.getString("simulator.minStartDate").getOrElse("2014-01-01")),
-      maxEndDate = DateTime.parse("yyyy-MM-dd", config.getString("simulator.maxEndDate").getOrElse("2014-12-31"))
+      minStartDate = DateTime.parse(config.getString("simulator.minStartDate").getOrElse("2014-01-01")),
+      maxEndDate = DateTime.parse(config.getString("simulator.maxEndDate").getOrElse("2014-12-31"))
     )
   }
 }

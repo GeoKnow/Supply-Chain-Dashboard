@@ -13,7 +13,7 @@ object API extends Controller {
   def step(start: String) = Action {
     Logger.info(s"Simulation advanced one 'Tick' from start date $start.")
     var s: DateTime = null
-    if (start != "default") s = DateTime.parse("yyyy-MM-dd", start)
+    if (start != "default") s = DateTime.parse(start)
     Simulator().step(s)
     Ok("step")
   }
@@ -21,9 +21,9 @@ object API extends Controller {
   def run(start: String, end: String, interval: Double) = Action {
     Logger.info(s"Simulation started at $start and will run until $end with an interval of $interval seconds.")
     var s: DateTime = null
-    if (start != "default") s = DateTime.parse("yyyy-MM-dd", start)
+    if (start != "default") s = DateTime.parse(start)
     var e: DateTime = null
-    if (end != "default") e = DateTime.parse("yyyy-MM-dd", end)
+    if (end != "default") e = DateTime.parse(end)
     Simulator().run(interval, s, e)
     Ok("run")
   }
