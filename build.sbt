@@ -1,16 +1,73 @@
-name := "GeoKnow Supply Chain Applications"
+//////////////////////////////////////////////////////////////////////////////
+// Common Settings
+//////////////////////////////////////////////////////////////////////////////
 
-version := "1.0-SNAPSHOT"
+lazy val commonSettings = Seq(
+  organization := "com.eccenca",
+  version := "1.1-SNAPSHOT",
+  // Building
+  scalaVersion := "2.11.6",
+  javacOptions := Seq("-source", "1.7", "-target", "1.7"),
+  scalacOptions += "-target:jvm-1.7",
+  // Resolvers
+  // The Typesafe repository
+  resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+  // Testing
+  // libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test",
+  // libraryDependencies += "junit" % "junit" % "4.11" % "test",
+  // testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-u", "target/test-reports")
+)
 
-scalaVersion := "2.11.6"
+//////////////////////////////////////////////////////////////////////////////
+// Core Modules
+//////////////////////////////////////////////////////////////////////////////
 
-lazy val virtuoso_jena = project in file("virtuoso_jena")
+lazy val core = project
+    .settings(commonSettings: _*)
+    .settings(
+      libraryDependencies += "org.apache.jena" % "jena-core" % "2.11.2" excludeAll ExclusionRule(organization = "org.slf4j"),
 
-lazy val core = project dependsOn virtuoso_jena
+      libraryDependencies += "org.apache.jena" % "jena-arq" % "2.11.2" excludeAll ExclusionRule(organization = "org.slf4j"),
 
-lazy val simulator = project dependsOn core
+      libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.3.7"
+    )
+    .dependsOn(virtuoso_jena)
 
-lazy val dashboard = project dependsOn core dependsOn simulator enablePlugins PlayScala
+//////////////////////////////////////////////////////////////////////////////
+// Simulator Modules
+//////////////////////////////////////////////////////////////////////////////
+lazy val simulator = project
+    .enablePlugins(PlayScala)
+    .settings(commonSettings: _*)
+    .settings(
+      libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.3.4",
 
-lazy val root = project.in(file(".")) aggregate (core, simulator, dashboard, virtuoso_jena)
+      libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.3.7",
 
+      libraryDependencies += "com.typesafe.play" % "play-ws_2.11" % "2.3.7"
+    )
+    .dependsOn(core)
+
+//////////////////////////////////////////////////////////////////////////////
+// Dashboard Modules
+//////////////////////////////////////////////////////////////////////////////
+lazy val dashboard = project
+    .settings(commonSettings: _*)
+    .dependsOn(core)
+    .enablePlugins(PlayScala)
+
+////////////////////////////////////////////////
+// root Module
+////////////////////////////////////////////////
+lazy val root = project.in(file("."))
+    .aggregate(core, simulator, dashboard, virtuoso_jena)
+    .settings(commonSettings: _*)
+    .settings(
+      name := "GeoKnow Supply Chain Applications"
+    )
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Sub-Modules
+//////////////////////////////////////////////////////////////////////////////
+lazy val virtuoso_jena = project

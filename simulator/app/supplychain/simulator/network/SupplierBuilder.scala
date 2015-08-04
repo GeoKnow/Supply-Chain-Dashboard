@@ -1,9 +1,9 @@
 package supplychain.simulator.network
 
 import supplychain.model.{Product, Supplier}
-import supplychain.simulator.{ConfigurationProvider, WeatherProvider_}
+import supplychain.simulator.{ConfigurationProvider, WeatherProvider}
 
-class SupplierBuilder(wp: WeatherProvider_, cp: ConfigurationProvider) {
+class SupplierBuilder(wp: WeatherProvider, cp: ConfigurationProvider) {
 
   //private val random = new Random(0)
 

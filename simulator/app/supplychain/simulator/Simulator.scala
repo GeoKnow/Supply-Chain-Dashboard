@@ -2,9 +2,11 @@ package supplychain.simulator
 
 import java.util.logging.Logger
 
+import play.api.Play.current
+import play.api.libs.concurrent.Akka
 import akka.actor.{ActorSystem, Cancellable, Props}
 import supplychain.dataset.{EndpointConfig, RdfWeatherDataset, Dataset, RdfDataset}
-import supplychain.model.{Connection, Message, Supplier}
+import supplychain.model.{DateTime, Connection, Message, Supplier}
 import supplychain.simulator.network.Network
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -13,34 +15,33 @@ import scala.concurrent.duration._
 /**
  * The supply chain simulator.
  */
-class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: String) extends Dataset {
+class Simulator(val actorSystem: ActorSystem) extends Dataset {
 
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
+  // The simulation start date
+  var startDate: DateTime = _
+
   // The current simulation date
-  var currentDate = Scheduler.simulationStartDate //new DateTime(cal.getTimeInMillis)
-  //DateTime.now
+  var currentDate: DateTime = _
 
-  // The simulation to run
-  //private val sim = FairPhoneSimulation // CarSimulation
+  // the date the simulation should stop
+  var simulationEndDate: DateTime = _
 
-  // get the weather data provider
-  //private val wd = new RdfWeatherDataset(ec.getEndpoint(), defaultWeatherGraph)
-  private val wp = new WeatherProvider_(ec)
+  //get the weather data provider
+  private val wp = new WeatherProvider(Configuration.get.endpointConfig)
 
   // get the application configuration from endpoint
-  private val cp = new ConfigurationProvider(ec, wp, productUri)
+  private val cp = new ConfigurationProvider(Configuration.get.endpointConfig, wp, Configuration.get.productUri)
   val product = cp.getProduct()
 
 
   // Generate the supply chain network
-  //private val network = Network.build(sim.product, wp, cp)
   private val network = Network.build(product, wp, cp)
 
   // Create actors for all suppliers
   for(supplier <- network.suppliers)
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), supplier.id)
-
 
   // The message scheduler.
   val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
@@ -56,7 +57,7 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
   var messages = Seq[Message]()
 
   // write generated product / supplier-network to endpoint
-  private val dataset = new RdfDataset(ec)
+  private val dataset = new RdfDataset(Configuration.get.endpointConfig)
 
   // for legacy reasons write this data
   // TODO: remove this duplicated Data
@@ -87,18 +88,28 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
       listener(msg)
   }
 
+  // advance the simulation for a single tick
   def step() {
     scheduler ! Scheduler.Tick
   }
 
-  def run(frequency: Double) {
-    stop()
-    log.info("frequency: " + frequency)
-    log.info("frequency.seconds: " + frequency.seconds);
-    metronom = Option(actorSystem.scheduler.schedule(0 seconds, frequency.seconds, scheduler, Scheduler.Tick))
+  // continues from pause and/or resets the interval
+  def start(interval: Double): Unit = {
+    pause()
+    metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds, scheduler, Scheduler.Tick))
   }
 
-  def stop() {
+  // starts a new simulation with the given parameters
+  def run(startDate: DateTime, endDate: DateTime, interval: Double) {
+    pause()
+    this.startDate = startDate
+    currentDate = startDate
+    simulationEndDate = endDate
+    metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds, scheduler, Scheduler.Tick))
+  }
+
+  // pauses the simulation
+  def pause() {
     metronom.foreach(_.cancel())
     metronom = None
   }
@@ -110,4 +121,10 @@ class Simulator(val actorSystem: ActorSystem, ec: EndpointConfig, productUri: St
   def getActor(supplier: Supplier) = {
     actorSystem.actorSelection("/user/" + supplier.id)
   }
+}
+
+object Simulator {
+  private val simulator = new Simulator(Akka.system)
+
+  def apply() = simulator
 }

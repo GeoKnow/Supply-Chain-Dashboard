@@ -18,7 +18,7 @@ import supplychain.model.Order
 /**
  * A supplier that builds products from parts that it receives from other suppliers.
  */
-class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvider_) extends Actor {
+class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvider) extends Actor {
 
   val delayProbability = Random.nextDouble() * 0.5
 

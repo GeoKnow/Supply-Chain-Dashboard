@@ -11,17 +11,8 @@ import scala.util.Random
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
-  /*
-  private val cal = new GregorianCalendar()
-  cal.set(2010, 0, 1, 0, 0, 0);
-
-  private val lastOrderCal = new GregorianCalendar()
-  lastOrderCal.set(2013, 11, 31, 23, 59, 59)
-
-  private val lastOrderDate = new DateTime(lastOrderCal.getTimeInMillis)
-  */
-
   def currentDate = simulator.currentDate
+  def simulationEndDate = simulator.simulationEndDate
 
   // The simulation interval between two ticks
   private val tickInterval = Duration.days(1)
@@ -33,7 +24,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   private val orderCount = 10 // + (Random.nextDouble() * 10.0).toInt
 
   // Remembers the last order time
-  private var lastOrderTime = currentDate - orderInterval
+  private var lastOrderTime = simulator.currentDate - orderInterval
 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
@@ -47,7 +38,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
       // Advance current date
       simulator.currentDate += tickInterval
       // Order
-      if(lastOrderTime + orderInterval <= currentDate && currentDate <= Scheduler.lastOrderDate) {
+      if(lastOrderTime + orderInterval <= currentDate && currentDate <= simulationEndDate) {
         lastOrderTime = currentDate
         val rootActor = simulator.getActor(rootConnection.source)
         val order = Order(date = currentDate, connection = rootConnection, count = orderCount)
@@ -64,8 +55,4 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 
 object Scheduler {
   object Tick
-
-  var simulationStartDate = DateTime.parse("yyyy-MM-dd", "2014-01-01")
-  var lastOrderDate = DateTime.parse("yyyy-MM-dd", "2014-12-31")
-
 }

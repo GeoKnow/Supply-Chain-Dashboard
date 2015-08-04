@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 /**
  * Created by rene on 09.01.15.
  */
-class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider_, productUri: String) {
+class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider, productUri: String) {
 
   private val log = Logger.getLogger(getClass.getName)
 

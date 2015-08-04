@@ -4,7 +4,7 @@ import java.util.UUID
 
 import supplychain.dataset.Namespaces
 import supplychain.model._
-import supplychain.simulator.WeatherProvider_
+import supplychain.simulator.WeatherProvider
 
 class ConnectionsBuilder(suppliers: Seq[Supplier]) {
 

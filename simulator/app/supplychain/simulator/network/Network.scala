@@ -5,7 +5,7 @@ import java.util.logging.Logger
 import supplychain.dataset.Namespaces
 import supplychain.model._
 import supplychain.simulator.network.Network._
-import supplychain.simulator.{ConfigurationProvider, WeatherProvider_, WeatherProvider}
+import supplychain.simulator.{ConfigurationProvider, WeatherProvider}
 
 /**
  * Represents a supply chain network.
@@ -31,7 +31,7 @@ object Network {
    * The network is built in two steps:
    * First, a list of suppliers is generated and than connections are generated between suppliers.
    */
-  def build(product: Product, wp: WeatherProvider_, cp:ConfigurationProvider): Network = {
+  def build(product: Product, wp: WeatherProvider, cp:ConfigurationProvider): Network = {
     // Build Supplier List
     val supplierBuilder = new SupplierBuilder(wp, cp)
     val suppliers = supplierBuilder(product)
@@ -50,7 +50,7 @@ object Network {
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }
 
-  private def generateRootSupplier(product: Product, wp: WeatherProvider_) = {
+  private def generateRootSupplier(product: Product, wp: WeatherProvider) = {
     val crds = Coordinates(0.0, 0.0)
     val ws = wp.getNearesWeaterStation(crds)
     Supplier(
