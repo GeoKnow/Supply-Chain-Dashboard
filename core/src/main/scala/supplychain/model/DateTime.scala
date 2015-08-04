@@ -61,4 +61,6 @@ object DateTime {
     val formatted = new java.text.SimpleDateFormat(format)
     return new DateTime(formatted.parse(dateString).getTime)
   }
+
+  def parse(dateString: String): DateTime = parse("yyyy-MM-dd", dateString)
 }
