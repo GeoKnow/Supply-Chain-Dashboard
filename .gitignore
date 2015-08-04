@@ -2,14 +2,14 @@
 *.log
 .idea
 
-apps/core/.cache
-apps/core/.classpath
-apps/core/.project
-apps/simulator/.classpath
-apps/simulator/.project
-apps/simulator/.settings/*
-apps/projectFilesBackup/
-apps/projectFilesBackup1/
+core/.cache
+core/.classpath
+core/.project
+simulator/.classpath
+simulator/.project
+simulator/.settings/*
+projectFilesBackup/
+projectFilesBackup1/
 
 # sbt specific
 dist/*
@@ -19,11 +19,5 @@ src_managed/
 project/boot/
 project/plugins/project/
 .scala_dependencies
-apps/simulator/.settings
-apps/simulator/.classpath
-apps/simulator/.project
-apps/core/.cache
-apps/core/.classpath
-apps/core/.project
-apps/WeatherStations.fos
+WeatherStations.fos
 virtuoso-data
