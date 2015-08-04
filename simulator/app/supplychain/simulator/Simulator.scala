@@ -5,7 +5,7 @@ import java.util.logging.Logger
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import akka.actor.{ActorSystem, Cancellable, Props}
-import supplychain.dataset.{EndpointConfig, RdfWeatherDataset, Dataset, RdfDataset}
+import supplychain.dataset.{Dataset, RdfDataset}
 import supplychain.model.{DateTime, Connection, Message, Supplier}
 import supplychain.simulator.network.Network
 
@@ -20,13 +20,13 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
   // The simulation start date
-  var startDate: DateTime = _
+  var startDate: DateTime = Configuration.get.minStartDate
 
   // The current simulation date
-  var currentDate: DateTime = _
+  var currentDate: DateTime = Configuration.get.minStartDate
 
   // the date the simulation should stop
-  var simulationEndDate: DateTime = _
+  var simulationEndDate: DateTime = Configuration.get.maxEndDate
 
   //get the weather data provider
   private val wp = new WeatherProvider(Configuration.get.endpointConfig)
@@ -89,7 +89,11 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   }
 
   // advance the simulation for a single tick
-  def step() {
+  def step(start: DateTime = null) {
+    if (startDate != null) {
+      this.startDate = startDate
+      currentDate = startDate
+    }
     scheduler ! Scheduler.Tick
   }
 
@@ -100,11 +104,13 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   }
 
   // starts a new simulation with the given parameters
-  def run(startDate: DateTime, endDate: DateTime, interval: Double) {
+  def run(interval: Double, startDate: DateTime = null, endDate: DateTime = null) {
     pause()
-    this.startDate = startDate
-    currentDate = startDate
-    simulationEndDate = endDate
+    if (startDate != null) {
+      this.startDate = startDate
+      currentDate = startDate
+    }
+    if (endDate != null) simulationEndDate = endDate
     metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds, scheduler, Scheduler.Tick))
   }
 

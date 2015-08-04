@@ -1,7 +1,7 @@
 # Pages
 
 # REST API
-POST    /step       controllers.API.step()
-POST    /run        controllers.API.run(start: String ?= "2014-01-01", end: String ?= "2014-12-31", interval: Double ?= 1.0)
+POST    /step       controllers.API.step(start: String ?= "default")
+POST    /run        controllers.API.run(start: String ?= "default", end: String ?= "default", interval: Double ?= 1.0)
 POST    /start      controllers.API.start(interval: Double ?= 1.0)
 POST    /pause      controllers.API.pause()

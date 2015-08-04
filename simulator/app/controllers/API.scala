@@ -1,31 +1,30 @@
 package controllers
 
-import java.io.StringWriter
-
-import com.hp.hpl.jena.query.ResultSetFormatter
-import models._
 import play.api.Logger
-import play.api.libs.concurrent.Akka
 import play.api.mvc.{Action, Controller}
-import supplychain.dataset.{DatasetStatistics, Namespaces, SchnelleckeDataset}
 import supplychain.model.DateTime
 import supplychain.simulator.Simulator
-
-import scala.io.Source
 
 /**
  * The REST API.
  */
 object API extends Controller {
 
-  def step() = Action {
-    Simulator().step()
-    Ok
+  def step(start: String) = Action {
+    Logger.info(s"Simulation advanced one 'Tick' from start date $start.")
+    var s: DateTime = null
+    if (start != "default") s = DateTime.parse("yyyy-MM-dd", start)
+    Simulator().step(s)
+    Ok("step")
   }
 
   def run(start: String, end: String, interval: Double) = Action {
     Logger.info(s"Simulation started at $start and will run until $end with an interval of $interval seconds.")
-    Simulator().run(DateTime.parse("yyyy-MM-dd", start), DateTime.parse("yyyy-MM-dd", end), interval)
+    var s: DateTime = null
+    if (start != "default") s = DateTime.parse("yyyy-MM-dd", start)
+    var e: DateTime = null
+    if (end != "default") e = DateTime.parse("yyyy-MM-dd", end)
+    Simulator().run(interval, s, e)
     Ok("run")
   }
 
@@ -38,7 +37,12 @@ object API extends Controller {
   def pause() = Action {
     Logger.info(s"Simulation paused.")
     Simulator().pause()
-    Ok("stop")
+    Ok("pause")
+  }
+
+  def status() = Action {
+    Logger.info(s"Provide simulation status information.")
+    NotImplemented
   }
 
 }

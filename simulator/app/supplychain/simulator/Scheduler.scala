@@ -1,13 +1,9 @@
 package supplychain.simulator
 
-import java.util.GregorianCalendar
-
 import akka.actor.Actor
 import supplychain.model._
 import supplychain.simulator.Scheduler.Tick
-
 import scala.collection.mutable
-import scala.util.Random
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
@@ -24,7 +20,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   private val orderCount = 10 // + (Random.nextDouble() * 10.0).toInt
 
   // Remembers the last order time
-  private var lastOrderTime = simulator.currentDate - orderInterval
+  private var lastOrderTime: DateTime = _
 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
@@ -37,6 +33,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
     case Tick =>
       // Advance current date
       simulator.currentDate += tickInterval
+      if (lastOrderTime == null) lastOrderTime = currentDate - orderInterval
       // Order
       if(lastOrderTime + orderInterval <= currentDate && currentDate <= simulationEndDate) {
         lastOrderTime = currentDate
