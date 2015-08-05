@@ -1,6 +1,7 @@
 package supplychain.simulator
 
 import akka.actor.Actor
+import play.api.Logger
 import supplychain.model._
 import supplychain.simulator.Scheduler.Tick
 import scala.collection.mutable
@@ -11,16 +12,17 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   def simulationEndDate = simulator.simulationEndDate
 
   // The simulation interval between two ticks
-  private val tickInterval = Duration.days(1)
+  private val tickInterval = Duration.days(Configuration.get.tickIntervalsDays)
 
   // The interval between two orders to the root supplier
-  private val orderInterval = Duration.days(1)
+  private val orderInterval = Duration.days(Configuration.get.orderIntervalDays)
 
   // The number of parts to be ordered
-  private val orderCount = 10 // + (Random.nextDouble() * 10.0).toInt
+  private val orderCount = Configuration.get.orderCount // 10 // + (Random.nextDouble() * 10.0).toInt
 
   // Remembers the last order time
-  private var lastOrderTime: DateTime = null
+  @volatile
+  private var lastOrderTime: DateTime = currentDate - orderInterval
 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
@@ -33,7 +35,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
     case Tick =>
       // Advance current date
       simulator.currentDate += tickInterval
-      if (lastOrderTime == null) lastOrderTime = currentDate - orderInterval
+      Logger.info(s"current simulation date: $currentDate")
       // Order
       if(lastOrderTime + orderInterval <= currentDate && currentDate <= simulationEndDate) {
         lastOrderTime = currentDate

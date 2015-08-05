@@ -11,7 +11,10 @@ import supplychain.model.DateTime
 case class Configuration( endpointConfig: EndpointConfig,
                           productUri: String,
                           minStartDate: DateTime,
-                          maxEndDate: DateTime)
+                          maxEndDate: DateTime,
+                          tickIntervalsDays: Double,
+                          orderIntervalDays: Double,
+                          orderCount: Int)
 
 /**
  * Holds the configuration.
@@ -36,7 +39,10 @@ object Configuration {
       ),
       productUri = config.getString("simulator.product.uri").getOrElse(null),
       minStartDate = DateTime.parse(config.getString("simulator.minStartDate").getOrElse("2014-01-01")),
-      maxEndDate = DateTime.parse(config.getString("simulator.maxEndDate").getOrElse("2014-12-31"))
+      maxEndDate = DateTime.parse(config.getString("simulator.maxEndDate").getOrElse("2014-12-31")),
+      tickIntervalsDays = config.getDouble("simulator.defaultTickIntervalDays").getOrElse(1.0),
+      orderIntervalDays = config.getDouble("simulator.defaultOrderIntervalDays").getOrElse(1.0),
+      orderCount = config.getInt("simulator.defaultOrderCount").getOrElse(10)
     )
   }
 }

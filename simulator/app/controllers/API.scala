@@ -10,28 +10,21 @@ import supplychain.simulator.Simulator
  */
 object API extends Controller {
 
-  def step(start: String) = Action {
-    Logger.info(s"Simulation advanced one 'Tick' from start date $start.")
-    var s: DateTime = null
-    if (start != "default") s = DateTime.parse(start)
-    Simulator().step(s)
+  def step(start: Option[String]) = Action {
+    Logger.info(s"Simulation advanced one 'Tick' from start date '$start'.")
+    val s = start.map(DateTime.parse)
+    Simulator.step(s)
     Ok("step")
   }
 
-  def run(start: String, end: String, interval: Double) = Action {
-    Logger.info(s"Simulation started at $start and will run until $end with an interval of $interval seconds.")
-    var s: DateTime = null
-    if (start != "default") s = DateTime.parse(start)
-    var e: DateTime = null
-    if (end != "default") e = DateTime.parse(end)
-    Simulator().run(interval, s, e)
-    Ok("run")
-  }
+  def run(start: Option[String], end: Option[String], interval: Double) = Action {
+    Logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
 
-  def start(interval: Double) = Action {
-    Logger.info(s"Simulation (re)started with an interval of $interval seconds.")
-    Simulator().start(interval)
-    Ok("start")
+    val s = start.map(DateTime.parse)
+    val e = end.map(DateTime.parse)
+
+    Simulator.run(interval, s, e)
+    Ok("run")
   }
 
   def pause() = Action {
@@ -44,5 +37,4 @@ object API extends Controller {
     Logger.info(s"Provide simulation status information.")
     NotImplemented
   }
-
 }

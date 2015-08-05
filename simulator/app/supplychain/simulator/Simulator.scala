@@ -20,12 +20,15 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
   // The simulation start date
+  @volatile
   var startDate: DateTime = Configuration.get.minStartDate
 
   // The current simulation date
+  @volatile
   var currentDate: DateTime = Configuration.get.minStartDate
 
   // the date the simulation should stop
+  @volatile
   var simulationEndDate: DateTime = Configuration.get.maxEndDate
 
   //get the weather data provider
@@ -39,7 +42,7 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   private val network = Network.build(product, wp, cp)
 
   // Create actors for all suppliers
-  for(supplier <- network.suppliers)
+  val supplierActors = for(supplier <- network.suppliers) yield
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), supplier.id)
 
   // The message scheduler.
@@ -87,14 +90,6 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
       listener(msg)
   }
 
-  // advance the simulation for a single tick
-  def step(start: DateTime = null) {
-    if (startDate != null) {
-      this.startDate = startDate
-      currentDate = startDate
-    }
-    scheduler ! Scheduler.Tick
-  }
 
   // continues from pause and/or resets the interval
   def start(interval: Double): Unit = {
@@ -102,21 +97,18 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
     metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds, scheduler, Scheduler.Tick))
   }
 
-  // starts a new simulation with the given parameters
-  def run(interval: Double, startDate: DateTime = null, endDate: DateTime = null) {
-    pause()
-    if (startDate != null) {
-      this.startDate = startDate
-      currentDate = startDate
-    }
-    if (endDate != null) simulationEndDate = endDate
-    metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds, scheduler, Scheduler.Tick))
-  }
+
 
   // pauses the simulation
   def pause() {
     metronom.foreach(_.cancel())
     metronom = None
+  }
+
+  def shutdown() {
+    actorSystem.stop(scheduler)
+    for(a <- supplierActors)
+      actorSystem.stop(a)
   }
 
   def scheduleMessage(msg: Message) {
@@ -129,7 +121,32 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
 }
 
 object Simulator {
-  private val simulator = new Simulator(Akka.system)
+  private var simulator = new Simulator(Akka.system)
+
+  // advance the simulation for a single tick
+  def step(start: Option[DateTime]) {
+    for (s <- start) {
+      simulator.shutdown
+      simulator = new Simulator(Akka.system)
+
+      simulator.startDate = s
+      simulator.currentDate = s
+    }
+    simulator.scheduler ! Scheduler.Tick
+  }
+
+  // starts a new simulation with the given parameters
+  def run(interval: Double, startDate: Option[DateTime], endDate: Option[DateTime]) {
+    simulator.pause()
+    for (s <- startDate) {
+      simulator.shutdown
+      simulator = new Simulator(Akka.system)
+      simulator.startDate = s
+      simulator.currentDate = s
+    }
+    for (e <- endDate) simulator.simulationEndDate = e
+    simulator.metronom = Option(simulator.actorSystem.scheduler.schedule(0 seconds, interval.seconds, simulator.scheduler, Scheduler.Tick))
+  }
 
   def apply() = simulator
 }
