@@ -43,7 +43,9 @@ object API extends Controller {
   def calculateMetrics() = Action {
     Logger.info(s"Calculate performance metrics.")
 
-    val md = new MetricsDataset(Configuration.get.endpointConfig, Configuration.get.endpointConfig.getDefaultGraph())
+    val md = new MetricsDataset(Configuration.get.endpointConfig)
+
+    md.generateDataSet()
 
     var currentDate = Simulator().startDate
     while(currentDate <= Simulator().simulationEndDate) {

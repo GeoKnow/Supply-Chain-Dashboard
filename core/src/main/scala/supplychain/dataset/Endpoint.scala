@@ -30,6 +30,7 @@ case class EndpointConfig(kind: String,
                      defaultGraph: String,
                      defaultGraphWeather: String = null,
                      defaultGraphConfiguration: String = null,
+                     defaultGraphMetrics: String = null,
                      url: String = "",
                      host: String = "",
                      port: String = "",
@@ -67,10 +68,10 @@ case class EndpointConfig(kind: String,
     if (!isDataInitialized) {
       endpoint.createGraph(getDefaultGraph(), false)
 
-      //val weatherStationFile = new File("data/conf/ncdc-stations.ttl")
-      //endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
-      //val weatherFile = new File("data/conf/ncdc-ghcnd-2014.ttl.gz")
-      //endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.TTL))
+      val weatherStationFile = new File("data/conf/ncdc-stations.ttl")
+      endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
+      val weatherFile = new File("data/conf/ncdc-ghcnd-2014.ttl.gz")
+      endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.TTL))
 
       val supplConfFile = new File("data/conf/supplier.ttl")
       endpoint.uploadDataset(getDefaultGraphConfiguration(), supplConfFile, Option(Lang.TTL), true)
@@ -82,6 +83,7 @@ case class EndpointConfig(kind: String,
 
   def getDefaultGraph(): String = defaultGraph
   def getDefaultGraphWeather(): String = defaultGraphWeather
+  def getDefaultGraphMetrics(): String = defaultGraphMetrics
   def getDefaultGraphConfiguration(): String = defaultGraphConfiguration
 }
 
