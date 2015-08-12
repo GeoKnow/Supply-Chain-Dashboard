@@ -46,7 +46,7 @@ class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider, productUri:
 
     val prefixedQS = prefix(queryStr)
     //log.info(prefixedQS)
-    val result = ec.getEndpoint().select(prefixedQS).toSeq
+    val result = ec.createEndpoint().select(prefixedQS).toSeq
 
     var p: Product = null
     for (binding <- result) {
@@ -80,7 +80,7 @@ class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider, productUri:
       """.stripMargin
     val prefixedQS = prefix(queryStr)
     //log.info(prefixedQS)
-    val result = ec.getEndpoint().select(prefixedQS).toSeq
+    val result = ec.createEndpoint().select(prefixedQS).toSeq
 
     var s: Supplier = null
     for (binding <- result) {
@@ -117,7 +117,7 @@ class ConfigurationProvider(ec: EndpointConfig, wp: WeatherProvider, productUri:
 
     val prefixedQS = prefix(queryStr)
     //log.info(prefixedQS)
-    val result = ec.getEndpoint().select(prefixedQS).toSeq
+    val result = ec.createEndpoint().select(prefixedQS).toSeq
 
     var pl: List[Product] = List()
     for (binding <- result) {

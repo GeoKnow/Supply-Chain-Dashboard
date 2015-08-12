@@ -8,11 +8,7 @@ import scala.collection.mutable
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
-  def currentDate = simulator.currentDate
   def simulationEndDate = simulator.simulationEndDate
-
-  // The simulation interval between two ticks
-  private val tickInterval = Duration.days(Configuration.get.tickIntervalsDays)
 
   // The interval between two orders to the root supplier
   private val orderInterval = Duration.days(Configuration.get.orderIntervalDays)
@@ -22,7 +18,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 
   // Remembers the last order time
   @volatile
-  private var lastOrderTime: DateTime = currentDate - orderInterval
+  private var lastOrderTime: DateTime = new DateTime(0)
 
   // Scheduled messages ordered by date
   private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
@@ -31,10 +27,14 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
    * Receives and processes messages.
    */
   def receive = {
-    case msg: Message => messageQueue.enqueue(msg)
-    case Tick =>
-      // Advance current date
-      simulator.currentDate += tickInterval
+    case msg: Message =>
+
+      if (simulator.currentDate >= msg.date) simulator.getActor(msg.receiver) ! msg
+      else messageQueue.enqueue(msg)
+
+    case Tick(currentDate) =>
+
+      //if (currentDate > simulationEndDate)
       Logger.info(s"current simulation date: $currentDate")
       // Order
       if(lastOrderTime + orderInterval <= currentDate && currentDate <= simulationEndDate) {
@@ -53,5 +53,5 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
 }
 
 object Scheduler {
-  object Tick
+  case class Tick(currentDate: DateTime)
 }

@@ -1,7 +1,7 @@
 package models
 
 import models.news.{Annotation, News}
-import supplychain.dataset.{EndpointConfig, Endpoint, RdfWeatherDataset}
+import supplychain.dataset.{EndpointConfig}
 import supplychain.model.{Supplier, DateTime}
 import scala.collection.JavaConversions._
 
@@ -40,7 +40,7 @@ class NewsProvider(ec: EndpointConfig) {
          |}
        """.stripMargin
 
-    val res = ec.getEndpoint().select(query).toList
+    val res = ec.createEndpoint().select(query).toList
 
     for((artUrl, artResults) <- res.groupBy(_.getResource("artUrl").getURI).toList) yield {
       val art = artResults.head

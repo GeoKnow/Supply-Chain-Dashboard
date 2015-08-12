@@ -34,7 +34,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val queryExecution = VirtuosoQueryExecutionFactory.create(query, virtGraph)
     val result = queryExecution.execDescribe()
     virtGraph.close()
-    logger.info(s"Query issued:$query")
+    logger.info(s"Describe Query issued:$query")
     result
   }
 
@@ -42,6 +42,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
     val request = new VirtuosoUpdateRequest(query, virtGraph)
     request.exec()
+    logger.info(s"Update Query issued:$query")
     virtGraph.close()
   }
 

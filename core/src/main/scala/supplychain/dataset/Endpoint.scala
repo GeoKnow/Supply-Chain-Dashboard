@@ -43,7 +43,7 @@ case class EndpointConfig(kind: String,
   private var endpoint: Endpoint = null
   private var isDataInitialized = false
 
-  def getEndpoint(): Endpoint = {
+  def createEndpoint(): Endpoint = {
     if (endpoint != null) return endpoint
 
     if (kind == TYPE_LOCAL) {

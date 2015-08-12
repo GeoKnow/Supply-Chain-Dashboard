@@ -132,7 +132,7 @@ class RdfDataset(ec: EndpointConfig) {
   private def insert(statements: String) {
     if(!graphCreated) {
       ec.getDefaultGraph()
-      ec.getEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraph()}>")
+      ec.createEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraph()}>")
       graphCreated = true
     }
 
@@ -147,28 +147,28 @@ class RdfDataset(ec: EndpointConfig) {
         |   }
         | }
       """.stripMargin
-    ec.getEndpoint().update(query)
+    ec.createEndpoint().update(query)
   }
 
   /**
    * Executes a SPARQL Select query on the data set.
    */
   def query(queryStr: String) = {
-    ec.getEndpoint().select(queryStr)
+    ec.createEndpoint().select(queryStr)
   }
 
   /**
    * Executes a SPARQL Select query on the data set.
    */
   def select(queryStr: String): Seq[QuerySolution] = {
-    return ec.getEndpoint().select(queryStr).toSeq
+    return ec.createEndpoint().select(queryStr).toSeq
   }
 
   /**
    * Executes a SPARQL Describe query on the data set.
    */
   def describe(queryStr: String) = {
-    ec.getEndpoint().describe(queryStr)
+    ec.createEndpoint().describe(queryStr)
   }
 
 

@@ -6,7 +6,8 @@ import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import akka.actor.{ActorSystem, Cancellable, Props}
 import supplychain.dataset.{Dataset, RdfDataset}
-import supplychain.model.{DateTime, Connection, Message, Supplier}
+import supplychain.model._
+import supplychain.model.{Duration=>SCDuration}
 import supplychain.simulator.network.Network
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,7 +40,7 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   val product = cp.getProduct()
 
   // Generate the supply chain network
-  private val network = Network.build(product, wp, cp)
+  val network = Network.build(product, wp, cp)
 
   // Create actors for all suppliers
   val supplierActors = for(supplier <- network.suppliers) yield
@@ -54,6 +55,9 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   // Listeners for intercepted messages
   @volatile
   private var listeners = Seq[Message => Unit]()
+
+  // The simulation interval between two ticks
+  val tickInterval = SCDuration.days(Configuration.get.tickIntervalsDays)
 
   // List of past messages.
   var messages = Seq[Message]()
@@ -90,14 +94,20 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
       listener(msg)
   }
 
+  def advanceSimulation(): Unit = {
+    if (currentDate <= simulationEndDate) {
+      scheduler ! Scheduler.Tick(currentDate)
+      currentDate += tickInterval
+    } else {
+      pause()
+    }
+  }
 
   // continues from pause and/or resets the interval
   def start(interval: Double): Unit = {
     pause()
-    metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds, scheduler, Scheduler.Tick))
+    metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds)(advanceSimulation))
   }
-
-
 
   // pauses the simulation
   def pause() {
@@ -125,6 +135,7 @@ object Simulator {
 
   // advance the simulation for a single tick
   def step(start: Option[DateTime]) {
+    simulator.pause()
     for (s <- start) {
       simulator.shutdown
       simulator = new Simulator(Akka.system)
@@ -132,7 +143,7 @@ object Simulator {
       simulator.startDate = s
       simulator.currentDate = s
     }
-    simulator.scheduler ! Scheduler.Tick
+    simulator.advanceSimulation()
   }
 
   // starts a new simulation with the given parameters
@@ -145,7 +156,7 @@ object Simulator {
       simulator.currentDate = s
     }
     for (e <- endDate) simulator.simulationEndDate = e
-    simulator.metronom = Option(simulator.actorSystem.scheduler.schedule(0 seconds, interval.seconds, simulator.scheduler, Scheduler.Tick))
+    simulator.metronom = Option(simulator.actorSystem.scheduler.schedule(0 seconds, interval.seconds)(simulator.advanceSimulation))
   }
 
   def apply() = simulator

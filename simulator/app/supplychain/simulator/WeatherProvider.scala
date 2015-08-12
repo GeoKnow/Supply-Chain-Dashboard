@@ -5,7 +5,7 @@ import java.util.logging.Logger
 import javax.swing.text.DateFormatter
 
 import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
-import supplychain.dataset.{EndpointConfig, Endpoint, RdfWeatherDataset}
+import supplychain.dataset.{EndpointConfig}
 import supplychain.model.{Coordinates, WeatherStation, WeatherObservation, DateTime, WeatherUtil, Duration}
 import scala.collection.JavaConversions._
 import scala.util.Random
@@ -56,7 +56,7 @@ class WeatherProvider(ec: EndpointConfig) {
        """.stripMargin
 
     //log.info(queryStr)
-    val result = ec.getEndpoint().select(queryStr).toSeq
+    val result = ec.createEndpoint().select(queryStr).toSeq
     var ws: WeatherStation = null
 
     for (binding <- result) {
@@ -91,7 +91,7 @@ class WeatherProvider(ec: EndpointConfig) {
          |}
        """.stripMargin
 
-    val result = ec.getEndpoint().select(queryStr).toSeq
+    val result = ec.createEndpoint().select(queryStr).toSeq
 
     var total = 0
     for (binding <- result) {
@@ -178,7 +178,7 @@ class WeatherProvider(ec: EndpointConfig) {
 
     //log.info(queryStr)
 
-    val result = ec.getEndpoint().select(queryStr).toSeq
+    val result = ec.createEndpoint().select(queryStr).toSeq
 
     var wo: WeatherObservation = null
 

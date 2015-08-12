@@ -1,3 +1,6 @@
+import com.typesafe.sbt.packager.Keys._
+import sbt.Keys._
+
 //////////////////////////////////////////////////////////////////////////////
 // Common Settings
 //////////////////////////////////////////////////////////////////////////////
@@ -44,7 +47,14 @@ lazy val simulator = project
 
       libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.3.7",
 
-      libraryDependencies += "com.typesafe.play" % "play-ws_2.11" % "2.3.7"
+      libraryDependencies += "com.typesafe.play" % "play-ws_2.11" % "2.3.7",
+
+      // Linux Packaging, Uncomment to generate Debian packages that register the Workbench as an Upstart service
+      packageArchetype.java_server,
+      version in Debian := "2.6.1",
+      maintainer := "Robert Isele <silk-discussion@googlegroups.com>",
+      packageSummary := "The Silk framework is a tool for discovering relationships between data items within different Linked Data sources.",
+      packageDescription := "The Silk framework is a tool for discovering relationships between data items within different Linked Data sources."
     )
     .dependsOn(core)
 

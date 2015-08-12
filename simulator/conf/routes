@@ -4,3 +4,4 @@
 POST    /step       controllers.API.step(start: Option[String])
 POST    /run        controllers.API.run(start: Option[String], end: Option[String], interval: Double ?= 1.0)
 POST    /pause      controllers.API.pause()
+POST    /calculateMetrics controllers.API.calculateMetrics()

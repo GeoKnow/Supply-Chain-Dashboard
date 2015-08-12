@@ -27,7 +27,7 @@ object Application extends Controller {
   }
 
   def metrics(supplierId: String) = Action {
-    val messages = CurrentDataset().messages.filter(_.connection.target.id == supplierId)
+    val messages = CurrentDataset().messages.filter(_.connection.source.id == supplierId)
     val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
     Ok(views.html.metrics(messages, supplier))
   }
