@@ -38,12 +38,17 @@ class MetricsDataset(ec: EndpointConfig) {
           |     qb:component <$uri2> .
           | <$uri1> qb:dimension sc:supplier ;
           |     qb:order 1 .
-          | <$uri2> qb:dimension sdmx-dimension:refTime;
+          | <$uri2> qb:dimension sc:date ;
           |     qb:order 2 .
           |
           | sc:supplier a rdf:Property, qb:DimensionProperty ;
           |    rdfs:label "Supplier"@en ;
           |    rdfs:range sc:Supplier .
+          |
+          | sc:date a  rdf:Property, qb:DimensionProperty ;
+          |    rdfs:label "Observation Date"@en ;
+          |    rdfs:subPropertyOf sdmx-dimension:refTime ;
+          |    rdfs:range xsd:date .
           |
           | <${dataSetUri}> a qb:DataSet ;
           |    qb:structure <${dataStructureUri}> .
@@ -86,7 +91,7 @@ class MetricsDataset(ec: EndpointConfig) {
            | <$uri> a qb:Observation .
            | <$uri> qb:dataSet <${dataSetUri}> .
            | <$uri> sc:supplier <${supplier.uri}> .
-           | <$uri> sdmx-dimension:refTime "${date.toXSDFormat}"^^xsd:date .
+           | <$uri> sc:date "${date.toXSDFormat}"^^xsd:date .
            | ${metricsValues.mkString("\n")}
          """.stripMargin
       insert(queryString)
@@ -97,6 +102,51 @@ class MetricsDataset(ec: EndpointConfig) {
     ec.getDefaultGraphMetrics() + "" + prefix + UUID.randomUUID().toString
   }
 
+  def normalizeDataCube(): Unit = {
+    var i = s"""
+        |    ?o  rdf:type qb:Observation .
+        |    ?ds rdf:type qb:DataSet .
+        """.stripMargin
+    var w = "?o qb:dataSet ?ds ."
+    insertWhere(i,w)
+
+    i = s"""
+         |    ?cs qb:componentProperty ?p .
+         |    ?p  rdf:type qb:DimensionProperty .
+        """.stripMargin
+    w = "?cs qb:dimension ?p ."
+    insertWhere(i,w)
+
+    i = s"""
+         |    ?cs qb:componentProperty ?p .
+         |    ?p  rdf:type qb:MeasureProperty .
+        """.stripMargin
+    w = "?cs qb:measure ?p ."
+    insertWhere(i,w)
+
+    i = s"""
+         |    ?cs qb:componentProperty ?p .
+         |    ?p  rdf:type qb:AttributeProperty .
+        """.stripMargin
+    w = "?cs qb:attribute ?p ."
+    insertWhere(i,w)
+  }
+
+  private def insertWhere(insertStm: String, whereStm: String): Unit = {
+    val query =
+      s"""
+        |PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        |PREFIX qb: <http://purl.org/linked-data/cube#>
+        |
+        |WITH <${ec.getDefaultGraphMetrics()}>
+        |INSERT {
+        |   $insertStm
+        |} WHERE {
+        |   $whereStm
+        |}
+      """.stripMargin
+    ec.createEndpoint().update(query)
+  }
 
   /**
    * Inserts a number of statements into the RDF data set.

@@ -56,6 +56,8 @@ object API extends Controller {
       currentDate += Simulator().tickInterval
     }
 
+    md.normalizeDataCube()
+
     Ok("metrics")
   }
 }
