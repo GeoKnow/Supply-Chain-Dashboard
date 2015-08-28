@@ -12,18 +12,25 @@ import supplychain.simulator.{Configuration, Simulator}
  */
 object API extends Controller {
 
-  def step(start: Option[String]) = Action {
+  def step(start: Option[String], productUri: Option[String], graphUri: Option[String]) = Action {
     Logger.info(s"Simulation advanced one 'Tick' from start date '$start'.")
     val s = start.map(DateTime.parse)
+
+    for (p <- productUri) Configuration.get.productUri = p
+    for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
+
     Simulator.step(s)
     Ok("step")
   }
 
-  def run(start: Option[String], end: Option[String], interval: Double) = Action {
+  def run(start: Option[String], end: Option[String], productUri: Option[String], graphUri: Option[String], interval: Double) = Action {
     Logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
 
     val s = start.map(DateTime.parse)
     val e = end.map(DateTime.parse)
+
+    for (p <- productUri) Configuration.get.productUri = p
+    for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
 
     Simulator.run(interval, s, e)
     Ok("run")
@@ -35,14 +42,12 @@ object API extends Controller {
     Ok("pause")
   }
 
-  def status() = Action {
-    Logger.info(s"Provide simulation status information.")
-    NotImplemented
-  }
-
-  def calculateMetrics() = Action {
+  def calculateMetrics(productUri: Option[String], graphUri: Option[String]) = Action {
     if (!Simulator.isSimulationRunning()) {
       Logger.info(s"Calculate performance metrics.")
+
+      for (p <- productUri) Configuration.get.productUri = p
+      for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
 
       val md = new MetricsDataset(Configuration.get.endpointConfig)
 
@@ -61,7 +66,6 @@ object API extends Controller {
 
       Ok("metrics")
     } else {
-      //Logger.info(s"Simulation is running, can not calculate metrics now.")
       Status(503)("Simulation is running, can not calculate performance metrics now. Retry later.")
     }
   }

@@ -9,7 +9,7 @@ import supplychain.model.DateTime
  * The Supply Chain Dashboard configuration.
  */
 case class Configuration( endpointConfig: EndpointConfig,
-                          productUri: String,
+                          var productUri: String,
                           minStartDate: DateTime,
                           maxEndDate: DateTime,
                           tickIntervalsDays: Double,
@@ -31,7 +31,6 @@ object Configuration {
         defaultGraph = config.getString("simulator.defaultGraph").getOrElse("http://xybermotive.com/geoknow/"),
         defaultGraphWeather = config.getString("simulator.defaultGraphWeather").getOrElse("http://www.xybermotive.com/GeoKnowWeather#"),
         defaultGraphConfiguration = config.getString("simulator.defaultGraphConfiguration").getOrElse("http://www.xybermotive.com/configuration/"),
-        defaultGraphMetrics = config.getString("simulator.defaultGraphMetrics").getOrElse("http://www.xybermotive.com/metrics/"),
         url = config.getString("simulator.endpoint.url").getOrElse(""),
         host = config.getString("simulator.virtuoso.host").getOrElse("localhost"),
         port = config.getString("simulator.virtuoso.port").getOrElse("1111"),

@@ -14,6 +14,12 @@
 # Product Configuration
 #############################
 
+#############################
+# Product Car
+#############################
+
+# BOM
+
 prod:Car
   a schema:Product ;
   schema:name "Car" ;
@@ -26,13 +32,11 @@ prod:Car
     sc:quantity  "4"^^xsd:integer
   ] ;
 .
-suppl:VW schema:manufacturer prod:Car .
 
 prod:Engine
   a schema:Product ;
   schema:name "Engine" ;
 .
-suppl:ZF schema:manufacturer prod:Engine.
 
 prod:Wheel
   a schema:Product ;
@@ -42,10 +46,50 @@ prod:Wheel
     sc:quantity  "1"^^xsd:integer
   ] ;
 .
-suppl:Conti schema:manufacturer prod:Wheel .
 
 prod:Rim
   a schema:Product ;
   schema:name "Rim" ;
 .
-suppl:Schnellecke_Transportlogistik_GmbH schema:manufacturer prod:Rim.
+
+# Supplier
+
+suppl:VW schema:manufacturer prod:Car .
+suppl:ZF schema:manufacturer prod:Engine .
+suppl:Conti schema:manufacturer prod:Wheel .
+suppl:Schnellecke_Transportlogistik_GmbH schema:manufacturer prod:Rim .
+
+#############################
+# Product Table
+#############################
+
+# BOM
+
+prod:Table
+  a schema:Product ;
+  schema:name "Table" ;
+  sc:productPart [
+    sc:product prod:Tabletop ;
+    sc:quantity "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:Tableleg ;
+    sc:quantity  "4"^^xsd:integer
+  ] ;
+.
+
+prod:Tabletop
+  a schema:Product ;
+  schema:name "Tabletop" ;
+.
+
+prod:Tableleg
+  a schema:Product ;
+  schema:name "Tableleg" ;
+.
+
+# Supplier
+
+suppl:FILZFABRIK schema:manufacturer prod:Table .
+suppl:Nedschroef_Plettenberg_GmbH schema:manufacturer prod:Tabletop .
+suppl:Theysohn_Kunststoff_GmbH schema:manufacturer prod:Tableleg .

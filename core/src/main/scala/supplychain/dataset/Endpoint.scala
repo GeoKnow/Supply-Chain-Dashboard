@@ -27,10 +27,9 @@ trait Endpoint {
 }
 
 case class EndpointConfig(kind: String,
-                     defaultGraph: String,
+                     var defaultGraph: String,
                      defaultGraphWeather: String = null,
                      defaultGraphConfiguration: String = null,
-                     defaultGraphMetrics: String = null,
                      url: String = "",
                      host: String = "",
                      port: String = "",
@@ -43,6 +42,10 @@ case class EndpointConfig(kind: String,
 
   private var endpoint: Endpoint = null
   private var isDataInitialized = false
+
+  def defaultGraphMetrics(): String = {
+    defaultGraph + "metrics/"
+  }
 
   def createEndpoint(): Endpoint = {
     if (endpoint != null) return endpoint
