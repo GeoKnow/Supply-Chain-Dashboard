@@ -41,23 +41,28 @@ object API extends Controller {
   }
 
   def calculateMetrics() = Action {
-    Logger.info(s"Calculate performance metrics.")
+    if (!Simulator.isSimulationRunning()) {
+      Logger.info(s"Calculate performance metrics.")
 
-    val md = new MetricsDataset(Configuration.get.endpointConfig)
+      val md = new MetricsDataset(Configuration.get.endpointConfig)
 
-    md.generateDataSet()
+      md.generateDataSet()
 
-    var currentDate = Simulator().startDate
-    while(currentDate <= Simulator().simulationEndDate) {
-      for (s <- Simulator().network.suppliers) {
-        val messages = Simulator().messages.filter(_.date <= currentDate).filter(_.connection.source.id == s.id)
-        md.addMetricValue(messages, s, currentDate)
+      var currentDate = Simulator().startDate
+      while(currentDate <= Simulator().simulationEndDate) {
+        for (s <- Simulator().network.suppliers) {
+          val messages = Simulator().messages.filter(_.date <= currentDate).filter(_.connection.source.id == s.id)
+          md.addMetricValue(messages, s, currentDate)
+        }
+        currentDate += Simulator().tickInterval
       }
-      currentDate += Simulator().tickInterval
+
+      md.normalizeDataCube()
+
+      Ok("metrics")
+    } else {
+      //Logger.info(s"Simulation is running, can not calculate metrics now.")
+      Status(503)("Simulation is running, can not calculate performance metrics now. Retry later.")
     }
-
-    md.normalizeDataCube()
-
-    Ok("metrics")
   }
 }

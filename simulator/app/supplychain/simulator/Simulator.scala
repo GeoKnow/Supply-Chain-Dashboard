@@ -160,4 +160,8 @@ object Simulator {
   }
 
   def apply() = simulator
+
+  def isSimulationRunning(): Boolean = {
+    simulator.metronom != None
+  }
 }
