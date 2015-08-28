@@ -35,6 +35,9 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   //get the weather data provider
   private val wp = new WeatherProvider(Configuration.get.endpointConfig)
 
+  private var productUri: Option[String] = _
+  private var graphUri: Option[String] = _
+
   // get the application configuration from endpoint
   private val cp = new ConfigurationProvider(Configuration.get.endpointConfig, wp, Configuration.get.productUri)
   val product = cp.getProduct()
@@ -134,8 +137,11 @@ object Simulator {
   private var simulator = new Simulator(Akka.system)
 
   // advance the simulation for a single tick
-  def step(start: Option[DateTime]) {
+  def step(start: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
     simulator.pause()
+
+    reinitSimulation(productUri, graphUri)
+
     for (s <- start) {
       simulator.shutdown
       simulator = new Simulator(Akka.system)
@@ -146,9 +152,23 @@ object Simulator {
     simulator.advanceSimulation()
   }
 
+  private def reinitSimulation(productUri: Option[String], graphUri: Option[String]): Unit = {
+    if (productUri != simulator.productUri || graphUri != simulator.graphUri) {
+      simulator.productUri = productUri
+      for (p <- productUri) Configuration.get.productUri = p
+      simulator.graphUri = graphUri
+      for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
+      simulator.shutdown
+      simulator = new Simulator(Akka.system)
+    }
+  }
+
   // starts a new simulation with the given parameters
-  def run(interval: Double, startDate: Option[DateTime], endDate: Option[DateTime]) {
+  def run(interval: Double, startDate: Option[DateTime], endDate: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
     simulator.pause()
+
+    reinitSimulation(productUri, graphUri)
+
     for (s <- startDate) {
       simulator.shutdown
       simulator = new Simulator(Akka.system)

@@ -16,10 +16,7 @@ object API extends Controller {
     Logger.info(s"Simulation advanced one 'Tick' from start date '$start'.")
     val s = start.map(DateTime.parse)
 
-    for (p <- productUri) Configuration.get.productUri = p
-    for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
-
-    Simulator.step(s)
+    Simulator.step(s, productUri, graphUri)
     Ok("step")
   }
 
@@ -29,10 +26,7 @@ object API extends Controller {
     val s = start.map(DateTime.parse)
     val e = end.map(DateTime.parse)
 
-    for (p <- productUri) Configuration.get.productUri = p
-    for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
-
-    Simulator.run(interval, s, e)
+    Simulator.run(interval, s, e, productUri, graphUri)
     Ok("run")
   }
 
