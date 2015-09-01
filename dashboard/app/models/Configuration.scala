@@ -54,4 +54,6 @@ object Configuration {
       orderCount = config.getInt("simulator.defaultOrderCount").getOrElse(10)
     )
   }
+
+  get.minStartDate.milliseconds
 }

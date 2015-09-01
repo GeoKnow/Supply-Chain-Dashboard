@@ -1,57 +1,93 @@
 @()
+@import models.Configuration
 
 <p>
-<button onclick="step()">Step</button>
-
-<button id="simulation-run" onclick="run()">Run</button>
-
-<button id="simulation-stop" onclick="stop()" disabled="disabled">Stop</button>
+    <button onclick="step()">Step</button>
+    <button id="simulation-run" onclick="run()">Run</button>
+    <button id="simulation-stop" onclick="stop()" disabled="disabled">Stop</button>
 </p>
 
-<div id="slider"></div>
+<p>
+    Simulation Date: <input id="currentDate" value="@Configuration.get.minStartDate" onchange="setStartDate(this.value)" />
+    <div id="dateSlider"></div>
+</p>
+
+<p>
+    Simulation Speed:
+    <div id="slider"></div>
+</p>
 
 <script>
-  var running = false;
-  var frequency = 1.0;
+    var running = false;
+    var frequency = 1.0;
+    var startDate = new Date(@Configuration.get.minStartDate.milliseconds);
 
-  // Initialization
-  $(function() {
-    $("#slider").slider({
-      value: 1,
-      min: 0.5,
-      max: 1000,
-      step: 0.5,
-      change: function( event, ui ) {
-        frequency = 1.0 / ui.value;
-        console.log("Frequency changed: " + frequency);
-        if(running)
-          run()
-      }
+    // Initialization
+    $(function() {
+        $("#slider").slider({
+            value: 1,
+            min: 1,
+            max: 100,
+            step: 1,
+            change: function( event, ui ) {
+                frequency = 1.0 / ui.value;
+                console.log("Frequency changed: " + frequency);
+                if(running)
+                    run();
+            }
+        });
+        $("#currentDate").val($.formatDateTime('yy-mm-dd', startDate));
+        $("#dateSlider").slider({
+            value: @Configuration.get.minStartDate.milliseconds,
+            min: @Configuration.get.minStartDate.milliseconds,
+            max: @Configuration.get.maxEndDate.milliseconds,
+            step: 86400000,
+            change: function(event, ui) {
+                startDate = new Date(ui.value);
+                $("#currentDate").val($.formatDateTime('yy-mm-dd', startDate));
+                console.log("Simulation start date changed to: " + startDate);
+            }
+        });
     });
-  });
 
-  // Single step through the simulation
-  function step() {
-    $.post('simulator/step');
-  }
+    function setStartDate(val) {
+        console.log("parsing to a Date: " + val);
 
-  // Run the simulation
-  function run() {
-    $.post('simulator/run?frequency=' + frequency, function() {
-      running = true;
-      $('#simulation-run').button('disable');
-      $('#simulation-stop').button('enable');
-    });
-  }
+        var timestamp = Date.parse(val);
+        console.log("parsed to timestamp: " + timestamp);
+        if (isNaN(timestamp) == false)
+        {
+            startDate = new Date(timestamp);
+            console.log("timestamp parsed to startDate: " + startDate);
+            console.log("Simulation start date manually changed to: " + startDate);
+            $("#dateSlider").val(timestamp);
+            $("#dateSlider").slider('value', timestamp);
+        } else {
+            $("#currentDate").val("only YYYY-MM-DD");
+        }
+    }
 
-  // Stop the simulation
-  function stop() {
-    $.post('simulator/stop',
-      function() {
-        running = false;
-        $('#simulation-run').button('enable');
-        $('#simulation-stop').button('disable');
-      });
-  }
+    // Single step through the simulation
+    function step() {
+        $.post('simulator/step');
+    }
+
+    // Run the simulation
+    function run() {
+        $.post('simulator/run?frequency=' + frequency, function() {
+            running = true;
+            $('#simulation-run').button('disable');
+            $('#simulation-stop').button('enable');
+        });
+    }
+
+    // Stop the simulation
+    function stop() {
+        $.post('simulator/stop', function() {
+            running = false;
+            $('#simulation-run').button('enable');
+            $('#simulation-stop').button('disable');
+        });
+    }
 
 </script>
