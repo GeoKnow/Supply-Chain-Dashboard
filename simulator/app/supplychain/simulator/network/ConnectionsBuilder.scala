@@ -2,9 +2,8 @@ package supplychain.simulator.network
 
 import java.util.UUID
 
-import supplychain.dataset.Namespaces
+import supplychain.dataset.{WeatherProvider, Namespaces}
 import supplychain.model._
-import supplychain.simulator.WeatherProvider
 
 class ConnectionsBuilder(suppliers: Seq[Supplier]) {
 
@@ -27,7 +26,8 @@ class ConnectionsBuilder(suppliers: Seq[Supplier]) {
    */
   protected def generate(supplier: Supplier, part: Product): List[Connection] = {
     val partSupplier = selectSupplier(part)
-    val connection = Connection(Namespaces.connection + UUID.randomUUID.toString, part, partSupplier, supplier)
+    val connId = partSupplier.id + supplier.id
+    val connection = Connection(Namespaces.connection + connId, part, partSupplier, supplier)
     connection :: part.parts.flatMap(generate(partSupplier, _))
   }
 

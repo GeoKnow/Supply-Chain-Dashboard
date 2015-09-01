@@ -2,6 +2,7 @@ package supplychain.simulator
 
 import akka.actor.{Actor, ActorRef}
 import akka.event.Logging
+import supplychain.dataset.WeatherProvider
 import scala.collection.mutable
 import scala.util.Random
 import scala.concurrent.duration._
@@ -79,7 +80,7 @@ class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvide
         orders.dequeue()
 
         // Weather influence
-        val delayedDueToWeatherProbability = wp.delayedDueToWeatherProbability(supplier.weatherStation, order.dueDate) + (0.05 * Random.nextDouble())
+        val delayedDueToWeatherProbability = wp.delayedDueToWeatherProbability(supplier.weatherStation, order.dueDate, Simulator().startDate, Simulator().simulationEndDate) + (0.05 * Random.nextDouble())
 
         // Production time, 10% fixed delay
         var productionTime = supplier.product.productionTime

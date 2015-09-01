@@ -3,20 +3,19 @@ package models
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import supplychain.dataset.{EndpointConfig, Dataset}
-import supplychain.simulator.Simulator
 
 /**
  * Holds the current data set.
  */
 object CurrentDataset {
 
-  val simulator = new Simulator(Akka.system, Configuration.get.endpointConfig, Configuration.get.productUri)
+  //val simulator = new Simulator(Akka.system, Configuration.get.endpointConfig, Configuration.get.productUri)
 
   // supplychain.simulator.Scheduler.lastOrderDate
 
   // Reference to the current data set.
   @volatile
-  private var dataset: Dataset = simulator
+  private var dataset: Dataset = RdfStoreDataset
 
   /**
    * Gets the current data set.

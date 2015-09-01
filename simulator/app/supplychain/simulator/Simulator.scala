@@ -5,7 +5,7 @@ import java.util.logging.Logger
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import akka.actor.{ActorSystem, Cancellable, Props}
-import supplychain.dataset.{Dataset, RdfDataset}
+import supplychain.dataset.{WeatherProvider, ConfigurationProvider, Dataset, RdfDataset}
 import supplychain.model._
 import supplychain.model.{Duration=>SCDuration}
 import supplychain.simulator.network.Network

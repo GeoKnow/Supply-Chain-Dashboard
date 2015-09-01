@@ -1,6 +1,6 @@
 package models
 
-import supplychain.metric.{SilkMetrics, Metric, Metrics}
+import supplychain.metric.{Metric, Metrics, SilkMetrics}
 
 /**
  * Holds the list of current metrics.

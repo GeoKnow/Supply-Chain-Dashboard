@@ -1,5 +1,7 @@
 package supplychain.model
 
+import supplychain.dataset.Namespaces
+
 import scala.util.Random
 
 case class Connection(uri: String, content: Product, source: Supplier, target: Supplier) {

@@ -1,14 +1,10 @@
-package supplychain.simulator
+package supplychain.dataset
 
-import java.text.{SimpleDateFormat, DateFormat}
 import java.util.logging.Logger
-import javax.swing.text.DateFormatter
 
-import com.hp.hpl.jena.query.{QueryExecutionFactory, QueryFactory}
-import supplychain.dataset.{EndpointConfig}
-import supplychain.model.{Coordinates, WeatherStation, WeatherObservation, DateTime, WeatherUtil, Duration}
+import supplychain.model.{Coordinates, DateTime, Duration, WeatherObservation, WeatherStation, WeatherUtil}
+
 import scala.collection.JavaConversions._
-import scala.util.Random
 
 /**
  * Created by rene on 09.01.15.
@@ -56,7 +52,7 @@ class WeatherProvider(ec: EndpointConfig) {
        """.stripMargin
 
     //log.info(queryStr)
-    val result = ec.createEndpoint().select(queryStr).toSeq
+    val result = ec.getEndpoint().select(queryStr).toSeq
     var ws: WeatherStation = null
 
     for (binding <- result) {
@@ -91,7 +87,7 @@ class WeatherProvider(ec: EndpointConfig) {
          |}
        """.stripMargin
 
-    val result = ec.createEndpoint().select(queryStr).toSeq
+    val result = ec.getEndpoint().select(queryStr).toSeq
 
     var total = 0
     for (binding <- result) {
@@ -101,11 +97,11 @@ class WeatherProvider(ec: EndpointConfig) {
     return total
   }
 
-  def delayedDueToWeatherProbability(ws: WeatherStation, d: DateTime): Double = {
-    log.info(ws.toString() + " " + d.toXSDFormat)
-    val w = getDailySummary(ws, d)
+  def delayedDueToWeatherProbability(ws: WeatherStation, date: DateTime, start: DateTime, end: DateTime): Double = {
+    log.info(ws.toString() + " " + date.toXSDFormat)
+    val w = getDailySummary(ws, date, start, end)
     if (w == null) {
-      log.info("no Daily Summary found for this Weather Station! " + ws.id + ", " + d.toFormat("yyyy-MM-dd"))
+      log.info("no Daily Summary found for this Weather Station! " + ws.id + ", " + date.toFormat("yyyy-MM-dd"))
     }
     log.info(w.toString())
     var probab = 0.0
@@ -121,14 +117,14 @@ class WeatherProvider(ec: EndpointConfig) {
   }
 
 
-  def getDailySummary(ws: WeatherStation, date:DateTime): WeatherObservation = {
+  def getDailySummary(ws: WeatherStation, date:DateTime, start:DateTime, end:DateTime): WeatherObservation = {
     var wo: WeatherObservation = null
     if (!weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + date)) {
       loadDailySummaries(ws)
       if (!weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + date)) {
         var nextday = date + Duration.days(1)
         var previousday = date - Duration.days(1)
-        while (nextday <= (Simulator().simulationEndDate + Duration.days(30)) && previousday >= Simulator().startDate) {
+        while (nextday <= (end + Duration.days(30)) && previousday >= start) {
           if (weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
             var wo = weatherObservationByStationIdAndDate(ws.id + "-" + nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
             wo.date = date
@@ -178,7 +174,7 @@ class WeatherProvider(ec: EndpointConfig) {
 
     //log.info(queryStr)
 
-    val result = ec.createEndpoint().select(queryStr).toSeq
+    val result = ec.getEndpoint().select(queryStr).toSeq
 
     var wo: WeatherObservation = null
 

@@ -1,17 +1,13 @@
 package controllers
 
-import play.api.mvc._
-import models.{NewsProvider, Configuration, CurrentMetrics, CurrentDataset}
-import play.api.libs.iteratee.Concurrent
+import models._
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
-import supplychain.metric.{Metrics, Evaluator}
-import scala.util.Random
-import supplychain.model._
-import supplychain.model.Shipping
-import supplychain.model.Order
-import javax.xml.bind.DatatypeConverter
-import supplychain.dataset.{EndpointConfig, DatasetStatistics}
+import play.api.libs.iteratee.Concurrent
+import play.api.mvc._
+import supplychain.dataset.DatasetStatistics
+import supplychain.metric.{Evaluator, Metrics}
+import supplychain.model.{Order, Shipping, _}
 
 object Application extends Controller {
 
@@ -32,17 +28,18 @@ object Application extends Controller {
     Ok(views.html.metrics(messages, supplier))
   }
 
-
   def news(supplierId: String) = Action {
     val ec = Configuration.get.endpointConfig
     val np = new NewsProvider(ec)
-    val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
-    val date =  CurrentDataset.simulator.currentDate
-    val news = np.getNews(supplier, date)
-
-    Ok(views.html.news(news, supplier))
+    val supplier = CurrentDataset().suppliers.find(_.id == supplierId)
+    if (supplier.isDefined) {
+      val date = RdfStoreDataset.Scheduler.currentDate
+      val news = np.getNews(supplier.get, date)
+      Ok(views.html.news(news, supplier.get))
+    } else {
+      NotFound
+    }
   }
-
 
   def report(supplierId: String) = Action {
     val scoreTable = Evaluator.table(CurrentDataset(), Metrics.all, supplierId)

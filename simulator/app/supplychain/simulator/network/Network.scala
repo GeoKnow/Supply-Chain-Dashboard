@@ -2,10 +2,9 @@ package supplychain.simulator.network
 
 import java.util.logging.Logger
 
-import supplychain.dataset.Namespaces
+import supplychain.dataset.{WeatherProvider, ConfigurationProvider, Namespaces}
 import supplychain.model._
 import supplychain.simulator.network.Network._
-import supplychain.simulator.{ConfigurationProvider, WeatherProvider}
 
 /**
  * Represents a supply chain network.

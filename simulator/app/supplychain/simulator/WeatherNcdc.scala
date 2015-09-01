@@ -4,8 +4,9 @@ import java.util.logging.Logger
 
 import play.api.libs.json.{JsValue, Reads, JsResult}
 import play.api.libs.ws._
+import supplychain.dataset.WeatherProvider
 import supplychain.model.DateTime
-import supplychain.simulator.WeatherProvider._
+import WeatherProvider._
 import scala.concurrent.Future
 import play.api.Play.current
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -7,6 +7,7 @@ import models._
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import supplychain.dataset.{DatasetStatistics, Namespaces, SchnelleckeDataset}
+import supplychain.model.DateTime
 
 import scala.io.Source
 
@@ -125,18 +126,18 @@ object API extends Controller {
   }
 
   def step() = Action {
-    CurrentDataset.simulator.step()
+    RdfStoreDataset.Scheduler.step()
     Ok
   }
 
-  def run(frequency: Double) = Action {
+  def run(date: Option[String], frequency: Double) = Action {
     Logger.info("frequency: " + frequency)
-    CurrentDataset.simulator.run(frequency)
+    RdfStoreDataset.Scheduler.start(date.map(DateTime.parse), frequency)
     Ok
   }
 
   def stop() = Action {
-    CurrentDataset.simulator.stop()
+    RdfStoreDataset.Scheduler.pause()
     Ok
   }
 

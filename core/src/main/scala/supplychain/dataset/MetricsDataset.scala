@@ -145,7 +145,7 @@ class MetricsDataset(ec: EndpointConfig) {
         |   $whereStm
         |}
       """.stripMargin
-    ec.createEndpoint().update(query)
+    ec.getEndpoint().update(query)
   }
 
   /**
@@ -153,7 +153,7 @@ class MetricsDataset(ec: EndpointConfig) {
    */
   private def insert(statements: String) {
     if(!graphCreated) {
-      ec.createEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraphMetrics()}>")
+      ec.getEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraphMetrics()}>")
       graphCreated = true
     }
     /*
@@ -182,13 +182,13 @@ class MetricsDataset(ec: EndpointConfig) {
          |   }
          | }
       """.stripMargin
-    ec.createEndpoint().update(query)
+    ec.getEndpoint().update(query)
   }
 
   /**
    * Executes a SPARQL Describe query on the data set.
    */
   def describe(queryStr: String) = {
-    ec.createEndpoint().describe(queryStr)
+    ec.getEndpoint().describe(queryStr)
   }
 }
