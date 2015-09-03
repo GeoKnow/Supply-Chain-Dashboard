@@ -1,11 +1,12 @@
 package controllers
 
-import com.sun.imageio.plugins.common.SubImageInputStream
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import supplychain.dataset.MetricsDataset
 import supplychain.model.DateTime
+import supplychain.simulator.exceptions.SimulationPeriodOutOfBoundsException
 import supplychain.simulator.{Configuration, Simulator}
+import supplychain.exceptions.UnknownProductException
 
 /**
  * The REST API.
@@ -16,8 +17,14 @@ object API extends Controller {
     Logger.info(s"Simulation advanced one 'Tick' from start date '$start'.")
     val s = start.map(DateTime.parse)
 
-    Simulator.step(s, productUri, graphUri)
-    Ok("step")
+    try {
+      Simulator.step(s, productUri, graphUri)
+      Ok("step")
+    } catch {
+      case e1: UnknownProductException => BadRequest(e1.message)
+      case e2: SimulationPeriodOutOfBoundsException => BadRequest(e2.message)
+      case e3: Exception => BadRequest(e3.getMessage)
+    }
   }
 
   def run(start: Option[String], end: Option[String], productUri: Option[String], graphUri: Option[String], interval: Double) = Action {
@@ -26,8 +33,14 @@ object API extends Controller {
     val s = start.map(DateTime.parse)
     val e = end.map(DateTime.parse)
 
-    Simulator.run(interval, s, e, productUri, graphUri)
-    Ok("run")
+    try {
+      Simulator.run(interval, s, e, productUri, graphUri)
+      Ok("run")
+    } catch {
+      case e1: UnknownProductException => BadRequest(e1.message)
+      case e2: SimulationPeriodOutOfBoundsException => BadRequest(e2.message)
+      case e3: Exception => BadRequest(e3.getMessage)
+    }
   }
 
   def pause() = Action {

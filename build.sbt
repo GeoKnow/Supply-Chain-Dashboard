@@ -44,6 +44,7 @@ lazy val simulator = project
       libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.3.4",
       libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.3.7",
       libraryDependencies += "com.typesafe.play" % "play-ws_2.11" % "2.3.7",
+      libraryDependencies += filters,
       // Linux Packaging, Uncomment to generate Debian packages that register the Workbench as an Upstart service
       packageArchetype.java_server,
       version in Debian := "2.6.1",
@@ -59,6 +60,9 @@ lazy val simulator = project
 lazy val dashboard = project
     .enablePlugins(PlayScala)
     .settings(commonSettings: _*)
+    .settings(
+      libraryDependencies += filters
+    )
     .dependsOn(core)
 
 

@@ -4,6 +4,7 @@ import java.util.concurrent.{Executors, ScheduledFuture, TimeUnit}
 
 import com.hp.hpl.jena.query.ResultSet
 import com.hp.hpl.jena.rdf.model.Model
+import play.api.Logger
 import supplychain.dataset.{ConfigurationProvider, Dataset, WeatherProvider}
 import supplychain.model._
 
@@ -14,16 +15,16 @@ object RdfStoreDataset extends Dataset {
 
   val epc = Configuration.get.endpointConfig
   val wp = new WeatherProvider(epc)
-  val cp = new ConfigurationProvider(epc, wp, Configuration.get.productUri)
+  val cp = new ConfigurationProvider(epc, wp)
   var product = cp.getProduct(Configuration.get.productUri)
   val ep = epc.getEndpoint()
   private var messagesCache = Seq[Message]()
 
   // Listeners for intercepted messages
   @volatile
-  private var listeners = Seq[Message => Unit]()
+  private var listeners = Seq[SimulationUpdate => Unit]()
 
-  override def addListener(listener: Message => Unit) {
+  override def addListener(listener: SimulationUpdate => Unit) {
     listeners = listeners :+ listener
   }
 
@@ -70,20 +71,26 @@ object RdfStoreDataset extends Dataset {
     }
 
     def pause() = {
+      Logger.info("pause() called")
       for (s <- sf) {
         s.cancel(false)
       }
     }
 
     def step() = {
-      val msgs = cp.getMessages(currentDate, currentDate+Duration.days(tickInterval), connections)
+      if (currentDate <= Configuration.get.maxEndDate) {
+        val msgs = cp.getMessages(currentDate, currentDate + Duration.days(tickInterval), connections)
+        val su = SimulationUpdate(currentDate, msgs)
 
-      for (l <- listeners; m <- msgs) {
-        l(m)
+        for (l <- listeners) {
+          l(su)
+        }
+
+        messagesCache ++= msgs
+        currentDate += Duration.days(tickInterval)
+      } else {
+        pause()
       }
-
-      messagesCache ++= msgs
-      currentDate += Duration.days(tickInterval)
     }
   }
 

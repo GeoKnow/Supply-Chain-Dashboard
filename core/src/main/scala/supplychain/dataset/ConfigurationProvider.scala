@@ -2,6 +2,7 @@ package supplychain.dataset
 
 import java.util.logging.Logger
 
+import supplychain.exceptions.UnknownProductException
 import supplychain.model._
 
 import scala.collection.JavaConversions._
@@ -9,7 +10,7 @@ import scala.collection.JavaConversions._
 /**
  * Created by rene on 09.01.15.
  */
-class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider, productUri: String) {
+class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
 
   private val log = Logger.getLogger(getClass.getName)
 
@@ -144,7 +145,7 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider, productUri
    * returns the product structure for the given product uri or the configured simulation product if omitted
    * read data from the configuration graph
    */
-  def getProduct(uri: String = productUri): Product = {
+  def getProduct(uri: String): Product = {
 
     val queryStr =
       s"""
@@ -164,9 +165,16 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider, productUri
       val name = binding.getLiteral("name").getString
       p = new Product(name, 1, getParts(uri), uri)
     }
+    if (p == null) {
+      val msg = "No product found for given uri: " + uri
+      log.info(msg)
+      throw new UnknownProductException(msg)
+    }
     log.info("# PRODUCT: " + p.toString)
     p
   }
+
+
 
   /*
    * read suppliers from the configuration graph
@@ -248,3 +256,5 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider, productUri
     pl
   }
 }
+
+
