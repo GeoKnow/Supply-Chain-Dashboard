@@ -12,8 +12,6 @@ class RdfDataset(ec: EndpointConfig) {
 
   private var graphCreated = false
 
-  //private var weatherStations: List[String] = List()
-
   /**
    * Adds a product to the RDF data set.
    */
@@ -65,9 +63,6 @@ class RdfDataset(ec: EndpointConfig) {
      |            sc:sender <${c.source.uri}> ;
      |            sc:receiver <${c.target.uri}> .
      """)
-
-    //addWeatherStation(c.wsSource, c.source)
-    //addWeatherStation(c.wsTarget, c.target)
   }
 
   /**
@@ -92,39 +87,8 @@ class RdfDataset(ec: EndpointConfig) {
         |               sc:count "$count" ;
         |               sc:order <${order.uri}> .
         """)
-      //addWeatherObservation(woSource)
-      //addWeatherObservation(woTarget)
       log.info("Shipping date: " + date.toXSDFormat)
   }}
-
-  /*
-  def addWeatherObservation(wo: WeatherObservation) {
-    insert(s"""
-         | <${wo.ws.uri}> sc:hasObservation <${wo.uri}> .
-         | <${wo.uri}> a sc:WeatherObservation ;
-         |            sc:date "${wo.date.toXSDFormat}" ;
-         |            sc:temp "${wo.temp}" ;
-         |            sc:prcp "${wo.prcp}" ;
-         |            sc:prcpCat "${wo.getPrcpCategory()}" ;
-         |            sc:fromStation <${wo.ws.uri}> ;
-         |            sc:snow "${wo.snow}" .
-         """)
-  } */
-
-  /*
-  def addWeatherStation(ws: WeatherStation, suppl: Supplier): Unit = {
-    if (!weatherStations.contains(ws.id)) {
-      insert( s"""
-               | <${ws.uri}> a sc:WeatherStation ;
-               |            geo:long "${ws.coords.lon}" ;
-               |            geo:lat "${ws.coords.lat}" ;
-               |            rdfs:label "${ws.name}" ;
-               |            sc:nextTo <${suppl.uri}> ;
-               |            sc:name "${ws.name}" .
-               """)
-      weatherStations = ws.id :: weatherStations
-    }
-  } */
 
   /**
    * Inserts a number of statements into the RDF data set.
@@ -132,7 +96,7 @@ class RdfDataset(ec: EndpointConfig) {
   private def insert(statements: String) {
     if(!graphCreated) {
       ec.getDefaultGraph()
-      ec.createEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraph()}>")
+      ec.getEndpoint().update(s"CREATE SILENT GRAPH <${ec.getDefaultGraph()}>")
       graphCreated = true
     }
 
@@ -147,51 +111,28 @@ class RdfDataset(ec: EndpointConfig) {
         |   }
         | }
       """.stripMargin
-    ec.createEndpoint().update(query)
+    ec.getEndpoint().update(query)
   }
 
   /**
    * Executes a SPARQL Select query on the data set.
    */
   def query(queryStr: String) = {
-    ec.createEndpoint().select(queryStr)
+    ec.getEndpoint().select(queryStr)
   }
 
   /**
    * Executes a SPARQL Select query on the data set.
    */
   def select(queryStr: String): Seq[QuerySolution] = {
-    return ec.createEndpoint().select(queryStr).toSeq
+    return ec.getEndpoint().select(queryStr).toSeq
   }
 
   /**
    * Executes a SPARQL Describe query on the data set.
    */
   def describe(queryStr: String) = {
-    ec.createEndpoint().describe(queryStr)
+    ec.getEndpoint().describe(queryStr)
   }
 
-
-  /*
-  def load(): Seq[DumpSource] = {
-    val query =
-      s"""
-         | $queryPrefix
-          | SELECT * WHERE {
-          |   GRAPH <${GraphNamespaces.datasources}> {
-                                                     |     ?uri a ds:DumpDataSource .
-                                                     |     ?uri ds:name ?name .
-                                                     |     ?uri ds:description ?description .
-                                                     |   }
-                                                     | }
-       """.stripMargin
-
-    val results = SparqlEndpoint.select(query)
-    for(r <- results) yield {
-      DumpSource(
-        name = r.getLiteral("name").getString,
-        description = r.getLiteral("description").getString
-      )
-    }
-  }*/
 }

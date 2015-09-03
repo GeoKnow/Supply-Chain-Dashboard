@@ -12,6 +12,26 @@ var connectionIcon = {
   path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
 };
 
+function myPostMessage(id) {
+  window.postMessage(id, '*');
+}
+
+function receiveMessage(event) {
+  console.log(event.data);
+  setStartDate(event.data.currentDate);
+  for (var i in event.data.orders) {
+    //addOrder(supplierId, connectionId, dueParts)
+    var o = event.data.orders[i];
+    console.log("order: " + o);
+    addOrder(o.connectionSourceId, o.connection, event.data.dueParts[o.connectionSourceId]);
+  }
+  for (var i in event.data.shippings) {
+    var s = event.data.shippings[i];
+    console.log("shipping: " + s);
+    addShipping(s.connectionSourceId, s.connection, event.data.dueParts[s.connectionSourceId]);
+  }
+}
+
 function initialize() {
   // Initialize map
   var mapOptions = {
@@ -27,6 +47,9 @@ function initialize() {
 
   // Stream deliveries
   $('#deliveryStream').html('<iframe src="deliveryStream" frameborder="0"></iframe>');
+
+  // register method to handle incomming messages
+  window.addEventListener("message", receiveMessage, false);
 }
 
 function addSupplier(id, title, latitude, longitude, dueParts) {
@@ -63,6 +86,7 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
 
 function addOrder(supplierId, connectionId, dueParts) {
   // Update dueOrders for supplier
+  console.log("supplierId: " + supplierId)
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
   // Flash connection line
   connections[connectionId].setOptions({ strokeColor: '#FF0000' });

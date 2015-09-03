@@ -1,17 +1,17 @@
 package controllers
 
-import play.api.mvc._
-import models.{NewsProvider, Configuration, CurrentMetrics, CurrentDataset}
-import play.api.libs.iteratee.Concurrent
+import models._
+import play.api.libs.json.Json.JsValueWrapper
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 import play.api.libs.Comet
 import play.api.libs.Comet.CometMessage
-import supplychain.metric.{Metrics, Evaluator}
-import scala.util.Random
-import supplychain.model._
-import supplychain.model.Shipping
-import supplychain.model.Order
-import javax.xml.bind.DatatypeConverter
-import supplychain.dataset.{EndpointConfig, DatasetStatistics}
+import play.api.libs.iteratee.Concurrent
+import play.api.libs.json.{JsPath, Writes, JsValue, Json}
+import play.api.mvc._
+import supplychain.dataset.DatasetStatistics
+import supplychain.metric.{Evaluator, Metrics}
+import supplychain.model.{Order, Shipping, _}
 
 object Application extends Controller {
 
@@ -32,17 +32,18 @@ object Application extends Controller {
     Ok(views.html.metrics(messages, supplier))
   }
 
-
   def news(supplierId: String) = Action {
     val ec = Configuration.get.endpointConfig
     val np = new NewsProvider(ec)
-    val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
-    val date =  CurrentDataset.simulator.currentDate
-    val news = np.getNews(supplier, date)
-
-    Ok(views.html.news(news, supplier))
+    val supplier = CurrentDataset().suppliers.find(_.id == supplierId)
+    if (supplier.isDefined) {
+      val date = RdfStoreDataset.Scheduler.currentDate
+      val news = np.getNews(supplier.get, date)
+      Ok(views.html.news(news, supplier.get))
+    } else {
+      NotFound
+    }
   }
-
 
   def report(supplierId: String) = Action {
     val scoreTable = Evaluator.table(CurrentDataset(), Metrics.all, supplierId)
@@ -50,25 +51,29 @@ object Application extends Controller {
   }
 
   def deliveryStream = Action {
-    val (orderEnumerator, orderChannel) = Concurrent.broadcast[Order]
-    val (shippingEnumerator, shippingChannel) = Concurrent.broadcast[Shipping]
-
-    // Listen for new orders and shippings
-    val listener = (msg: Message) => msg match {
-      case order: Order => orderChannel.push(order)
-      case shipping: Shipping => shippingChannel.push(shipping)
-    }
-    CurrentDataset().addListener(listener)
 
     val stats = new DatasetStatistics(CurrentDataset())
-    implicit val orderMessage = CometMessage[Order](d => s"'${d.connection.source.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
-    implicit val shippingMessage = CometMessage[Shipping](d => s"'${d.connection.source.id}', '${d.connection.id}', ${stats.dueParts(d.connection)}")
 
-    val orderEnumeratee = orderEnumerator &> Comet(callback = "parent.addOrder")
-    val shippingEnumeratee = shippingEnumerator &> Comet(callback = "parent.addShipping")
-    val refreshMetrics = shippingEnumerator &> Comet(callback = "parent.refreshMetrics")
+    def addDueParts(json: JsValue): JsValue = {
+      json match {
+        case obj: JsObject => {
+          val duePartsSeq = for (s <- CurrentDataset().suppliers) yield {
+            val dueParts = stats.dueParts(s)
+            s.id -> JsNumber(dueParts)
+          }
+          obj + ("dueParts", JsObject(duePartsSeq))
+        }
+      }
+    }
 
-    Ok.chunked(orderEnumeratee interleave shippingEnumeratee interleave refreshMetrics)
+    val (simulationUpdateEnumerator, simulationUpdateChannel) = Concurrent.broadcast[JsValue]
+    val listener = (msg: SimulationUpdate) => simulationUpdateChannel.push(addDueParts(Json.toJson(msg)))
+
+    CurrentDataset().addListener(listener)
+
+    val simuzlationUpdateEnumeratee = simulationUpdateEnumerator &> Comet(callback = "parent.myPostMessage")
+
+    Ok.chunked(simuzlationUpdateEnumeratee)
   }
 
   def messages(supplierId: String) = Action {

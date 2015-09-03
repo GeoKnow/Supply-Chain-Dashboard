@@ -26,15 +26,16 @@ trait Endpoint {
   def createGraph(graphUri: String, clear: Boolean): Unit
 }
 
-case class EndpointConfig(kind: String,
-                     var defaultGraph: String,
-                     defaultGraphWeather: String = null,
-                     defaultGraphConfiguration: String = null,
-                     url: String = "",
-                     host: String = "",
-                     port: String = "",
-                     user: String = "",
-                     password: String = "") {
+case class EndpointConfig(doInit: Boolean,
+                          kind: String,
+                          var defaultGraph: String,
+                          defaultGraphWeather: String = null,
+                          defaultGraphConfiguration: String = null,
+                          url: String = "",
+                          host: String = "",
+                          port: String = "",
+                          user: String = "",
+                          password: String = "") {
 
   var TYPE_LOCAL = "local"
   var TYPE_HTTP_SPARQL = "sparql"
@@ -47,7 +48,7 @@ case class EndpointConfig(kind: String,
     defaultGraph + "metrics/"
   }
 
-  def createEndpoint(): Endpoint = {
+  def getEndpoint(): Endpoint = {
     if (endpoint != null) return endpoint
 
     if (kind == TYPE_LOCAL) {
@@ -61,10 +62,10 @@ case class EndpointConfig(kind: String,
     }
 
     if (endpoint != null) {
-      initData()
+      if (doInit) initData()
       return endpoint
     } else
-      return null
+      throw new Exception("Unable to create Endpoint.")
   }
 
   def initData() {

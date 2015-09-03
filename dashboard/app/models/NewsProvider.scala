@@ -40,7 +40,7 @@ class NewsProvider(ec: EndpointConfig) {
          |}
        """.stripMargin
 
-    val res = ec.createEndpoint().select(query).toList
+    val res = ec.getEndpoint().select(query).toList
 
     for((artUrl, artResults) <- res.groupBy(_.getResource("artUrl").getURI).toList) yield {
       val art = artResults.head

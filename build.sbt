@@ -29,9 +29,7 @@ lazy val core = project
     .settings(commonSettings: _*)
     .settings(
       libraryDependencies += "org.apache.jena" % "jena-core" % "2.11.2" excludeAll ExclusionRule(organization = "org.slf4j"),
-
       libraryDependencies += "org.apache.jena" % "jena-arq" % "2.11.2" excludeAll ExclusionRule(organization = "org.slf4j"),
-
       libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.3.7"
     )
     .dependsOn(virtuoso_jena)
@@ -44,11 +42,9 @@ lazy val simulator = project
     .settings(commonSettings: _*)
     .settings(
       libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.3.4",
-
       libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.3.7",
-
       libraryDependencies += "com.typesafe.play" % "play-ws_2.11" % "2.3.7",
-
+      libraryDependencies += filters,
       // Linux Packaging, Uncomment to generate Debian packages that register the Workbench as an Upstart service
       packageArchetype.java_server,
       version in Debian := "2.6.1",
@@ -62,9 +58,13 @@ lazy val simulator = project
 // Dashboard Modules
 //////////////////////////////////////////////////////////////////////////////
 lazy val dashboard = project
-    .settings(commonSettings: _*)
-    .dependsOn(core)
     .enablePlugins(PlayScala)
+    .settings(commonSettings: _*)
+    .settings(
+      libraryDependencies += filters
+    )
+    .dependsOn(core)
+
 
 ////////////////////////////////////////////////
 // root Module
@@ -75,7 +75,6 @@ lazy val root = project.in(file("."))
     .settings(
       name := "GeoKnow Supply Chain Applications"
     )
-
 
 //////////////////////////////////////////////////////////////////////////////
 // Sub-Modules

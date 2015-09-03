@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat
 import javax.xml.datatype.{DatatypeFactory, XMLGregorianCalendar}
 import java.util.{Calendar, GregorianCalendar}
 
+import play.api.libs.json.{JsPath, Writes}
+
 /**
  * Represents a date time.
  */
@@ -34,6 +36,10 @@ case class DateTime(milliseconds: Long) extends Ordered[DateTime] {
     calendar.setTimeInMillis(milliseconds)
     val formatted = new SimpleDateFormat(format)
     return formatted.format(calendar.getTime)
+  }
+
+  def toYyyyMMdd(): String = {
+    toFormat("yyyy-MM-dd")
   }
 
   override def toString = toXSDFormat
