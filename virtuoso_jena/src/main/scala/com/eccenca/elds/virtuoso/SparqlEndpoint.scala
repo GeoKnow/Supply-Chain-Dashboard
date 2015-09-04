@@ -24,7 +24,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val result = queryExecution.execSelect()
     // close kills the ResultSet, so do not close
     //virtGraph.close()
-    logger.info(s"Query issued:$query")
+    logger.fine(s"Query issued:$query")
     result
   }
 
@@ -34,7 +34,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val queryExecution = VirtuosoQueryExecutionFactory.create(query, virtGraph)
     val result = queryExecution.execDescribe()
     virtGraph.close()
-    logger.info(s"Describe Query issued:$query")
+    logger.fine(s"Describe Query issued:$query")
     result
   }
 
@@ -42,7 +42,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
     val request = new VirtuosoUpdateRequest(query, virtGraph)
     request.exec()
-    logger.info(s"Update Query issued:$query")
+    logger.fine(s"Update Query issued:$query")
     virtGraph.close()
   }
 
@@ -57,7 +57,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val virtModel = new VirtModel(virtGraph)
     val m = FileManager.get().loadModel( file.getAbsolutePath )
 
-    logger.info(s"Uploading dataset into graph < $graph > ...")
+    logger.fine(s"Uploading dataset into graph < $graph > ...")
 
     //virtGraph.getBulkUpdateHandler.add(m.getGraph)
 
@@ -68,7 +68,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
 
     virtModel.close()
     virtGraph.close()
-    logger.info(s"Uploaded dataset!")
+    logger.fine(s"Uploaded dataset!")
   }
 
   /**
@@ -80,10 +80,10 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val dropQuery = s"DROP SILENT GRAPH <$graphUri>"
     val createQuery = s"CREATE SILENT GRAPH <$graphUri>"
     if(clear) {
-      logger.info(s"drop graph < $graphUri > ...")
+      logger.fine(s"drop graph < $graphUri > ...")
       update(dropQuery)
     }
-    logger.info(s"create graph < $graphUri > ...")
+    logger.fine(s"create graph < $graphUri > ...")
     update(createQuery)
   }
 }

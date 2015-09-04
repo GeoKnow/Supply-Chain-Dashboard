@@ -1,18 +1,19 @@
 package supplychain.dataset
 
+import java.net.URLEncoder
 import java.util.UUID
 import java.util.logging.Logger
 
-import supplychain.metric.{Metrics}
+import supplychain.metric.{SilkMetric, Metric, SilkMetrics, Metrics}
 import supplychain.model._
 
-class MetricsDataset(ec: EndpointConfig) {
+class MetricsDataset(ec: EndpointConfig, silkProject: String) {
 
   private val log = Logger.getLogger(getClass.getName)
 
   private var graphCreated = false
 
-  private val metrics = Metrics.all // ++ SilkMetrics.load(Configuration.get.silkProject)
+  private val metrics = Metrics.all ++ SilkMetrics.load(silkProject)
 
   private val dataSetUri = ec.getDefaultGraphMetrics() + "PerformanceMetricsDataSet"
   private val dataStructureUri = ec.getDefaultGraphMetrics() + "PerformanceMetricsDataStructure"
@@ -54,17 +55,17 @@ class MetricsDataset(ec: EndpointConfig) {
           |    qb:structure <${dataStructureUri}> .
           """.stripMargin
 
-    for (m <- Metrics.all) {
+    for (m <- metrics) {
       val uri = generateUri(prefix="component-")
       queryString +=
       s"""
           | <${dataStructureUri}> qb:component <$uri> .
-          | <$uri1> qb:measure sc:metric${m.getClass.getSimpleName} .
+          | <$uri1> qb:measure sc:metric${getMetricProperty(m)} .
           """.stripMargin
 
       queryString +=
       s"""
-         | sc:metric${m.getClass.getSimpleName} a rdf:Property, qb:MeasureProperty ;
+         | sc:metric${getMetricProperty(m)} a rdf:Property, qb:MeasureProperty ;
          |    rdfs:label "${m.dimension}"@en ;
          |    rdfs:subPropertyOf sdmx-measure:obsValue ;
          |    rdfs:range xsd:double .
@@ -74,6 +75,13 @@ class MetricsDataset(ec: EndpointConfig) {
     insert(queryString)
   }
 
+  private def getMetricProperty(m: Metric): String = {
+    m match {
+      case as: SilkMetric => {"_DI_" + m.dimension.filter(_.isLetterOrDigit)}
+      case as: Metric => {"_" + m.dimension.filter(_.isLetterOrDigit)}
+    }
+  }
+
     /**
    * Adds a connection to the RDF data set.
    */
@@ -81,9 +89,11 @@ class MetricsDataset(ec: EndpointConfig) {
 
       val uri = generateUri(prefix="metric-")
 
-      val metricsValues = for(m <- Metrics.all) yield {
+      val metricsValues = for(m <- metrics) yield {
         val value = m.apply(messages)
-        s"""<$uri> sc:metric${m.getClass.getSimpleName} "$value"^^xsd:double ."""
+        val msg = s"""<$uri> sc:metric${getMetricProperty(m)} "$value"^^xsd:double ."""
+        log.info(msg)
+        msg
       }
 
       val queryString =

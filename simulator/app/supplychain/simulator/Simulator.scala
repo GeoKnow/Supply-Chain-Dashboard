@@ -69,7 +69,7 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   // List of past messages.
   var messages = Seq[Message]()
 
-  private val dataset = new RdfDataset(Configuration.get.endpointConfig)
+  private val dataset = new RdfDataset(Configuration.get.endpointConfig, Configuration.get.silkProject)
 
   private var isSupplierNetworkDataWritten = false
 

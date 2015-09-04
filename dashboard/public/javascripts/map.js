@@ -19,16 +19,17 @@ function myPostMessage(id) {
 function receiveMessage(event) {
   console.log(event.data);
   setStartDate(event.data.currentDate);
+  if (selectedSupplier != null) reloadMetrics();
   for (var i in event.data.orders) {
     //addOrder(supplierId, connectionId)
     var o = event.data.orders[i];
-    console.log("order: " + o);
+    console.log(o);
     addOrder(o.connectionSourceId, o.connection); //, event.data.dueParts[o.connectionSourceId]);
 
   }
   for (var i in event.data.shippings) {
     var s = event.data.shippings[i];
-    console.log("shipping: " + s);
+    console.log(s);
     addShipping(s.connectionSourceId, s.connection);
   }
 
