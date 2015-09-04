@@ -8,7 +8,7 @@
 </p>
 
 <p>
-    Simulation Date: <input id="currentDate" value="@Configuration.get.minStartDate" onchange="setStartDate(this.value)" />
+    Simulation Date: <input id="currentDate" value="@Configuration.get.minStartDate" onchange="newStartDate(this.value)" />
     <div id="dateSlider"></div>
 </p>
 
@@ -27,7 +27,7 @@
         $("#slider").slider({
             value: 1,
             min: 1,
-            max: 100,
+            max: 10,
             step: 1,
             change: function( event, ui ) {
                 frequency = 1.0 / ui.value;
@@ -46,22 +46,40 @@
                 startDate = new Date(ui.value);
                 $("#currentDate").val($.formatDateTime('yy-mm-dd', startDate));
                 console.log("Simulation start date changed to: " + startDate);
+            },
+            stop: function(event, ui) {
+                var uiDate = new Date(ui.value)
+                if (startDate != uiDate){
+                    startDate = uiDate;
+                    $("#currentDate").val($.formatDateTime('yy-mm-dd', startDate));
+                    var formatedDate = $.formatDateTime('yy-mm-dd', startDate);
+                    $.post("simulator/changeDate?date=" + formatedDate, function(data) {});
+                }
             }
         });
     });
 
-    function setStartDate(val) {
-        console.log("parsing to a Date: " + val);
-
+    function newStartDate(val) {
         var timestamp = Date.parse(val);
-        console.log("parsed to timestamp: " + timestamp);
         if (isNaN(timestamp) == false)
         {
+            setStartDate(val);
             startDate = new Date(timestamp);
-            console.log("timestamp parsed to startDate: " + startDate);
-            console.log("Simulation start date manually changed to: " + startDate);
-            $("#dateSlider").val(timestamp);
-            $("#dateSlider").slider('value', timestamp);
+            var formatedDate = $.formatDateTime('yy-mm-dd', startDate);
+            $.post("simulator/changeDate?date=" + formatedDate, function(data) {});
+        } else {
+            $("#currentDate").val("only YYYY-MM-DD");
+        }
+    }
+
+    function setStartDate(val) {
+        var timestamp = Date.parse(val);
+        if (isNaN(timestamp) == false)
+        {
+            $("#currentDate").val(val);
+            startDate = new Date(timestamp);
+            $("#dateSlider").slider("value", timestamp);
+            //$("#dateSlider").val(timestamp);
         } else {
             $("#currentDate").val("only YYYY-MM-DD");
         }
@@ -76,6 +94,8 @@
     function run() {
         $.post('simulator/run?frequency=' + frequency, function() {
             running = true;
+            //$('#currentDate').prop('disabled', true);
+            //$('#dateSlider').slider('disable');
             $('#simulation-run').button('disable');
             $('#simulation-stop').button('enable');
         });
@@ -85,6 +105,8 @@
     function stop() {
         $.post('simulator/stop', function() {
             running = false;
+            //$('#currentDate').prop('disabled', false);
+            //$('#dateSlider').slider('enable');
             $('#simulation-run').button('enable');
             $('#simulation-stop').button('disable');
         });

@@ -20,15 +20,20 @@ function receiveMessage(event) {
   console.log(event.data);
   setStartDate(event.data.currentDate);
   for (var i in event.data.orders) {
-    //addOrder(supplierId, connectionId, dueParts)
+    //addOrder(supplierId, connectionId)
     var o = event.data.orders[i];
     console.log("order: " + o);
-    addOrder(o.connectionSourceId, o.connection, event.data.dueParts[o.connectionSourceId]);
+    addOrder(o.connectionSourceId, o.connection); //, event.data.dueParts[o.connectionSourceId]);
+
   }
   for (var i in event.data.shippings) {
     var s = event.data.shippings[i];
     console.log("shipping: " + s);
-    addShipping(s.connectionSourceId, s.connection, event.data.dueParts[s.connectionSourceId]);
+    addShipping(s.connectionSourceId, s.connection);
+  }
+
+  for (var supplierId in event.data.dueParts) {
+    updateDueParts(supplierId, event.data.dueParts[supplierId])
   }
 }
 
@@ -84,10 +89,12 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
   connections[id] = line;
 }
 
-function addOrder(supplierId, connectionId, dueParts) {
+function updateDueParts(supplierId, dueParts) {
   // Update dueOrders for supplier
-  console.log("supplierId: " + supplierId)
   suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
+}
+
+function addOrder(supplierId, connectionId) {
   // Flash connection line
   connections[connectionId].setOptions({ strokeColor: '#FF0000' });
   setTimeout(function() {
@@ -95,9 +102,7 @@ function addOrder(supplierId, connectionId, dueParts) {
   }, 1000);
 }
 
-function addShipping(supplierId, connectionId, dueParts) {
-  // Update dueOrders for supplier
-  suppliers[supplierId].setOptions({ labelContent: "" + dueParts });
+function addShipping(supplierId, connectionId) {
   // Flash connection line
   connections[connectionId].setOptions({  strokeColor: '#00FF00' });
   setTimeout(function() {

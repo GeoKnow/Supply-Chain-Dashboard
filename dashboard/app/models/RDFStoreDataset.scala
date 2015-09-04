@@ -63,10 +63,9 @@ object RdfStoreDataset extends Dataset {
     var currentDate = Configuration.get.minStartDate
     var tickInterval = Configuration.get.tickIntervalsDays
 
-    def start(date: Option[DateTime], interval: Double = 1.0) = {
-      for (d <- date) currentDate = d
+    def start(interval: Double = 1.0) = {
       sf = Some(stse.scheduleAtFixedRate(new Runnable {
-        override def run(): Unit = step
+        override def run(): Unit = step()
       }, 0, (interval * 1000).toLong, TimeUnit.MILLISECONDS))
     }
 
@@ -74,6 +73,17 @@ object RdfStoreDataset extends Dataset {
       Logger.info("pause() called")
       for (s <- sf) {
         s.cancel(false)
+      }
+    }
+
+    def changeDate(date: DateTime) = {
+      messagesCache = cp.getMessages(Configuration.get.minStartDate, date, connections)
+      currentDate = date
+
+      val su = SimulationUpdate(currentDate, Seq.empty)
+
+      for (l <- listeners) {
+        l(su)
       }
     }
 

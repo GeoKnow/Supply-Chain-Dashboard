@@ -130,9 +130,15 @@ object API extends Controller {
     Ok
   }
 
-  def run(date: Option[String], frequency: Double) = Action {
+  def run(frequency: Double) = Action {
     Logger.info("frequency: " + frequency)
-    RdfStoreDataset.Scheduler.start(date.map(DateTime.parse), frequency)
+    RdfStoreDataset.Scheduler.start(frequency)
+    Ok
+  }
+
+  def changeDate(date: String) = Action {
+    Logger.info("change simulation date to: " + date)
+    RdfStoreDataset.Scheduler.changeDate(DateTime.parse(date))
     Ok
   }
 
