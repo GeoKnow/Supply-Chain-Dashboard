@@ -5,7 +5,7 @@ import java.util.concurrent.{Executors, ScheduledFuture, TimeUnit}
 import com.hp.hpl.jena.query.ResultSet
 import com.hp.hpl.jena.rdf.model.Model
 import play.api.Logger
-import supplychain.dataset.{ConfigurationProvider, Dataset, WeatherProvider}
+import supplychain.dataset.{RdfDataset, ConfigurationProvider, Dataset, WeatherProvider}
 import supplychain.model._
 
 /**
@@ -13,9 +13,12 @@ import supplychain.model._
  */
 object RdfStoreDataset extends Dataset {
 
+  private val logger = Logger(getClass)
+
   val epc = Configuration.get.endpointConfig
   val wp = new WeatherProvider(epc)
   val cp = new ConfigurationProvider(epc, wp)
+  val rd = new RdfDataset(epc, Configuration.get.silkProject)
   var product = cp.getProduct(Configuration.get.productUri)
   val ep = epc.getEndpoint()
   private var messagesCache = Seq[Message]()
@@ -63,23 +66,33 @@ object RdfStoreDataset extends Dataset {
     var currentDate = Configuration.get.minStartDate
     var tickInterval = Configuration.get.tickIntervalsDays
 
-    def start(date: Option[DateTime], interval: Double = 1.0) = {
-      for (d <- date) currentDate = d
+    def start(interval: Double = 1.0) = {
       sf = Some(stse.scheduleAtFixedRate(new Runnable {
-        override def run(): Unit = step
+        override def run(): Unit = step()
       }, 0, (interval * 1000).toLong, TimeUnit.MILLISECONDS))
     }
 
     def pause() = {
-      Logger.info("pause() called")
+      logger.debug("pause() called")
       for (s <- sf) {
         s.cancel(false)
       }
     }
 
+    def changeDate(date: DateTime) = {
+      messagesCache = rd.getMessages(Configuration.get.minStartDate, date, connections)
+      currentDate = date
+
+      val su = SimulationUpdate(currentDate, Seq.empty)
+
+      for (l <- listeners) {
+        l(su)
+      }
+    }
+
     def step() = {
       if (currentDate <= Configuration.get.maxEndDate) {
-        val msgs = cp.getMessages(currentDate, currentDate + Duration.days(tickInterval), connections)
+        val msgs = rd.getMessages(currentDate, currentDate + Duration.days(tickInterval), connections)
         val su = SimulationUpdate(currentDate, msgs)
 
         for (l <- listeners) {

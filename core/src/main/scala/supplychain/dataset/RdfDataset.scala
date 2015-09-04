@@ -3,14 +3,18 @@ package supplychain.dataset
 import java.util.logging.Logger
 
 import com.hp.hpl.jena.query.{QuerySolution, QueryExecutionFactory}
+import supplychain.metric.{Metric, SilkMetrics, Metrics, MetricValue}
 import supplychain.model._
 import scala.collection.JavaConversions._
 
-class RdfDataset(ec: EndpointConfig) {
+class RdfDataset(ec: EndpointConfig, silkProject: String) {
 
   private val log = Logger.getLogger(getClass.getName)
 
   private var graphCreated = false
+
+  private val internalMetrics = Metrics.all
+  private val silkMetrics = SilkMetrics.load(silkProject)
 
   /**
    * Adds a product to the RDF data set.
@@ -90,6 +94,113 @@ class RdfDataset(ec: EndpointConfig) {
       log.info("Shipping date: " + date.toXSDFormat)
   }}
 
+  /*
+   * get the metrics from the runtime graph
+   */
+  def getMetrics(date: DateTime, supplier: Supplier): Seq[MetricValue] = {
+    val queryStr =
+      s"""
+        |SELECT DISTINCT ?propVal ?obsProp WHERE {
+        |  ?obs a qb:Observation .
+        |  ?obs sc:supplier <${supplier.uri}> .
+        |  ?obs sc:date "${date.toYyyyMMdd()}Z"^^xsd:date .
+        |  ?obs ?obsProp ?propVal .
+        |  ?obsProp a qb:MeasureProperty .
+        |  ?obsProp rdfs:label ?propLabel .
+        |}
+      """.stripMargin
+
+    val prefixedQS = prefix(queryStr)
+    //log.info(prefixedQS)
+    val result = ec.getEndpoint().select(prefixedQS).toSeq
+    for (b <- result; metric <- getMetricFromUri(b.getResource("obsProp").getURI)) yield {
+      MetricValue(
+        metric = metric,
+        value = b.getLiteral("propVal").getDouble
+      )
+    }
+  }
+
+  private def getMetricFromUri(uri: String): Option[Metric] = {
+    if (uri.contains("_DI_")) {
+      silkMetrics.find(m => uri.endsWith(m.dimension.filter(_.isLetterOrDigit)))
+    } else {
+      internalMetrics.find(m => uri.endsWith(m.dimension.filter(_.isLetterOrDigit)))
+    }
+  }
+
+  /*
+   * get messages from the runtime graph
+   */
+  def getMessages(start: DateTime, end: DateTime, connections: Seq[Connection]): Seq[Message] = {
+
+    val startDate = start.toFormat("yyyy-MM-dd")
+    val endDate = end.toFormat("yyyy-MM-dd")
+
+    val queryStr =
+      s"""
+        |SELECT DISTINCT ?msg ?date ?dueDate ?connection ?count ?order ?orderDate ?orderDueDate ?orderConnection ?orderCount FROM <${ec.getDefaultGraph()}>
+        |WHERE {
+        |   ?msg sc:date ?date .
+        |   OPTIONAL { ?msg sc:dueDate ?dueDate . }
+        |   OPTIONAL {
+        |     ?msg sc:order ?order .
+        |     ?order sc:date ?orderDate .
+        |     ?order sc:dueDate ?orderDueDate .
+        |     ?order sc:connection ?orderConnection .
+        |     ?order sc:count ?orderCount .
+        |   }
+        |   ?msg sc:connection ?connection .
+        |   ?msg sc:count ?count .
+        |   FILTER ( str(?date) >= "$startDate" )
+        |   FILTER ( str(?date) <= "$endDate" )
+        |}
+      """.stripMargin
+
+    val prefixedQS = prefix(queryStr)
+    //log.info(prefixedQS)
+    val result = ec.getEndpoint().select(prefixedQS).toSeq
+    var messages: List[Message] = List()
+
+    for (binding <- result) {
+      val conn = connections.find(_.uri == binding.getResource("connection").getURI)
+      if (conn.isDefined) {
+        if (binding.contains("dueDate")) {
+          // -> Order
+          val date = DateTime.parse(binding.getLiteral("date").getString)
+          val order = new Order(
+            //uri = binding.getResource("msg").getURI,
+            date = date,
+            connection = conn.get,
+            count = binding.getLiteral("count").getString.toInt
+          )
+          messages = order :: messages
+        } else if (binding.contains("order")) {
+          // -> Shipping
+          val date = DateTime.parse(binding.getLiteral("date").getString)
+          val orderDate = DateTime.parse(binding.getLiteral("orderDate").getString)
+          val order = Order(
+            //uri = binding.getResource("order").getURI,
+            date = orderDate,
+            connection = conn.get,
+            count = binding.getLiteral("orderCount").getString.toInt
+          )
+          val shipping = new Shipping(
+            //uri = binding.getResource("msg").getURI,
+            date = date,
+            connection = conn.get,
+            count = binding.getLiteral("count").getString.toInt,
+            order = order
+          )
+          messages = shipping :: messages
+        } else {
+          throw new Exception("Unkown message type.")
+        }
+      }
+    }
+    messages.toSeq
+  }
+
   /**
    * Inserts a number of statements into the RDF data set.
    */
@@ -112,6 +223,21 @@ class RdfDataset(ec: EndpointConfig) {
         | }
       """.stripMargin
     ec.getEndpoint().update(query)
+  }
+
+  private def prefix(query: String): String = {
+    s"""
+       |PREFIX sc: <http://www.xybermotive.com/ontology/>
+       |PREFIX prod: <http://www.xybermotive.com/products/>
+       |PREFIX dbpedia: <http://dbpedia.org/resource/>
+       |PREFIX suppl: <http://www.xybermotive.com/supplier/>
+       |PREFIX schema: <http://schema.org/>
+       |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+       |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+       |PREFIX qb: <http://purl.org/linked-data/cube#>
+       |
+       |${query}
+      """.stripMargin
   }
 
   /**

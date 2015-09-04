@@ -4,6 +4,7 @@ import java.io.StringWriter
 
 import com.hp.hpl.jena.query.ResultSetFormatter
 import models._
+
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
 import supplychain.dataset.{DatasetStatistics, Namespaces, SchnelleckeDataset}
@@ -16,6 +17,8 @@ import scala.io.Source
  */
 object API extends Controller {
 
+  private val logger = Logger(this.getClass())
+
   /**
    * Issues a SPARQL select query.
    * @param query The query
@@ -23,7 +26,7 @@ object API extends Controller {
    *         Otherwise, SPARQL results XML.
    */
   def sparql(query: String) = Action { implicit request =>
-    Logger.info("Received query:\n" + query)
+    logger.debug("Received query:\n" + query)
     val resultSet = CurrentDataset().query(query)
     val resultXML = ResultSetFormatter.asXMLString(resultSet)
 
@@ -130,9 +133,15 @@ object API extends Controller {
     Ok
   }
 
-  def run(date: Option[String], frequency: Double) = Action {
-    Logger.info("frequency: " + frequency)
-    RdfStoreDataset.Scheduler.start(date.map(DateTime.parse), frequency)
+  def run(frequency: Double) = Action {
+    logger.debug("frequency: " + frequency)
+    RdfStoreDataset.Scheduler.start(frequency)
+    Ok
+  }
+
+  def changeDate(date: String) = Action {
+    logger.debug("change simulation date to: " + date)
+    RdfStoreDataset.Scheduler.changeDate(DateTime.parse(date))
     Ok
   }
 
@@ -156,7 +165,7 @@ object API extends Controller {
           bytes <- raw.asBytes()) yield
           Source.fromBytes(bytes).getLines.mkString("\n")
 
-    Logger.info("Request received: " + request.path + request.rawQueryString + "\nBody:\n" + body.getOrElse("(Empty)"))
+    logger.debug("Request received: " + request.path + request.rawQueryString + "\nBody:\n" + body.getOrElse("(Empty)"))
 
     Ok
   }

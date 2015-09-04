@@ -1,18 +1,19 @@
-@(messages: Seq[supplychain.model.Message], supplier: supplychain.model.Supplier)
+@(metricValues: Seq[supplychain.metric.MetricValue], supplier: supplychain.model.Supplier)
 @import supplychain.metric.Metric
 @import supplychain.metric.SilkMetric
+@import supplychain.metric.MetricValue
 
-@if(messages.isEmpty) {
+@if(metricValues.isEmpty) {
   No supplier with received messages selected!
 } else {
-    @renderWeather(messages(messages.size - 1).date.toFormat("yyyy-MM-dd"))
-    @for(metric <- CurrentMetrics()) {
-        @renderMetric(metric)
+    @renderWeather(RdfStoreDataset.Scheduler.currentDate.toFormat("yyyy-MM-dd"))
+    @for(metricValue <- metricValues) {
+        @renderMetric(metricValue)
     }
 
 }
 
-<button onclick="$.post('metrics/reload')">Reload</button>
+<!-- <button onclick="$.post('metrics/reload')">Reload</button> -->
 
 @renderWeather(dateStr: String) = {
     <div class="weather-info">
@@ -24,11 +25,11 @@
     </div>
 }
 
-@renderMetric(metric: Metric) = {
+@renderMetric(mv: MetricValue) = {
     <div class="metric-info">
-        <span class="metric-dimension">@metric.dimension.capitalize</span> <span class="metric-value">@metric(messages).formatted("%.2f") @metric.unit</span>
-@if(metric.isInstanceOf[SilkMetric]) {
-    <small><a href="@{Configuration.get.silkUrl+ "transform/" + Configuration.get.silkProject + "/"  + Configuration.get.silkTask + "/editor/" + metric.dimension }" target="_blank">edit</a></small>
+        <span class="metric-dimension">@mv.metric.dimension.capitalize</span> <span class="metric-value">@mv.value.formatted("%.2f") @mv.metric.unit</span>
+@if(mv.metric.isInstanceOf[SilkMetric]) {
+    <small><a href="@{Configuration.get.silkUrl+ "transform/" + Configuration.get.silkProject + "/"  + Configuration.get.silkTask + "/editor/" + mv.metric.dimension }" target="_blank">edit</a></small>
 }
     </div>
 }

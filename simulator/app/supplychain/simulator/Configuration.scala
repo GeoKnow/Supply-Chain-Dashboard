@@ -9,6 +9,9 @@ import supplychain.model.DateTime
  * The Supply Chain Dashboard configuration.
  */
 case class Configuration( endpointConfig: EndpointConfig,
+                          silkUrl: String,
+                          silkProject: String,
+                          silkTask: String,
                           var productUri: String,
                           minStartDate: DateTime,
                           maxEndDate: DateTime,
@@ -37,6 +40,9 @@ object Configuration {
         user = config.getString("simulator.virtuoso.user").getOrElse("dba"),
         password = config.getString("simulator.virtuoso.password").getOrElse("dba")
       ),
+      silkUrl = config.getString("dashboard.silkUrl").getOrElse("http://localhost:9000/"),
+      silkProject = config.getString("dashboard.silkProject").getOrElse("supplychainmetrics"),
+      silkTask = config.getString("dashboard.silkTask").getOrElse("metrics"),
       productUri = config.getString("simulator.product.uri").getOrElse(null),
       minStartDate = DateTime.parse(config.getString("simulator.minStartDate").getOrElse("2014-01-01")),
       maxEndDate = DateTime.parse(config.getString("simulator.maxEndDate").getOrElse("2014-12-31")),

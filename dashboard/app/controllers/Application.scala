@@ -9,7 +9,7 @@ import play.api.libs.Comet.CometMessage
 import play.api.libs.iteratee.Concurrent
 import play.api.libs.json.{JsPath, Writes, JsValue, Json}
 import play.api.mvc._
-import supplychain.dataset.DatasetStatistics
+import supplychain.dataset.{RdfDataset, DatasetStatistics}
 import supplychain.metric.{Evaluator, Metrics}
 import supplychain.model.{Order, Shipping, _}
 
@@ -27,9 +27,13 @@ object Application extends Controller {
   }
 
   def metrics(supplierId: String) = Action {
-    val messages = CurrentDataset().messages.filter(_.connection.source.id == supplierId)
     val supplier = CurrentDataset().suppliers.find(_.id == supplierId).get
-    Ok(views.html.metrics(messages, supplier))
+
+    val epc = Configuration.get.endpointConfig
+    val rd = new RdfDataset(epc, Configuration.get.silkProject)
+
+    val metricValues = rd.getMetrics(RdfStoreDataset.Scheduler.currentDate, supplier)
+    Ok(views.html.metrics(metricValues, supplier))
   }
 
   def news(supplierId: String) = Action {

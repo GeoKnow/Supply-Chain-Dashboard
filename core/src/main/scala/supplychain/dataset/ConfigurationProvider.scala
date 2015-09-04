@@ -28,78 +28,7 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
       """.stripMargin
   }
 
-  /*
-   * get messages from the runtime graph
-   */
-  def getMessages(start: DateTime, end: DateTime, connections: Seq[Connection]): Seq[Message] = {
 
-    val startDate = start.toFormat("yyyy-MM-dd")
-    val endDate = end.toFormat("yyyy-MM-dd")
-
-    val queryStr =
-      s"""
-        |SELECT DISTINCT ?msg ?date ?dueDate ?connection ?count ?order ?orderDate ?orderDueDate ?orderConnection ?orderCount FROM <${epc.getDefaultGraph()}>
-        |WHERE {
-        |   ?msg sc:date ?date .
-        |   OPTIONAL { ?msg sc:dueDate ?dueDate . }
-        |   OPTIONAL {
-        |     ?msg sc:order ?order .
-        |     ?order sc:date ?orderDate .
-        |     ?order sc:dueDate ?orderDueDate .
-        |     ?order sc:connection ?orderConnection .
-        |     ?order sc:count ?orderCount .
-        |   }
-        |   ?msg sc:connection ?connection .
-        |   ?msg sc:count ?count .
-        |   FILTER ( str(?date) >= "$startDate" )
-        |   FILTER ( str(?date) <= "$endDate" )
-        |
-        |}
-      """.stripMargin
-
-    val prefixedQS = prefix(queryStr)
-    //log.info(prefixedQS)
-    val result = epc.getEndpoint().select(prefixedQS).toSeq
-    var messages: List[Message] = List()
-
-    for (binding <- result) {
-      val conn = connections.find(_.uri == binding.getResource("connection").getURI)
-      if (conn.isDefined) {
-        if (binding.contains("dueDate")) {
-          // -> Order
-          val date = DateTime.parse(binding.getLiteral("date").getString)
-          val order = new Order(
-            //uri = binding.getResource("msg").getURI,
-            date = date,
-            connection = conn.get,
-            count = binding.getLiteral("count").getString.toInt
-          )
-          messages = order :: messages
-        } else if (binding.contains("order")) {
-          // -> Shipping
-          val date = DateTime.parse(binding.getLiteral("date").getString)
-          val orderDate = DateTime.parse(binding.getLiteral("orderDate").getString)
-          val order = Order(
-            //uri = binding.getResource("order").getURI,
-            date = orderDate,
-            connection = conn.get,
-            count = binding.getLiteral("orderCount").getString.toInt
-          )
-          val shipping = new Shipping(
-            //uri = binding.getResource("msg").getURI,
-            date = date,
-            connection = conn.get,
-            count = binding.getLiteral("count").getString.toInt,
-            order = order
-          )
-          messages = shipping :: messages
-        } else {
-          throw new Exception("Unkown message type.")
-        }
-      }
-    }
-    messages.toSeq
-  }
 
   /*
    * get connections from the runtime graph

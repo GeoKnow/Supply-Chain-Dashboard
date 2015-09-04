@@ -8,6 +8,8 @@ import scala.collection.mutable
 
 class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor {
 
+  private val logger = Logger(this.getClass)
+
   def simulationEndDate = simulator.simulationEndDate
 
   // The interval between two orders to the root supplier
@@ -35,7 +37,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
     case Tick(currentDate) =>
 
       //if (currentDate > simulationEndDate)
-      Logger.info(s"current simulation date: $currentDate")
+      logger.info(s"current simulation date: $currentDate")
       // Order
       if(lastOrderTime + orderInterval <= currentDate && currentDate <= simulationEndDate) {
         lastOrderTime = currentDate
