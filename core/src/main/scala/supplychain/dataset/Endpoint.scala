@@ -74,7 +74,7 @@ case class EndpointConfig(doInit: Boolean,
 
       val weatherStationFile = new File("data/conf/ncdc-stations.ttl")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
-      val weatherFile = new File("data/conf/ncdc-ghcnd-2014.ttl.gz")
+      val weatherFile = new File("data/conf/ncdc-ghcnd-obs.ttl.gz")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.TTL))
 
       val supplConfFile = new File("data/conf/supplier.ttl")
