@@ -66,6 +66,10 @@ object RdfStoreDataset extends Dataset {
     var currentDate = Configuration.get.minStartDate
     var tickInterval = Configuration.get.tickIntervalsDays
 
+    def lastDate(): DateTime = {
+      currentDate - Duration.days(tickInterval)
+    }
+
     def start(interval: Double = 1.0) = {
       sf = Some(stse.scheduleAtFixedRate(new Runnable {
         override def run(): Unit = step()
