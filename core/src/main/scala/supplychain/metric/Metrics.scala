@@ -7,5 +7,5 @@ import supplychain.model.Message
 import de.fuberlin.wiwiss.silk.plugins.Plugins
 
 object Metrics {
-  val all = new AverageDeliveryTime() :: new Timeliness() :: new AverageDelay() :: new DueParts() :: Nil
+  val all = new AverageDeliveryTime() :: new Timeliness() :: new AverageDelay() /*:: new DueParts()*/ :: Nil
 }
