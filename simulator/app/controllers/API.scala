@@ -86,6 +86,7 @@ object API extends Controller {
       while(currentDate <= Simulator().simulationEndDate) {
         for (s <- Simulator().network.suppliers) {
           val messages = Simulator().messages.filter(_.date <= currentDate).filter(_.connection.source.id == s.id)
+          logger.debug("Simulator().messages.size: " + Simulator().messages.size.toString)
           md.addMetricValue(messages, s, currentDate)
         }
         currentDate += Simulator().tickInterval
