@@ -33,7 +33,9 @@ function receiveMessage(event) {
     addShipping(s.connectionSourceId, s.connection);
   }
 
+  console.log(event.data.dueParts)
   for (var supplierId in event.data.dueParts) {
+    console.log(supplierId)
     updateDueParts(supplierId, event.data.dueParts[supplierId])
   }
 }
@@ -88,6 +90,7 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
   google.maps.event.addListener(line, 'click', function(event) { selectConnection(id) });
   line.setMap(map);
   connections[id] = line;
+  console.log(connections);
 }
 
 function updateDueParts(supplierId, dueParts) {
@@ -97,18 +100,26 @@ function updateDueParts(supplierId, dueParts) {
 
 function addOrder(supplierId, connectionId) {
   // Flash connection line
-  connections[connectionId].setOptions({ strokeColor: '#FF0000' });
-  setTimeout(function() {
-    connections[connectionId].setOptions({  strokeColor: '#0000FF' });
-  }, 1000);
+  if (connections[connectionId] != undefined) {
+    connections[connectionId].setOptions({ strokeColor: '#FF0000' });
+    setTimeout(function() {
+      connections[connectionId].setOptions({  strokeColor: '#0000FF' });
+    }, 1000);
+  } else {
+    console.log("connection currently not active: " + connectionId);
+  }
 }
 
 function addShipping(supplierId, connectionId) {
   // Flash connection line
-  connections[connectionId].setOptions({  strokeColor: '#00FF00' });
-  setTimeout(function() {
-    connections[connectionId].setOptions({ strokeColor: '#0000FF' });
-  }, 1000);
+  if (connections[connectionId] != undefined) {
+    connections[connectionId].setOptions({  strokeColor: '#00FF00' });
+    setTimeout(function() {
+      connections[connectionId].setOptions({ strokeColor: '#0000FF' });
+    }, 1000);
+  } else {
+    console.log("connection currently not active: " + connectionId);
+  }
 }
 
 function hideSuppliers() {
