@@ -20,7 +20,7 @@
 <script>
     var running = false;
     var frequency = 1.0;
-    var startDate = new Date(@Configuration.get.minStartDate.milliseconds);
+    var startDate = new Date(@RdfStoreDataset.Scheduler.currentDate.milliseconds);
 
     // Initialization
     $(function() {

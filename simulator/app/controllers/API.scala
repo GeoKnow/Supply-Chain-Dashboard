@@ -4,7 +4,7 @@ import com.hp.hpl.jena.query.ResultSetFormatter
 
 import play.api.Logger
 import play.api.mvc.{Action, Controller}
-import supplychain.dataset.MetricsDataset
+import supplychain.dataset.{RdfDataset, MetricsDataset}
 import supplychain.model.DateTime
 import supplychain.simulator.exceptions.SimulationPeriodOutOfBoundsException
 import supplychain.simulator.{Configuration, Simulator}
@@ -77,23 +77,25 @@ object API extends Controller {
 
       for (p <- productUri) Configuration.get.productUri = p
       for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
-
       val md = new MetricsDataset(Configuration.get.endpointConfig, Configuration.get.silkProject)
-
       md.generateDataSet()
+
+      if (Simulator().messages.isEmpty) {
+        logger.info("Simulation not runned before, loading messages first.")
+        Simulator().loadMessages()
+        logger.info("Loaded number of messages: " + Simulator().messages.size.toString)
+      }
 
       var currentDate = Simulator().startDate
       while(currentDate <= Simulator().simulationEndDate) {
+        logger.debug("Simulator().messages.size: " + Simulator().messages.size.toString)
         for (s <- Simulator().network.suppliers) {
           val messages = Simulator().messages.filter(_.date <= currentDate).filter(_.connection.source.id == s.id)
-          logger.debug("Simulator().messages.size: " + Simulator().messages.size.toString)
           md.addMetricValue(messages, s, currentDate)
         }
         currentDate += Simulator().tickInterval
       }
-
       md.normalizeDataCube()
-
       Ok("metrics")
     } else {
       Status(503)("Simulation is running, can not calculate performance metrics now. Retry later.")

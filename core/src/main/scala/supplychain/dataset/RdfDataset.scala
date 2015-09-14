@@ -133,6 +133,32 @@ class RdfDataset(ec: EndpointConfig, silkProject: String) {
    * get messages from the runtime graph
    */
   def getMessages(start: DateTime, end: DateTime, connections: Seq[Connection]): Seq[Message] = {
+    var offset: Int = 0
+    var msgs = getMessagesOffset(start, end, connections, offset * 1000)
+    var messages: Seq[Message] = List()
+    while (!msgs.isEmpty) {
+      messages ++= msgs
+      offset += 1
+      msgs = getMessagesOffset(start, end, connections, offset * 1000)
+    }
+
+    messages = messages.sortBy(_.uri)
+
+    log.info("#############################")
+    log.info("# of messages: " + messages.size.toString)
+    log.info("# messages.hashCode: " + messages.hashCode().toString)
+    log.info("# messages.hashCode: " + messages.hashCode().toString)
+    log.info(messages.mkString("\n"))
+
+    log.info("#############################")
+
+    messages
+  }
+
+  /*
+   * get messages from the runtime graph
+   */
+  private def getMessagesOffset(start: DateTime, end: DateTime, connections: Seq[Connection], offset: Int): Seq[Message] = {
 
     val startDate = start.toFormat("yyyy-MM-dd")
     val endDate = end.toFormat("yyyy-MM-dd")
@@ -154,7 +180,7 @@ class RdfDataset(ec: EndpointConfig, silkProject: String) {
         |   ?msg sc:count ?count .
         |   FILTER ( str(?date) >= "$startDate" )
         |   FILTER ( str(?date) <= "$endDate" )
-        |}
+        |} LIMIT 1000 OFFSET ${offset.toString}
       """.stripMargin
 
     val prefixedQS = prefix(queryStr)
@@ -169,7 +195,7 @@ class RdfDataset(ec: EndpointConfig, silkProject: String) {
           // -> Order
           val date = DateTime.parse(binding.getLiteral("date").getString)
           val order = new Order(
-            //uri = binding.getResource("msg").getURI,
+            uri = binding.getResource("msg").getURI,
             date = date,
             connection = conn.get,
             count = binding.getLiteral("count").getString.toInt
@@ -180,13 +206,13 @@ class RdfDataset(ec: EndpointConfig, silkProject: String) {
           val date = DateTime.parse(binding.getLiteral("date").getString)
           val orderDate = DateTime.parse(binding.getLiteral("orderDate").getString)
           val order = Order(
-            //uri = binding.getResource("order").getURI,
+            uri = binding.getResource("order").getURI,
             date = orderDate,
             connection = conn.get,
             count = binding.getLiteral("orderCount").getString.toInt
           )
           val shipping = new Shipping(
-            //uri = binding.getResource("msg").getURI,
+            uri = binding.getResource("msg").getURI,
             date = date,
             connection = conn.get,
             count = binding.getLiteral("count").getString.toInt,

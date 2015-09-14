@@ -29,8 +29,8 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
 
   def generateDataSet(): Unit = {
 
-    val uri1 = generateUri(prefix="component-")
-    val uri2 = generateUri(prefix="component-")
+    val uri1 = generateUri(suffix="component-supplier")
+    val uri2 = generateUri(suffix="component-date")
 
       var queryString =
       s"""
@@ -56,7 +56,7 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
           """.stripMargin
 
     for (m <- metrics) {
-      val uri = generateUri(prefix="component-")
+      val uri = generateUri(suffix="component"+getMetricProperty(m))
       queryString +=
       s"""
           | <${dataStructureUri}> qb:component <$uri> .
@@ -87,29 +87,29 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
    */
   def addMetricValue(messages: Seq[Message], supplier: Supplier, date: DateTime) {
 
-      val uri = generateUri(prefix="metric-")
+      val obsUri = generateUri(suffix="observation" + "-" + supplier.id + "-" + date.toXSDFormat)
 
       val metricsValues = for(m <- metrics) yield {
         val value = m.apply(messages)
-        val msg = s"""<$uri> sc:metric${getMetricProperty(m)} "$value"^^xsd:double ."""
+          val msg = s"""<$obsUri> sc:metric${getMetricProperty(m)} "$value"^^xsd:double ."""
         log.info(msg)
         msg
       }
 
       val queryString =
         s"""
-           | <$uri> a qb:Observation .
-           | <$uri> qb:dataSet <${dataSetUri}> .
-           | <$uri> sc:supplier <${supplier.uri}> .
-           | <$uri> sc:date "${date.toXSDFormat}"^^xsd:date .
+           | <$obsUri> a qb:Observation .
+           | <$obsUri> qb:dataSet <${dataSetUri}> .
+           | <$obsUri> sc:supplier <${supplier.uri}> .
+           | <$obsUri> sc:date "${date.toXSDFormat}"^^xsd:date .
            | ${metricsValues.mkString("\n")}
          """.stripMargin
       insert(queryString)
   }
 
-  private def generateUri(prefix: String = "") = {
+  private def generateUri(suffix: String = "") = {
     //val pref = prefix.getOrElse("")
-    ec.getDefaultGraphMetrics() + "" + prefix + UUID.randomUUID().toString
+    ec.getDefaultGraphMetrics() + "" + suffix// + UUID.randomUUID().toString
   }
 
   def normalizeDataCube(): Unit = {

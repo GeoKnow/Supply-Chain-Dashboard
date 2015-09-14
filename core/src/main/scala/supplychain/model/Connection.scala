@@ -8,7 +8,9 @@ case class Connection(uri: String, content: Product, source: Supplier, target: S
 
   def id = uri.substring(uri.lastIndexOf('/') + 1)
 
-  val shippingTime = Duration.days(1.0 + 1.0 * Random.nextDouble())
+  private val myRand = new Random(uri.hashCode)
+
+  val shippingTime = Duration.days(1.0 + 1.0 * myRand.nextDouble())
 
   override def toString = s"Connection($id, ${content.name}, ${source.name}, ${target.name})"
 }

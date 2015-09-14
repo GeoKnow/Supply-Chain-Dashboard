@@ -55,7 +55,6 @@ object Application extends Controller {
   }
 
   def deliveryStream = Action {
-
     val stats = new DatasetStatistics(CurrentDataset())
 
     def addDueParts(json: JsValue): JsValue = {
@@ -72,11 +71,8 @@ object Application extends Controller {
 
     val (simulationUpdateEnumerator, simulationUpdateChannel) = Concurrent.broadcast[JsValue]
     val listener = (msg: SimulationUpdate) => simulationUpdateChannel.push(addDueParts(Json.toJson(msg)))
-
     CurrentDataset().addListener(listener)
-
     val simuzlationUpdateEnumeratee = simulationUpdateEnumerator &> Comet(callback = "parent.myPostMessage")
-
     Ok.chunked(simuzlationUpdateEnumeratee)
   }
 

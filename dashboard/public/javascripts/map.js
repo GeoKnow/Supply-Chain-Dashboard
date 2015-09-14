@@ -23,19 +23,17 @@ function receiveMessage(event) {
   for (var i in event.data.orders) {
     //addOrder(supplierId, connectionId)
     var o = event.data.orders[i];
-    console.log(o);
     addOrder(o.connectionSourceId, o.connection); //, event.data.dueParts[o.connectionSourceId]);
 
   }
+
   for (var i in event.data.shippings) {
     var s = event.data.shippings[i];
-    console.log(s);
     addShipping(s.connectionSourceId, s.connection);
   }
 
   console.log(event.data.dueParts)
   for (var supplierId in event.data.dueParts) {
-    console.log(supplierId)
     updateDueParts(supplierId, event.data.dueParts[supplierId])
   }
 }
@@ -90,7 +88,6 @@ function addConnection(id, senderLat, senderLon, receiverLat, receiverLon) {
   google.maps.event.addListener(line, 'click', function(event) { selectConnection(id) });
   line.setMap(map);
   connections[id] = line;
-  console.log(connections);
 }
 
 function updateDueParts(supplierId, dueParts) {

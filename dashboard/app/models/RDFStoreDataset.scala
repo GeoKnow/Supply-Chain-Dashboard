@@ -59,9 +59,7 @@ object RdfStoreDataset extends Dataset {
 
 
   object Scheduler {
-
     val stse = Executors.newSingleThreadScheduledExecutor()
-
     var sf: Option[ScheduledFuture[_]] = None
     var currentDate = Configuration.get.minStartDate
     var tickInterval = Configuration.get.tickIntervalsDays
