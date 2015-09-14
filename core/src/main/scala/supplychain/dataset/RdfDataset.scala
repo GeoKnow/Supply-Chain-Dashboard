@@ -141,17 +141,7 @@ class RdfDataset(ec: EndpointConfig, silkProject: String) {
       offset += 1
       msgs = getMessagesOffset(start, end, connections, offset * 1000)
     }
-
     messages = messages.sortBy(_.uri)
-
-    log.info("#############################")
-    log.info("# of messages: " + messages.size.toString)
-    log.info("# messages.hashCode: " + messages.hashCode().toString)
-    log.info("# messages.hashCode: " + messages.hashCode().toString)
-    log.info(messages.mkString("\n"))
-
-    log.info("#############################")
-
     messages
   }
 
