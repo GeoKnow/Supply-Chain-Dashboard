@@ -11,31 +11,34 @@
     Simulation Date: <input id="currentDate" value="@Configuration.get.minStartDate" onchange="newStartDate(this.value)" />
     <div id="dateSlider"></div>
 </p>
-
+<!--
 <p>
     Simulation Speed:
     <div id="slider"></div>
 </p>
+-->
 
 <script>
     var running = false;
-    var frequency = 1.0;
-    var startDate = new Date(@Configuration.get.minStartDate.milliseconds);
+    var interval = 1.0;
+    var startDate = new Date(@RdfStoreDataset.Scheduler.currentDate.milliseconds);
 
     // Initialization
     $(function() {
+        /*
         $("#slider").slider({
             value: 1,
-            min: 1,
-            max: 10,
-            step: 1,
+            min: 0.2,
+            max: 5.0,
+            step: 0.2,
             change: function( event, ui ) {
-                frequency = 1.0 / ui.value;
-                console.log("Frequency changed: " + frequency);
+                interval = 1.0 / ui.value;
+                console.log("Interval changed: " + interval);
                 if(running)
                     run();
             }
         });
+        */
         $("#currentDate").val($.formatDateTime('yy-mm-dd', startDate));
         $("#dateSlider").slider({
             value: @Configuration.get.minStartDate.milliseconds,
@@ -79,7 +82,6 @@
             $("#currentDate").val(val);
             startDate = new Date(timestamp);
             $("#dateSlider").slider("value", timestamp);
-            //$("#dateSlider").val(timestamp);
         } else {
             $("#currentDate").val("only YYYY-MM-DD");
         }
@@ -92,10 +94,8 @@
 
     // Run the simulation
     function run() {
-        $.post('simulator/run?frequency=' + frequency, function() {
+        $.post('simulator/run?interval=' + interval, function() {
             running = true;
-            //$('#currentDate').prop('disabled', true);
-            //$('#dateSlider').slider('disable');
             $('#simulation-run').button('disable');
             $('#simulation-stop').button('enable');
         });
@@ -105,8 +105,6 @@
     function stop() {
         $.post('simulator/stop', function() {
             running = false;
-            //$('#currentDate').prop('disabled', false);
-            //$('#dateSlider').slider('enable');
             $('#simulation-run').button('enable');
             $('#simulation-stop').button('disable');
         });

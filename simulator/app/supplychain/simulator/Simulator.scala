@@ -102,6 +102,12 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
     dataset.addMessage(msg)
   }
 
+  def loadMessages() = {
+    if (messages.isEmpty) {
+      messages = dataset.getMessages(startDate, simulationEndDate, network.connections)
+    }
+  }
+
   def advanceSimulation(): Unit = {
     if (!isSupplierNetworkDataWritten) {
       writeSupplierNetworkData()

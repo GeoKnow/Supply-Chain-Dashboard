@@ -6,11 +6,10 @@
 @if(metricValues.isEmpty) {
   No supplier with received messages selected!
 } else {
-    @renderWeather(RdfStoreDataset.Scheduler.currentDate.toFormat("yyyy-MM-dd"))
+    @renderWeather(RdfStoreDataset.Scheduler.lastDate.toFormat("yyyy-MM-dd"))
     @for(metricValue <- metricValues) {
         @renderMetric(metricValue)
     }
-
 }
 
 <!-- <button onclick="$.post('metrics/reload')">Reload</button> -->

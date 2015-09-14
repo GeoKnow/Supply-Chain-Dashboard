@@ -133,9 +133,9 @@ object API extends Controller {
     Ok
   }
 
-  def run(frequency: Double) = Action {
-    logger.debug("frequency: " + frequency)
-    RdfStoreDataset.Scheduler.start(frequency)
+  def run(interval: Double) = Action {
+    logger.debug("interval: " + interval)
+    RdfStoreDataset.Scheduler.start(interval)
     Ok
   }
 

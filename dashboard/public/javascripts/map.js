@@ -23,16 +23,16 @@ function receiveMessage(event) {
   for (var i in event.data.orders) {
     //addOrder(supplierId, connectionId)
     var o = event.data.orders[i];
-    console.log(o);
     addOrder(o.connectionSourceId, o.connection); //, event.data.dueParts[o.connectionSourceId]);
 
   }
+
   for (var i in event.data.shippings) {
     var s = event.data.shippings[i];
-    console.log(s);
     addShipping(s.connectionSourceId, s.connection);
   }
 
+  console.log(event.data.dueParts)
   for (var supplierId in event.data.dueParts) {
     updateDueParts(supplierId, event.data.dueParts[supplierId])
   }
@@ -97,18 +97,26 @@ function updateDueParts(supplierId, dueParts) {
 
 function addOrder(supplierId, connectionId) {
   // Flash connection line
-  connections[connectionId].setOptions({ strokeColor: '#FF0000' });
-  setTimeout(function() {
-    connections[connectionId].setOptions({  strokeColor: '#0000FF' });
-  }, 1000);
+  if (connections[connectionId] != undefined) {
+    connections[connectionId].setOptions({ strokeColor: '#FF0000' });
+    setTimeout(function() {
+      connections[connectionId].setOptions({  strokeColor: '#0000FF' });
+    }, 1000);
+  } else {
+    console.log("connection currently not active: " + connectionId);
+  }
 }
 
 function addShipping(supplierId, connectionId) {
   // Flash connection line
-  connections[connectionId].setOptions({  strokeColor: '#00FF00' });
-  setTimeout(function() {
-    connections[connectionId].setOptions({ strokeColor: '#0000FF' });
-  }, 1000);
+  if (connections[connectionId] != undefined) {
+    connections[connectionId].setOptions({  strokeColor: '#00FF00' });
+    setTimeout(function() {
+      connections[connectionId].setOptions({ strokeColor: '#0000FF' });
+    }, 1000);
+  } else {
+    console.log("connection currently not active: " + connectionId);
+  }
 }
 
 function hideSuppliers() {

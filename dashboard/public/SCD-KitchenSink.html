@@ -8,12 +8,45 @@
     <body>
 
       <script type="text/javascript">
-        var addOrder = function(supplierId, connectionId, dueParts) {
-          $('#orders').append("<p><a href=\"#\" onclick=\"loadMetrics('"+supplierId+"')\">"+supplierId+"</a> "+connectionId+" "+dueParts+"</p>");
+        function myPostMessage(id) {
+          window.postMessage(id, '*');
         }
 
-        var addShipping = function(supplierId, connectionId, dueParts) {
-          $('#shippings').append("<p><a href=\"#\" onclick=\"loadMetrics('"+supplierId+"')\">"+supplierId+"</a> "+connectionId+" "+dueParts+"</p>");
+        function receiveMessage(event) {
+          console.log(event.data);
+
+          $('#orders').append("<p>" + event.data.currentDate + "</p>");
+          for (var i in event.data.orders) {
+            //addOrder(supplierId, connectionId)
+            var o = event.data.orders[i];
+            console.log(o);
+            addOrder(o.connectionSourceId, o.connection); //, event.data.dueParts[o.connectionSourceId]);
+
+          }
+
+          $('#shippings').append("<p>" + event.data.currentDate + "</p>");
+          for (var i in event.data.shippings) {
+            var s = event.data.shippings[i];
+            console.log(s);
+            addShipping(s.connectionSourceId, s.connection);
+          }
+
+          $('#dueParts').append("<p>" + event.data.currentDate + "</p>");
+          for (var supplierId in event.data.dueParts) {
+            updateDueParts(supplierId, event.data.dueParts[supplierId])
+          }
+        }
+
+        var updateDueParts = function(supplierId, dueParts) {
+          $('#dueParts').append("<p><a href=\"#\" onclick=\"loadMetrics('"+supplierId+"')\">"+supplierId+"</a> "+dueParts+"</p>")
+        }
+
+        var addOrder = function(supplierId, connectionId) {
+          $('#orders').append("<p><a href=\"#\" onclick=\"loadMetrics('"+supplierId+"')\">"+supplierId+"</a> "+connectionId+"</p>");
+        }
+
+        var addShipping = function(supplierId, connectionId) {
+          $('#shippings').append("<p><a href=\"#\" onclick=\"loadMetrics('"+supplierId+"')\">"+supplierId+"</a> "+connectionId+"</p>");
         }
 
         var loadMetrics = function(supplierId) {
@@ -26,16 +59,19 @@
           console.log("refreshMetrics");
         }
 
-          // Single step through the simulation
-          var step = function() {
-            $.post('/simulator/step');
-          }
+        // Single step through the simulation
+        var step = function() {
+          $.post('/simulator/step');
+        }
+
+        window.addEventListener("message", receiveMessage, false);
       </script>
       <iframe src="/deliveryStream" frameborder="0"></iframe>
       <p><button onclick="step()">Step</button></p>
       <div id="content">
         <div id="orders"><strong>Orders:</strong><br /></div>
         <div id="shippings"><strong>Shippings:</strong><br /></div>
+        <div id="dueParts"><strong>Due Parts:</strong><br /></div>
         <div id="metrics"></div>
       </div>
     </body>
