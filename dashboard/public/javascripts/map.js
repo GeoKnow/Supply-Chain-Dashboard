@@ -12,10 +12,6 @@ var connectionIcon = {
   path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
 };
 
-function myPostMessage(id) {
-  window.postMessage(id, '*');
-}
-
 function receiveMessage(event) {
   console.log(event.data);
   setStartDate(event.data.currentDate);
