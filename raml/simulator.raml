@@ -1,0 +1,120 @@
+#%RAML 0.8
+
+title: Supply Chain Data Generator
+baseUri: https://{domain}:{port}
+baseUriParameters:
+  domain:
+    displayName: The hostname or domain, where SCD is running.
+    type: string
+  port:
+    displayName: The port on which the application server is available.
+    required: false
+    type: integer
+
+/sparql:
+  displayName: SPARQL query via HTTP GET
+  description: SPARQL query via HTTP GET and query parameters
+  get:
+    queryParameters:
+      query:
+        displayName: SPARQL query
+        required: true
+        description: SPARQL query via HTTP GET and query parameters
+    responses:
+      200:
+        description: TODO
+        body:
+          text/turtle:
+            example: |
+              TODO
+
+/step:
+  displayName: Advance simulation
+  description: Advances the simulation for a single tick.
+  post:
+    queryParameters:
+      start:
+        displayName: simulation start date
+        required: false
+        type: date
+        description: Defines the simulation start date. To be provided in format `YYYY-MM-DD`. Defaults to simulator.minStartDate in the `simulator/conf/application.conf`.
+      graphUri:
+        displayName: target graph URI
+        required: false
+        description: Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="http://www.xybermotive.com/geoknow/" as set in the `simulator/conf/application.conf`.
+      productUri:
+        displayName: product URI
+        required: false
+        description: Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="http://www.xybermotive.com/products/Car" as set in the `simulator/conf/application.conf`
+    responses:
+      200:
+        body:
+          text/plain:
+            example: step
+
+/run:
+  displayName: Run simulation
+  description: Runs the simulation with the given parameters.
+  post:
+    queryParameters:
+      start:
+        displayName: simulation start date
+        required: false
+        type: date
+        description: Defines the simulation start date. To be provided in format `YYYY-MM-DD`. Defaults to simulator.minStartDate in the `simulator/conf/application.conf`.
+      end:
+        displayName: simulation end date
+        required: false
+        type: date
+        description: Defines the simulation end date. To be provided in format `YYYY-MM-DD`. Defaults to simulator.maxEndDate in the `simulator/conf/application.conf`.
+      interval:
+        displayName: simulation tick interval
+        required: false
+        type: number
+        description: Defines the interval in seconds between two simulation ticks. Defaults to `1.0`.
+      graphUri:
+        displayName: target graph URI
+        required: false
+        description: Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="http://www.xybermotive.com/geoknow/" as set in the `simulator/conf/application.conf`.
+      productUri:
+        displayName: product URI
+        required: false
+        description: Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="http://www.xybermotive.com/products/Car" as set in the `simulator/conf/application.conf`
+    responses:
+      200:
+        body:
+          text/plain:
+            example: run
+
+/pause:
+  displayName: Pause simulation
+  description: Pauses the simulation.
+  post:
+    responses:
+      200:
+        body:
+          text/plain:
+            example: pause
+
+/calculateMetrics:
+  displayName: Calculate metrics
+  description: Pre-calculates the metrics upon the generated data. Shall be runned after `run`.
+  post:
+    queryParameters:
+      graphUri:
+        displayName: target graph URI
+        required: false
+        description: Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="http://www.xybermotive.com/geoknow/" as set in the `simulator/conf/application.conf`.
+      productUri:
+        displayName: product URI
+        required: false
+        description: Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="http://www.xybermotive.com/products/Car" as set in the `simulator/conf/application.conf`
+    responses:
+      200:
+        body:
+          text/plain:
+            example: metrics
+      503:
+        body:
+          text/plain:
+            example: Simulation is running, can not calculate performance metrics now. Retry later.

@@ -1,0 +1,21 @@
+{# body #}
+{% for key, b in method.body %}
+* **{{key}} **:
+
+{% if b.formParameters %}
+    * form parameters:
+{% for key, item in b.formParameters %}
+{% include "./item_3.nunjucks" %}
+{% endfor %}
+{% endif %}
+
+{% if b.schema %}
+      * schema:
+          * `{{ b.schema | escape }}`
+{% endif %}
+{% if b.example %}
+      * example:
+          * `{{ b.example }}`
+{% endif %}
+{% endfor %}
+

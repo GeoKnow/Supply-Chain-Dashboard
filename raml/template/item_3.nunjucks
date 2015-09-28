@@ -1,0 +1,37 @@
+        * **{{ key }}** {% if item.required %}*( required )*{% endif %}:
+
+{% if item.description %}
+            * {{ item.description }}
+{% endif %}
+            * type: (
+    {%- if item.enum -%}
+      one of {{ item.enum.join(', ') }}
+    {%- else -%}
+      {{ item.type }}
+    {%- endif -%}
+
+    {%- if item.default %} - default: {{ item.default }}{%- endif -%}
+    {%- if item.repeat %} - repeat: {{ item.repeat }}{%- endif -%}
+    {%- if item.type == 'string' -%}
+      {%- if item.minLength %} - minLength: {{ item.minLength }}{%- endif -%}
+      {%- if item.maxLength %} - maxLength: {{ item.maxLength }}{%- endif -%}
+    {%- else -%}
+      {%- if item.minimum %} - minimum: {{ item.minimum }}{%- endif -%}
+      {%- if item.maximum %} - maximum: {{ item.maximum }}{%- endif -%}
+    {%- endif -%}
+    {%- if item.pattern %} - pattern: {{ item.pattern }}{%- endif -%}
+)
+
+{% if item.schema %}
+            * schema:
+                * `{{ item.schema }}`
+{% endif %}
+{% if item.example %}
+            * example:
+{% if item.type == 'string' %}
+                * `{{ item.example }}`
+{% else %}
+                * `{{ item.example | escape }}`
+
+{% endif %}
+{% endif %}
