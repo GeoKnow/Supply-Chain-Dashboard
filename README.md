@@ -6,25 +6,73 @@ Initial prototype of the supply chain dashboard, a web application that allows t
 
 ![Screenshot](screenshot.png)
 
+## Supply Chain Data Generator
+
+### Configuration
+
+The simulator configuration is done in the file `simulator/conf/application.conf`.
+
+Pay special attention to the `Endpoint Configuration` section and adapt it to your needs:
+
+    #############################
+    # Endpoint Config
+    #############################
+    # local, http, virtuoso
+    simulator.endpoint.kind="virtuoso"
+    simulator.endpoint.url="http://dockerhost/sparql"
+    simulator.virtuoso.host="dockerhost"
+    simulator.virtuoso.port="1111"
+    simulator.virtuoso.user="dba"
+    simulator.virtuoso.password="dba"
+
+### Running
+
+To run the data generator at port 9001:
+
+    sbt "project simulator" compile "run 9001"
+
+### REST API Usage
+
+see [Simulator RAML doc](raml/simulator.md)
+
+In a typicall workflow you will call:
+
+- `/run?interval=0`
+- `/calculateMetrics`
+
+## Supply Chain Dashboard
+
+### Configuration
+
+The dashboard configuration is done in the file `dashboard/conf/application.conf`.
+
+Pay special attention to the `Endpoint Configuration` section and adapt it to your needs:
+
+    #############################
+    # Endpoint Configuration
+    #############################
+    # local, http, virtuoso
+    simulator.endpoint.kind="virtuoso"
+    simulator.endpoint.url="http://dockerhost/sparql"
+    simulator.virtuoso.host="dockerhost"
+    simulator.virtuoso.port="1111"
+    simulator.virtuoso.user="dba"
+    simulator.virtuoso.password="dba"
+
+### Running
+
+To run the dashboard at port 9000:
+
+    sbt "project dashboard" compile "run 9000"
+
+### Usage
+
+In your browser go to [http://localhost:9000](http://localhost:9000)
+
 ## Requirements
 
 - JDK 7 or later
-- Virtuoso 7.1 or later 
-
-## Configuration
-
-### Data Generator
-
-- configuration file is ``dashboard/conf/application.conf``
-
-### Dashboard
-
-- configuration file is ``simulator/conf/application.conf``
-
-
-
-- Execute `sbt "project dashboard" run`
-- In your browser, navigate to 'http://localhost:9000'
+- Virtuoso 7.1 or later
 
 ## Packaging
 
