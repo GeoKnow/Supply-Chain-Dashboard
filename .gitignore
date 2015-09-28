@@ -21,3 +21,4 @@ project/plugins/project/
 .scala_dependencies
 WeatherStations.fos
 virtuoso-data
+node_modules

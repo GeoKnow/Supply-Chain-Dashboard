@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<process version="5.3.013">
+<process version="5.3.015">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="5.3.015" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="random_seed" value="2001"/>
     <parameter key="send_mail" value="never"/>
@@ -17,14 +17,14 @@
         <parameter key="SPARQL connection" value="GeoKnow"/>
         <parameter key="SPARQL query" value="PREFIX xm:&lt;http://www.xybermotive.com/ontology/&gt;&#10;PREFIX gkwo:&lt;http://www.xybermotive.com/GeoKnowWeatherOnt#&gt;&#10;&#10;SELECT ?shippingDate ?tmin ?tmax ?prcp ?snwd&#10;WHERE {&#10;    ?order a xm:Order .&#10;    ?order xm:dueDate ?dueDate .&#10;    ?shipping a xm:Shipping .&#10;    ?shipping xm:order ?order .&#10;    ?shipping xm:date ?shippingDate .&#10;    ?order xm:connection ?conn .&#10;    ?conn xm:sender ?sender .&#10;    ?sender xm:weatherStation ?ws .&#10;    ?ws gkwo:hasObservation ?obs .&#10;    ?obs gkwo:date ?obsdate .&#10;    ?obs gkwo:tmin ?tmin .&#10;    ?obs gkwo:tmax ?tmax .&#10;    ?obs gkwo:prcp ?prcp .&#10;    ?obs gkwo:snwd ?snwd .&#10;    &#10;    FILTER(?shippingDate &gt; ?dueDate) .&#10;    FILTER(substr(?shippingDate, 1, 10) = str(?obsdate)) .&#10;}&#10;ORDER BY ?shippingDate"/>
       </operator>
-      <operator activated="true" class="date_to_nominal" compatibility="5.3.013" expanded="true" height="76" name="Date to Nominal" width="90" x="179" y="30">
+      <operator activated="true" class="date_to_nominal" compatibility="5.3.015" expanded="true" height="76" name="Date to Nominal" width="90" x="179" y="30">
         <parameter key="attribute_name" value="shippingDate"/>
         <parameter key="date_format" value="yyyy-MM-'01'"/>
         <parameter key="time_zone" value="SYSTEM"/>
         <parameter key="locale" value="English (United States)"/>
         <parameter key="keep_old_attribute" value="false"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.3.013" expanded="true" height="76" name="Aggregate" width="90" x="313" y="30">
+      <operator activated="true" class="aggregate" compatibility="5.3.015" expanded="true" height="76" name="Aggregate" width="90" x="313" y="30">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -55,7 +55,7 @@
         <parameter key="SPARQL connection" value="GeoKnow"/>
         <parameter key="SPARQL query" value="PREFIX xm:&lt;http://www.xybermotive.com/ontology/&gt;&#10;PREFIX gkwo:&lt;http://www.xybermotive.com/GeoKnowWeatherOnt#&gt;&#10;&#10;SELECT ?shippingDate ?tmin ?tmax ?prcp ?snwd&#10;WHERE {&#10;    ?order a xm:Order .&#10;    ?order xm:dueDate ?dueDate .&#10;    ?shipping a xm:Shipping .&#10;    ?shipping xm:order ?order .&#10;    ?shipping xm:date ?shippingDate .&#10;    ?order xm:connection ?conn .&#10;    ?conn xm:sender ?sender .&#10;    ?sender xm:weatherStation ?ws .&#10;    ?ws gkwo:hasObservation ?obs .&#10;    ?obs gkwo:date ?obsdate .&#10;    ?obs gkwo:tmin ?tmin .&#10;    ?obs gkwo:tmax ?tmax .&#10;    ?obs gkwo:prcp ?prcp .&#10;    ?obs gkwo:snwd ?snwd .&#10;    &#10;    FILTER(?shippingDate &gt; ?dueDate) .&#10;    FILTER(substr(?shippingDate, 1, 10) = str(?obsdate)) .&#10;}&#10;ORDER BY ?shippingDate"/>
       </operator>
-      <operator activated="true" class="date_to_nominal" compatibility="5.3.013" expanded="true" height="76" name="Date to Nominal (3)" width="90" x="179" y="390">
+      <operator activated="true" class="date_to_nominal" compatibility="5.3.015" expanded="true" height="76" name="Date to Nominal (3)" width="90" x="179" y="390">
         <parameter key="attribute_name" value="shippingDate"/>
         <parameter key="date_format" value="yyyy-MM-dd"/>
         <parameter key="time_zone" value="SYSTEM"/>
@@ -75,14 +75,14 @@
         <parameter key="SPARQL connection" value="GeoKnow"/>
         <parameter key="SPARQL query" value="PREFIX xm:&lt;http://www.xybermotive.com/ontology/&gt;&#10;PREFIX gkwo:&lt;http://www.xybermotive.com/GeoKnowWeatherOnt#&gt;&#10;&#10;SELECT ?shippingDate ?tmin ?tmax ?prcp ?snwd&#10;WHERE {&#10;    ?order a xm:Order .&#10;    ?order xm:dueDate ?dueDate .&#10;    ?shipping a xm:Shipping .&#10;    ?shipping xm:order ?order .&#10;    ?shipping xm:date ?shippingDate .&#10;    ?order xm:connection ?conn .&#10;    ?conn xm:sender ?sender .&#10;    ?sender xm:weatherStation ?ws .&#10;    ?ws gkwo:hasObservation ?obs .&#10;    ?obs gkwo:date ?obsdate .&#10;    ?obs gkwo:tmin ?tmin .&#10;    ?obs gkwo:tmax ?tmax .&#10;    ?obs gkwo:prcp ?prcp .&#10;    ?obs gkwo:snwd ?snwd .&#10;    &#10;    FILTER(?shippingDate &gt; ?dueDate) .&#10;    FILTER(substr(?shippingDate, 1, 10) = str(?obsdate)) .&#10;}&#10;ORDER BY ?shippingDate"/>
       </operator>
-      <operator activated="true" class="date_to_nominal" compatibility="5.3.013" expanded="true" height="76" name="Date to Nominal (2)" width="90" x="179" y="255">
+      <operator activated="true" class="date_to_nominal" compatibility="5.3.015" expanded="true" height="76" name="Date to Nominal (2)" width="90" x="179" y="255">
         <parameter key="attribute_name" value="shippingDate"/>
         <parameter key="date_format" value="yyyy-MM-dd"/>
         <parameter key="time_zone" value="SYSTEM"/>
         <parameter key="locale" value="English (United States)"/>
         <parameter key="keep_old_attribute" value="false"/>
       </operator>
-      <operator activated="true" class="aggregate" compatibility="5.3.013" expanded="true" height="76" name="Aggregate (2)" width="90" x="313" y="255">
+      <operator activated="true" class="aggregate" compatibility="5.3.015" expanded="true" height="76" name="Aggregate (2)" width="90" x="313" y="255">
         <parameter key="use_default_aggregation" value="false"/>
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
@@ -124,7 +124,7 @@
         <parameter key="keep_original_attribute" value="true"/>
       </operator>
       <operator activated="true" class="series:moving_average" compatibility="5.3.000" expanded="true" height="76" name="Moving Average (3)" width="90" x="715" y="390">
-        <parameter key="attribute_name" value="snow"/>
+        <parameter key="attribute_name" value="snwd"/>
         <parameter key="window_width" value="10"/>
         <parameter key="aggregation_function" value="average"/>
         <parameter key="ignore_missings" value="false"/>
@@ -132,7 +132,7 @@
         <parameter key="window_weighting" value="Rectangular"/>
         <parameter key="keep_original_attribute" value="true"/>
       </operator>
-      <operator activated="true" class="join" compatibility="5.3.013" expanded="true" height="76" name="Join" width="90" x="849" y="255">
+      <operator activated="true" class="join" compatibility="5.3.015" expanded="true" height="76" name="Join" width="90" x="849" y="255">
         <parameter key="remove_double_attributes" value="true"/>
         <parameter key="join_type" value="inner"/>
         <parameter key="use_id_attribute_as_key" value="false"/>

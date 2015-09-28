@@ -87,11 +87,11 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
    */
   def addMetricValue(messages: Seq[Message], supplier: Supplier, date: DateTime) {
 
-      val obsUri = generateUri(suffix="observation" + "-" + supplier.id + "-" + date.toXSDFormat)
+      val obsUri = generateUri(suffix="obs-" + supplier.id + "-" + date.toXSDFormat)
 
-      val metricsValues = for(m <- metrics) yield {
-        val value = m.apply(messages)
-          val msg = s"""<$obsUri> sc:metric${getMetricProperty(m)} "$value"^^xsd:double ."""
+        val metricsValues = for(m <- metrics) yield {
+          val value = m.apply(messages)
+        val msg = s"""<$obsUri> sc:metric${getMetricProperty(m)} "$value"^^xsd:double ."""
         log.info(msg)
         msg
       }

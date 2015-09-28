@@ -1,0 +1,60 @@
+{% if (resource.methods or (resource.description and resource.parentUrl)) %}
+
+{% if (resource.displayName) %}
+### {{ resource.parentUrl }}{{ resource.relativeUri }} - {{ resource.displayName }}
+{% else %}
+### {{ resource.parentUrl }}{{ resource.relativeUri }}
+{% endif %}
+
+{% if resource.parentUrl %}{{ resource.description }}{% endif %}
+
+{% if resource.methods %}Valid HTTP methods are:{% endif %}
+
+{% for method in resource.methods %}
+
+#### {{ method.method | upper }}{% if method.displayName %} - {{ method.displayName }}{% endif %}
+
+{{ method.description }}
+
+{% if method.queryParameters %}
+##### Query Parameters
+
+This method accept the following query parameters:
+
+{% for key, item in method.queryParameters %}
+{% include "./item_2.nunjucks" %}
+{%- endfor -%}
+{% endif %}
+
+{% if method.headers %}
+##### Header Fields
+
+This method pays attention to the following HTTP header fields:
+
+{% for key, item in method.headers %}
+{% include "./item_2.nunjucks" %}
+{% endfor %}
+{% endif %}
+
+{% if method.body %}
+##### Body
+
+This method accepts the follow body payloads:
+
+{% include "./body.nunjucks"%}
+{% endif %}
+
+{% if method.responses %}
+##### Response
+
+The expected response:
+
+{% include "./response.nunjucks"%}
+{% endif %}
+
+{%- endfor -%}
+{% endif %}
+
+{% for resource in resource.resources %}
+{% include "./resource.nunjucks" %}
+{% endfor %}

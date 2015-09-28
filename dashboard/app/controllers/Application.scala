@@ -68,12 +68,14 @@ object Application extends Controller {
         }
       }
     }
-
     val (simulationUpdateEnumerator, simulationUpdateChannel) = Concurrent.broadcast[JsValue]
+
     val listener = (msg: SimulationUpdate) => simulationUpdateChannel.push(addDueParts(Json.toJson(msg)))
     CurrentDataset().addListener(listener)
-    val simuzlationUpdateEnumeratee = simulationUpdateEnumerator &> Comet(callback = "parent.myPostMessage")
-    Ok.chunked(simuzlationUpdateEnumeratee)
+
+    implicit val simulationUpdate = CometMessage[JsValue](d => s"${Json.toJson(d)}, '*'")
+    val simulationUpdateEnumeratee = simulationUpdateEnumerator &> Comet(callback = "parent.window.postMessage")
+    Ok.chunked(simulationUpdateEnumeratee)
   }
 
   def messages(supplierId: String) = Action {

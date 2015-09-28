@@ -1,0 +1,19 @@
+# REST Interfaces
+
+Here we gives an overview of all available HTTP interfaces of the {{ title }}.
+
+## Base URL
+
+All relative API URLs are prefixed by a base URL of the form `{{ baseUri }}` with the following parameters:
+
+{% for parameterName, parameterValues in baseUriParameters %}
+- `{{ parameterName }}`: {{parameterValues.displayName}} (required: {{parameterValues.required}}, type: {{parameterValues.type}})
+{% endfor %}
+
+{% for resource in resources %}
+## {{ resource.displayName }} ({{ resource.relativeUri }})
+{{ resource.description }}
+
+{% include "./resource.nunjucks" %}
+
+{% endfor %}
