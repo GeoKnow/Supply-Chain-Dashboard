@@ -14,16 +14,18 @@ The simulator configuration is done in the file `simulator/conf/application.conf
 
 Pay special attention to the `Endpoint Configuration` section and adapt it to your needs:
 
-    #############################
-    # Endpoint Config
-    #############################
-    # local, http, virtuoso
-    simulator.endpoint.kind="virtuoso"
-    simulator.endpoint.url="http://dockerhost/sparql"
-    simulator.virtuoso.host="dockerhost"
-    simulator.virtuoso.port="1111"
-    simulator.virtuoso.user="dba"
-    simulator.virtuoso.password="dba"
+```conf
+#############################
+# Endpoint Config
+#############################
+# local, http, virtuoso
+simulator.endpoint.kind="virtuoso"
+simulator.endpoint.url="http://dockerhost/sparql"
+simulator.virtuoso.host="dockerhost"
+simulator.virtuoso.port="1111"
+simulator.virtuoso.user="dba"
+simulator.virtuoso.password="dba"
+```
 
 ### Running
 
@@ -48,16 +50,18 @@ The dashboard configuration is done in the file `dashboard/conf/application.conf
 
 Pay special attention to the `Endpoint Configuration` section and adapt it to your needs:
 
-    #############################
-    # Endpoint Configuration
-    #############################
-    # local, http, virtuoso
-    simulator.endpoint.kind="virtuoso"
-    simulator.endpoint.url="http://dockerhost/sparql"
-    simulator.virtuoso.host="dockerhost"
-    simulator.virtuoso.port="1111"
-    simulator.virtuoso.user="dba"
-    simulator.virtuoso.password="dba"
+```conf
+#############################
+# Endpoint Configuration
+#############################
+# local, http, virtuoso
+simulator.endpoint.kind="virtuoso"
+simulator.endpoint.url="http://dockerhost/sparql"
+simulator.virtuoso.host="dockerhost"
+simulator.virtuoso.port="1111"
+simulator.virtuoso.user="dba"
+simulator.virtuoso.password="dba"
+```
 
 ### Running
 
