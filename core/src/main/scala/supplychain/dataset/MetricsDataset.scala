@@ -13,7 +13,7 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
 
   private var graphCreated = false
 
-  private val metrics = Metrics.all ++ SilkMetrics.load(silkProject)
+  private val metrics = Metrics.all // ++ SilkMetrics.load(silkProject)
 
   private val dataSetUri = ec.getDefaultGraphMetrics() + "PerformanceMetricsDataSet"
   private val dataStructureUri = ec.getDefaultGraphMetrics() + "PerformanceMetricsDataStructure"
@@ -50,6 +50,12 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
           |    rdfs:label "Observation Date"@en ;
           |    rdfs:subPropertyOf sdmx-dimension:refTime ;
           |    rdfs:range xsd:date .
+          |
+          | sc:refArea a rdf:Property, qb:DimensionProperty ;
+          |    rdfs:label "reference area" @en ;
+          |    rdfs:subPropertyOf sdmx-dimension:refArea ;
+          |    rdfs:range sc:Area, ogcgs:Feature ;
+          |    qb:concept sdmx-concept:refArea .
           |
           | <${dataSetUri}> a qb:DataSet ;
           |    qb:structure <${dataStructureUri}> .
@@ -96,14 +102,22 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
         msg
       }
 
-      val queryString =
+      var queryString =
         s"""
            | <$obsUri> a qb:Observation .
            | <$obsUri> qb:dataSet <${dataSetUri}> .
            | <$obsUri> sc:supplier <${supplier.uri}> .
            | <$obsUri> sc:date "${date.toXSDFormat}"^^xsd:date .
+           |
            | ${metricsValues.mkString("\n")}
          """.stripMargin
+      if (supplier.feature.length > 0) {
+        queryString =
+          s"""
+             | ${queryString}
+             | <$obsUri> sc:refArea <${supplier.feature}> .
+           """.stripMargin
+      }
       insert(queryString)
   }
 
@@ -178,6 +192,7 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
       s"""
          | PREFIX sc: <${Namespaces.schema}>
          | PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+         | PREFIX ogcgs: <http://www.opengis.net/ont/geosparql#>
          | PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
          | PREFIX sdmx-concept: <http://purl.org/linked-data/sdmx/2009/concept#>
          | PREFIX sdmx-code: <http://purl.org/linked-data/sdmx/2009/code#>
