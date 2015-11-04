@@ -12,7 +12,7 @@ object CurrentMetrics {
 
   /* (Re)Loads all metrics. */
   def load() = {
-    metrics = Metrics.all ++ SilkMetrics.load(Configuration.get.silkProject)
+    metrics = Metrics.all //++ SilkMetrics.load(Configuration.get.silkProject)
   }
 
   /* Retrieves the current metrics. */
