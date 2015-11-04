@@ -1,0 +1,173 @@
+<!DOCTYPE HTML><html><head><title>Supply Chain Data Generator API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.1.0"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          if(history && history.replaceState) {
+            history.replaceState({}, '', '#');
+          }
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Supply Chain Data Generator API documentation</h1><p>https://{domain}:{port}</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="sparql" class="panel-title">SPARQL query via HTTP GET</h3></div><div class="panel-body"><div class="top-resource-description"><p>SPARQL query via HTTP GET and query parameters</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sparql"><span class="parent"></span>/sparql</a> <span class="methods"><a href="#sparql_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_sparql" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sparql_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sparql_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/sparql</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#sparql_get_request" data-toggle="tab">Request</a></li><li><a href="#sparql_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sparql_get_request"><h3>Query Parameters</h3><ul><li><strong>SPARQL query</strong>: <em>required (string)</em><p>SPARQL query via HTTP GET and query parameters</p></li></ul></div><div class="tab-pane" id="sparql_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>TODO</p><h3>Body</h3><p><strong>Type: text/turtle</strong></p><p><strong>Example</strong>:</p><pre><code>TODO
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="status" class="panel-title">Simulator Status</h3></div><div class="panel-body"><div class="top-resource-description"><p>Shows the current simulator status</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_status"><span class="parent"></span>/status</a> <span class="methods"><a href="#status_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_status" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#status_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="status_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/status</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li><a href="#status_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="status_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "status":"Ready for simulation.",
+  "simulationStartDate":"2010-01-01T00:00:00.000+01:00",
+  "simulationEndDate":"2014-12-31T00:00:00.000+01:00",
+  "simulationCurrentDate":"2010-01-01T00:00:00.000+01:00",
+  "configuration":{
+      "endpointConfiguration":{
+          "doInit":true,
+          "kind":"virtuoso",
+          "defaultGraph":"http://www.xybermotive.com/geoknow/",
+          "defaultGraphWeather":"http://www.xybermotive.com/GeoKnowWeather#",
+          "defaultGraphConfiguration":"http://www.xybermotive.com/configuration/",
+          "url":"",
+          "host":"docker.local",
+          "port":"1111",
+          "user":"dba",
+          "password":"dba"
+      },
+      "silkUrl":"http://localhost:9002/",
+      "silkProject":"supplychainmetrics",
+      "silkTask":"metrics",
+      "productUri":"http://www.xybermotive.com/products/Car",
+      "minStartDate":"2010-01-01T00:00:00.000+01:00",
+      "maxEndDate":"2014-12-31T00:00:00.000+01:00",
+      "tickIntervalsDays":1.0,
+      "orderIntervalDays":1.0,
+      "orderCount":10
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="step" class="panel-title">Advance simulation</h3></div><div class="panel-body"><div class="top-resource-description"><p>Advances the simulation for a single tick.</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_step"><span class="parent"></span>/step</a> <span class="methods"><a href="#step_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_step" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#step_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="step_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/step</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#step_post_request" data-toggle="tab">Request</a></li><li><a href="#step_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="step_post_request"><h3>Query Parameters</h3><ul><li><strong>simulation start date</strong>: <em>(date)</em><p>Defines the simulation start date. To be provided in format <code>YYYY-MM-DD</code>. Defaults to simulator.minStartDate in the <code>simulator/conf/application.conf</code>.</p></li><li><strong>target graph URI</strong>: <em>(string)</em><p>Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="<a href="http://www.xybermotive.com/geoknow/">http://www.xybermotive.com/geoknow/</a>" as set in the <code>simulator/conf/application.conf</code>.</p></li><li><strong>product URI</strong>: <em>(string)</em><p>Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="<a href="http://www.xybermotive.com/products/Car">http://www.xybermotive.com/products/Car</a>" as set in the <code>simulator/conf/application.conf</code></p></li></ul></div><div class="tab-pane" id="step_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>step</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="run" class="panel-title">Run simulation</h3></div><div class="panel-body"><div class="top-resource-description"><p>Runs the simulation with the given parameters.</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_run"><span class="parent"></span>/run</a> <span class="methods"><a href="#run_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_run" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#run_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="run_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/run</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#run_post_request" data-toggle="tab">Request</a></li><li><a href="#run_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="run_post_request"><h3>Query Parameters</h3><ul><li><strong>simulation start date</strong>: <em>(date)</em><p>Defines the simulation start date. To be provided in format <code>YYYY-MM-DD</code>. Defaults to simulator.minStartDate in the <code>simulator/conf/application.conf</code>.</p></li><li><strong>simulation end date</strong>: <em>(date)</em><p>Defines the simulation end date. To be provided in format <code>YYYY-MM-DD</code>. Defaults to simulator.maxEndDate in the <code>simulator/conf/application.conf</code>.</p></li><li><strong>simulation tick interval</strong>: <em>(number)</em><p>Defines the interval in seconds between two simulation ticks. Defaults to <code>1.0</code>.</p></li><li><strong>target graph URI</strong>: <em>(string)</em><p>Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="<a href="http://www.xybermotive.com/geoknow/">http://www.xybermotive.com/geoknow/</a>" as set in the <code>simulator/conf/application.conf</code>.</p></li><li><strong>product URI</strong>: <em>(string)</em><p>Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="<a href="http://www.xybermotive.com/products/Car">http://www.xybermotive.com/products/Car</a>" as set in the <code>simulator/conf/application.conf</code></p></li></ul></div><div class="tab-pane" id="run_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>run</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="pause" class="panel-title">Pause simulation</h3></div><div class="panel-body"><div class="top-resource-description"><p>Pauses the simulation.</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_pause"><span class="parent"></span>/pause</a> <span class="methods"><a href="#pause_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_pause" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#pause_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="pause_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/pause</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li><a href="#pause_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="pause_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>pause</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="calculateMetrics" class="panel-title">Calculate metrics</h3></div><div class="panel-body"><div class="top-resource-description"><p>Pre-calculates the metrics upon the generated data. Shall be runned after <code>run</code>.</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_calculateMetrics"><span class="parent"></span>/calculateMetrics</a> <span class="methods"><a href="#calculateMetrics_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_calculateMetrics" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#calculateMetrics_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="calculateMetrics_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/calculateMetrics</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#calculateMetrics_post_request" data-toggle="tab">Request</a></li><li><a href="#calculateMetrics_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="calculateMetrics_post_request"><h3>Query Parameters</h3><ul><li><strong>target graph URI</strong>: <em>(string)</em><p>Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="<a href="http://www.xybermotive.com/geoknow/">http://www.xybermotive.com/geoknow/</a>" as set in the <code>simulator/conf/application.conf</code>.</p></li><li><strong>product URI</strong>: <em>(string)</em><p>Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="<a href="http://www.xybermotive.com/products/Car">http://www.xybermotive.com/products/Car</a>" as set in the <code>simulator/conf/application.conf</code></p></li></ul></div><div class="tab-pane" id="calculateMetrics_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>metrics</code></pre><h2>HTTP status code <a href="http://httpstatus.es/503" target="_blank">503</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>Simulation is running, can not calculate performance metrics now. Retry later.</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#sparql">SPARQL query via HTTP GET</a></li><li><a href="#status">Simulator Status</a></li><li><a href="#step">Advance simulation</a></li><li><a href="#run">Run simulation</a></li><li><a href="#pause">Pause simulation</a></li><li><a href="#calculateMetrics">Calculate metrics</a></li></ul></div></div></div></div></body></html>
