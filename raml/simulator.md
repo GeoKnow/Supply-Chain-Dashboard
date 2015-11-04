@@ -47,6 +47,59 @@ The expected response:
 `
   
 
+## Simulator Status (/status)
+Shows the current simulator status
+
+### /status - Simulator Status
+
+Valid HTTP methods are:
+
+#### GET
+
+##### Response
+
+The expected response:
+
+* HTTPCode: [200](http://httpstatus.es/200):
+
+    * **application/json **:
+  
+
+  
+  
+        * example :
+            `{
+  "status":"Ready for simulation.",
+  "simulationStartDate":"2010-01-01T00:00:00.000+01:00",
+  "simulationEndDate":"2014-12-31T00:00:00.000+01:00",
+  "simulationCurrentDate":"2010-01-01T00:00:00.000+01:00",
+  "configuration":{
+      "endpointConfiguration":{
+          "doInit":true,
+          "kind":"virtuoso",
+          "defaultGraph":"http://www.xybermotive.com/geoknow/",
+          "defaultGraphWeather":"http://www.xybermotive.com/GeoKnowWeather#",
+          "defaultGraphConfiguration":"http://www.xybermotive.com/configuration/",
+          "url":"",
+          "host":"docker.local",
+          "port":"1111",
+          "user":"dba",
+          "password":"dba"
+      },
+      "silkUrl":"http://localhost:9002/",
+      "silkProject":"supplychainmetrics",
+      "silkTask":"metrics",
+      "productUri":"http://www.xybermotive.com/products/Car",
+      "minStartDate":"2010-01-01T00:00:00.000+01:00",
+      "maxEndDate":"2014-12-31T00:00:00.000+01:00",
+      "tickIntervalsDays":1.0,
+      "orderIntervalDays":1.0,
+      "orderCount":10
+  }
+}
+`
+  
+
 ## Advance simulation (/step)
 Advances the simulation for a single tick.
 
