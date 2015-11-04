@@ -11,6 +11,7 @@ import supplychain.model.{Duration=>SCDuration}
 import supplychain.simulator.exceptions.SimulationPeriodOutOfBoundsException
 import supplychain.simulator.network.Network
 
+import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
@@ -32,6 +33,10 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   // the date the simulation should stop
   @volatile
   var simulationEndDate: DateTime = Configuration.get.maxEndDate
+
+  // The Actors Message Queue
+  @volatile
+  var messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
 
   //get the weather data provider
   private val wp = new WeatherProvider(Configuration.get.endpointConfig)
@@ -225,7 +230,13 @@ object Simulator {
   def apply() = simulator
 
   def isSimulationRunning(): Boolean = {
-    simulator.metronom != None
+    var simulationIsRunning = false
+    for (c <- simulator.metronom) simulationIsRunning = (!c.isCancelled)
+    var dueEnqueuedMsgs = false
+    if (!simulator.messageQueue.isEmpty && simulator.messageQueue.head.date <= Simulator().simulationEndDate)
+        dueEnqueuedMsgs = true
+    if (simulationIsRunning || dueEnqueuedMsgs) true
+    else false
   }
 }
 
