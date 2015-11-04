@@ -3,6 +3,7 @@ package controllers
 import com.hp.hpl.jena.query.ResultSetFormatter
 
 import play.api.Logger
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import supplychain.dataset.{RdfDataset, MetricsDataset}
 import supplychain.model.DateTime
@@ -16,6 +17,9 @@ import supplychain.exceptions.UnknownProductException
 object API extends Controller {
 
   private val logger = Logger(this.getClass)
+
+  private var metricsCalculating = false
+  private var simulationRunning = false
 
   /**
    * Issues a SPARQL select query.
@@ -51,18 +55,22 @@ object API extends Controller {
 
   def run(start: Option[String], end: Option[String], productUri: Option[String], graphUri: Option[String], interval: Double) = Action {
     logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
-
+    simulationRunning = true
     val s = start.map(DateTime.parse)
     val e = end.map(DateTime.parse)
 
     try {
       Simulator.run(interval, s, e, productUri, graphUri)
+      simulationRunning = false
       Ok("run")
     } catch {
       case e1: UnknownProductException => BadRequest(e1.message)
       case e2: SimulationPeriodOutOfBoundsException => BadRequest(e2.message)
       case e3: Exception => BadRequest(e3.getMessage)
+    } finally {
+      simulationRunning = false
     }
+
   }
 
   def pause() = Action {
@@ -71,8 +79,24 @@ object API extends Controller {
     Ok("pause")
   }
 
+  def status() = Action {
+    logger.info(s"Simulation status.")
+    var status = "Ready for simulation."
+    if (simulationRunning || Simulator.isSimulationRunning()) status = "Simulation is running."
+    else if (metricsCalculating) status = "Metrics calculation is running."
+    val statusJson = Json.obj(
+      "status" -> status,
+      "simulationStartDate" -> Simulator().startDate.toXSDFormat,
+      "simulationEndDate" -> Simulator().simulationEndDate.toXSDFormat,
+      "simulationCurrentDate" -> Simulator().currentDate.toXSDFormat,
+      "configuration" -> Configuration.get
+    )
+    Ok(statusJson)
+  }
+
   def calculateMetrics(productUri: Option[String], graphUri: Option[String]) = Action {
     if (!Simulator.isSimulationRunning()) {
+      metricsCalculating = true
       logger.info(s"Calculate performance metrics.")
 
       for (p <- productUri) Configuration.get.productUri = p
@@ -96,9 +120,10 @@ object API extends Controller {
         currentDate += Simulator().tickInterval
       }
       md.normalizeDataCube()
+      metricsCalculating = false
       Ok("metrics")
     } else {
-      Status(503)("Simulation is running, can not calculate performance metrics now. Retry later.")
+      ServiceUnavailable("Simulation is running, can not calculate performance metrics now. Retry later.")
     }
   }
 }

@@ -2,6 +2,7 @@
 
 # REST API
 GET     /sparql     controllers.API.sparql(query)
+GET     /status     controllers.API.status()
 POST    /step       controllers.API.step(start: Option[String], productUri: Option[String], graphUri: Option[String])
 POST    /run        controllers.API.run(start: Option[String], end: Option[String], productUri: Option[String], graphUri: Option[String], interval: Double ?= 1.0)
 POST    /pause      controllers.API.pause()
