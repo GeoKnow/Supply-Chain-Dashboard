@@ -68,30 +68,6 @@ baseUriParameters:
                 }
               }
 
-/step:
-  displayName: Advance simulation
-  description: Advances the simulation for a single tick.
-  post:
-    queryParameters:
-      start:
-        displayName: simulation start date
-        required: false
-        type: date
-        description: Defines the simulation start date. To be provided in format `YYYY-MM-DD`. Defaults to simulator.minStartDate in the `simulator/conf/application.conf`.
-      graphUri:
-        displayName: target graph URI
-        required: false
-        description: Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="http://www.xybermotive.com/geoknow/" as set in the `simulator/conf/application.conf`.
-      productUri:
-        displayName: product URI
-        required: false
-        description: Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="http://www.xybermotive.com/products/Car" as set in the `simulator/conf/application.conf`
-    responses:
-      200:
-        body:
-          text/plain:
-            example: step
-
 /run:
   displayName: Run simulation
   description: Runs the simulation with the given parameters.
