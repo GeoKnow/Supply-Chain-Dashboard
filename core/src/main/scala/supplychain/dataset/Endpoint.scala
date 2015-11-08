@@ -45,9 +45,7 @@ case class EndpointConfig(doInit: Boolean,
   private var endpoint: Endpoint = null
   private var isDataInitialized = false
 
-  def defaultGraphMetrics(): String = {
-    defaultGraph + "metrics/"
-  }
+
 
   def getEndpoint(): Endpoint = {
     if (endpoint != null) return endpoint
@@ -85,6 +83,8 @@ case class EndpointConfig(doInit: Boolean,
     }
     isDataInitialized = true
   }
+
+  def defaultGraphMetrics(): String = { defaultGraph + "metrics/" }
 
   def getDefaultGraph(): String = defaultGraph
   def getDefaultGraphWeather(): String = defaultGraphWeather
