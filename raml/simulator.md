@@ -100,52 +100,6 @@ The expected response:
 `
   
 
-## Advance simulation (/step)
-Advances the simulation for a single tick.
-
-### /step - Advance simulation
-
-Valid HTTP methods are:
-
-#### POST
-
-##### Query Parameters
-
-This method accept the following query parameters:
-
-* **start** :
-
-    * Defines the simulation start date. To be provided in format `YYYY-MM-DD`. Defaults to simulator.minStartDate in the `simulator/conf/application.conf`.
-
-    * type: (date)
-
-* **graphUri** :
-
-    * Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="http://www.xybermotive.com/geoknow/" as set in the `simulator/conf/application.conf`.
-
-    * type: (string)
-
-* **productUri** :
-
-    * Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="http://www.xybermotive.com/products/Car" as set in the `simulator/conf/application.conf`
-
-    * type: (string)
-
-##### Response
-
-The expected response:
-
-* HTTPCode: [200](http://httpstatus.es/200):
-
-    * **text/plain **:
-  
-
-  
-  
-        * example :
-            `step`
-  
-
 ## Run simulation (/run)
 Runs the simulation with the given parameters.
 
