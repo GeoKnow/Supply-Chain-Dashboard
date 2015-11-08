@@ -103,7 +103,9 @@ class RdfDataset(ec: EndpointConfig, silkProject: String) {
         |SELECT DISTINCT ?propVal ?obsProp WHERE {
         |  ?obs a qb:Observation .
         |  ?obs sc:supplier <${supplier.uri}> .
-        |  ?obs sc:date "${date.toYyyyMMdd()}Z"^^xsd:date .
+        |  #?obs sc:date "${date.toYyyyMMdd()}Z"^^xsd:date .
+        |  ?obs sc:date ?date .
+        |  FILTER(strStarts(str(?date), "${date.toYyyyMMdd()}")) .
         |  ?obs ?obsProp ?propVal .
         |  ?obsProp a qb:MeasureProperty .
         |  ?obsProp rdfs:label ?propLabel .
