@@ -1,6 +1,6 @@
 package supplychain.metric
 
-import supplychain.model.{Shipping, Message}
+import supplychain.model.{DateTime, Shipping, Message}
 
 class Timeliness extends Metric {
   /** The dimension that is measured, e.g., ''average production time'' */
@@ -10,7 +10,7 @@ class Timeliness extends Metric {
   override def unit: String = "%"
 
   /** Computes this metric for a specific network. */
-  override def apply(messages: Seq[Message]): Double = {
+  override def apply(messages: Seq[Message], currentDate: DateTime): Double = {
     // Collect all production times
     val times = messages.collect{ case s: Shipping => s.date <= s.order.dueDate }
     // Compute average

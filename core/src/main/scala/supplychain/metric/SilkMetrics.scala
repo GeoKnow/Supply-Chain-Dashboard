@@ -5,7 +5,7 @@ import de.fuberlin.wiwiss.silk.linkagerule.TransformRule
 import de.fuberlin.wiwiss.silk.plugins.Plugins
 import de.fuberlin.wiwiss.silk.workspace.{User, Project}
 import de.fuberlin.wiwiss.silk.workspace.modules.transform.TransformTask
-import supplychain.model.Message
+import supplychain.model.{DateTime, Message}
 
 object SilkMetrics {
 
@@ -37,7 +37,7 @@ class SilkMetric(rule: TransformRule, task: TransformTask, project: Project) ext
   override def unit: String = ""
 
   /** Computes this metric for a specific network. */
-  override def apply(messages: Seq[Message]): Double = {
+  override def apply(messages: Seq[Message], currentDate: DateTime): Double = {
     try {
       val excuteTransform =
         new EvaluateTransform(

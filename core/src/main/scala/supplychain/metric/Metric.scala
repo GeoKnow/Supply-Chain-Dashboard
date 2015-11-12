@@ -1,6 +1,6 @@
 package supplychain.metric
 
-import supplychain.model.Message
+import supplychain.model.{DateTime, Message}
 
 /**
  * A supply chain metric.
@@ -14,5 +14,5 @@ trait Metric {
   def unit: String
 
   /** Computes this metric for a specific network. */
-  def apply(messages: Seq[Message]): Double
+  def apply(messages: Seq[Message], currentDate: DateTime): Double
 }
