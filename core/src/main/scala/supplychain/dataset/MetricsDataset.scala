@@ -1,13 +1,13 @@
 package supplychain.dataset
 
-import java.net.URLEncoder
-import java.util.UUID
 import java.util.logging.Logger
 
-import supplychain.metric.{SilkMetric, Metric, SilkMetrics, Metrics}
+import supplychain.metric.{SilkMetric, Metric, Metrics}
 import supplychain.model._
 
-class MetricsDataset(ec: EndpointConfig, silkProject: String) {
+import scala.collection.mutable.ListBuffer
+
+class MetricsDataset(ec: EndpointConfig, silkProject: String, simulationStartDate: DateTime, simulationEndDate: DateTime) {
 
   private val log = Logger.getLogger(getClass.getName)
 
@@ -17,6 +17,7 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
 
   private val dataSetUri = ec.getDefaultGraphMetrics() + "PerformanceMetricsDataSet"
   private val dataStructureUri = ec.getDefaultGraphMetrics() + "PerformanceMetricsDataStructure"
+  private val wp = new WeatherProvider(ec)
 
   /**
    * Executes a SPARQL Select query on the data set.
@@ -31,16 +32,20 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
 
     val uri1 = generateUri(suffix="component-supplier")
     val uri2 = generateUri(suffix="component-date")
+    val uri3 = generateUri(suffix="component-area")
 
       var queryString =
       s"""
           | <${dataStructureUri}> a qb:DataStructureDefinition ;
           |     qb:component <$uri1> ;
-          |     qb:component <$uri2> .
+          |     qb:component <$uri2> ;
+          |     qb:component <$uri3> .
           | <$uri1> qb:dimension sc:supplier ;
           |     qb:order 1 .
           | <$uri2> qb:dimension sc:date ;
           |     qb:order 2 .
+          | <$uri3> qb:dimension sc:refArea ;
+          |     qb:order 3 .
           |
           | sc:supplier a rdf:Property, qb:DimensionProperty ;
           |    rdfs:label "Supplier"@en ;
@@ -66,7 +71,7 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
       queryString +=
       s"""
           | <${dataStructureUri}> qb:component <$uri> .
-          | <$uri1> qb:measure sc:metric${getMetricProperty(m)} .
+          | <$uri> qb:measure sc:metric${getMetricProperty(m)} .
           """.stripMargin
 
       queryString +=
@@ -75,6 +80,23 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
          |    rdfs:label "${m.dimension}"@en ;
          |    rdfs:subPropertyOf sdmx-measure:obsValue ;
          |    rdfs:range xsd:double .
+       """.stripMargin
+    }
+
+    for (m <- List("tmin", "tmax", "prcp", "snwd")) {
+      val uri = generateUri(suffix="component_" + m)
+      queryString +=
+        s"""
+           | <${dataStructureUri}> qb:component <$uri> .
+           | <$uri> qb:measure sc:metric_${m} .
+          """.stripMargin
+
+      queryString +=
+        s"""
+           | sc:metric_${m} a rdf:Property, qb:MeasureProperty ;
+           |    rdfs:label "${m}"@en ;
+           |    rdfs:subPropertyOf sdmx-measure:obsValue ;
+           |    rdfs:range xsd:double .
        """.stripMargin
     }
 
@@ -93,14 +115,26 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
    */
   def addMetricValue(messages: Seq[Message], supplier: Supplier, date: DateTime) {
 
-      val obsUri = generateUri(suffix="obs-" + supplier.id + "-" + date.toXSDFormat)
+      var listBuffer = new ListBuffer[String]()
 
-        val metricsValues = for(m <- metrics) yield {
-          val value = m.apply(messages)
+      val obsUri = generateUri(suffix="obs-" + supplier.id + "-" + date.toXSDFormat)
+      var metricsValues = for(m <- metrics) yield {
+        val value = m.apply(messages, date)
         val msg = s"""<$obsUri> sc:metric${getMetricProperty(m)} "$value"^^xsd:double ."""
         log.info(msg)
         msg
       }
+
+      log.info("getDailySummary for : " + date.toYyyyMMdd())
+      val wObs = wp.getDailySummary(supplier.weatherStation, date, simulationStartDate, simulationEndDate)
+      if (wObs != null) {
+        listBuffer += s"""<$obsUri> sc:metric_tmin "${wObs.tmin}"^^xsd:double ."""
+        listBuffer += s"""<$obsUri> sc:metric_tmax "${wObs.tmax}"^^xsd:double ."""
+        listBuffer += s"""<$obsUri> sc:metric_prcp "${wObs.prcp}"^^xsd:double ."""
+        listBuffer += s"""<$obsUri> sc:metric_snwd "${wObs.snwd}"^^xsd:double ."""
+      }
+
+      listBuffer.prependToList(metricsValues)
 
       var queryString =
         s"""
@@ -109,7 +143,7 @@ class MetricsDataset(ec: EndpointConfig, silkProject: String) {
            | <$obsUri> sc:supplier <${supplier.uri}> .
            | <$obsUri> sc:date "${date.toXSDFormat}"^^xsd:date .
            |
-           | ${metricsValues.mkString("\n")}
+           | ${listBuffer.toList.mkString("\n")}
          """.stripMargin
       if (supplier.feature.length > 0) {
         queryString =
