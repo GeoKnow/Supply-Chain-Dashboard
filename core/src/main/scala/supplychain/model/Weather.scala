@@ -63,5 +63,5 @@ object WeatherUtil {
   val PRCP_LIGHT = 1
   val PRCP_MID   = 2
   val PRCP_HEAVY = 3
-  val NCDC_DATA_FORMAT = "yyy-MM-dd"
+  val NCDC_DATA_FORMAT = "yyyy-MM-dd"
 }

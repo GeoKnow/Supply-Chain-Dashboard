@@ -7,6 +7,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import supplychain.dataset.{RdfDataset, MetricsDataset}
 import supplychain.model.DateTime
+import supplychain.simulator
 import supplychain.simulator.exceptions.SimulationPeriodOutOfBoundsException
 import supplychain.simulator.{Configuration, Simulator}
 import supplychain.exceptions.UnknownProductException
@@ -94,7 +95,7 @@ object API extends Controller {
 
       for (p <- productUri) Configuration.get.productUri = p
       for (g <- graphUri) Configuration.get.endpointConfig.defaultGraph = g
-      val md = new MetricsDataset(Configuration.get.endpointConfig, Configuration.get.silkProject)
+      val md = new MetricsDataset(Configuration.get.endpointConfig, Configuration.get.silkProject, Configuration.get.minStartDate, Configuration.get.maxEndDate)
       md.generateDataSet()
 
       if (Simulator().messages.isEmpty) {
