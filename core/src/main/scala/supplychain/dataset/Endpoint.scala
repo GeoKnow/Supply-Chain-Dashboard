@@ -8,6 +8,7 @@ import com.hp.hpl.jena.query.{DatasetFactory, QueryExecutionFactory, QueryFactor
 import com.hp.hpl.jena.rdf.model.Model
 import com.hp.hpl.jena.update.UpdateAction
 import org.apache.jena.riot.Lang
+import play.api.libs.json.{Json, Writes}
 
 import scala.io.Source
 
@@ -44,9 +45,7 @@ case class EndpointConfig(doInit: Boolean,
   private var endpoint: Endpoint = null
   private var isDataInitialized = false
 
-  def defaultGraphMetrics(): String = {
-    defaultGraph + "metrics/"
-  }
+
 
   def getEndpoint(): Endpoint = {
     if (endpoint != null) return endpoint
@@ -72,7 +71,7 @@ case class EndpointConfig(doInit: Boolean,
     if (!isDataInitialized) {
       endpoint.createGraph(getDefaultGraph(), false)
 
-      val weatherStationFile = new File("data/conf/ncdc-stations.ttl")
+      val weatherStationFile = new File("data/conf/ncdc-stations.ttl.gz")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherStationFile, Option(Lang.TTL))
       val weatherFile = new File("data/conf/ncdc-ghcnd-obs.ttl.gz")
       endpoint.uploadDataset(getDefaultGraphWeather(), weatherFile, Option(Lang.TTL))
@@ -85,10 +84,29 @@ case class EndpointConfig(doInit: Boolean,
     isDataInitialized = true
   }
 
+  def defaultGraphMetrics(): String = { defaultGraph + "metrics/" }
+
   def getDefaultGraph(): String = defaultGraph
   def getDefaultGraphWeather(): String = defaultGraphWeather
   def getDefaultGraphMetrics(): String = defaultGraphMetrics
   def getDefaultGraphConfiguration(): String = defaultGraphConfiguration
+}
+
+object EndpointConfig {
+  implicit val endpointConfigWrites = new Writes[EndpointConfig] {
+    def writes(ec: EndpointConfig) = Json.obj(
+      "doInit" -> ec.doInit,
+      "kind" -> ec.kind,
+      "defaultGraph" -> ec.defaultGraph,
+      "defaultGraphWeather" -> ec.defaultGraphWeather,
+      "defaultGraphConfiguration" -> ec.defaultGraphConfiguration,
+      "url" -> ec.url,
+      "host" -> ec.host,
+      "port" -> ec.port,
+      "user" -> ec.user,
+      "password" -> ec.password
+    )
+  }
 }
 
 class LocalEndpoint(defaultGraph: String) extends Endpoint {

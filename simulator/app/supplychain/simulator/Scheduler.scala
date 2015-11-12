@@ -1,6 +1,6 @@
 package supplychain.simulator
 
-import akka.actor.Actor
+import akka.actor.{ActorRef, ActorSystem, Props, Actor}
 import play.api.Logger
 import supplychain.model._
 import supplychain.simulator.Scheduler.Tick
@@ -23,7 +23,8 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   private var lastOrderTime: DateTime = new DateTime(0)
 
   // Scheduled messages ordered by date
-  private val messageQueue = mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
+  val messageQueue = simulator.messageQueue
+  //mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
 
   /**
    * Receives and processes messages.
@@ -51,7 +52,9 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
         val receiverActor = simulator.getActor(msg.receiver)
         receiverActor ! msg
       }
+
   }
+
 }
 
 object Scheduler {

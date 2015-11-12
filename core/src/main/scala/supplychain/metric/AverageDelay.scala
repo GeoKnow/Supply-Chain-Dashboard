@@ -1,6 +1,6 @@
 package supplychain.metric
 
-import supplychain.model.{Shipping, Message}
+import supplychain.model.{DateTime, Shipping, Message}
 import javax.xml.bind.DatatypeConverter
 
 class AverageDelay extends Metric {
@@ -11,7 +11,7 @@ class AverageDelay extends Metric {
   override def unit: String = "days"
 
   /** Computes this metric for a specific network. */
-  override def apply(messages: Seq[Message]): Double = {
+  override def apply(messages: Seq[Message], currentDate: DateTime): Double = {
     // Collect all production times
     val times = messages.collect { case s: Shipping => (s.date - s.order.dueDate).milliseconds}
     // Compute average

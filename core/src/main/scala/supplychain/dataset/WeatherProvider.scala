@@ -51,7 +51,6 @@ class WeatherProvider(ec: EndpointConfig) {
          |}ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat}))) LIMIT 1
        """.stripMargin
 
-    //log.info(queryStr)
     val result = ec.getEndpoint().select(queryStr).toSeq
     var ws: WeatherStation = null
 
@@ -64,7 +63,7 @@ class WeatherProvider(ec: EndpointConfig) {
       ws = new WeatherStation(new Coordinates(long, lat), label, stationId, uri)
       ws.observations = getDailySummaries(ws)
     }
-    //log.info(ws.toString())
+
     return ws
   }
 
@@ -93,7 +92,7 @@ class WeatherProvider(ec: EndpointConfig) {
     for (binding <- result) {
       val total = binding.getLiteral("total").getInt
     }
-    //log.info(ws.toString())
+
     return total
   }
 
@@ -101,7 +100,7 @@ class WeatherProvider(ec: EndpointConfig) {
     log.info(ws.toString() + " " + date.toXSDFormat)
     val w = getDailySummary(ws, date, start, end)
     if (w == null) {
-      log.info("no Daily Summary found for this Weather Station! " + ws.id + ", " + date.toFormat("yyyy-MM-dd"))
+      log.info("no Daily Summary found for this Weather Station! " + ws.id + ", " + date.toYyyyMMdd())
     }
     log.info(w.toString())
     var probab = 0.0
@@ -119,18 +118,18 @@ class WeatherProvider(ec: EndpointConfig) {
 
   def getDailySummary(ws: WeatherStation, date:DateTime, start:DateTime, end:DateTime): WeatherObservation = {
     var wo: WeatherObservation = null
-    if (!weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + date)) {
+    if (!weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + date.toYyyyMMdd())) {
       loadDailySummaries(ws)
-      if (!weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + date)) {
+      if (!weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + date.toYyyyMMdd())) {
         var nextday = date + Duration.days(1)
         var previousday = date - Duration.days(1)
         while (nextday <= (end + Duration.days(30)) && previousday >= start) {
-          if (weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
-            var wo = weatherObservationByStationIdAndDate(ws.id + "-" + nextday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+          if (weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + nextday.toYyyyMMdd())) {
+            var wo = weatherObservationByStationIdAndDate(ws.id + "-" + nextday.toYyyyMMdd())
             wo.date = date
             return wo
-          } else if (weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + previousday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))) {
-            var wo = weatherObservationByStationIdAndDate(ws.id + "-" + previousday.toFormat(WeatherUtil.NCDC_DATA_FORMAT))
+          } else if (weatherObservationByStationIdAndDate.containsKey(ws.id + "-" + previousday.toYyyyMMdd())) {
+            var wo = weatherObservationByStationIdAndDate(ws.id + "-" + previousday.toYyyyMMdd())
             wo.date = date
             return wo
           }
@@ -139,8 +138,9 @@ class WeatherProvider(ec: EndpointConfig) {
         }
       }
     } else {
-      wo = weatherObservationByStationIdAndDate(ws.id + "-" + date)
+      wo = weatherObservationByStationIdAndDate(ws.id + "-" + date.toYyyyMMdd())
     }
+
     return wo
   }
 
@@ -165,35 +165,29 @@ class WeatherProvider(ec: EndpointConfig) {
        |WHERE {
        |  <${ws.uri}> gkwo:hasObservation ?obsuri .
        |  ?obsuri gkwo:date ?date .
-       |   { ?obsuri gkwo:tmin ?tmin . }
-       |   { ?obsuri gkwo:tmax ?tmax . }
-       |   { ?obsuri gkwo:prcp ?prcp . }
-       |   { ?obsuri gkwo:snwd ?snwd . }
-       |}
+       |   OPTIONAL { ?obsuri gkwo:tmin ?tmin . }
+       |   OPTIONAL { ?obsuri gkwo:tmax ?tmax . }
+       |   OPTIONAL { ?obsuri gkwo:prcp ?prcp . }
+       |   OPTIONAL { ?obsuri gkwo:snwd ?snwd . }
+       |} ORDER BY (?date)
      """.stripMargin
 
-    //log.info(queryStr)
-
     val result = ec.getEndpoint().select(queryStr).toSeq
-
+    
     var wo: WeatherObservation = null
 
     for (binding <- result) {
-      //log.info(binding.toString)
       val obsuri = binding.getResource("obsuri").toString
-      val dateStr = binding.getLiteral("date").getValue.toString
-
+      val date = DateTime.parse(binding.getLiteral("date").getValue.toString)
       val tmin = if (binding.get("tmin") != null) binding.getLiteral("tmin").getFloat else -9999.0
       val tmax = if (binding.get("tmax") != null) binding.getLiteral("tmax").getFloat else -9999.0
       val prcp = if (binding.get("prcp") != null) binding.getLiteral("prcp").getFloat else -9999.0
       val snwd = if (binding.get("snwd") != null) binding.getLiteral("snwd").getFloat else -9999.0
 
-      val date_ = DateTime.parse(WeatherUtil.NCDC_DATA_FORMAT, dateStr)
-      //val df: DateFormat = new SimpleDateFormat("yyyy-MM-dd");
-      wo = new WeatherObservation(date_, obsuri, tmin, tmax, prcp, snwd, ws, ws.uri)
-      //log.info(wo.toString())
-      observations += (dateStr -> wo)
+      wo = new WeatherObservation(date, obsuri, tmin, tmax, prcp, snwd, ws, ws.uri)
+      observations += (date.toYyyyMMdd() -> wo)
     }
+
     return observations
   }
 }

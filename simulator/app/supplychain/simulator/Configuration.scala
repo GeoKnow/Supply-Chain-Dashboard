@@ -2,6 +2,7 @@ package supplychain.simulator
 
 import play.api.Play
 import play.api.Play.current
+import play.api.libs.json.{Json, Writes}
 import supplychain.dataset.{EndpointConfig}
 import supplychain.model.DateTime
 
@@ -49,6 +50,21 @@ object Configuration {
       tickIntervalsDays = config.getDouble("simulator.defaultTickIntervalDays").getOrElse(1.0),
       orderIntervalDays = config.getDouble("simulator.defaultOrderIntervalDays").getOrElse(1.0),
       orderCount = config.getInt("simulator.defaultOrderCount").getOrElse(10)
+    )
+  }
+
+  implicit val configurationWrites = new Writes[Configuration] {
+    def writes(c: Configuration) = Json.obj(
+      "endpointConfiguration" -> c.endpointConfig,
+      "silkUrl" -> c.silkUrl,
+      "silkProject" -> c.silkProject,
+      "silkTask" -> c.silkTask,
+      "productUri" -> c.productUri,
+      "minStartDate" -> c.minStartDate.toXSDFormat,
+      "maxEndDate" -> c.maxEndDate.toXSDFormat,
+      "tickIntervalsDays" -> c.tickIntervalsDays,
+      "orderIntervalDays" -> c.orderIntervalDays,
+      "orderCount" -> c.orderCount
     )
   }
 }

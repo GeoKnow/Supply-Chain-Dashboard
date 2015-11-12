@@ -5,8 +5,8 @@ import java.util.logging.Logger
 
 import com.hp.hpl.jena.rdf.model.Model
 import com.hp.hpl.jena.util.FileManager
-import org.apache.jena.riot.{RDFLanguages, Lang, RDFDataMgr}
-import virtuoso.jena.driver.{VirtuosoUpdateRequest, VirtGraph, VirtuosoQueryExecutionFactory, VirtDataset, VirtModel}
+import org.apache.jena.riot.{Lang}
+import virtuoso.jena.driver.{VirtuosoUpdateRequest, VirtGraph, VirtuosoQueryExecutionFactory, VirtModel}
 import com.hp.hpl.jena.query.ResultSet
 
 import scala.collection.JavaConversions._

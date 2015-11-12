@@ -2,6 +2,7 @@
   "name": "ecc-elds-backend-raml-spec",
   "devDependencies": {
     "raml-cop": "^1.1.0",
-    "raml2md": "^2.1.0"
+    "raml2md": "^2.1.0",
+    "raml2html": "^2.1.0"
   }
 }

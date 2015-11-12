@@ -47,36 +47,14 @@ The expected response:
 `
   
 
-## Advance simulation (/step)
-Advances the simulation for a single tick.
+## Simulator Status (/status)
+Shows the current simulator status
 
-### /step - Advance simulation
+### /status - Simulator Status
 
 Valid HTTP methods are:
 
-#### POST
-
-##### Query Parameters
-
-This method accept the following query parameters:
-
-* **start** :
-
-    * Defines the simulation start date. To be provided in format `YYYY-MM-DD`. Defaults to simulator.minStartDate in the `simulator/conf/application.conf`.
-
-    * type: (date)
-
-* **graphUri** :
-
-    * Defines the graph where generated data will be inserted into. Defaults to simulator.defaultGraph="http://www.xybermotive.com/geoknow/" as set in the `simulator/conf/application.conf`.
-
-    * type: (string)
-
-* **productUri** :
-
-    * Defines root product URI to be used in the simulation. Defaults to simulator.product.uri="http://www.xybermotive.com/products/Car" as set in the `simulator/conf/application.conf`
-
-    * type: (string)
+#### GET
 
 ##### Response
 
@@ -84,13 +62,42 @@ The expected response:
 
 * HTTPCode: [200](http://httpstatus.es/200):
 
-    * **text/plain **:
+    * **application/json **:
   
 
   
   
         * example :
-            `step`
+            `{
+  "status":"Ready for simulation.",
+  "simulationStartDate":"2010-01-01T00:00:00.000+01:00",
+  "simulationEndDate":"2014-12-31T00:00:00.000+01:00",
+  "simulationCurrentDate":"2010-01-01T00:00:00.000+01:00",
+  "configuration":{
+      "endpointConfiguration":{
+          "doInit":true,
+          "kind":"virtuoso",
+          "defaultGraph":"http://www.xybermotive.com/geoknow/",
+          "defaultGraphWeather":"http://www.xybermotive.com/GeoKnowWeather#",
+          "defaultGraphConfiguration":"http://www.xybermotive.com/configuration/",
+          "url":"",
+          "host":"docker.local",
+          "port":"1111",
+          "user":"dba",
+          "password":"dba"
+      },
+      "silkUrl":"http://localhost:9002/",
+      "silkProject":"supplychainmetrics",
+      "silkTask":"metrics",
+      "productUri":"http://www.xybermotive.com/products/Car",
+      "minStartDate":"2010-01-01T00:00:00.000+01:00",
+      "maxEndDate":"2014-12-31T00:00:00.000+01:00",
+      "tickIntervalsDays":1.0,
+      "orderIntervalDays":1.0,
+      "orderCount":10
+  }
+}
+`
   
 
 ## Run simulation (/run)

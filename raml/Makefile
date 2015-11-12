@@ -2,7 +2,7 @@
 ## build the markdown document from the raml file
 build: check
 	node_modules/raml2md/bin/raml2md -t template/main.nunjucks simulator.raml > simulator.md
-	# node_modules/raml2md/bin/raml2md -t template/main.nunjucks dashboard.raml > dashboard.md
+	node_modules/raml2html/bin/raml2html simulator.raml > simulator.html
 
 
 ## install needed node utils via npm

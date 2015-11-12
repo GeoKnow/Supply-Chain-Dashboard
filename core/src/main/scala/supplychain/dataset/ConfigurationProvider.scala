@@ -16,13 +16,14 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
 
   private def prefix(query: String): String = {
     s"""
-       |PREFIX sc: <http://www.xybermotive.com/ontology/>
-       |PREFIX prod: <http://www.xybermotive.com/products/>
+       |PREFIX sc:      <http://www.xybermotive.com/ontology/>
+       |PREFIX prod:    <http://www.xybermotive.com/products/>
        |PREFIX dbpedia: <http://dbpedia.org/resource/>
-       |PREFIX suppl: <http://www.xybermotive.com/supplier/>
-       |PREFIX schema: <http://schema.org/>
-       |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-       |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+       |PREFIX suppl:   <http://www.xybermotive.com/supplier/>
+       |PREFIX schema:  <http://schema.org/>
+       |PREFIX geo:     <http://www.w3.org/2003/01/geo/wgs84_pos#>
+       |PREFIX ogcgs:   <http://www.opengis.net/ont/geosparql#>
+       |PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
        |
        |${query}
       """.stripMargin
@@ -111,11 +112,9 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
   def getSupplier(product: Product): Supplier = {
     val queryStr =
       s"""
-        |PREFIX suppl: <http://www.xybermotive.com/supplier/>
-        |PREFIX schema: <http://schema.org/>
-        |PREFIX prod: <http://www.xybermotive.com/products/>
-        |
-        |SELECT DISTINCT ?suppl ?name ?street ?zip ?city ?country ?long ?lat FROM <${epc.getDefaultGraphConfiguration()}>
+        |SELECT DISTINCT ?suppl ?name ?street ?zip ?city ?country ?long ?lat ?feature
+        |FROM <${epc.getDefaultGraphConfiguration()}>
+        |FROM <http://linkedgeodata.org/gadm2/>
         |WHERE {
         |  ?suppl schema:manufacturer <${product.uri}> .
         |  ?suppl schema:legalName ?name .
@@ -127,6 +126,15 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
         |  ?adr schema:postalCode ?zip .
         |  ?adr schema:addressLocality ?city .
         |  ?adr schema:addressCountry ?country .
+        |  OPTIONAL {
+        |    ?loc ogcgs:asWKT ?wktPoint .
+        |    ?geometry ogcgs:asWKT ?wkt .
+        |    FILTER(bif:st_within(?wktPoint, ?wkt)) .
+        |    ?feature <http://geovocab.org/geometry#geometry> ?geometry .
+        |    ?level <http://linkedgeodata.org/ld/gadm2/ontology/representedBy> ?feature .
+        |    ?level <http://linkedgeodata.org/ld/gadm2/ontology/level> ?levelNr .
+        |    FILTER(?levelNr > 2) .
+        |  }
         |} LIMIT 1
       """.stripMargin
     val prefixedQS = prefix(queryStr)
@@ -143,11 +151,14 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
       val country = binding.getLiteral("country").getString
       val long = binding.getLiteral("long").getFloat
       val lat = binding.getLiteral("lat").getFloat
+      var feature = ""
+      if (binding.getResource("feature") != null)
+        feature = binding.getResource("feature").getURI
 
       val adr = new Address(street, zip, city, country)
       val coords = new Coordinates(lat, long)
       val ws = wp.getNearesWeaterStation(coords)
-      s = new Supplier(uri, name, adr, coords, product, ws)
+      s = new Supplier(uri, name, adr, coords, product, ws, feature)
     }
     log.info("# SUPPLIER: " + s.toString)
     s

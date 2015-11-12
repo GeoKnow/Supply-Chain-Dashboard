@@ -16,10 +16,10 @@ object Evaluator {
     var currentEndDate = startDate + interval
     for(m <- dataset.messages if m.connection.target.id == supplierId && m.date >= startDate && m.date <= endDate) {
       if(m.date >= currentEndDate) {
-        currentEndDate += interval
-        val scores = for(metric <- metrics) yield metric(currentMessages)
+        val scores = for(metric <- metrics) yield metric(currentMessages, currentEndDate)
         scoreTable = scoreTable :+ scores
         currentMessages = List[Message]()
+        currentEndDate += interval
       }
       currentMessages :+ m
     }

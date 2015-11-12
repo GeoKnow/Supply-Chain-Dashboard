@@ -1,6 +1,6 @@
 package supplychain.metric
 
-import supplychain.model.{Shipping, Order, Message}
+import supplychain.model.{DateTime, Shipping, Order, Message}
 import javax.xml.bind.DatatypeConverter
 
 /**
@@ -8,11 +8,11 @@ import javax.xml.bind.DatatypeConverter
  */
 class AverageDeliveryTime extends Metric {
 
-   val dimension = "average delivery time"
+   val dimension = "Average Delivery Time"
 
    val unit = "days"
 
-   def apply(messages: Seq[Message]): Double = {
+   def apply(messages: Seq[Message], currentDate: DateTime): Double = {
      // Collect all production times
      val times = messages.collect { case s: Shipping => (s.date - s.order.date).milliseconds}
      // Compute average
