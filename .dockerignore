@@ -1,5 +1,5 @@
 .idea
 .git
-virtuoso-data
-Dockerfile
-apps
+virtuoso-data/
+Dockerfile*
+apps/
