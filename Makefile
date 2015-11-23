@@ -4,6 +4,7 @@ build: build-simulator-tgz build-dashboards-tgz
 
 dist-clean:
 	-rm -f docker/*.tgz
+	-rm -rf docker/data
 	./sbt clean
 
 ####################
@@ -11,10 +12,14 @@ dist-clean:
 build-simulator-tgz:
 	./sbt "project simulator" universal:packageZipTarball
 	mv simulator/target/universal/simulator*.tgz docker/simulator.tgz
+	mkdir -p docker/data
+	cp -r data/conf docker/data/
 
 build-dashboards-tgz:
 	./sbt "project dashboard" universal:packageZipTarball
 	mv dashboard/target/universal/dashboard*.tgz docker/dashboard.tgz
+	mkdir -p docker/data
+	cp -r data/conf docker/data/
 
 start-simulator:
 	./sbt "project simulator" compile "run 9000"
