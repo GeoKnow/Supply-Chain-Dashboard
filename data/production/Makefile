@@ -9,10 +9,17 @@ CWD=$(shell pwd)
 
 default: help
 
+clean:
+	-rm -f products_all.nt supplier_all.nt supplier_schnellecke.nt supplier_dbpedia.nt supplier_all.ttl
+
+build: clean transform-supplier-dbpedia transform-supplier-schnellecke enrich-supplier combine-supplier-files generate-bom
+
 ## downloads and prepare tools
 download-tools:
 	cd tools; wget http://download.d2rq.org/d2rq-r2rml-preview-v4.tar.gz; tar -zxf d2rq-r2rml-preview-v4.tar.gz
 	cd tools; wget https://github.com/downloads/d2rq/d2rq/d2rq-0.8.1.tar.gz; tar -zxf d2rq-0.8.1.tar.gz
+	cp tools/csvjdbc* tools/d2rq-dev/lib/db-drivers/
+	cp tools/csvjdbc* tools/d2rq-0.8.1/lib/db-drivers/
 
 ## run the transformation for the suppliers
 transform-supplier-schnellecke:
@@ -25,9 +32,7 @@ transform-supplier-dbpedia:
 	${D2RQ_PATH}/dump-rdf -f n-triples -b "${SUPPL_BASE_URI}" mappings/supplier_dbpedia.mapping.d2rq.ttl > supplier_dbpedia.nt
 
 ## enrich supplier RDF by geocoding the addresses
-build-tools:
-	cd tools/d2rq && ant jar
-	cp tools/csvjdbc* tools/d2rq/lib/db-drivers/
+build-enrichment-jar:
 	cd tools/enrichment; \
 	rm -rf build/libs/*; \
 	gradle clean; \
@@ -48,7 +53,6 @@ enrich-supplier:
 
 combine-supplier-files:
 	cat supplier_dbpedia.nt supplier_schnellecke.nt > supplier_all.nt
-
 
 generate-bom:
 	python generate-bom.py > products_all.nt
