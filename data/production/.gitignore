@@ -4,6 +4,7 @@
 .settings
 build
 bin
+tools/d2rq*
 /*.ttl
 /*.nt
 *.r2rml
