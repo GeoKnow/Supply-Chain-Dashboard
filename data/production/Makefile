@@ -1,4 +1,4 @@
-D2RQ_PATH=./tools/d2rq
+D2RQ_PATH=./tools/d2rq-dev
 SPARQL=~/Development/apache-jena/bin/sparql
 
 SUPPL_BASE_URI=http://www.xybermotive.com/supplier/
@@ -13,10 +13,6 @@ default: help
 download-tools:
 	cd tools; wget http://download.d2rq.org/d2rq-r2rml-preview-v4.tar.gz; tar -zxf d2rq-r2rml-preview-v4.tar.gz
 	cd tools; wget https://github.com/downloads/d2rq/d2rq/d2rq-0.8.1.tar.gz; tar -zxf d2rq-0.8.1.tar.gz
-
-# generate a (d2rml) mapping for the suppliers
-#mapping-supplier-d2rq:
-#	${D2RQ_PATH}/generate-mapping -d org.postgresql.Driver -u postgres -p postgres jdbc:postgresql://dockerhost:5432/supplier > ${D2RQ_SUPPL_GEN_MAPPING_FILE}
 
 ## run the transformation for the suppliers
 transform-supplier-schnellecke:
