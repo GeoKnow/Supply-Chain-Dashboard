@@ -1,0 +1,44 @@
+@prefix map:     <#> .
+@prefix d2rq:    <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc:    <http://d2rq.org/terms/jdbc/> .
+@prefix suppl:   <http://www.xybermotive.com/supplier> .
+@prefix geo:     <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix schema:  <http://schema.org/> .
+@prefix sc:      <http://www.xybermotive.com/ontology/> .
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "org.relique.jdbc.csv.CsvDriver" ;
+	d2rq:jdbcDSN "jdbc:relique:csv:data" ;
+	.
+
+# Table supplier
+map:address a d2rq:ClassMap ;
+	d2rq:dataStorage map:database ;
+	d2rq:uriPattern "@@supplier_schnellecke.name|urlify@@/address/@@supplier_schnellecke.plz|urlify@@/@@supplier_schnellecke.strasse|urlify@@" ;
+	d2rq:class schema:PostalAddress ;
+	d2rq:classDefinitionLabel "location postal address";
+	.
+map:address_street a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:address ;
+	d2rq:property schema:streetAddress ;
+	d2rq:propertyDefinitionLabel "street" ;
+	d2rq:column "supplier_schnellecke.strasse" ;
+	.
+map:address_country a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:address ;
+	d2rq:property schema:addressCountry ;
+	d2rq:propertyDefinitionLabel "supplier_schnellecke.country" ;
+	d2rq:column "supplier_schnellecke.land" ;
+	.
+map:address_plz a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:address ;
+	d2rq:property schema:postalCode ;
+	d2rq:propertyDefinitionLabel "supplier_schnellecke.postal code";
+	d2rq:column "supplier_schnellecke.plz";
+	.
+map:address_ort a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:address ;
+	d2rq:property schema:addressLocality ;
+	d2rq:propertyDefinitionLabel "supplier_schnellecke.locality" ;
+	d2rq:column "supplier_schnellecke.ort" ;
+	.

@@ -1,0 +1,9 @@
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX schema: <http://schema.org/>
+
+SELECT DISTINCT ?s WHERE {
+    ?s a <http://www.xybermotive.com/ontology/Supplier> .
+    ?s schema:location  ?l .
+    ?l geo:long ?long .
+    ?l geo:lat ?lat .
+}

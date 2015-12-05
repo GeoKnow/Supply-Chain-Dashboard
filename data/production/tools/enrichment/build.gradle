@@ -1,0 +1,70 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://maven.aksw.org/repository/snapshots/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'enrichment'
+    version = ''
+}
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+bootRepackage {
+  enabled = true
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://maven.aksw.org/repository/snapshots/"
+    }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.apache.jena:jena-arq:2.12.1")
+    // compile("fr.dudie:nominatim-api:3.0.1")
+    compile("fr.dudie:nominatim-api:3.1-SNAPSHOT")
+    compile("org.hibernate:hibernate-validator")
+    compile("javax.el:javax.el-api:3.0.0")
+    compile("com.google.guava:guava:18.0")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+configurations {
+  all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+  all*.exclude group: "log4j", module: "log4j"
+  all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+}
+
+bootRun {
+  // support passing -Dsystem.property=value to bootRun task
+  systemProperties = System.properties
+}
+
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}

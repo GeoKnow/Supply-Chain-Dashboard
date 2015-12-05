@@ -1,0 +1,11 @@
+.classpath
+.gradle
+.project
+.settings
+build
+bin
+/*.ttl
+/*.nt
+*.r2rml
+*.d2rq
+data

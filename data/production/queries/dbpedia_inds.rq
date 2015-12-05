@@ -1,0 +1,44 @@
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX georss: <http://www.georss.org/georss/>
+
+SELECT DISTINCT ?oem ?label ?cityLabel ?countryLabel ?cityGeometry ?cityPoint ?countryGeometry ?countryPoint WHERE {
+{ ?oem dbo:type dbr:Aktiengesellschaft . }
+UNION
+{ ?oem dbo:industry dbr:Automotive_industry . }
+?oem rdfs:label ?label .
+OPTIONAL {
+  ?oem dbo:location ?location .
+  ?location a dbo:Town .
+  ?location rdfs:label ?cityLabel .
+  OPTIONAL {
+    ?location geo:geometry ?cityGeometry .
+  }
+  OPTIONAL {
+    ?location georss:point ?cityPoint .
+  }
+}
+OPTIONAL {
+  ?oem dbo:locationCity ?city .
+  ?city rdfs:label ?cityLabel .
+  OPTIONAL {
+    ?city geo:geometry ?cityGeometry .
+  }
+  OPTIONAL {
+    ?city georss:point ?cityPoint .
+  }
+}
+OPTIONAL {
+  ?oem dbo:locationCountry ?country .
+  ?country rdfs:label ?countryLabel .
+  OPTIONAL {
+    ?country geo:geometry ?countryGeometry .
+  }
+  OPTIONAL {
+    ?country georss:point ?countryPoint .
+  }
+}
+FILTER (bound(?cityGeometry) || bound(?cityPoint)) .
+}

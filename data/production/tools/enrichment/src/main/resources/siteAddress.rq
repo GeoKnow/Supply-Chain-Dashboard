@@ -1,0 +1,9 @@
+PREFIX schema:  <http://schema.org/>
+
+SELECT ?siteUri ?postalCode ?streetAddress ?city {
+  ?siteUri a schema:Place .
+  ?siteUri schema:address ?a .
+  ?a schema:streetAddress ?streetAddress .
+  ?a schema:postalCode ?postalCode .
+  ?a schema:addressLocality ?city .
+}

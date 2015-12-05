@@ -1,0 +1,124 @@
+@prefix map:     <#> .
+@prefix d2rq:    <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc:    <http://d2rq.org/terms/jdbc/> .
+@prefix suppl:   <http://www.xybermotive.com/supplier/> .
+@prefix geo:     <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix ogc:     <http://www.opengis.net/ont/geosparql#> .
+@prefix schema:  <http://schema.org/> .
+@prefix sc:      <http://www.xybermotive.com/ontology/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+map:database a d2rq:Database ;
+	d2rq:jdbcDriver "org.relique.jdbc.csv.CsvDriver" ;
+	d2rq:jdbcDSN "jdbc:relique:csv:data" ;
+.
+
+map:Configuration a d2rq:Configuration ;
+	d2rq:serveVocabulary true ;
+.
+
+map:supplier a d2rq:ClassMap ;
+	d2rq:dataStorage map:database ;
+	d2rq:uriColumn "supplier_dbpedia.oem" ;
+	d2rq:class sc:Supplier ;
+	d2rq:class schema:Organization ;
+.
+map:supplier_name a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:supplier ;
+	d2rq:property schema:name ;
+	d2rq:propertyDefinitionLabel "supplier legal name" ;
+	d2rq:column "supplier_dbpedia.label";
+	.
+map:supplier_legalName a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:supplier ;
+	d2rq:property schema:legalName ;
+	d2rq:propertyDefinitionLabel "supplier legal name" ;
+	d2rq:column "supplier_dbpedia.label" ;
+	.
+map:supplier_location a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:supplier ;
+	d2rq:property schema:location ;
+	d2rq:propertyDefinitionLabel "supplier location" ;
+	d2rq:uriPattern "@@supplier_dbpedia.oem@@/location" ;
+	.
+
+map:location a d2rq:ClassMap ;
+	d2rq:dataStorage map:database ;
+	d2rq:uriPattern "@@supplier_dbpedia.oem@@/location" ;
+	d2rq:class schema:Place ;
+	d2rq:classDefinitionLabel "supplier place";
+.
+map:location_address a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:location ;
+	d2rq:uriPattern "@@supplier_dbpedia.oem@@/address" ;
+	d2rq:property schema:location ;
+	d2rq:propertyDefinitionLabel "supplier location" ;
+	.
+map:location_aswkt a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:location ;
+	d2rq:property ogc:asWKT ;
+	d2rq:column "supplier_dbpedia.cityGeometry" ;
+	d2rq:datatype ogc:wktLiteral ;
+	d2rq:propertyDefinitionLabel "supplier location as ogc WKT" ;
+	.
+map:location_long a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:location ;
+	d2rq:property geo:long ;
+	d2rq:column "supplier_dbpedia.cityLong" ;
+	d2rq:datatype xsd:float ;
+	d2rq:propertyDefinitionLabel "supplier location longitude" ;
+	.
+map:location_lat a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:location ;
+	d2rq:property geo:lat ;
+	d2rq:column "supplier_dbpedia.cityLat" ;
+	d2rq:datatype xsd:float ;
+	d2rq:propertyDefinitionLabel "supplier location latitude" ;
+	.
+map:location_schemageo a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:location ;
+	d2rq:uriPattern "@@supplier_dbpedia.oem@@/schema_geo" ;
+	d2rq:property schema:geo ;
+	d2rq:propertyDefinitionLabel "supplier location in schema:geo" ;
+	.
+
+map:schemageo a d2rq:ClassMap ;
+	d2rq:dataStorage map:database ;
+	d2rq:uriPattern "@@supplier_dbpedia.oem@@/schema_geo" ;
+	d2rq:class schema:GeoCoordinates ;
+	d2rq:classDefinitionLabel "GeoCoordinates according to schema.org";
+	.
+map:schemageo_long a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:schemageo ;
+	d2rq:property schema:longitude ;
+	d2rq:column "supplier_dbpedia.cityLong" ;
+	d2rq:datatype xsd:float ;
+	d2rq:propertyDefinitionLabel "supplier location longitude" ;
+	.
+map:schemageo_lat a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:schemageo ;
+	d2rq:property schema:latitude ;
+	d2rq:column "supplier_dbpedia.cityLat" ;
+	d2rq:datatype xsd:float ;
+	d2rq:propertyDefinitionLabel "supplier location latitude" ;
+	.
+
+map:address a d2rq:ClassMap ;
+	d2rq:dataStorage map:database ;
+	d2rq:uriPattern "@@supplier_dbpedia.oem@@/address" ;
+	d2rq:class schema:PostalAddress ;
+	d2rq:classDefinitionLabel "location postal address";
+	.
+map:address_country a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:address ;
+	d2rq:property schema:addressCountry ;
+	d2rq:propertyDefinitionLabel "supplier country" ;
+	d2rq:column "supplier_dbpedia.countryLabel" ;
+	d2rq:condition  "supplier_dbpedia.countryLabel <> ''" ;
+	.
+map:address_ort a d2rq:PropertyBridge ;
+	d2rq:belongsToClassMap map:address ;
+	d2rq:property schema:addressLocality ;
+	d2rq:propertyDefinitionLabel "supplier locality" ;
+	d2rq:column "supplier_dbpedia.cityLabel" ;
+	.

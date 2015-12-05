@@ -1,0 +1,1 @@
+SELECT (COUNT(DISTINCT ?m) AS ?count) WHERE {?m <http://schema.org/manufacturer> ?p . }
