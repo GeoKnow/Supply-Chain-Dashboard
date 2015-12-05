@@ -1,5 +1,4 @@
-D2RQ_DEV_PATH=./tools/d2rq-dev
-D2RQ_PATH=./tools/d2rq-dev
+D2RQ_PATH=./tools/d2rq
 SPARQL=~/Development/apache-jena/bin/sparql
 
 SUPPL_BASE_URI=http://www.xybermotive.com/supplier/
