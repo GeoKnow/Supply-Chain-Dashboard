@@ -13,6 +13,8 @@ clean:
 	-rm -f products_all.nt supplier_all.nt supplier_schnellecke.nt supplier_dbpedia.nt supplier_all.ttl
 
 build: clean transform-supplier-dbpedia transform-supplier-schnellecke enrich-supplier combine-supplier-files generate-bom
+	rapper -i ntriples -o turtle supplier_all.nt > supplier.ttl
+	rapper -i ntriples -o turtle products_all.nt > products.ttl
 
 ## downloads and prepare tools
 download-tools:
@@ -70,6 +72,7 @@ reformat-supplier-as-ttl: combine-supplier-files
   -f 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"' \
   -f 'xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"' \
   -f 'xmlns:suppl="http://www.xybermotive.com/supplier/"' \
+  -f 'xmlns:prod="http://www.xybermotive.com/products/"' \
   -f 'xmlns:owl="http://www.w3.org/2002/07/owl#"' \
   -f 'xmlns:ogc="http://www.opengis.net/ont/geosparql#"' \
   -f 'xmlns:dbpedia="http://dbpedia.org/resource/"' \
@@ -78,6 +81,23 @@ reformat-supplier-as-ttl: combine-supplier-files
   -f 'xmlns:sc="http://www.xybermotive.com/ontology/"' \
   -f 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"' \
   > supplier_all.ttl
+
+## reformat the supplier.enriched.ttl file
+reformat-products-as-ttl: generate-bom
+	rapper -i ntriples -o turtle products_all.nt \
+  -f 'xmlns:schema="http://schema.org/"' \
+  -f 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"' \
+  -f 'xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"' \
+  -f 'xmlns:suppl="http://www.xybermotive.com/supplier/"' \
+  -f 'xmlns:prod="http://www.xybermotive.com/products/"' \
+  -f 'xmlns:owl="http://www.w3.org/2002/07/owl#"' \
+  -f 'xmlns:ogc="http://www.opengis.net/ont/geosparql#"' \
+  -f 'xmlns:dbpedia="http://dbpedia.org/resource/"' \
+  -f 'xmlns:xsd="http://www.w3.org/2001/XMLSchema#"' \
+  -f 'xmlns:map="http://www.xybermotive.com/supplier/#"' \
+  -f 'xmlns:sc="http://www.xybermotive.com/ontology/"' \
+  -f 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"' \
+  > products_all.ttl
 
 ## Show this help screen
 help:

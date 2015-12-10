@@ -23,33 +23,38 @@ p_xml = "http://www.w3.org/XML/1998/namespace"
 
 supplQueue = collections.deque()
 partsQueue = collections.deque()
-
+prodCount = 0
 
 supplCmd = "~/Development/apache-jena/bin/sparql --data=supplier_all.nt --query=queries/get_supplier.rq --results=csv | tail -n +2"
 p = subprocess.Popen(supplCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for line in p.stdout.readlines():
-    supplQueue.append(line.strip().replace('"','').replace("'",""))
+    supplQueue.append(line.strip().replace('"',''))
 retval = p.wait()
 
 
-def getprod(supplierUri):
+def getprodname(supplierUri):
     last = supplierUri.split('/')[-1]
     return urllib.quote(last+"_prod")
 
-
-def printprod(s):
-    print "<"+s+"> <"+p_schema+"manufacturer> <"+p_prod+getprod(s)+"> ."
-    print "<"+p_prod+getprod(s)+"> <"+p_rdfs+"type> <"+p_schema+"Product> ."
-    print "<"+p_prod+getprod(s)+"> <"+p_schema+"name> \""+getprod(s)+"\" ."
+def getproduri(supplierUri):
+    return p_prod + urllib.quote_plus(supplierUri) + "_prod"
 
 
-def printparts(prod, numParts, supplQueue):
+def printprod(s, prodCount):
+    print "<"+s+"> <"+p_schema+"manufacturer> <"+getproduri(s)+"> ."
+    print "<"+getproduri(s)+"> <"+p_rdfs+"type> <"+p_schema+"Product> ."
+    print "<"+getproduri(s)+"> <"+p_schema+"name> \""+getprodname(s)+"\" ."
+    if prodCount == 1:
+        print "<"+getproduri(s)+"> <"+p_rdfs+"comment> \"root product\" ."
+
+
+def printparts(produri, numParts, supplQueue):
     for x in range(0, numParts-1):
         ss = supplQueue.popleft()
         quantity=randint(1,10)
         ppuri=p_prod+"part_"+uuid.uuid4().hex
-        print "<"+p_prod+prod+"> <"+p_sc+"productParts> <"+ppuri+"> ."
-        print "<"+ppuri+"> <"+p_sc+"product> <"+p_prod+getprod(ss)+"> ."
+        print "<"+produri+"> <"+p_sc+"productPart> <"+ppuri+"> ."
+        print "<"+ppuri+"> <"+p_sc+"product> <"+getproduri(ss)+"> ."
         print "<"+ppuri+"> <"+p_sc+"quantity> \""+str(quantity)+"\"^^<"+p_xsd+"integer> ."
         partsQueue.append(ss)
 
@@ -58,9 +63,10 @@ partsQueue.append(supplQueue.popleft())
 while 1 == 1:
     if len(partsQueue) > 0:
         s = partsQueue.popleft()
-        printprod(s)
+        prodCount = prodCount+1
+        printprod(s, prodCount)
         numParts = min(randint(1,10), len(supplQueue))
         if numParts > 0:
-            printparts(getprod(s), numParts, supplQueue)
+            printparts(getproduri(s), numParts, supplQueue)
     else:
         break
