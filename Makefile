@@ -30,3 +30,12 @@ start-dashboard:
 test-scd-container:
 	docker run -d --name gk-test-virtuoso docker-registry.eccenca.com/openlink-virtuoso-7:v7.2.1-4
 	docker run -it --rm --link gk-test-virtuoso:virtuoso -p 9000:9000 scd bash
+
+run-virtuoso:
+	-rm -f virtuoso-data/*.lck
+	cd virtuoso-data && \
+	docker run -d -p 80:80 -p 1111:1111 -v `pwd`:/data --name gk_virtuoso docker-registry.eccenca.com/openlink-virtuoso-7:v7.2.1-4
+
+rm-virtuoso:
+	-docker rm -f gk_virtuoso
+	-rm -f virtuoso-data/*.lck virtuoso-data/*.log virtuoso-data/*.trx virtuoso-data/*.pxa virtuoso-data/*.db
