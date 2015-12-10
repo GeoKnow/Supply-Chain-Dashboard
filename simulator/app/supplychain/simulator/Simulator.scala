@@ -13,6 +13,7 @@ import supplychain.simulator.exceptions.SimulationPeriodOutOfBoundsException
 import supplychain.simulator.network.Network
 
 import scala.collection.mutable
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 /**
@@ -221,6 +222,7 @@ object Simulator {
   def apply() = simulator
 
   def isSimulationRunning(): Boolean = {
+    if (simulator == null) return false
     var simulationIsRunning = false
     for (c <- simulator.metronom) simulationIsRunning = (!c.isCancelled)
     var dueEnqueuedMsgs = false
