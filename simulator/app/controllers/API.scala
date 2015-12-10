@@ -84,7 +84,7 @@ object API extends Controller {
       endDate = Simulator().simulationEndDate.toXSDFormat
       curDate = Simulator().currentDate.toXSDFormat
     } catch {
-      case e1: NullPointerException => 
+      case e1: NullPointerException =>
     }
 
     val statusJson = Json.obj(
