@@ -78,8 +78,12 @@ case class EndpointConfig(doInit: Boolean,
 
       val supplConfFile = new File("data/conf/supplier.ttl")
       endpoint.uploadDataset(getDefaultGraphConfiguration(), supplConfFile, Option(Lang.TTL), true)
+      val supplAddConfFile = new File("data/conf/supplier_add.ttl")
+      endpoint.uploadDataset(getDefaultGraphConfiguration(), supplAddConfFile, Option(Lang.TTL))
       val prodConfFile = new File("data/conf/products.ttl")
       endpoint.uploadDataset(getDefaultGraphConfiguration(), prodConfFile, Option(Lang.TTL))
+      val prodAddConfFile = new File("data/conf/products_add.ttl")
+      endpoint.uploadDataset(getDefaultGraphConfiguration(), prodAddConfFile, Option(Lang.TTL))
     }
     isDataInitialized = true
   }
