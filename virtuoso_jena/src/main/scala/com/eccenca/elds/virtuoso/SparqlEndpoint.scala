@@ -71,21 +71,15 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
 
   def uploadDataset(graph: String, file: File, lang: Option[Lang]=None, clear: Boolean=false) = {
     createGraph(graph, clear)
-    val virtGraph = getVirtGraph()//new VirtGraph(graph, jdbcConnString, virtuosoUser, virtuosoPassword)
+    val virtGraph = new VirtGraph(graph, jdbcConnString, virtuosoUser, virtuosoPassword)
     val virtModel = new VirtModel(virtGraph)
     val m = FileManager.get().loadModel( file.getAbsolutePath )
 
     logger.fine(s"Uploading dataset into graph < $graph > ...")
-
-    //virtGraph.getBulkUpdateHandler.add(m.getGraph)
-
     virtModel.add(m)
 
-    //val rdfLang = lang.getOrElse(RDFLanguages.filenameToLang(file.getName))
-    //RDFDataMgr.read(virtGraph, file.getAbsolutePath, rdfLang)
-
     virtModel.close()
-    closeVirtGraph()//virtGraph.close()
+    virtGraph.close()
     logger.fine(s"Uploaded dataset!")
   }
 
