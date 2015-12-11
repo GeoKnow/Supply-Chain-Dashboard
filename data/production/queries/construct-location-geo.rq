@@ -1,0 +1,15 @@
+PREFIX schema: <http://schema.org/>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+
+CONSTRUCT {
+  ?p schema:geo [
+    a schema:GeoCoordinates ;
+    schema:latitude ?lat ;
+    schema:longitude ?long
+  ] .
+}
+WHERE {
+  ?p a schema:Place .
+  ?p geo:long ?long .
+  ?p geo:lat ?lat .
+}

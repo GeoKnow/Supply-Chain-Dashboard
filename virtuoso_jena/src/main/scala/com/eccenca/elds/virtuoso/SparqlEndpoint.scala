@@ -17,8 +17,10 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
 
   private val jdbcConnString = "jdbc:virtuoso://" + virtuosoHost + ":" + virtuosoPort + "/charset=UTF-8/log_enable=2"
 
+  private var virtGraph: VirtGraph = null
+
   def select(query: String): ResultSet = {
-    val virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
+    val virtGraph = getVirtGraph()//new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
     virtGraph.setReadFromAllGraphs(true)
     val queryExecution = VirtuosoQueryExecutionFactory.create(query, virtGraph)
     val result = queryExecution.execSelect()
@@ -28,22 +30,38 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     result
   }
 
+  private def getVirtGraph(): VirtGraph = {
+    if (virtGraph != null) return virtGraph
+    else {
+      virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
+      virtGraph.setReadFromAllGraphs(true)
+    }
+    virtGraph
+  }
+
+  private def closeVirtGraph(): Unit = {
+    if (virtGraph != null) {
+      virtGraph.close()
+      virtGraph = null
+    }
+  }
+
   def describe(query: String): Model = {
-    val virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
+    val virtGraph = getVirtGraph()//new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
     virtGraph.setReadFromAllGraphs(true)
     val queryExecution = VirtuosoQueryExecutionFactory.create(query, virtGraph)
     val result = queryExecution.execDescribe()
-    virtGraph.close()
+    closeVirtGraph()//virtGraph.close()
     logger.fine(s"Describe Query issued:$query")
     result
   }
 
   def update(query: String) {
-    val virtGraph = new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
+    val virtGraph = getVirtGraph()//new VirtGraph(jdbcConnString, virtuosoUser, virtuosoPassword)
     val request = new VirtuosoUpdateRequest(query, virtGraph)
     request.exec()
     logger.fine(s"Update Query issued:$query")
-    virtGraph.close()
+    closeVirtGraph()//virtGraph.close()
   }
 
   def listGraphs(): Seq[String] = {
@@ -58,13 +76,7 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
     val m = FileManager.get().loadModel( file.getAbsolutePath )
 
     logger.fine(s"Uploading dataset into graph < $graph > ...")
-
-    //virtGraph.getBulkUpdateHandler.add(m.getGraph)
-
     virtModel.add(m)
-
-    //val rdfLang = lang.getOrElse(RDFLanguages.filenameToLang(file.getName))
-    //RDFDataMgr.read(virtGraph, file.getAbsolutePath, rdfLang)
 
     virtModel.close()
     virtGraph.close()

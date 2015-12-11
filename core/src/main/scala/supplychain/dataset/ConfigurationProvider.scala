@@ -122,10 +122,10 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
         |  ?loc schema:address ?adr .
         |  ?loc geo:lat ?lat .
         |  ?loc geo:long ?long .
-        |  ?adr schema:streetAddress ?street .
-        |  ?adr schema:postalCode ?zip .
-        |  ?adr schema:addressLocality ?city .
-        |  ?adr schema:addressCountry ?country .
+        |  OPTIONAL { ?adr schema:streetAddress ?street . }
+        |  OPTIONAL { ?adr schema:postalCode ?zip . }
+        |  OPTIONAL { ?adr schema:addressLocality ?city . }
+        |  OPTIONAL { ?adr schema:addressCountry ?country . }
         |  OPTIONAL {
         |    ?loc ogcgs:asWKT ?wktPoint .
         |    ?geometry ogcgs:asWKT ?wkt .
@@ -145,16 +145,23 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
     for (binding <- result) {
       val uri = binding.getResource("suppl").getURI
       val name = binding.getLiteral("name").getString
-      val street = binding.getLiteral("street").getString
-      val zip = binding.getLiteral("zip").getString
-      val city = binding.getLiteral("city").getString
-      val country = binding.getLiteral("country").getString
+      var street = ""
+      if (binding.getLiteral("street") != null)
+        street = binding.getLiteral("street").getString
+      var zip = ""
+      if (binding.getLiteral("zip") != null)
+        zip = binding.getLiteral("zip").getString
+      var city = ""
+      if (binding.getLiteral("city") != null)
+        city = binding.getLiteral("city").getString
+      var country = ""
+      if (binding.getLiteral("country") != null)
+        country = binding.getLiteral("country").getString
       val long = binding.getLiteral("long").getFloat
       val lat = binding.getLiteral("lat").getFloat
       var feature = ""
       if (binding.getResource("feature") != null)
         feature = binding.getResource("feature").getURI
-
       val adr = new Address(street, zip, city, country)
       val coords = new Coordinates(lat, long)
       val ws = wp.getNearesWeaterStation(coords)

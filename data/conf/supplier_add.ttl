@@ -1,0 +1,98 @@
+@prefix schema: <http://schema.org/> .
+@prefix db:    <http://www.xybermotive.com/supplier/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix suppl: <http://www.xybermotive.com/supplier/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix map:   <http://www.xybermotive.com/supplier/#> .
+@prefix sc:    <http://www.xybermotive.com/ontology/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ogc: <http://www.opengis.net/ont/geosparql#> .
+
+suppl:VW
+  a sc:Supplier, schema:Organization ;
+  schema:name "Volkswagen AG" ;
+  schema:legalName "Volkswagen AG" ;
+  schema:alternateName "Volkswagen" ;
+  schema:alternateName "VW" ;
+  schema:alternateName "VOW3" ;
+  schema:alternateName "DE0007664005" ;
+  schema:location suppl:VW_loc1 .
+
+suppl:VW_loc1 a schema:Place ;
+  schema:address suppl:VW_adr1 ;
+  geo:lat "52.43014"^^xsd:float ;
+  geo:long "10.76341"^^xsd:float ;
+  ogc:asWKT "POINT(10.76341 52.43014)"^^ogc:wktLiteral ;
+  schema:geo [
+    a schema:GeoCoordinates ;
+    schema:latitude "52.43014"^^xsd:float ;
+    schema:longitude "10.76341"^^xsd:float
+  ] .
+
+suppl:VW_loc1 schema:containedIn dbpedia:Wolfsburg .
+
+suppl:VW_adr1 a schema:PostalAddress ;
+  schema:streetAddress "Berliner Ring 2" ;
+  schema:postalCode "38440" ;
+  schema:addressLocality "Wolfsburg" ;
+  schema:addressCountry "Deutschland" .
+
+suppl:Conti
+  a sc:Supplier, schema:Organization ;
+  schema:name "Continental AG" ;
+  schema:legalName "Continental AG" ;
+  schema:alternateName "Continental" ;
+  schema:alternateName "Conti" ;
+  schema:alternateName "DE0005439004" ;
+  schema:location suppl:Conti_loc1 .
+
+suppl:Conti_loc1 a schema:Place ;
+  schema:address suppl:Conti_adr1 ;
+  geo:lat "52.3898851"^^xsd:float ;
+  geo:long "9.7305602"^^xsd:float ;
+  ogc:asWKT "POINT(9.7305602 52.3898851)"^^ogc:wktLiteral ;
+  schema:geo [
+    a schema:GeoCoordinates ;
+    schema:latitude "52.3898851"^^xsd:float ;
+    schema:longitude "9.7305602"^^xsd:float
+  ] .
+
+suppl:Conti_loc1 schema:containedIn dbpedia:Niedersachsen .
+
+suppl:Conti_adr1 a schema:PostalAddress ;
+  schema:streetAddress "Vahrenwalder Straße 9" ;
+  schema:postalCode "30165" ;
+  schema:addressLocality "Hanover" ;
+  schema:addressCountry "Deutschland" .
+
+
+suppl:ZF
+  a sc:Supplier, schema:Organization ;
+  schema:name "ZF Friedrichshafen AG" ;
+  schema:legalName "ZF Friedrichshafen AG" ;
+  schema:alternateName "ZF Friedrichshafen" ;
+  schema:alternateName "ZF Group" ;
+  schema:alternateName "ZF" ;
+  schema:location suppl:ZF_loc1 .
+
+suppl:ZF_loc1 a schema:Place ;
+  schema:address suppl:ZF_adr1 ;
+  geo:lat "47.66757"^^xsd:float ;
+  geo:long "9.49342"^^xsd:float ;
+  ogc:asWKT "POINT(9.49342 47.66757)"^^ogc:wktLiteral ;
+  schema:geo [
+    a schema:GeoCoordinates ;
+    schema:latitude "47.66757"^^xsd:float ;
+    schema:longitude "9.49342"^^xsd:float
+  ] .
+
+suppl:ZF_loc1 schema:containedIn dbpedia:Baden_Wuertemberg .
+
+suppl:ZF_adr1 a schema:PostalAddress ;
+  schema:streetAddress "Graf-von-Soden-Platz 1" ;
+  schema:postalCode "88046" ;
+  schema:addressLocality "Friedrichshafen" ;
+  schema:addressCountry "Deutschland" .

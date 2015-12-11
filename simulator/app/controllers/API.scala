@@ -75,11 +75,23 @@ object API extends Controller {
     var status = "Ready for simulation."
     if (simulationRunning || Simulator.isSimulationRunning()) status = "Simulation is running."
     else if (metricsCalculating) status = "Metrics calculation is running."
+    var startDate = "None"
+    var endDate = "None"
+    var curDate ="None"
+
+    try {
+      startDate = Simulator().startDate.toXSDFormat
+      endDate = Simulator().simulationEndDate.toXSDFormat
+      curDate = Simulator().currentDate.toXSDFormat
+    } catch {
+      case e1: NullPointerException =>
+    }
+
     val statusJson = Json.obj(
       "status" -> status,
-      "simulationStartDate" -> Simulator().startDate.toXSDFormat,
-      "simulationEndDate" -> Simulator().simulationEndDate.toXSDFormat,
-      "simulationCurrentDate" -> Simulator().currentDate.toXSDFormat,
+      "simulationStartDate" -> startDate,
+      "simulationEndDate" -> endDate,
+      "simulationCurrentDate" -> curDate,
       "configuration" -> Configuration.get
     )
     Ok(statusJson)

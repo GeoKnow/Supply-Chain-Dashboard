@@ -10,6 +10,8 @@ simulator/.project
 simulator/.settings/*
 projectFilesBackup/
 projectFilesBackup1/
+docker/data/
+docker/*.tgz
 
 # sbt specific
 dist/*
@@ -20,5 +22,14 @@ project/boot/
 project/plugins/project/
 .scala_dependencies
 WeatherStations.fos
-virtuoso-data
+virtuoso-data/*.lck
+virtuoso-data/*.db
+virtuoso-data/*.ttl
+virtuoso-data/*.ttl.graph
+virtuoso-data/*.log
+virtuoso-data/*.pxa
+virtuoso-data/*.trx
+virtuoso-data/*.gz
+virtuoso-data/cert
+
 node_modules

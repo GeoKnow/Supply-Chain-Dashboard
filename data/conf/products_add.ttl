@@ -1,0 +1,236 @@
+@prefix suppl: <http://www.xybermotive.com/supplier/> .
+@prefix prod: <http://www.xybermotive.com/products/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix schema: <http://schema.org/> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix sc: <http://www.xybermotive.com/ontology/> .
+
+#############################
+# Product Configuration
+#############################
+
+prod:Car2
+  a schema:Product ;
+  schema:name "Car" ;
+  sc:productPart [
+    sc:product <http://www.xybermotive.com/products/http%3A%2F%2Fdbpedia.org%2Fresource%2FPhoenix_Solar_prod> ;
+    sc:quantity "2"^^xsd:integer
+  ] ;
+.
+
+suppl:VW schema:manufacturer prod:Car2 .
+
+#############################
+# Product Car
+#############################
+
+# BOM
+
+prod:Car
+  a schema:Product ;
+  schema:name "Car" ;
+  sc:productPart [
+    sc:product prod:Engine ;
+    sc:quantity "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:Gearbox ;
+    sc:quantity "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:Wheel ;
+    sc:quantity  "4"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:Chassis ;
+    sc:quantity "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:FrontSeat ;
+    sc:quantity "2"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:RearBenchSeat ;
+    sc:quantity "1"^^xsd:integer
+  ] ;
+.
+
+prod:Gearbox
+  a schema:Product ;
+  schema:name "Gearbox" ;
+.
+
+prod:Engine
+  a schema:Product ;
+  schema:name "Engine" ;
+.
+
+prod:Wheel
+  a schema:Product ;
+  schema:name "Wheel" ;
+  sc:productPart [
+    sc:product prod:Rim ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+.
+prod:Rim
+  a schema:Product ;
+  schema:name "Rim" ;
+.
+
+
+prod:Chassis
+  a schema:Product ;
+  schema:name "Chassis" ;
+  sc:productPart [
+    sc:product prod:FrontFender ;
+    sc:quantity  "2"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:RearFender ;
+    sc:quantity  "2"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:Bootlid ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:EngineCover ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:RearViewMirror ;
+    sc:quantity  "2"^^xsd:integer
+  ] ;
+.
+prod:FrontFender
+  a schema:Product ;
+  schema:name "Front Fender" ;
+.
+prod:RearFender
+  a schema:Product ;
+  schema:name "Rear Fender" ;
+.
+prod:Bootlid
+  a schema:Product ;
+  schema:name "Bootlid" ;
+.
+prod:EngineCover
+  a schema:Product ;
+  schema:name "Engine Cover" ;
+.
+prod:RearViewMirror
+  a schema:Product ;
+  schema:name "Rear View Mirror" ;
+.
+
+prod:FrontSeat
+  a schema:Product ;
+  schema:name "Front Seat" ;
+  sc:productPart [
+    sc:product prod:FrontSeatBackRest ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:FrontSeatSeatingSurface ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+.
+prod:FrontSeatBackRest
+  a schema:Product ;
+  schema:name "Front Back Rest" ;
+.
+prod:FrontSeatSeatingSurface
+  a schema:Product ;
+  schema:name "Front Seat Seating Surface" ;
+.
+
+prod:RearBenchSeat
+  a schema:Product ;
+  schema:name "Rear Bench Seat" ;
+  sc:productPart [
+    sc:product prod:BackSeatBackRest ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:BackSeatSeatingSurface ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:ArmRest ;
+    sc:quantity  "1"^^xsd:integer
+  ] ;
+.
+prod:BackSeatBackRest
+  a schema:Product ;
+  schema:name "Back Seat Back Rest" ;
+.
+prod:BackSeatSeatingSurface
+  a schema:Product ;
+  schema:name "Back Seat Seating Surface" ;
+.
+prod:ArmRest
+  a schema:Product ;
+  schema:name "Arm Rest" ;
+.
+
+# Supplier
+
+suppl:VW schema:manufacturer prod:Car .
+suppl:Salzgitter_Automotive schema:manufacturer prod:Gearbox .
+suppl:ZF schema:manufacturer prod:Engine .
+suppl:Conti schema:manufacturer prod:Wheel .
+suppl:Schnellecke_Transportlogistik_GmbH schema:manufacturer prod:Rim .
+<http://www.xybermotive.com/supplier/Fischer_%2B_Plath_GmbH> schema:manufacturer  prod:Chassis .
+suppl:Blechformwerke_Bernsbach_GmbH schema:manufacturer prod:FrontFender .
+suppl:Deutsche_Pentosin-Werke_GmbH schema:manufacturer prod:RearFender .
+suppl:Sika_Automotive schema:manufacturer prod:Bootlid .
+suppl:August_Friedberg_GmbH schema:manufacturer prod:EngineCover .
+<http://www.xybermotive.com/supplier/Linde_%26_Wiemann> schema:manufacturer prod:RearViewMirror .
+suppl:Con_Garcia_Industrielackierung schema:manufacturer prod:FrontSeat .
+<http://www.xybermotive.com/supplier/FlammMOTEC_GmbH_%26_Co._KG> schema:manufacturer prod:FrontSeatBackRest .
+suppl:Karosseriewerke_Dresden_GmbH schema:manufacturer prod:FrontSeatSeatingSurface .
+suppl:DBW_Metallverarbeitungs_GmbH schema:manufacturer prod:RearBenchSeat .
+suppl:Sachsentrans schema:manufacturer prod:BackSeatBackRest .
+suppl:Pierburg_Pump_Technology_GmbH schema:manufacturer prod:BackSeatSeatingSurface .
+suppl:Sumitomo_Electric_Bordnetze_GmbH schema:manufacturer prod:ArmRest .
+
+#############################
+# Product Table
+#############################
+
+# BOM
+
+prod:Table
+  a schema:Product ;
+  schema:name "Table" ;
+  sc:productPart [
+    sc:product prod:Tabletop ;
+    sc:quantity "1"^^xsd:integer
+  ] ;
+  sc:productPart [
+    sc:product prod:Tableleg ;
+    sc:quantity  "4"^^xsd:integer
+  ] ;
+.
+
+prod:Tabletop
+  a schema:Product ;
+  schema:name "Tabletop" ;
+.
+
+prod:Tableleg
+  a schema:Product ;
+  schema:name "Tableleg" ;
+.
+
+# Supplier
+
+suppl:FILZFABRIK schema:manufacturer prod:Table .
+suppl:Nedschroef_Plettenberg_GmbH schema:manufacturer prod:Tabletop .
+suppl:Theysohn_Kunststoff_GmbH schema:manufacturer prod:Tableleg .

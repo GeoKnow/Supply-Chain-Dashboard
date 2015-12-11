@@ -4,7 +4,6 @@ import sbt.Keys._
 //////////////////////////////////////////////////////////////////////////////
 // Common Settings
 //////////////////////////////////////////////////////////////////////////////
-
 lazy val commonSettings = Seq(
   organization := "com.eccenca",
   version := "1.1-SNAPSHOT",
@@ -72,8 +71,10 @@ lazy val dashboard = project
 lazy val root = project.in(file("."))
     .aggregate(core, simulator, dashboard, virtuoso_jena)
     .settings(commonSettings: _*)
+    //.settings(com.github.play2war.plugin.Play2WarPlugin.play2WarSettings: _*)
     .settings(
       name := "GeoKnow Supply Chain Applications"
+      //com.github.play2war.plugin.Play2WarKeys.servletVersion := "3.0"
     )
 
 //////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 package supplychain.simulator
 
+import java.net.URLEncoder
 import java.util.logging.Logger
 
 import play.api.Play.current
@@ -18,7 +19,7 @@ import scala.concurrent.duration._
 /**
  * The supply chain simulator.
  */
-class Simulator(val actorSystem: ActorSystem) extends Dataset {
+class Simulator(val actorSystem: ActorSystem, productUri: String) extends Dataset {
 
   private val log = Logger.getLogger(classOf[Simulator].getName)
 
@@ -41,19 +42,19 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   //get the weather data provider
   private val wp = new WeatherProvider(Configuration.get.endpointConfig)
 
-  private var productUri: Option[String] = _
-  private var graphUri: Option[String] = _
-
   // get the application configuration from endpoint
   private val cp = new ConfigurationProvider(Configuration.get.endpointConfig, wp)
-  val product = cp.getProduct(Configuration.get.productUri)
+  val product = cp.getProduct(productUri)
 
   // Generate the supply chain network
   val network = Network.build(product, wp, cp)
 
+  val b64Enc = new sun.misc.BASE64Encoder()
+
+
   // Create actors for all suppliers
   val supplierActors = for(supplier <- network.suppliers) yield
-    actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), supplier.id)
+    actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), URLEncoder.encode(supplier.uri, "UTF8"))
 
   // The message scheduler.
   val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
@@ -153,36 +154,33 @@ class Simulator(val actorSystem: ActorSystem) extends Dataset {
   }
 
   def getActor(supplier: Supplier) = {
-    actorSystem.actorSelection("/user/" + supplier.id)
+    actorSystem.actorSelection("/user/" + URLEncoder.encode(supplier.uri, "UTF8"))
   }
+
 }
 
 object Simulator {
-  private var simulator:Simulator = new Simulator(Akka.system)
+  private var simulator:Simulator = null
 
   private def reinitSimulation(productUri: Option[String], graphUri: Option[String]): Unit = {
-    if (productUri != simulator.productUri || graphUri != simulator.graphUri) {
+    if (simulator != null) {
       simulator.pause()
-      simulator.productUri = productUri
-      for (p <- productUri) {
-        Configuration.get.productUri = p
-        simulator.log.info("set productUri to: " + p)
-      }
-      simulator.graphUri = graphUri
-      for (g <- graphUri) {
-        Configuration.get.endpointConfig.defaultGraph = g
-        simulator.log.info("set graphUri to: " + g)
-      }
       simulator.shutdown
-      simulator = new Simulator(Akka.system)
     }
+
+    for (p <- productUri) {
+      Configuration.get.productUri = p
+    }
+    for (g <- graphUri) {
+      Configuration.get.endpointConfig.defaultGraph = g
+    }
+
+    simulator = new Simulator(Akka.system, Configuration.get.productUri)
   }
 
   // advance the simulation for a single tick
   def step(start: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
     reinitSimulation(productUri, graphUri)
-
-    simulator.pause()
 
     for (s <- start) {
       if (s < Configuration.get.minStartDate) {
@@ -190,9 +188,6 @@ object Simulator {
         simulator.log.info(msg)
         throw new SimulationPeriodOutOfBoundsException(msg)
       }
-      simulator.shutdown
-      simulator = new Simulator(Akka.system)
-
       simulator.startDate = s
       simulator.currentDate = s
     }
@@ -203,16 +198,13 @@ object Simulator {
   def run(interval: Double, startDate: Option[DateTime], endDate: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
     reinitSimulation(productUri, graphUri)
 
-    simulator.pause()
-
     for (s <- startDate) {
       if (s < Configuration.get.minStartDate) {
         val msg = "start date may not be before: " + Configuration.get.minStartDate.toYyyyMMdd()
         simulator.log.info(msg)
         throw new SimulationPeriodOutOfBoundsException(msg)
       }
-      simulator.shutdown
-      simulator = new Simulator(Akka.system)
+
       simulator.startDate = s
       simulator.currentDate = s
     }
@@ -230,6 +222,7 @@ object Simulator {
   def apply() = simulator
 
   def isSimulationRunning(): Boolean = {
+    if (simulator == null) return false
     var simulationIsRunning = false
     for (c <- simulator.metronom) simulationIsRunning = (!c.isCancelled)
     var dueEnqueuedMsgs = false
