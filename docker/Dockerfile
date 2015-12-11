@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 ENV ECC_IMAGE_PREFIX eccenca
 ENV ECC_IMAGE_NAME scd
 
-RUN apt-get update &&apt-get install -y openjdk-7-jre-headless && apt-get clean
+RUN apt-get update && apt-get install -y openjdk-7-jre-headless && apt-get clean
 
 RUN mkdir -p /scd
 WORKDIR /scd
