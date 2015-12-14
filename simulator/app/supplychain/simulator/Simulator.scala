@@ -51,7 +51,6 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
 
   val b64Enc = new sun.misc.BASE64Encoder()
 
-
   // Create actors for all suppliers
   val supplierActors = for(supplier <- network.suppliers) yield
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), URLEncoder.encode(supplier.uri, "UTF8"))
