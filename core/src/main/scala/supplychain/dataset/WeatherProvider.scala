@@ -20,6 +20,11 @@ class WeatherProvider(ec: EndpointConfig) {
 
   def getNearesWeaterStation(coordinates: Coordinates): WeatherStation = {
 
+    var threshold = 5.0
+    var upper = coordinates.lat - threshold
+    var lower = coordinates.lat + threshold
+    var right = coordinates.lon + threshold
+    var left = coordinates.lon - threshold
     val queryStr =
       s"""
          |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
@@ -39,6 +44,14 @@ class WeatherProvider(ec: EndpointConfig) {
          |        FROM <${ec.getDefaultGraphWeather()}>
          |        WHERE {
          |            ?s a gkwo:WeatherStation .
+         |            ?s geo:long ?long .
+         |            ?s geo:lat ?lat .
+         |            BIND(${threshold} AS ?threshold)
+         |            BIND(${left} AS ?left) .
+         |            BIND(${right} AS ?right) .
+         |            BIND(${upper} AS ?upper) .
+         |            BIND(${lower} AS ?lower) .
+         |            FILTER( <bif:st_within>( <bif:st_point>(?long, ?lat), <bif:st_geomfromtext>( concat('POLYGON((', ?left, ' ', ?upper, ', ', ?left, ' ', ?lower, ', ', ?right, ' ', ?lower, ', ', ?right, ' ', ?upper, '))') ) ) ) .
          |            ?s gkwo:hasObservation ?obs .
          |            ?obs gkwo:tmin ?tmin .
          |            ?obs gkwo:tmax ?tmax .
@@ -48,7 +61,7 @@ class WeatherProvider(ec: EndpointConfig) {
          |        GROUP BY ?s
          |        HAVING (count(?obs) > ${minObs})
          |    }
-         |}ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat}))) LIMIT 1
+         |} ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat}))) LIMIT 1
        """.stripMargin
 
     val result = ec.getEndpoint().select(queryStr).toSeq
