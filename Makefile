@@ -37,4 +37,7 @@ run-virtuoso:
 
 rm-virtuoso:
 	-docker rm -f gk_virtuoso
-	-rm -f virtuoso-data/*.lck virtuoso-data/*.log virtuoso-data/*.trx virtuoso-data/*.pxa virtuoso-data/*.db
+	-rm -f virtuoso-data/*.lck virtuoso-data/*.log
+
+clean-virtuoso:
+	-rm virtuoso-data/*.log virtuoso-data/*.trx virtuoso-data/*.pxa virtuoso-data/*.db
