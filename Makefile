@@ -1,6 +1,6 @@
 ## build the image based on docker file and latest repository
 build: build-simulator-tgz build-dashboards-tgz
-	cd docker && make
+	cd docker && make build tag
 
 dist-clean:
 	-rm -f docker/*.tgz
@@ -32,7 +32,6 @@ test-scd-container:
 	docker run -it --rm --link gk-test-virtuoso:virtuoso -p 9000:9000 scd bash
 
 run-virtuoso:
-	-rm -f virtuoso-data/*.lck
 	cd virtuoso-data && \
 	docker run -d -p 80:80 -p 1111:1111 -v `pwd`:/data --name gk_virtuoso docker-registry.eccenca.com/openlink-virtuoso-7:v7.2.1-4
 
