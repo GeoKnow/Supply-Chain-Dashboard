@@ -33,8 +33,6 @@ class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvide
 
   private val log = Logging(context.system, this)
 
-  //private val weatherProvider = new WeatherProvider
-
   /**
    * Receives and processes messages.
    */
