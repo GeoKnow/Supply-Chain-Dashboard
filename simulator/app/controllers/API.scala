@@ -41,11 +41,15 @@ object API extends Controller {
   }
 
   def run(start: Option[String], end: Option[String], productUri: Option[String], graphUri: Option[String], interval: Double) = Action {
-    logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
-    if (!simulationRunning) {
-      //clear graph
-      Configuration.get.endpointConfig.getEndpoint().createGraph(Configuration.get.endpointConfig.getDefaultGraph(), true)
+    if (simulationRunning || Simulator.isSimulationRunning()) {
+      ServiceUnavailable("Simulation is running. Retry later.")
     }
+
+    logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
+
+    //clear graph
+    Configuration.get.endpointConfig.getEndpoint().createGraph(Configuration.get.endpointConfig.getDefaultGraph(), true)
+
     simulationRunning = true
     val s = start.map(DateTime.parse)
     val e = end.map(DateTime.parse)
@@ -61,7 +65,6 @@ object API extends Controller {
     } finally {
       simulationRunning = false
     }
-
   }
 
   def pause() = Action {
