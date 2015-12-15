@@ -24,10 +24,10 @@ build-dashboards-tgz:
 	cp -r data/conf docker/data/
 
 start-simulator:
-	./sbt "project simulator" compile "run 9000"
+	./sbt "project simulator" compile "run 9000" | tee simulator-`date "+%Y%m%d-%H%M%S"`.log
 
 start-dashboard:
-	./sbt "project dashboard" compile "run 9001"
+	./sbt "project dashboard" compile "run 9001" | tee dashboard-`date "+%Y%m%d-%H%M%S"`.log
 
 run-scd-bash:
 	docker run -it --rm --link ${VIRT_CONT_NAME}:virtuoso -p 9000:9000 -e JAVA_OPTS="-Xmx1g -Xms1g -Xss1g" eccenca-scd:develop bash
@@ -40,8 +40,12 @@ rm-virtuoso:
 	-docker rm -f ${VIRT_CONT_NAME}
 	-rm -f virtuoso-data/*.lck virtuoso-data/*.log
 
-clean-virtuoso:
+clean-virtuoso-data:
 	-rm virtuoso-data/*.log virtuoso-data/*.trx virtuoso-data/*.pxa virtuoso-data/*.db
+
+clean-runtime-graphs:
+	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"sparql DROP SILENT GRAPH <http://www.xybermotive.com/geoknow/>;\""
+	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"sparql DROP SILENT GRAPH <http://www.xybermotive.com/configuration/>;\""
 
 virtuoso-load-status:
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"select * from DB.DBA.load_list;\""

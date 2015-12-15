@@ -52,9 +52,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
         val receiverActor = simulator.getActor(msg.receiver)
         receiverActor ! msg
       }
-
   }
-
 }
 
 object Scheduler {

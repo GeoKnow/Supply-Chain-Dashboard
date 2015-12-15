@@ -76,6 +76,12 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
    * read data from the configuration graph
    */
   def getProduct(uri: String): Product = {
+    log.info(
+      s"""
+        |###################################################
+        |# GET PRODUCT ${uri} STARTED #
+        |###################################################
+      """.stripMargin)
 
     val queryStr =
       s"""
@@ -101,6 +107,12 @@ class ConfigurationProvider(epc: EndpointConfig, wp: WeatherProvider) {
       throw new UnknownProductException(msg)
     }
     log.info("# PRODUCT: " + p.toString)
+    log.info(
+      s"""
+         |###################################################
+         |# GET PRODUCT ${uri} DONE #
+         |###################################################
+      """.stripMargin)
     p
   }
 
