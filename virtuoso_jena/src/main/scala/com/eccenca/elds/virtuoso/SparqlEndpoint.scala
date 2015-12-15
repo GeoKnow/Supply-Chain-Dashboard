@@ -40,10 +40,13 @@ class SparqlEndpoint (virtuosoHost: String, virtuosoPort:String, virtuosoUser: S
   }
 
   private def closeVirtGraph(): Unit = {
+    // do nothing to preserve result sets
+    /*
     if (virtGraph != null) {
       virtGraph.close()
       virtGraph = null
     }
+    */
   }
 
   def describe(query: String): Model = {
