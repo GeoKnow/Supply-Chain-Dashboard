@@ -49,17 +49,9 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
   // Generate the supply chain network
   val network = Network.build(product, wp, cp)
 
-  val b64Enc = new sun.misc.BASE64Encoder()
-
   // Create actors for all suppliers
   val supplierActors = for(supplier <- network.suppliers) yield
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), URLEncoder.encode(supplier.uri, "UTF8"))
-
-  def actorsHaveMessages(): Boolean = {
-    for (ar <- supplierActors) {
-    }
-    false
-  }
 
   // The message scheduler.
   val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
@@ -118,11 +110,14 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
 
   def describe(queryStr: String) = dataset.describe(queryStr)
 
+  private var msgToStore: Option[Message] = None
   // TODO should be synchronized in listeners
   private[simulator] def addMessage(msg: Message) = synchronized {
+    msgToStore = Option(msg)
     messages = messages :+ msg
     newMessages = newMessages :+ msg
     dataset.addMessage(msg)
+    msgToStore = None
   }
 
   def loadMessages() = {
@@ -140,18 +135,12 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
       scheduler ! Scheduler.Tick(currentDate)
       currentDate += tickInterval
       val su = SimulationUpdate(currentDate, newMessages)
-      for(listener <- listeners)
-        listener(su)
+      for(listener <- listeners) listener(su)
       newMessages = Seq.empty
     } else {
       pause()
+      newMessages = Seq.empty
     }
-  }
-
-  // continues from pause and/or resets the interval
-  def start(interval: Double): Unit = {
-    pause()
-    metronom = Option(actorSystem.scheduler.schedule(0 seconds, interval.seconds)(advanceSimulation))
   }
 
   // pauses the simulation
@@ -173,7 +162,6 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
   def getActor(supplier: Supplier) = {
     actorSystem.actorSelection("/user/" + URLEncoder.encode(supplier.uri, "UTF8"))
   }
-
 }
 
 object Simulator {
@@ -197,22 +185,6 @@ object Simulator {
     simulator = new Simulator(Akka.system, Configuration.get.productUri)
   }
 
-  // advance the simulation for a single tick
-  def step(start: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
-    reinitSimulation(productUri, graphUri)
-
-    for (s <- start) {
-      if (s < Configuration.get.minStartDate) {
-        val msg = "start date may not be before: " + Configuration.get.minStartDate.toYyyyMMdd()
-        simulator.log.info(msg)
-        throw new SimulationPeriodOutOfBoundsException(msg)
-      }
-      simulator.startDate = s
-      simulator.currentDate = s
-    }
-    simulator.advanceSimulation()
-  }
-
   // starts a new simulation with the given parameters
   def run(interval: Double, startDate: Option[DateTime], endDate: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
     log.info(
@@ -229,7 +201,6 @@ object Simulator {
         simulator.log.info(msg)
         throw new SimulationPeriodOutOfBoundsException(msg)
       }
-
       simulator.startDate = s
       simulator.currentDate = s
     }
@@ -259,7 +230,8 @@ object Simulator {
     var dueEnqueuedMsgs = false
     if (!simulator.messageQueue.isEmpty && simulator.messageQueue.head.date <= Simulator().simulationEndDate)
         dueEnqueuedMsgs = true
-    if (metronomIsRunning || dueEnqueuedMsgs || simulator.newMessages.nonEmpty) true
+    //if (metronomIsRunning || dueEnqueuedMsgs || simulator.newMessages.nonEmpty) true
+    if (metronomIsRunning || dueEnqueuedMsgs || simulator.msgToStore == Some) true
     else false
   }
 }
