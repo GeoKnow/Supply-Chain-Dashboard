@@ -30,7 +30,7 @@ start-dashboard:
 	./sbt "project dashboard" compile "run 9001"
 
 run-scd-bash:
-	docker run -it --rm --link ${VIRT_CONT_NAME}:virtuoso -p 9000:9000 scd bash
+	docker run -it --rm --link ${VIRT_CONT_NAME}:virtuoso -p 9000:9000 -e JAVA_OPTS="-Xmx1g -Xms1g -Xss1g" eccenca-scd:develop bash
 
 run-virtuoso:
 	cd virtuoso-data && \
