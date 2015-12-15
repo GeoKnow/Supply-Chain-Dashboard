@@ -31,6 +31,12 @@ object Network {
    * First, a list of suppliers is generated and than connections are generated between suppliers.
    */
   def build(product: Product, wp: WeatherProvider, cp:ConfigurationProvider): Network = {
+    log.info(
+      """
+        |##################################
+        |# BUILD SUPPLIER NETWORK STARTED #
+        |##################################
+      """.stripMargin)
     // Build Supplier List
     val supplierBuilder = new SupplierBuilder(wp, cp)
     val suppliers = supplierBuilder(product)
@@ -45,7 +51,12 @@ object Network {
     // Create an OEM that is responsible for sending the initial orders for the product
     val rootSupplier = generateRootSupplier(product, wp)
     val rootConnection = Connection(Namespaces.connection + "Initial", product, suppliers.head, rootSupplier)
-
+    log.info(
+      """
+        |###############################
+        |# BUILD SUPPLIER NETWORK DONE #
+        |###############################
+      """.stripMargin)
     Network(product, rootSupplier +: suppliers, connections, rootConnection)
   }
 

@@ -5,7 +5,7 @@ import java.util.logging.Logger
 
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
-import akka.actor.{ActorSystem, Cancellable, Props}
+import akka.actor._
 import supplychain.dataset.{WeatherProvider, ConfigurationProvider, Dataset, RdfDataset}
 import supplychain.model._
 import supplychain.model.{Duration=>SCDuration}
@@ -55,6 +55,15 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
   val supplierActors = for(supplier <- network.suppliers) yield
     actorSystem.actorOf(Props(classOf[SupplierActor], supplier, this, wp), URLEncoder.encode(supplier.uri, "UTF8"))
 
+  def actorsHaveMessages(): Boolean = {
+    for (ar <- supplierActors) {
+      val sa = ar.asInstanceOf[SupplierActor]
+      if (sa.hasMessages)
+        return true
+    }
+    false
+  }
+
   // The message scheduler.
   val scheduler = actorSystem.actorOf(Props(classOf[Scheduler], network.rootConnection, this), "Scheduler")
 
@@ -79,11 +88,23 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
   private var isSupplierNetworkDataWritten = false
 
   def writeSupplierNetworkData() = {
+    log.info(
+      """
+        |###################################################
+        |# WRITE SUPPLIER NETWORK DATA TO ENDPOINT STARTED #
+        |###################################################
+      """.stripMargin)
     // for legacy reasons write this data
     // TODO: remove this duplicated Data
     dataset.addProduct(product)
     for (supplier <- suppliers) dataset.addSupplier(supplier)
     for (connection <- connections) dataset.addConnection(connection)
+    log.info(
+      """
+        |################################################
+        |# WRITE SUPPLIER NETWORK DATA TO ENDPOINT DONE #
+        |################################################
+      """.stripMargin)
   }
 
   // List of suppliers.
@@ -159,6 +180,8 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
 }
 
 object Simulator {
+  private val log = Logger.getLogger(classOf[Simulator].getName)
+
   private var simulator:Simulator = null
 
   private def reinitSimulation(productUri: Option[String], graphUri: Option[String]): Unit = {
@@ -195,6 +218,12 @@ object Simulator {
 
   // starts a new simulation with the given parameters
   def run(interval: Double, startDate: Option[DateTime], endDate: Option[DateTime], productUri: Option[String], graphUri: Option[String]) {
+    log.info(
+      """
+        |##########################
+        |# RUN SIMULATION STARTED #
+        |##########################
+      """.stripMargin)
     reinitSimulation(productUri, graphUri)
 
     for (s <- startDate) {
@@ -216,18 +245,24 @@ object Simulator {
       simulator.simulationEndDate = e
     }
     simulator.metronom = Option(simulator.actorSystem.scheduler.schedule(0 seconds, interval.seconds)(simulator.advanceSimulation))
+    log.info(
+      """
+        |################################################################
+        |# RUN SIMULATION DONE (ACTOR SYSTEM STILL PROCESSING MESSAGES) #
+        |################################################################
+      """.stripMargin)
   }
 
   def apply() = simulator
 
   def isSimulationRunning(): Boolean = {
     if (simulator == null) return false
-    var simulationIsRunning = false
-    for (c <- simulator.metronom) simulationIsRunning = (!c.isCancelled)
+    var metronomIsRunning = false
+    for (m <- simulator.metronom) metronomIsRunning = true
     var dueEnqueuedMsgs = false
     if (!simulator.messageQueue.isEmpty && simulator.messageQueue.head.date <= Simulator().simulationEndDate)
         dueEnqueuedMsgs = true
-    if (simulationIsRunning || dueEnqueuedMsgs) true
+    if (metronomIsRunning || dueEnqueuedMsgs) true
     else false
   }
 }
