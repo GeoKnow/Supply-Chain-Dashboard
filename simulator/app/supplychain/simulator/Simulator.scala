@@ -57,9 +57,6 @@ class Simulator(val actorSystem: ActorSystem, productUri: String) extends Datase
 
   def actorsHaveMessages(): Boolean = {
     for (ar <- supplierActors) {
-      val sa = ar.asInstanceOf[SupplierActor]
-      if (sa.hasMessages)
-        return true
     }
     false
   }
@@ -262,7 +259,7 @@ object Simulator {
     var dueEnqueuedMsgs = false
     if (!simulator.messageQueue.isEmpty && simulator.messageQueue.head.date <= Simulator().simulationEndDate)
         dueEnqueuedMsgs = true
-    if (metronomIsRunning || dueEnqueuedMsgs) true
+    if (metronomIsRunning || dueEnqueuedMsgs || simulator.newMessages.nonEmpty) true
     else false
   }
 }

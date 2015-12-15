@@ -35,10 +35,6 @@ class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvide
 
   //private val weatherProvider = new WeatherProvider
 
-  def hasMessages: Boolean = {
-    orders.nonEmpty
-  }
-
   /**
    * Receives and processes messages.
    */
@@ -134,4 +130,5 @@ class SupplierActor(supplier: Supplier, simulator: Simulator, wp: WeatherProvide
       )
     }
   }
+
 }
