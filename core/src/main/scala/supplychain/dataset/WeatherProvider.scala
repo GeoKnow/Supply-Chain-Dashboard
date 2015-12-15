@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 class WeatherProvider(ec: EndpointConfig) {
 
   private val log = Logger.getLogger(getClass.getName)
-  private val minObs = 300
+  private val minObs: Int = 300
 
   val dailyWeatherVariation = 0.1 // +/- 10% daily weather variation from monthly mean values
 
@@ -20,8 +20,16 @@ class WeatherProvider(ec: EndpointConfig) {
 
   def getNearesWeaterStation(coordinates: Coordinates): WeatherStation = {
 
-    val queryStr =
-      s"""
+    var ws: WeatherStation = null
+    var threshold = 5.0
+    var hasResult = false
+    do {
+      val upper = Math.max(coordinates.lat - threshold, -90.0)
+      val lower = Math.min(coordinates.lat + threshold,  90.0)
+      val right = coordinates.lon + threshold
+      val left = coordinates.lon - threshold
+      val queryStr =
+        s"""
          |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
          |PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
          |PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -39,6 +47,14 @@ class WeatherProvider(ec: EndpointConfig) {
          |        FROM <${ec.getDefaultGraphWeather()}>
          |        WHERE {
          |            ?s a gkwo:WeatherStation .
+         |            ?s geo:long ?long .
+         |            ?s geo:lat ?lat .
+         |            BIND($threshold AS ?threshold)
+         |            BIND($left AS ?left) .
+         |            BIND($right AS ?right) .
+         |            BIND($upper AS ?upper) .
+         |            BIND($lower AS ?lower) .
+         |            FILTER( <bif:st_within>( <bif:st_point>(?long, ?lat), <bif:st_geomfromtext>( concat('POLYGON((', ?left, ' ', ?upper, ', ', ?left, ' ', ?lower, ', ', ?right, ' ', ?lower, ', ', ?right, ' ', ?upper, '))') ) ) ) .
          |            ?s gkwo:hasObservation ?obs .
          |            ?obs gkwo:tmin ?tmin .
          |            ?obs gkwo:tmax ?tmax .
@@ -46,25 +62,31 @@ class WeatherProvider(ec: EndpointConfig) {
          |            ?obs gkwo:snwd ?snwd .
          |        }
          |        GROUP BY ?s
-         |        HAVING (count(?obs) > ${minObs})
+         |        HAVING (count(?obs) > ${minObs.toString})
          |    }
-         |}ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat}))) LIMIT 1
+         |} ORDER BY ASC (<bif:st_distance> (<bif:st_point>(?long, ?lat), <bif:st_point>(${coordinates.lon}, ${coordinates.lat} ))) LIMIT 1
        """.stripMargin
 
-    val result = ec.getEndpoint().select(queryStr).toSeq
-    var ws: WeatherStation = null
+      val result = ec.getEndpoint().select(queryStr).toSeq
 
-    for (binding <- result) {
-      val uri = binding.getResource("s").toString
-      val stationId = binding.getLiteral("sid").getString
-      val label = binding.getLiteral("label").getString
-      val long = binding.getLiteral("long").getFloat
-      val lat = binding.getLiteral("lat").getFloat
-      ws = new WeatherStation(new Coordinates(long, lat), label, stationId, uri)
-      ws.observations = getDailySummaries(ws)
-    }
+      if (result.nonEmpty) {
+        hasResult = true
+        for (binding <- result) {
+          val uri = binding.getResource("s").toString
+          val stationId = binding.getLiteral("sid").getString
+          val label = binding.getLiteral("label").getString
+          val long = binding.getLiteral("long").getFloat
+          val lat = binding.getLiteral("lat").getFloat
+          ws = new WeatherStation(new Coordinates(long, lat), label, stationId, uri)
+          ws.observations = getDailySummaries(ws)
+        }
+      }
+      else {
+        threshold += 5.0
+      }
+    } while (!hasResult)
 
-    return ws
+    ws
   }
 
   private def getNumberOfObservations(ws: WeatherStation): Int = {
@@ -97,20 +119,22 @@ class WeatherProvider(ec: EndpointConfig) {
   }
 
   def delayedDueToWeatherProbability(ws: WeatherStation, date: DateTime, start: DateTime, end: DateTime): Double = {
+    var probab = 0.0
     log.info(ws.toString() + " " + date.toXSDFormat)
     val w = getDailySummary(ws, date, start, end)
     if (w == null) {
       log.info("no Daily Summary found for this Weather Station! " + ws.id + ", " + date.toYyyyMMdd())
+    } else {
+      log.info(w.toString())
+
+      if (w.getPrcpCategory() == WeatherUtil.PRCP_HEAVY) probab += 0.20
+      if (w.getPrcpCategory() == WeatherUtil.PRCP_MID) probab += 0.10
+      if (w.getPrcpCategory() == WeatherUtil.PRCP_LIGHT) probab += 0.5
+      if (w.snwd > 0.0) probab = (probab + 0.5) * 1.75
+      probab += (-1 * w.temp / 100)
+      if (probab < 0.0) probab = 0.0
+      if (probab > 1.0) probab = 1.0
     }
-    log.info(w.toString())
-    var probab = 0.0
-    if (w.getPrcpCategory() == WeatherUtil.PRCP_HEAVY) probab += 0.20
-    if (w.getPrcpCategory() == WeatherUtil.PRCP_MID) probab += 0.10
-    if (w.getPrcpCategory() == WeatherUtil.PRCP_LIGHT) probab += 0.5
-    if (w.snwd > 0.0) probab = (probab + 0.5) * 1.75
-    probab += (-1 * w.temp / 100)
-    if (probab < 0.0) probab = 0.0
-    if (probab > 1.0) probab = 1.0
     log.info("delay probab: " + probab.toString)
     probab
   }
