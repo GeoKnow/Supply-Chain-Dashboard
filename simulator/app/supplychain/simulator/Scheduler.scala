@@ -23,8 +23,7 @@ class Scheduler(rootConnection: Connection, simulator: Simulator) extends Actor 
   private var lastOrderTime: DateTime = new DateTime(0)
 
   // Scheduled messages ordered by date
-  val messageQueue = simulator.messageQueue
-  //mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
+  val messageQueue = simulator.messageQueue //mutable.PriorityQueue[Message]()(Ordering.by(-_.date.milliseconds))
 
   /**
    * Receives and processes messages.

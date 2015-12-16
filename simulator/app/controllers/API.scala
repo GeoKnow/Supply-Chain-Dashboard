@@ -41,27 +41,30 @@ object API extends Controller {
   }
 
   def run(start: Option[String], end: Option[String], productUri: Option[String], graphUri: Option[String], interval: Double) = Action {
-    logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
-    if (!simulationRunning) {
+    if (simulationRunning || Simulator.isSimulationRunning()) {
+      ServiceUnavailable("Simulation is running. Retry later.")
+    } else {
+      logger.info(s"Simulation started at '$start' and will run until '$end' with an interval of '$interval' seconds.")
+
       //clear graph
       Configuration.get.endpointConfig.getEndpoint().createGraph(Configuration.get.endpointConfig.getDefaultGraph(), true)
-    }
-    simulationRunning = true
-    val s = start.map(DateTime.parse)
-    val e = end.map(DateTime.parse)
 
-    try {
-      Simulator.run(interval, s, e, productUri, graphUri)
-      simulationRunning = false
-      Ok("run")
-    } catch {
-      case e1: UnknownProductException => BadRequest(e1.message)
-      case e2: SimulationPeriodOutOfBoundsException => BadRequest(e2.message)
-      case e3: Exception => BadRequest(e3.getMessage)
-    } finally {
-      simulationRunning = false
-    }
+      simulationRunning = true
+      val s = start.map(DateTime.parse)
+      val e = end.map(DateTime.parse)
 
+      try {
+        Simulator.run(interval, s, e, productUri, graphUri)
+        simulationRunning = false
+        Ok("run")
+      } catch {
+        case e1: UnknownProductException => BadRequest(e1.message)
+        case e2: SimulationPeriodOutOfBoundsException => BadRequest(e2.message)
+        case e3: Exception => BadRequest(e3.getMessage)
+      } finally {
+        simulationRunning = false
+      }
+    }
   }
 
   def pause() = Action {
