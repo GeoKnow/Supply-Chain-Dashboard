@@ -10,9 +10,6 @@ RUN apt-get update && apt-get install -y openjdk-7-jre-headless && apt-get clean
 RUN mkdir -p /scd
 WORKDIR /scd
 
-RUN mkdir -p /scd
-WORKDIR /scd
-
 ADD simulator.tgz /scd
 ADD dashboard.tgz /scd
 ADD data /scd/data
