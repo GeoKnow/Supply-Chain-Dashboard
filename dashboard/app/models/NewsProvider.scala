@@ -11,6 +11,8 @@ import scala.collection.JavaConversions._
 class NewsProvider(ec: EndpointConfig) {
 
   def getNews(supplier: Supplier, date: DateTime): List[News] = {
+    val sp = new SupplierProvider(ec)
+    sp.getConfiguredSupplierUris()
     val query =
       s"""
          |PREFIX art: <http://www.xybermotive.com/news/Article/>
