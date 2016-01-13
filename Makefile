@@ -44,8 +44,9 @@ clean-virtuoso-data:
 	-rm virtuoso-data/*.log virtuoso-data/*.trx virtuoso-data/*.pxa virtuoso-data/*.db
 
 clean-runtime-graphs:
-	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"sparql DROP SILENT GRAPH <http://www.xybermotive.com/geoknow/>;\""
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"sparql DROP SILENT GRAPH <http://www.xybermotive.com/configuration/>;\""
+	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"sparql DROP SILENT GRAPH <http://www.xybermotive.com/geoknow/>;\""
+	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"sparql DROP SILENT GRAPH <http://www.xybermotive.com/geoknow/metrics/>;\""
 
 virtuoso-load-status:
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"select * from DB.DBA.load_list;\""
@@ -55,7 +56,8 @@ virtuoso-load-data:
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"ld_dir('/data/import', 'gadm2.fixed.virtuoso.sorted.nt.gz', 'http://linkedgeodata.org/gadm2/');\""
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"ld_dir('/data/import', 'ncdc-ghcnd-obs.ttl.gz', 'http://www.xybermotive.com/GeoKnowWeather#');\""
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"ld_dir('/data/import', 'ncdc-stations.ttl.gz', 'http://www.xybermotive.com/GeoKnowWeather#');\""
-	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"ld_dir('/data/import', 'news_geoknow_20150910_1016.nt.gz', 'http://www.xybermotive.com/news/');\""
+	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"ld_dir('/data/import', 'news_geoknow.r2rml.nt.gz', 'http://www.xybermotive.com/news/');\""
+	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"ld_dir('/data/import', 'twitter_000001.ttl.gz', 'http://supplier.geoknow.eu/resource/twitter');\""
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"rdf_loader_run();\""
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"wait_for_children;\""
 	docker exec -it ${VIRT_CONT_NAME} /bin/sh -c "/usr/bin/isql exec=\"checkpoint;\""

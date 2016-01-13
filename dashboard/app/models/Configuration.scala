@@ -32,7 +32,7 @@ object Configuration {
     val config = Play.configuration
 
     Configuration(
-      endpointConfig = EndpointConfig(doInit = false,
+      endpointConfig = EndpointConfig(doInit = true,
         kind = config.getString("simulator.endpoint.kind").getOrElse("local"),
         defaultGraph = config.getString("simulator.defaultGraph").getOrElse("http://xybermotive.com/geoknow/"),
         defaultGraphWeather = config.getString("simulator.defaultGraphWeather").getOrElse("http://www.xybermotive.com/GeoKnowWeather#"),
