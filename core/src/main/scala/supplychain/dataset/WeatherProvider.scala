@@ -26,8 +26,10 @@ class WeatherProvider(ec: EndpointConfig) {
     do {
       val upper = Math.max(coordinates.lat - threshold, -90.0)
       val lower = Math.min(coordinates.lat + threshold,  90.0)
-      val right = coordinates.lon + threshold
-      val left = coordinates.lon - threshold
+      var right = coordinates.lon + threshold
+      while(right > 180.0) right -= 360.0
+      var left = coordinates.lon - threshold
+      while(left < -180.0) left += 360.0
       val queryStr =
         s"""
          |PREFIX gkwo: <http://www.xybermotive.com/GeoKnowWeatherOnt#>
