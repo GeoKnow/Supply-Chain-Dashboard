@@ -1,0 +1,7 @@
+<Cache loaded="true">
+  <Types>
+    <Type frequency="1.0">http://www.xybermotive.com/ontology/Supplier</Type>
+    <Type frequency="0.9411764705882353">http://www.xybermotive.com/ontology/Product</Type>
+    <Type frequency="0.8823529411764706">http://www.xybermotive.com/ontology/Connection</Type>
+  </Types>
+</Cache>

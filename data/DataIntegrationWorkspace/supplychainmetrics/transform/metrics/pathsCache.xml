@@ -1,0 +1,14 @@
+<EntityDescription>
+  <Variable>a</Variable>
+  <Restrictions>?a a &lt;http://www.xybermotive.com/ontology/Order&gt; .</Restrictions>
+  <Paths>
+    <Path>?a/&lt;http://www.xybermotive.com/ontology/count&gt;</Path>
+    <Path>?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/count&gt;</Path>
+    <Path>?a/&lt;http://www.xybermotive.com/ontology/dueDate&gt;</Path>
+    <Path>?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/date&gt;</Path>
+    <Path>?a/&lt;http://www.xybermotive.com/ontology/date&gt;</Path>
+    <Path>?a/&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</Path>
+    <Path>?a/&lt;http://www.xybermotive.com/ontology/connection&gt;</Path>
+    <Path>?a\&lt;http://www.xybermotive.com/ontology/order&gt;</Path>
+  </Paths>
+</EntityDescription>

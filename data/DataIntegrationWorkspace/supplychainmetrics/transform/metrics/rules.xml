@@ -1,0 +1,55 @@
+<TransformSpec>
+        <TransformRule name="completeness" targetProperty="http://silk.wbsg.de/completeness">
+        <TransformInput id="isComplete" function="compareNumbers">
+            <Input id="orderedCount" path="?a/&lt;http://www.xybermotive.com/ontology/count&gt;"/><TransformInput id="totalShippedCount" function="aggregateNumbers">
+            <Input id="shippedCounts" path="?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/count&gt;"/>
+            <Param name="operator" value="+"/>
+          </TransformInput>
+            <Param name="comparator" value="&lt;="/>
+          </TransformInput>
+      </TransformRule><TransformRule name="timeliness" targetProperty="http://silk.wbsg.de/timeliness">
+        <TransformInput id="onTime" function="compareDates">
+            <Input id="dueDate" path="?a/&lt;http://www.xybermotive.com/ontology/dueDate&gt;"/><Input id="shipDate" path="?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/date&gt;"/>
+            <Param name="comparator" value="&gt;="/>
+          </TransformInput>
+      </TransformRule><TransformRule name="perfectFullfillment" targetProperty="http://silk.wbsg.de/perfectFullfillment">
+        <TransformInput id="isPerfect" function="aggregateNumbers">
+            <TransformInput id="isComplete" function="compareNumbers">
+            <Input id="orderedCount" path="?a/&lt;http://www.xybermotive.com/ontology/count&gt;"/><TransformInput id="totalShippedCount" function="aggregateNumbers">
+            <Input id="shippedCounts" path="?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/count&gt;"/>
+            <Param name="operator" value="+"/>
+          </TransformInput>
+            <Param name="comparator" value="&lt;="/>
+          </TransformInput><TransformInput id="onTime" function="compareDates">
+            <Input id="dueDate" path="?a/&lt;http://www.xybermotive.com/ontology/dueDate&gt;"/><Input id="shipDate" path="?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/date&gt;"/>
+            <Param name="comparator" value="&gt;="/>
+          </TransformInput>
+            <Param name="operator" value="*"/>
+          </TransformInput>
+      </TransformRule><TransformRule name="averageCycleTime" targetProperty="http://silk.wbsg.de/averageCycleTime">
+        <TransformInput id="max" function="aggregateNumbers">
+            <TransformInput id="durationInDays" function="durationInDays">
+            <TransformInput id="duration" function="duration">
+            <Input id="orderDate" path="?a/&lt;http://www.xybermotive.com/ontology/date&gt;"/><Input id="shipDates" path="?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/date&gt;"/>
+            
+          </TransformInput>
+            
+          </TransformInput>
+            <Param name="operator" value="max"/>
+          </TransformInput>
+      </TransformRule><TransformRule name="averageDelay" targetProperty="http://silk.wbsg.de/averageDelay">
+        <TransformInput id="unnamed_6" function="aggregateNumbers">
+            <TransformInput id="unnamed_5" function="durationInDays">
+            <TransformInput id="unnamed_4" function="duration">
+            <Input id="unnamed_1" path="?a/&lt;http://www.xybermotive.com/ontology/dueDate&gt;"/><Input id="unnamed_2" path="?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/date&gt;"/>
+            
+          </TransformInput>
+            
+          </TransformInput>
+            <Param name="operator" value="max"/>
+          </TransformInput>
+      </TransformRule>
+        <Outputs>
+          <Output id="simulator"></Output>
+        </Outputs>
+      </TransformSpec>

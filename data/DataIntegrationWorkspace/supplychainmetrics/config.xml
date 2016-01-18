@@ -1,0 +1,9 @@
+<ProjectConfig>
+  <Prefixes>
+    <Prefix id="rdf" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix id="rdfs" namespace="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix id="owl" namespace="http://www.w3.org/2002/07/owl#"/>
+    <Prefix id="sc" namespace="http://www.xybermotive.com/ontology/"/>
+    <Prefix id="metric" namespace="http://silk.wbsg.de/"/>
+  </Prefixes>
+</ProjectConfig>

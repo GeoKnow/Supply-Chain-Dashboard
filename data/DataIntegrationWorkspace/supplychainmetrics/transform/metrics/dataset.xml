@@ -1,0 +1,3 @@
+<SourceDataset dataSource="simulator" var="a">
+  <RestrictTo> ?a a &lt;http://www.xybermotive.com/ontology/Order&gt; . </RestrictTo>
+</SourceDataset>

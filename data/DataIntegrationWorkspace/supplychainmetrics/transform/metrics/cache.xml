@@ -1,0 +1,13 @@
+<EntityDescription>
+  <EntityDescription>
+    <Variable>a</Variable>
+    <Restrictions>?a a &lt;http://www.xybermotive.com/ontology/Order&gt; .</Restrictions>
+    <Paths>
+      <Path>?a/&lt;http://www.xybermotive.com/ontology/count&gt;</Path>
+      <Path>?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/count&gt;</Path>
+      <Path>?a/&lt;http://www.xybermotive.com/ontology/dueDate&gt;</Path>
+      <Path>?a\&lt;http://www.xybermotive.com/ontology/order&gt;/&lt;http://www.xybermotive.com/ontology/date&gt;</Path>
+      <Path>?a/&lt;http://www.xybermotive.com/ontology/date&gt;</Path>
+    </Paths>
+  </EntityDescription>
+</EntityDescription>
