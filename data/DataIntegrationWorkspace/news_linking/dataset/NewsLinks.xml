@@ -1,0 +1,5 @@
+<Dataset id="NewsLinks" type="file">
+  <Param name="file" value="news_links.nt"/>
+  <Param name="format" value=""/>
+  <Param name="graph" value=""/>
+</Dataset>

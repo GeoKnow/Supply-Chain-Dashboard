@@ -1,0 +1,125 @@
+<Entities>
+  <Pair>
+    <Source>
+      <EntityDescription>
+        <Variable>a</Variable>
+        <Restrictions>?a a &lt;http://www.xybermotive.com/ontology/Supplier&gt; .</Restrictions>
+        <Paths>
+          <Path>?a/&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</Path>
+          <Path>?a\&lt;http://schema.org/about&gt;</Path>
+          <Path>?a/&lt;http://schema.org/location&gt;</Path>
+          <Path>?a/&lt;http://schema.org/legalName&gt;</Path>
+          <Path>?a/&lt;http://schema.org/name&gt;</Path>
+          <Path>?a/&lt;http://schema.org/manufacturer&gt;</Path>
+          <Path>?a\&lt;http://www.xybermotive.com/ontology/supplier&gt;</Path>
+          <Path>?a/&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</Path>
+          <Path>?a/&lt;http://www.w3.org/2003/01/geo/wgs84_pos#lat&gt;</Path>
+          <Path>?a/&lt;http://www.w3.org/2003/01/geo/wgs84_pos#long&gt;</Path>
+          <Path>?a/&lt;http://www.xybermotive.com/ontology/weatherStation&gt;</Path>
+          <Path>?a/&lt;http://www.xybermotive.com/ontology/product&gt;</Path>
+          <Path>?a/&lt;http://www.xybermotive.com/ontology/name&gt;</Path>
+          <Path>?a/&lt;http://www.xybermotive.com/ontology/city&gt;</Path>
+          <Path>?a/&lt;http://www.xybermotive.com/ontology/zipcode&gt;</Path>
+          <Path>?a/&lt;http://www.xybermotive.com/ontology/street&gt;</Path>
+          <Path>?a/&lt;http://schema.org/alternateName&gt;</Path>
+          <Path>?a\&lt;http://www.xybermotive.com/ontology/receiver&gt;</Path>
+          <Path>?a\&lt;http://www.xybermotive.com/ontology/sender&gt;</Path>
+        </Paths>
+      </EntityDescription>
+    </Source>
+    <Target>
+      <EntityDescription>
+        <Variable>b</Variable>
+        <Restrictions>?b a &lt;http://schema.org/NewsArticle&gt; .</Restrictions>
+        <Paths>
+          <Path>?b/&lt;http://schema.org/keywords&gt;</Path>
+          <Path>?b/&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</Path>
+          <Path>?b/&lt;http://schema.org/text&gt;</Path>
+          <Path>?b/&lt;http://geoknow.eu/news_geoknow/vocab/header&gt;</Path>
+          <Path>?b/&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</Path>
+          <Path>?b/&lt;http://schema.org/headline&gt;</Path>
+          <Path>?b/&lt;http://schema.org/dateModified&gt;</Path>
+          <Path>?b/&lt;http://schema.org/dateCreated&gt;</Path>
+          <Path>?b/&lt;http://schema.org/datePublished&gt;</Path>
+        </Paths>
+      </EntityDescription>
+    </Target>
+  </Pair>
+  <PositiveEntities>
+    <Pair>
+      <Source>
+        <Entity uri="http://www.xybermotive.com/supplier/VW">
+          <Val>
+            <e>http://www.xybermotive.com/ontology/Supplier</e>
+            <e>http://schema.org/Organization</e>
+          </Val>
+          <Val> </Val>
+          <Val>
+            <e>http://www.xybermotive.com/supplier/VW_loc1</e>
+          </Val>
+          <Val>
+            <e>Volkswagen AG</e>
+          </Val>
+          <Val>
+            <e>Volkswagen AG</e>
+          </Val>
+          <Val>
+            <e>http://www.xybermotive.com/products/Car2</e>
+            <e>http://www.xybermotive.com/products/Car</e>
+          </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val> </Val>
+          <Val>
+            <e>Volkswagen</e>
+            <e>DE0007664005</e>
+            <e>VOW3</e>
+            <e>VW</e>
+          </Val>
+          <Val> </Val>
+          <Val> </Val>
+        </Entity>
+      </Source>
+      <Target>
+        <Entity uri="http://geoknow.eu/news_geoknow/article/1014">
+          <Val>
+            <e>http://geoknow.eu/news_geoknow/category/364371184</e>
+          </Val>
+          <Val>
+            <e>article #1014</e>
+          </Val>
+          <Val>
+            <e>&lt;p&gt;Die sogenannten Spritschlucker sind momentan der Prügelknabe in der Absatzkrise der Automobilindustrie. Egal, ob massige SUVs, durstige Limousinen oder potente Sportwagen &amp;ndash; wer viel verbraucht, der gilt als unzeitgemäß und verantwortungslos.&lt;/p&gt; &lt;p&gt;Trotzdem überbieten sich die Hersteller, gerade im Premiumsegment, mit trinkfreudigen Konzepten wie einem Diesel mit sechs Litern Hubraum (Audi Q7, 14-18 Liter/100km) oder einem V12-Benziner mit doppelter Turboaufladung (BMW 760i, 15-20 Liter/100km).&lt;/p&gt; &lt;p&gt;Natürlich verfügen die Fahrzeuge dabei über erheblich mehr Leistung als Aggregate früherer Generationen &amp;ndash; der Verbrauch indes ist nicht gesunken.&lt;/p&gt; &lt;p&gt;So sehr man sich jedoch über saufende Oberklasse-Fahrzeuge aufregen kann &amp;ndash; was den wirklichen Unterschied macht, ist die breite Masse. Zum Vergleich: 2008 wurden 428 Audi Q7 zugelassen. Vom VW Golf wurden im selben Zeitraum 231.293 Stück auf Deutschlands Straßen gebracht.&lt;/p&gt; &lt;p&gt;Um der Umwelt wirklich zu helfen, müssen Golf und Co., die großen Verkaufsschlager, den Durchschnittsverbrauch deutlich senken. Die viel verkauften Einstiegsmodelle &amp;ndash; kleine Benziner mit wenig Hubraum &amp;ndash; in der sogenannten Golf-Klasse brauchen im Alltag immer noch knapp acht Liter Benzin. Das ist zu viel. Ein durchschnittlicher Kompaktwagen darf nicht mehr als sechs Liter Benzin verbrauchen. Technisch möglich ist das schon lange &amp;ndash; die Industrie muss das nur wollen.&lt;/p&gt;</e>
+          </Val>
+          <Val>
+            <e>Kommentar</e>
+          </Val>
+          <Val>
+            <e>http://schema.org/NewsArticle</e>
+          </Val>
+          <Val>
+            <e>Sind Spritschlucker noch zeitgemäß?</e>
+          </Val>
+          <Val>
+            <e>2009-05-25T09:47:00</e>
+          </Val>
+          <Val>
+            <e>2009-05-22T17:39:35</e>
+          </Val>
+          <Val>
+            <e>2009-05-25T09:47:00</e>
+          </Val>
+        </Entity>
+      </Target>
+    </Pair>
+  </PositiveEntities>
+  <NegativeEntities> </NegativeEntities>
+  <UnlabeledEntities> </UnlabeledEntities>
+</Entities>

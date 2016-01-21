@@ -1,0 +1,46 @@
+<Pair>
+  <Source>
+    <EntityDescription>
+      <Variable>a</Variable>
+      <Restrictions>?a a &lt;http://www.xybermotive.com/ontology/Supplier&gt; .</Restrictions>
+      <Paths>
+        <Path>?a/&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</Path>
+        <Path>?a\&lt;http://schema.org/about&gt;</Path>
+        <Path>?a/&lt;http://schema.org/location&gt;</Path>
+        <Path>?a/&lt;http://schema.org/legalName&gt;</Path>
+        <Path>?a/&lt;http://schema.org/name&gt;</Path>
+        <Path>?a/&lt;http://schema.org/manufacturer&gt;</Path>
+        <Path>?a\&lt;http://www.xybermotive.com/ontology/supplier&gt;</Path>
+        <Path>?a/&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</Path>
+        <Path>?a/&lt;http://www.w3.org/2003/01/geo/wgs84_pos#lat&gt;</Path>
+        <Path>?a/&lt;http://www.w3.org/2003/01/geo/wgs84_pos#long&gt;</Path>
+        <Path>?a/&lt;http://www.xybermotive.com/ontology/weatherStation&gt;</Path>
+        <Path>?a/&lt;http://www.xybermotive.com/ontology/product&gt;</Path>
+        <Path>?a/&lt;http://www.xybermotive.com/ontology/name&gt;</Path>
+        <Path>?a/&lt;http://www.xybermotive.com/ontology/city&gt;</Path>
+        <Path>?a/&lt;http://www.xybermotive.com/ontology/zipcode&gt;</Path>
+        <Path>?a/&lt;http://www.xybermotive.com/ontology/street&gt;</Path>
+        <Path>?a/&lt;http://schema.org/alternateName&gt;</Path>
+        <Path>?a\&lt;http://www.xybermotive.com/ontology/receiver&gt;</Path>
+        <Path>?a\&lt;http://www.xybermotive.com/ontology/sender&gt;</Path>
+      </Paths>
+    </EntityDescription>
+  </Source>
+  <Target>
+    <EntityDescription>
+      <Variable>b</Variable>
+      <Restrictions>?b a &lt;http://schema.org/NewsArticle&gt; .</Restrictions>
+      <Paths>
+        <Path>?b/&lt;http://schema.org/keywords&gt;</Path>
+        <Path>?b/&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;</Path>
+        <Path>?b/&lt;http://schema.org/text&gt;</Path>
+        <Path>?b/&lt;http://geoknow.eu/news_geoknow/vocab/header&gt;</Path>
+        <Path>?b/&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;</Path>
+        <Path>?b/&lt;http://schema.org/headline&gt;</Path>
+        <Path>?b/&lt;http://schema.org/dateModified&gt;</Path>
+        <Path>?b/&lt;http://schema.org/dateCreated&gt;</Path>
+        <Path>?b/&lt;http://schema.org/datePublished&gt;</Path>
+      </Paths>
+    </EntityDescription>
+  </Target>
+</Pair>

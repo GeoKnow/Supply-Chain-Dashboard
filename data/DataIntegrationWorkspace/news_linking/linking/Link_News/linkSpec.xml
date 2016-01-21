@@ -1,0 +1,24 @@
+<Interlink id="Link_News">
+        <SourceDataset dataSource="Virtuoso_Suppliers" var="a">
+        <RestrictTo>
+          ?a a &lt;http://www.xybermotive.com/ontology/Supplier&gt; .
+        </RestrictTo>
+      </SourceDataset>
+        <TargetDataset dataSource="Virtuoso_News" var="b">
+        <RestrictTo>
+          ?b a &lt;http://schema.org/NewsArticle&gt; .
+        </RestrictTo>
+      </TargetDataset>
+        <LinkageRule linkType="&lt;http://geoknow.eu/wp5/ontology#newsItem&gt;">
+        <Compare id="unnamed_5" required="false" weight="1" metric="contains" threshold="0.0" indexing="true">
+            <TransformInput id="unnamed_4" function="merge">
+            <Input id="unnamed_2" path="?a/&lt;http://schema.org/name&gt;"/><Input id="unnamed_1" path="?a/&lt;http://schema.org/alternateName&gt;"/>
+            
+          </TransformInput><Input id="unnamed_3" path="?b/&lt;http://schema.org/text&gt;"/><Param name="fullWords" value="false"/>
+          </Compare>
+        <Filter/>
+      </LinkageRule>
+        <Outputs>
+          <Output id="NewsLinks"></Output>
+        </Outputs>
+      </Interlink>
